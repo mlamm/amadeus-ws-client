@@ -1,0 +1,3 @@
+# Placeholder for the real Dockerfile
+FROM tsari/jessie-php-fpm-xdebug
+WORKDIR /var/www

@@ -1,0 +1,28 @@
+{
+    "name": "flight/amadeus-service",
+    "description": "A request service to amadeus",
+    "type": "application",    
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Willi Eßer",
+            "email": "willi.esser@unister.de"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "AmadeusService\\": "./src"
+        }
+    },
+    "require": {
+        "php": "~7.1",
+        "silex/silex": "~2.0",
+        "amabnl/amadeus-ws-client": "1.4",
+        "monolog/monolog": "1.23"    
+    },
+    "require-dev": {
+        "codeception/codeception": "~2.3",
+        "mockery/mockery": "~0.9"
+    }
+}
