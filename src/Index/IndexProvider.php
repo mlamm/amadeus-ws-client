@@ -1,14 +1,14 @@
 <?php
-namespace AmadeusService\Search;
+namespace AmadeusService\Index;
 
 use AmadeusService\Application\BusinessCaseProvider;
-use AmadeusService\Search\BusinessCase\Index;
+use AmadeusService\Index\BusinessCase\Index;
 use Silex\ControllerCollection;
 
-class SearchProvider extends BusinessCaseProvider
+class IndexProvider extends BusinessCaseProvider
 {
     public function routing(ControllerCollection $collection)
     {
         $collection->get('/', Index::class);
-    }    
+    }
 }

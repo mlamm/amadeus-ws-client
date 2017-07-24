@@ -8,11 +8,15 @@ $app = new Silex\Application();
 $app->register(
     new Silex\Provider\MonologServiceProvider(), 
     [
-        'monolog.logfile' => getcwd() . '/log/app.log'
+        'monolog.logfile' => getcwd() . '/var/logs/app.log',
+        'monolog.formatter' => function () {
+            return new \Monolog\Formatter\JsonFormatter();
+        }
     ]
 );
 
 // application provider
+$app->mount('/', new \AmadeusService\Index\IndexProvider());
 $app->mount('/search', new AmadeusService\Search\SearchProvider());
 
-echo $app->run();
+$app->run();

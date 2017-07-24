@@ -2,3 +2,6 @@ vendor
 !.gitkeep
 .phpintel
 ~tmp\.*
+*.sublime-*
+var/cache
+var/logs

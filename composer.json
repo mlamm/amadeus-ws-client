@@ -18,8 +18,8 @@
     "require": {
         "php": "~7.1",
         "silex/silex": "~2.0",
-        "amabnl/amadeus-ws-client": "1.4",
-        "monolog/monolog": "1.23"    
+        "amabnl/amadeus-ws-client": "~1.4",
+        "monolog/monolog": "~1.23"
     },
     "require-dev": {
         "codeception/codeception": "~2.3",

@@ -1,0 +1,7 @@
+2017/07/24 09:33:42 [error] 5#5: *1 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Class 'AmadeusService\Service\AppProvider' not found in /var/www/src/Search/SearchProvider.php on line 10
+PHP message: PHP Stack trace:
+PHP message: PHP   1. {main}() /var/www/web/index.php:0
+PHP message: PHP   2. spl_autoload_call() /var/www/web/index.php:19
+PHP message: PHP   3. Composer\Autoload\ClassLoader->loadClass() /var/www/web/index.php:19
+PHP message: PHP   4. Composer\Autoload\includeFile() /var/www/vendor/composer/ClassLoader.php:322
+PHP message: PHP   5. include() /var/www/vendor/composer/ClassLoader.php:440" while reading response header from upstream, client: 172.20.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "fastcgi://172.20.0.2:9000", host: "localhost:8201"
