@@ -1,0 +1,23 @@
+{
+  "name": "amadeus-service",
+  "version": "1.0.0",
+  "description": "Amadeus service that handles search and book requests.",
+  "scripts": {
+    "docs": "./node_modules/.bin/aglio -i ./docs/api.apib -o ./var/docs/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@stash.unister.lan:2200/flight/service.amadeus.git"
+  },
+  "keywords": [
+    "amadeus",
+    "service"
+  ],
+  "author": "Willi Eßer <willi.esser@invia.de>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "aglio": "~2.3",
+    "gulp": "^3.9.1",
+    "gulp-util": "^3.0.8"
+  }
+}

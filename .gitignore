@@ -5,4 +5,4 @@ vendor
 *.sublime-*
 var/cache
 var/logs
-var/logs/nginx
+node_modules

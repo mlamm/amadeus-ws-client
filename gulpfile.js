@@ -1,0 +1,1 @@
+require('./task/create-docs');

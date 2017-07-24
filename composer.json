@@ -16,7 +16,8 @@
         }
     },
     "scripts": {
-        "test": "./vendor/bin/codecept run"
+        "test": "./vendor/bin/codecept run",
+        "docs": "./node_modules/.bin/gulp create-docs"
     },
     "require": {
         "php": "~7.1",

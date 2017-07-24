@@ -1,0 +1,28 @@
+FORMAT: 1A
+
+# Amadeus Service
+
+This service is the main communication operator to Amadeus. It handles search and booking processes.
+
+#### Search [GET /search]
+
+This request will request flights based of sent parameters and sent business case configuration of the agent.
+
++ Parameters
+    + `agent`: `fluege.de` (string, required) - Identification of the requesting client.
+    + `adults`: `2` (integer, required) - Parameter that indicates for how many adults it was searched for.
+    + `children`: `2` (integer) - Parameter that indicates for how many children it was searched for.
+    + `infants`: `2` (integer) - Parameter that indicated for how many infants it was searched for.
+    + `is-synthetic`: `true` (boolean) - Parameter that indicates that the search shall be synthetic.
+    + `filter-airline`: `LH` (array) - Array of airline IATA codes __for__ which should be filtered.
+    + `filter-cabin-class` (array) - Array of cabin class codes __for__ which should be filtered.ray) - Array of cabin class codes __for__ which should be filtered.
+    + `legs` (array, required) - Array of leg JSON representations.
+    + `business-case` (string, required) - JSON representation of the business case.
+
++ Request
+
++ Response 200 (application/json)
+
+    This response resembles a default response with.
+
+    + Body
