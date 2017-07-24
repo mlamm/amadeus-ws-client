@@ -10,7 +10,7 @@ class Index extends BusinessCase
     {
         return new JsonResponse(
             [
-                'message' => 'Welcome to the amadeus search service'
+                'name' => 'amadeus-service'
             ]
         );
     }

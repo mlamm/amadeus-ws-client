@@ -15,6 +15,9 @@
             "AmadeusService\\": "./src"
         }
     },
+    "scripts": {
+        "test": "./vendor/bin/codecept run"
+    },
     "require": {
         "php": "~7.1",
         "silex/silex": "~2.0",
