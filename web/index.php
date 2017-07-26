@@ -15,6 +15,10 @@ $app->register(
     ]
 );
 
+$app['service-container'] = function () {
+    return new \Symfony\Component\DependencyInjection\ContainerBuilder();
+};
+
 // application provider
 $app->mount('/', new \AmadeusService\Index\IndexProvider());
 $app->mount('/search', new AmadeusService\Search\SearchProvider());

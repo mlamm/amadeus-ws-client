@@ -10,5 +10,5 @@ interface BusinessCaseInterface
      *
      * @return Response
      */
-    public function responds();
+    public function respond();
 }

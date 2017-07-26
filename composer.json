@@ -23,10 +23,18 @@
         "php": "~7.1",
         "silex/silex": "~2.0",
         "amabnl/amadeus-ws-client": "~1.4",
-        "monolog/monolog": "~1.23"
+        "monolog/monolog": "~1.23",
+        "flight/search-request-mapping": "^1.0",
+        "symfony/dependency-injection": "^3.3"
     },
     "require-dev": {
         "codeception/codeception": "~2.3",
         "mockery/mockery": "~0.9"
+    },
+    "repositories": {
+        "flight-search-request-mapping": {
+            "type": "vcs",
+            "url": "ssh://git@stash.unister.lan:2200/flight/library.search-request-mapping.git"
+        }
     }
 }
