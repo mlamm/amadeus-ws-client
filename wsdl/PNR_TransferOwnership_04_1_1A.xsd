@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xml.amadeus.com/POWNUQ_04_1_1A" xmlns="http://xml.amadeus.com/POWNUQ_04_1_1A" elementFormDefault="qualified">
+  <xs:element name="PNR_TransferOwnership">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="recordLocator" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="reservation">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="controlNumber">
+                      <xs:simpleType>
+                        <xs:annotation>
+                          <xs:documentation xml:lang="en">Format limitations: an6</xs:documentation>
+                        </xs:annotation>
+                        <xs:restriction base="xs:string">
+                          <xs:minLength value="6" />
+                          <xs:maxLength value="6" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="propagatioAction" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="actionRequestCode">
+                <xs:simpleType>
+                  <xs:annotation>
+                    <xs:documentation xml:lang="en">Format limitations: an..3</xs:documentation>
+                  </xs:annotation>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="3" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="officeIdentification" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="officeDetail">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="originatorDetails">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="inHouseIdentification1">
+                            <xs:simpleType>
+                              <xs:annotation>
+                                <xs:documentation xml:lang="en">Format limitations: an9</xs:documentation>
+                              </xs:annotation>
+                              <xs:restriction base="xs:string">
+                                <xs:minLength value="9" />
+                                <xs:maxLength value="9" />
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="specificChanges" minOccurs="0" maxOccurs="3">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="actionRequestCode">
+                      <xs:simpleType>
+                        <xs:annotation>
+                          <xs:documentation xml:lang="en">Format limitations: an..3</xs:documentation>
+                        </xs:annotation>
+                        <xs:restriction base="xs:string">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="3" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="oaIdentificator" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="referenceDetails">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="value">
+                      <xs:simpleType>
+                        <xs:annotation>
+                          <xs:documentation xml:lang="en">Format limitations: an..5</xs:documentation>
+                        </xs:annotation>
+                        <xs:restriction base="xs:string">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="5" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+<!-- SchemaRules="2009/09"-->
+<!--Created with SchemaBuilder 5.0.0 by Amadeus S.A.S.-->
+<!--Build Key:
+1F8B080000000000000095934D6FDB300C86EFFA15B9ED3024768A746D03E8E0D54E76683E9AB8D82540A0DA8C2354963C51EE1A14FDEFA364076B0FC3B68B41D2F22BF279E979B6CC36499EA5FBD5925FC4E3C930BE1A8EAF07332B4B711AC457D3C9C5F4221ECC17F9E7389EC6314B16893B358033A9408B1A387B14084B8AB01105F0A373CD348A5E6A3512B528A1C55161EA883DB6BA54904ACB2304E7A4AE302A6581AC3842F1B4A5672DB8B32DB0C2944047906BA37D56D7A0293B0885216D843EF9FBB86E95A24273B2B23ABA2E2DE1205AE5E6B6C9A9CBB2532C4DFBA8600B3F5AD005AC852B8EBD1CE8AFFFD43DE8DF675EFDFC6FFBD767B0288DA6C8820292A1485474C3E98D1D88CEA655D4A3F1A0421E68858F7DF41701650AA1FA1195A94AE2964E77DFB224DD65A53C88C2E5C628DC65F93E95E88476B744868011AADD42D827F088BB3318E0E2EECE54A4A5ABD048005383ADA04711E2990455E2D65847ECCE7544EA2A410FF4632D0527A4EA8DD2FF05A83152BB25B8CE8CD08C35C6BDE31372BF2F23D60DE079222D697C13C5377D0D67C6264A9236762208F6591680A92C1CDD2DECA96388B5B0CEEB3E68594877EA0771566854C21F253A9C4863D42BE7C9227A2D41491A43D0FABC8DE82DF3ED95FDB67612B42BB71F77942A8155C0F282CAAD5AD7B46E66540996FB0263C3E1A263F80907521F8CAD4313C321EB08F171C2DE5DCED7F926BEFE32B9BC1ADFD03AD7426A9E25770C5E1AF26A2F709F66733E4BEEB6D9D99C81B020F8E5F89CF3F5EAFBF2E19E35F42F483C9EFF8DDE1A3EA6E8597ABF280C584420C8D7CBCD3EF7F901ECEAA7264F8FB261679BFEF0BAB79EC713F60B393CE6FB63040000
+-->
+
