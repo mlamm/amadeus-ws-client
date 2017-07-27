@@ -50,6 +50,14 @@ abstract class BusinessCase implements BusinessCaseInterface
     }
 
     /**
+     * @return mixed
+     */
+    public function getConfiguration()
+    {
+        return $this->application['config'];
+    }
+
+    /**
      * @param mixed $id
      * @param int $invalidBehavior
      * @return object
