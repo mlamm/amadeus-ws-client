@@ -2,7 +2,7 @@
 namespace AmadeusService\Search\Model;
 
 use Amadeus\Client;
-use AmadeusService\Search\Exception\SearchException;
+use AmadeusService\Search\Exception\ServiceRequestAuthenticationFailedException;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Leg;
 use Flight\SearchRequestMapping\Entity\Request;
@@ -23,10 +23,12 @@ class AmadeusClient
      * AmadeusClient constructor.
      * @param LoggerInterface $logger
      * @param BusinessCase $businessCase
+     * @param string $wsdlPath
      */
     public function __construct(
         LoggerInterface $logger,
-        BusinessCase $businessCase
+        BusinessCase $businessCase,
+        $wsdlPath
     )
     {
         $this->client = new Client(
@@ -36,17 +38,17 @@ class AmadeusClient
                         'officeId' => $businessCase->getAuthentication()->getOfficeId(),
                         'userId' => $businessCase->getAuthentication()->getUserId(),
                         'passwordData' => $businessCase->getAuthentication()->getPasswordData(),
-                        'passwordLength' => 12,
-                        'dutyCode' => 'SU',
-                        'organizationId' => 'DUMMY-ORG',
+                        'passwordLength' => $businessCase->getAuthentication()->getPasswordLength(),
+                        'dutyCode' => $businessCase->getAuthentication()->getDutyCode(),
+                        'organizationId' => $businessCase->getAuthentication()->getOrganizationId()
                     ],
                     'sessionHandlerParams' => [
                         'soapHeaderVersion' => Client::HEADER_V2,
-                        'wsdl' => getcwd() . '/wsdl/1ASIWXXXXXX_PDT_20160101_080000.wsdl',
+                        'wsdl' => $wsdlPath,
                         'logger' => $logger
                     ],
                     'requestCreatorParams' => [
-                        'receivedFrom' => 'my test project'
+                        'receivedFrom' => 'service.search'
                     ]
                 ]
             )
@@ -58,7 +60,7 @@ class AmadeusClient
         $authResult = $this->client->securityAuthenticate();
 
         if ($authResult->status !== Client\Result::STATUS_OK) {
-            throw new SearchException(SearchException::AMADEUS_AUTHENTICATION_REQUEST_FAILED);
+            throw new ServiceRequestAuthenticationFailedException();
         }
 
         $itineraries = [];
@@ -91,8 +93,8 @@ class AmadeusClient
 
         $options = new Client\RequestOptions\FareMasterPricerTbSearch(
             [
-                'nrOfRequestedResults' => 50,
-                'nrOfRequestedPassengers' => $request->getCombinedPassengerCount(),
+                'nrOfRequestedResults' => $request->getBusinessCase()->getResultLimit(),
+                'nrOfRequestedPassengers' => $request->getPassengerCount(),
                 'passengers' => $this->setupPassengers($request),
                 'itinerary' => $itineraries
             ]
