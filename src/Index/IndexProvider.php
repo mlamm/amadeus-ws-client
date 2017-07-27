@@ -2,14 +2,13 @@
 namespace AmadeusService\Index;
 
 use AmadeusService\Application\BusinessCaseProvider;
-use AmadeusService\Index\BusinessCase\Index;
-use Silex\Application;
+use AmadeusService\Index\BusinessCase\HealthCheck;
 use Silex\ControllerCollection;
 
 class IndexProvider extends BusinessCaseProvider
 {
     public function routing(ControllerCollection $collection)
     {
-        $collection->get('/', Index::class);
+        $collection->get('/_hc', HealthCheck::class);
     }
 }
