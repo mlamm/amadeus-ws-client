@@ -31,17 +31,26 @@ This request will request flights based of sent parameters and sent business cas
                     "filter": []
                 }
             ],
-            "business-case": {
-                "content-provider": "amadeus",
-                "type": "roundtrip",
-                "options": {
-                    "is-one-way-combination": true,
-                    "is-overnight": false,
-                    "is-area-search": false,
-                    "is-benchmark": false
-                },
-                "authentication": {}
-            }
+            "business-cases": [
+                {
+                    "content-provider": "amadeus",
+                    "result-limit": 50,
+                    "options": {
+                        "is-one-way-combination": true,
+                        "is-overnight": false,
+                        "is-area-search": false,
+                        "is-benchmark": false
+                    },
+                    "authentication": {
+                        "office-id": "",
+                        "user-id": "",
+                        "password-data": "",
+                        "password-length": 0,
+                        "duty-code": "",
+                        "organization-id": ""
+                    }
+                }
+            ]
         }
 
 + Response 200 (application/hal+json)
@@ -49,3 +58,114 @@ This request will request flights based of sent parameters and sent business cas
     This response resembles a default response with.
 
     + Body
+
+        {
+            result: [
+                {
+                    "type": "one-way",
+                    "legs": [
+                        [
+                            {
+                                "hash": "12acb56fee8466aij552abefff458962",
+                                "provider": "amadeus",
+                                "classification": "scheduled",
+                                "carriers": {
+                                    "main": {
+                                        "iata": "AB",
+                                        "name": "Air Berlin"
+                                    }
+                                },
+                                "duration": 7200,
+                                "nights": 1,
+                                "segments": [
+                                    {
+                                        "aircraft-type": "Boeing 747",
+                                        "airports": {
+                                            "arrival": {
+                                                "iata": "STN",
+                                                "name": "Flughafen Stansted",
+                                                "city": "London",
+                                                "parent": {
+                                                    "iata": "LON"
+                                                }
+                                            },
+                                            "departure": {
+                                                "iata": "SXF",
+                                                "name": "Flughafen Schönefeld",
+                                                "city": "Berlin",
+                                                "parent": {
+                                                    "iata": "BER"
+                                                }
+                                            }
+                                        },
+                                        "arrive-at": 1503831600,
+                                        "depart-at": 1503828000,
+                                        "duration": 3600,
+                                        "cabin-class": {
+                                            "code": "Y",
+                                            "name": "Economy"
+                                        },
+                                        "flight-number": 8543,
+                                        "carriers": {
+                                            "marketing": {
+                                                "iata": "AB",
+                                                "name": "Air Berlin"
+                                            },
+                                            "operating": {
+                                                "iata": "AB",
+                                                "name": "Air Berlin"
+                                            }
+                                        },
+                                        "remaining-seats": 9,
+                                        "technical-stops": [
+                                            {
+                                                "airport": {
+                                                    "iata": "HAM",
+                                                    "name": "Flughafen",
+                                                    "city": "Hamburg",
+                                                    "parent": "object"
+                                                },
+                                                "arrive-at": 1503828600,
+                                                "depart-at": 1503830000
+                                            }
+                                        ],
+                                        "beggage-rules": {
+                                            "pieces": 1,
+                                            "weight": 20,
+                                            "unit": "KG"
+                                        }
+                                    }
+                                ],
+                                "flight-lookup": {
+                                    "12acb56fee8466aij552abefff458962": "{flight-hash}"
+                                }
+                            }
+                        ]
+                    ]
+                }
+            ]
+        }
+
++ Response 500 (application/hal+json)
+
+    This response represents an error response.
+
+    |Code | Message |
+    |---|---|
+    | ARS0001 | The `Amadeus\Client::securityAuthenticate` method didn't return state OK |
+    | ARS0002 | The provided search parameters do not suffice the necessary data to start a new search |
+    | ARS000X | *Every unspecific exception thrown by PHP will return such response if handled correctly* |
+
+    + Body
+    {
+        "errors": {
+            "search": [
+                {
+                    "code": "ARS0001",
+                    "message": "The `Amadeus\\Client::securityAuthenticate` method didn't return state OK",
+                    "status": 500
+                }
+            ]
+        }
+    }
+
