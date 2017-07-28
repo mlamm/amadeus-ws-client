@@ -24,7 +24,7 @@
         "silex/silex": "~2.0",
         "amabnl/amadeus-ws-client": "~1.4",
         "monolog/monolog": "~1.23",
-        "flight/search-request-mapping": "~1.0",
+        "flight/search-request-mapping": "~2.0",
         "symfony/dependency-injection": "~3.3",
         "doctrine/cache": "~1.7",
         "symfony/yaml": "~3.3"
