@@ -46,34 +46,27 @@
   "filter-stops": null,
   "page": 1,
   "legs": [
-    {
-      "departure": "BER",
-      "arrival": "LON",
-      "depart-at": 1234567890,
-      "is-flexible-date": false,
-      "filter": [
-
-      ]
-    }
   ],
-  "business-case": {
-    "content-provider": "amadeus",
-    "type": "roundtrip",
-    "fare-type": "net",
-    "result-limit": 50,
-    "options": {
-      "is-one-way-combination": true,
-      "is-overnight": false,
-      "is-area-search": false,
-      "is-benchmark": false
-    },
-    "authentication": {
-      "office-id": "",
-      "user-id": "",
-      "password-data": "",
-      "password-length": 0,
-      "duty-code": "",
-      "organization-id": ""
+  "business-cases": [
+    {
+      "content-provider": "amadeus",
+      "type": "roundtrip",
+      "fare-type": "net",
+      "result-limit": 50,
+      "options": {
+        "is-one-way-combination": true,
+        "is-overnight": false,
+        "is-area-search": false,
+        "is-benchmark": false
+      },
+      "authentication": {
+        "office-id": "",
+        "user-id": "",
+        "password-data": "",
+        "password-length": 0,
+        "duty-code": "",
+        "organization-id": ""
+      }
     }
-  }
+  ]
 }
