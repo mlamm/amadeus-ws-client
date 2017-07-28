@@ -2,6 +2,7 @@
 namespace AmadeusService\Search\Model;
 
 use Amadeus\Client;
+use AmadeusService\Search\Exception\MissingRequestParameterException;
 use AmadeusService\Search\Exception\ServiceRequestAuthenticationFailedException;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Leg;
@@ -57,6 +58,10 @@ class AmadeusClient
 
     public function search(Request $request)
     {
+        if ($request->getLegs()->count() < 1) {
+            throw new MissingRequestParameterException();
+        }
+
         $authResult = $this->client->securityAuthenticate();
 
         if ($authResult->status !== Client\Result::STATUS_OK) {
@@ -93,7 +98,7 @@ class AmadeusClient
 
         $options = new Client\RequestOptions\FareMasterPricerTbSearch(
             [
-                'nrOfRequestedResults' => $request->getBusinessCase()->getResultLimit(),
+                'nrOfRequestedResults' => $request->getBusinessCases()->first()->getResultLimit(),
                 'nrOfRequestedPassengers' => $request->getPassengerCount(),
                 'passengers' => $this->setupPassengers($request),
                 'itinerary' => $itineraries

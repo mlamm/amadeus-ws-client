@@ -5,6 +5,7 @@ use AmadeusService\Application\BusinessCase;
 use AmadeusService\Application\Exception\GeneralServerErrorException;
 use AmadeusService\Application\Exception\ServiceException;
 use AmadeusService\Application\Response\ErrorResponse;
+use AmadeusService\Search\Exception\MissingRequestParameterException;
 use AmadeusService\Search\Exception\ServiceRequestAuthenticationFailedException;
 use AmadeusService\Search\Model\AmadeusClient;
 use AmadeusService\Search\Response\SearchResultResponse;
@@ -29,7 +30,7 @@ class Search extends BusinessCase
 
             $amadeusClient = new AmadeusClient(
                 $this->getLogger(),
-                $request->getBusinessCase(),
+                $request->getBusinessCases()->first(),
                 getcwd() . '/wsdl/' . $this->getConfiguration()->service->search->wsdl_name
             );
 
@@ -40,6 +41,9 @@ class Search extends BusinessCase
 
             $errorResponse = new ErrorResponse();
             if ($ex instanceof ServiceRequestAuthenticationFailedException)
+                $errorResponse->addViolation('search', $ex);
+
+            if ($ex instanceof MissingRequestParameterException)
                 $errorResponse->addViolation('search', $ex);
 
             return $errorResponse;
