@@ -40,11 +40,7 @@ class Search extends BusinessCase
             $ex->setResponseCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 
             $errorResponse = new ErrorResponse();
-            if ($ex instanceof ServiceRequestAuthenticationFailedException)
-                $errorResponse->addViolation('search', $ex);
-
-            if ($ex instanceof MissingRequestParameterException)
-                $errorResponse->addViolation('search', $ex);
+            $errorResponse->addViolation('search', $ex);
 
             return $errorResponse;
         } catch (\Exception $ex) {
