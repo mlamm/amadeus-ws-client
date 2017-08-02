@@ -27,7 +27,8 @@
         "flight/search-request-mapping": "~2.0",
         "symfony/dependency-injection": "~3.3",
         "doctrine/cache": "~1.7",
-        "symfony/yaml": "~3.3"
+        "symfony/yaml": "~3.3",
+        "jms/serializer": "^1.8"
     },
     "require-dev": {
         "codeception/codeception": "~2.3",

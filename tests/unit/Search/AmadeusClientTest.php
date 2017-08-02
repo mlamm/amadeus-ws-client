@@ -1,7 +1,6 @@
 <?php
 namespace Search;
 
-
 use Amadeus\Client;
 use AmadeusService\Search\Model\AmadeusClient;
 use Flight\SearchRequestMapping\Entity\BusinessCase;

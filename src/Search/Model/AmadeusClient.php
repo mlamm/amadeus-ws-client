@@ -56,6 +56,13 @@ class AmadeusClient
         );
     }
 
+    /**
+     * Method to start a search request based on a sent Request object
+     * @param Request $request
+     * @return Client\Result
+     * @throws MissingRequestParameterException
+     * @throws ServiceRequestAuthenticationFailedException
+     */
     public function search(Request $request)
     {
         if ($request->getLegs()->count() < 1) {
@@ -109,6 +116,7 @@ class AmadeusClient
     }
 
     /**
+     * Method to setup passengers to request for based on sent Request object
      * @param Request $request
      * @return Client\RequestOptions\Fare\MPPassenger[]
      */

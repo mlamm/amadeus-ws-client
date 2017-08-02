@@ -18,6 +18,7 @@ class HalResponse extends JsonResponse
      */
     public function __construct($data = null, $status = 200, array $headers = array(), $json = false)
     {
+        die(print_r($data, true));
         parent::__construct($data, $status, $headers, $json);
         $this->headers->set('content-type', 'application/hal+json');
     }

@@ -16,7 +16,7 @@ trait SearchRequestMappingTrait
      */
     public function getMappedRequest(Request $request)
     {
-        $mapper = new Mapper($request->getContent(), getcwd() . '/var/cache');
+        $mapper = new Mapper($request->getContent(), getcwd() . '/var/cache/request');
         return $mapper->getRequest();
     }
 }
