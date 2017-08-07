@@ -20,15 +20,16 @@
         "docs": "./node_modules/.bin/gulp create-docs"
     },
     "require": {
-        "php": "~7.1",
+        "php": "~7.0",
         "silex/silex": "~2.0",
         "amabnl/amadeus-ws-client": "~1.4",
         "monolog/monolog": "~1.23",
-        "flight/search-request-mapping": "~2.0",
+        "flight/search-request-mapping": "~3.0",
         "symfony/dependency-injection": "~3.3",
         "doctrine/cache": "~1.7",
         "symfony/yaml": "~3.3",
-        "jms/serializer": "^1.8"
+        "jms/serializer": "^1.8",
+        "flight/library-search-request-response-mapping": "1.0.0-rc1"
     },
     "require-dev": {
         "codeception/codeception": "~2.3",
@@ -38,6 +39,10 @@
         "flight-search-request-mapping": {
             "type": "vcs",
             "url": "ssh://git@stash.unister.lan:2200/flight/library.search-request-mapping.git"
+        },
+        "library-search-request-response-mapping": {
+            "type": "vcs",
+            "url": "ssh://git@stash.unister.lan:2200/flight/library.search-request-response-mapping.git"
         }
     }
 }

@@ -105,7 +105,7 @@ class AmadeusClient
 
         $options = new Client\RequestOptions\FareMasterPricerTbSearch(
             [
-                'nrOfRequestedResults' => $request->getBusinessCases()->first()->getResultLimit(),
+                'nrOfRequestedResults' => $request->getBusinessCases()->first()->first()->getResultLimit(),
                 'nrOfRequestedPassengers' => $request->getPassengerCount(),
                 'passengers' => $this->setupPassengers($request),
                 'itinerary' => $itineraries
