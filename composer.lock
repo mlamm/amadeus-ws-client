@@ -391,11 +391,11 @@
         },
         {
             "name": "flight/library-search-request-response-mapping",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "ssh://git@stash.unister.lan:2200/flight/library.search-request-response-mapping.git",
-                "reference": "187e0b4d7f6df3ad10caa17924c7a0ac1d3e19ca"
+                "reference": "0c7c3fb319acd8da5397edcc66ab8a530d49c9dd"
             },
             "require": {
                 "doctrine/collections": "~1.5",
@@ -421,7 +421,7 @@
                 }
             ],
             "description": "Simple mapper library for/to the response of the request service.",
-            "time": "2017-08-08T13:34:15+00:00"
+            "time": "2017-08-08T14:00:53+00:00"
         },
         {
             "name": "flight/search-request-mapping",
