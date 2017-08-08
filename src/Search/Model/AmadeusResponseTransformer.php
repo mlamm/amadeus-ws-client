@@ -115,6 +115,16 @@ class AmadeusResponseTransformer
                                 ->getFare()
                                     ->getPassengerTypes()
                                         ->setAdult($totalAmount);
+
+                    $adultCount = count(@$adultFare->paxReference->traveller);
+                    if ($adultCount !== null) {
+                        $currentTotal = $result->getCalculation()->getFlight()->getFare()->getTotal();
+                        $result
+                            ->getCalculation()
+                                ->getFlight()
+                                    ->getFare()
+                                        ->setTotal($currentTotal + ($adultCount * $totalAmount));
+                    }
                 }
 
                 $totalTax = @$adultFare->paxFareDetail->totalTaxAmount;
@@ -125,6 +135,16 @@ class AmadeusResponseTransformer
                                 ->getTax()
                                     ->getPassengerTypes()
                                         ->setAdult($totalTax);
+
+                    $adultCount = count(@$adultFare->paxReference->traveller);
+                    if ($adultCount !== null) {
+                        $currentTotal = $result->getCalculation()->getFlight()->getTax()->getTotal();
+                        $result
+                            ->getCalculation()
+                                ->getFlight()
+                                    ->getTax()
+                                        ->setTotal($currentTotal + ($adultCount * $totalTax));
+                    }
                 }
             }
 
@@ -148,6 +168,16 @@ class AmadeusResponseTransformer
                                 ->getFare()
                                     ->getPassengerTypes()
                                         ->setChild($totalAmount);
+
+                    $childCount = count(@$childFare->paxReference->traveller);
+                    if ($childCount !== null) {
+                        $currentTotal = $result->getCalculation()->getFlight()->getFare()->getTotal();
+                        $result
+                            ->getCalculation()
+                                ->getFlight()
+                                    ->getFare()
+                                        ->setTotal($currentTotal + ($childCount * $totalAmount));
+                    }
                 }
 
                 $totalTax = @$childFare->paxFareDetail->totalTaxAmount;
@@ -158,6 +188,16 @@ class AmadeusResponseTransformer
                                 ->getTax()
                                     ->getPassengerTypes()
                                         ->setChild($totalTax);
+
+                    $childCount = count(@$childFare->paxReference->traveller);
+                    if ($childCount !== null) {
+                        $currentTotal = $result->getCalculation()->getFlight()->getTax()->getTotal();
+                        $result
+                            ->getCalculation()
+                                ->getFlight()
+                                    ->getTax()
+                                        ->setTotal($currentTotal + ($childCount * $totalTax));
+                    }
                 }
             }
 
