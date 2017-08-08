@@ -2,7 +2,7 @@
 namespace AmadeusService\Index\BusinessCase;
 
 use AmadeusService\Application\BusinessCase;
-use AmadeusService\Search\Response\HalResponse;
+use AmadeusService\Application\Response\HalResponse;
 
 /**
  * Class HealthCheck
