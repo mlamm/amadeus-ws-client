@@ -1,10 +1,12 @@
 <?php
 namespace AmadeusService\Search\BusinessCase;
 
+use Amadeus\Client\Result;
 use AmadeusService\Application\BusinessCase;
 use AmadeusService\Application\Exception\GeneralServerErrorException;
 use AmadeusService\Application\Exception\ServiceException;
 use AmadeusService\Application\Response\ErrorResponse;
+use AmadeusService\Search\Exception\AmadeusRequestException;
 use AmadeusService\Search\Exception\MissingRequestParameterException;
 use AmadeusService\Search\Exception\ServiceRequestAuthenticationFailedException;
 use AmadeusService\Search\Model\AmadeusClient;
@@ -37,7 +39,11 @@ class Search extends BusinessCase
 
             $searchResult = $amadeusClient->search($request);
 
-            //die(print_r($searchResult, true));
+            if ($searchResult->status !== Result::STATUS_OK) {
+                $ex = new AmadeusRequestException();
+                $ex->assignError($searchResult->response->errorMessage);
+                throw $ex;
+            }
 
             $responseTransformer = new AmadeusResponseTransformer($searchResult);
 
