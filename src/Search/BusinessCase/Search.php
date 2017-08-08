@@ -40,7 +40,7 @@ class Search extends BusinessCase
             $responseTransformer = new AmadeusResponseTransformer($searchResult);
 
             return new SearchResultResponse(
-                $responseTransformer->getMappedResponseAsJson()
+                json_decode($responseTransformer->getMappedResponseAsJson())
             );
         } catch (ServiceException $ex) {
             $this->getLogger()->critical($ex);

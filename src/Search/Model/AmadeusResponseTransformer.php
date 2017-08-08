@@ -77,7 +77,7 @@ class AmadeusResponseTransformer
     private function mapLegs($offset)
     {
         $legCollection = new ArrayCollection();
-        $flightIndex = $this->amadeusResult->response->flightIndex;
+        $flightIndex = @$this->amadeusResult->response->flightIndex;
 
         if (!is_array($flightIndex)) {
             $flightIndex = [$flightIndex];
@@ -85,7 +85,7 @@ class AmadeusResponseTransformer
 
         foreach ($flightIndex as $itineraryDirection) {
             $directionLegCollection = new ArrayCollection();
-            $groupOfFlights = $itineraryDirection->groupOfFlights;
+            $groupOfFlights = @$itineraryDirection->groupOfFlights;
 
             if (!is_array($groupOfFlights)) {
                 $groupOfFlights = [$groupOfFlights];
@@ -101,7 +101,7 @@ class AmadeusResponseTransformer
                 $itineraryLeg = new SearchResponse\Leg();
                 $itineraryLeg->setSegments(new ArrayCollection());
 
-                $segments = $leg->flightDetails;
+                $segments = @$leg->flightDetails;
                 if (!is_array($segments)) {
                     $segments = [$segments];
                 }
@@ -110,18 +110,83 @@ class AmadeusResponseTransformer
                     $legSegment = new SearchResponse\Segment();
 
                     // set arrival and departure
-                    $legSegment
-                        ->setAirports(new SearchResponse\Airports())
-                        ->getAirports()
-                        ->setDeparture(new SearchResponse\Location())
-                        ->getDeparture()
-                        ->setIata($segment->flightInformation->location[0]->locationId);
+                    $legSegment->setAirports(new SearchResponse\Airports());
 
-                    $legSegment
-                        ->getAirports()
-                        ->setArrival(new SearchResponse\Location())
-                        ->getArrival()
-                        ->setIata($segment->flightInformation->location[1]->locationId);
+                    $departure = @$segment->flightInformation->location[0]->locationId;
+                    $arrival = @$segment->flightInformation->location[1]->locationId;
+
+                    if ($departure !== null) {
+                        $legSegment
+                            ->getAirports()
+                                ->setDeparture(new SearchResponse\Location())
+                                ->getDeparture()
+                                    ->setIata($departure);
+                    }
+
+                    if ($arrival !== null) {
+                        $legSegment
+                            ->getAirports()
+                                ->setArrival(new SearchResponse\Location())
+                                ->getArrival()
+                                    ->setIata($arrival);
+                    }
+
+                    // set arrive-at and depart-at
+                    $departAtDate = @$segment->flightInformation->productDateTime->dateOfDeparture;
+                    $departAtTime = @$segment->flightInformation->productDateTime->timeOfDeparture;
+
+                    $arriveAtDate = @$segment->flightInformation->productDateTime->dateOfArrival;
+                    $arriveAtTime = @$segment->flightInformation->productDateTime->timeOfArrival;
+
+                    if ($departAtDate !== null && $departAtTime !== null) {
+                        $legSegment->setDepartAt(
+                            \DateTime::createFromFormat('dmyHi', "$departAtDate$departAtTime")
+                        );
+                    }
+
+                    if ($arriveAtDate !== null && $arriveAtTime !== null) {
+                        $legSegment->setArriveAt(
+                            \DateTime::createFromFormat('dmyHi', "$arriveAtDate$arriveAtTime")
+                        );
+                    }
+
+                    // set carriers
+                    $marketingCarrier = @$segment->flightInformation->companyId->marketingCarrier;
+                    $operatingCarrier = @$segment->flightInformation->companyId->operatingCarrier;
+
+                    $legSegment->setCarriers(new SearchResponse\Carriers());
+
+                    if ($marketingCarrier !== null) {
+                        $legSegment
+                            ->getCarriers()
+                                ->setMarketing(new SearchResponse\Carrier())
+                                ->getMarketing()
+                                    ->setIata($marketingCarrier);
+                    }
+
+                    if ($operatingCarrier !== null) {
+                        $legSegment
+                            ->getCarriers()
+                                ->setOperating(new SearchResponse\Carrier())
+                                ->getOperating()
+                                    ->setIata($operatingCarrier);
+                    }
+
+                    // set flight number
+                    $flightNumber = @$segment->flightInformation->flightNumber;
+
+                    if ($flightNumber !== null) {
+                        $legSegment
+                            ->setFlightNumber($flightNumber);
+                    }
+
+                    // set aircraft type
+                    $aircraft = @$segment->flightInformation->productDetail->equipmentType;
+
+                    if ($aircraft !== null) {
+                        $legSegment
+                            ->setAircraftType($aircraft);
+                    }
 
                     $itineraryLeg->getSegments()->add($legSegment);
                 }
