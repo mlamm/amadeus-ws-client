@@ -29,6 +29,7 @@ class Search extends BusinessCase
     public function respond()
     {
         try {
+            // search process
             $request = $this->getMappedRequest($this->getRequest());
 
             $amadeusClient = new AmadeusClient(
@@ -51,6 +52,8 @@ class Search extends BusinessCase
                 json_decode($responseTransformer->getMappedResponseAsJson())
             );
         } catch (ServiceException $ex) {
+
+            // search exception handling
             $this->getLogger()->critical($ex);
             $ex->setResponseCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 
@@ -60,6 +63,7 @@ class Search extends BusinessCase
             return $errorResponse;
         } catch (\Exception $ex) {
 
+            // general exception handling
             $errorException = new GeneralServerErrorException($ex->getMessage());
 
             $errorResponse = new ErrorResponse();
