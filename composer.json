@@ -15,6 +15,11 @@
             "AmadeusService\\": "./src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "AmadeusService\\Console\\": "./bin"
+        }
+    },
     "scripts": {
         "test": "./vendor/bin/codecept run",
         "docs": "./node_modules/.bin/gulp create-docs"
@@ -33,7 +38,11 @@
     },
     "require-dev": {
         "codeception/codeception": "~2.3",
-        "mockery/mockery": "~0.9"
+        "mockery/mockery": "~0.9",
+        "symfony/console": "~3.3",
+        "symfony/finder": "~3.3",
+        "symfony/filesystem": "~3.3",
+        "zendframework/zend-code": "^3.2"
     },
     "repositories": {
         "flight-search-request-mapping": {
