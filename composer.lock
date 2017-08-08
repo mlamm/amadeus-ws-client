@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9f4a781af62bc74ae84013b9621b142",
+    "content-hash": "015348028e7792859c1f1248520f8002",
     "packages": [
         {
             "name": "amabnl/amadeus-ws-client",
@@ -391,11 +391,11 @@
         },
         {
             "name": "flight/library-search-request-response-mapping",
-            "version": "1.0.0-rc1",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "ssh://git@stash.unister.lan:2200/flight/library.search-request-response-mapping.git",
-                "reference": "3cb0c7a6d6ef99d00734474828f57fef947f44a2"
+                "reference": "187e0b4d7f6df3ad10caa17924c7a0ac1d3e19ca"
             },
             "require": {
                 "doctrine/collections": "~1.5",
@@ -421,7 +421,7 @@
                 }
             ],
             "description": "Simple mapper library for/to the response of the request service.",
-            "time": "2017-08-04T15:33:05+00:00"
+            "time": "2017-08-08T13:34:15+00:00"
         },
         {
             "name": "flight/search-request-mapping",
@@ -2255,16 +2255,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "3.2.1",
+            "version": "3.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "183824db76118b9dddffc7e522b91fa175f75119"
+                "reference": "4aada1f93c72c35e22fb1383b47fee43b8f1d157"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/183824db76118b9dddffc7e522b91fa175f75119",
-                "reference": "183824db76118b9dddffc7e522b91fa175f75119",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/4aada1f93c72c35e22fb1383b47fee43b8f1d157",
+                "reference": "4aada1f93c72c35e22fb1383b47fee43b8f1d157",
                 "shasum": ""
             },
             "require": {
@@ -2296,7 +2296,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2017-08-04T20:55:59+00:00"
+            "time": "2017-08-08T06:39:58+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -3881,9 +3881,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "flight/library-search-request-response-mapping": 5
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
