@@ -37,6 +37,8 @@ class Search extends BusinessCase
 
             $searchResult = $amadeusClient->search($request);
 
+            //die(print_r($searchResult, true));
+
             $responseTransformer = new AmadeusResponseTransformer($searchResult);
 
             return new SearchResultResponse(

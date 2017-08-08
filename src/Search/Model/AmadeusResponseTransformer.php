@@ -54,7 +54,16 @@ class AmadeusResponseTransformer
             $offers = [$offers];
         }
 
+        $currency = @$this->amadeusResult->response->conversionRate->conversionRateDetail[0]->currency;
+
         foreach ($offers as $offer) {
+            $paxFareProduct = @$offer->paxFareProduct;
+            if (!is_array($paxFareProduct)) {
+                $paxFareProduct = [$paxFareProduct];
+            }
+
+            $fareProducts = new ArrayCollection($paxFareProduct);
+
             $result = new SearchResponse\Result();
             $offset = $searchResponse->getResult()->count();
 
@@ -62,6 +71,95 @@ class AmadeusResponseTransformer
                 ->setItinerary(new SearchResponse\ItineraryResult())
                 ->getItinerary()
                     ->setLegs($this->mapLegs($offset));
+
+            $result->setCalculation(new SearchResponse\CalculationResult());
+
+            if ($currency !== null) {
+                $result->getCalculation()->setCurrency($currency);
+            }
+
+            // setup calculation & fare
+            $result
+                ->getCalculation()
+                    ->setFlight(new SearchResponse\Flight())
+                    ->getFlight()
+                        ->setFare(new SearchResponse\PriceBreakdown())
+                        ->getFare()
+                            ->setPassengerTypes(new SearchResponse\PassengerTypes());
+
+            // setup tax
+            $result
+                ->getCalculation()
+                    ->getFlight()
+                        ->setTax(new SearchResponse\PriceBreakdown())
+                        ->getTax()
+                            ->setPassengerTypes(new SearchResponse\PassengerTypes());
+
+            // filter for adult fare
+            $adultFares = $fareProducts->filter(
+                function ($fareProduct) {
+                    $preference = @$fareProduct->paxReference;
+                    return $preference->ptc === 'ADT';
+                }
+            );
+
+            // setup pricing information based on adult fare
+            $adultFare = $adultFares->first();
+            if ($adultFare) {
+
+                $totalAmount = @$adultFare->paxFareDetail->totalFareAmount;
+                if ($totalAmount !== null) {
+                    $result
+                        ->getCalculation()
+                            ->getFlight()
+                                ->getFare()
+                                    ->getPassengerTypes()
+                                        ->setAdult($totalAmount);
+                }
+
+                $totalTax = @$adultFare->paxFareDetail->totalTaxAmount;
+                if ($totalTax !== null) {
+                    $result
+                        ->getCalculation()
+                            ->getFlight()
+                                ->getTax()
+                                    ->getPassengerTypes()
+                                        ->setAdult($totalTax);
+                }
+            }
+
+            // filter for child fare
+            $childFares = $fareProducts->filter(
+                function ($fareProduct) {
+                    $preference = @$fareProduct->paxReference;
+                    return $preference->ptc === 'CH';
+                }
+            );
+
+            // setup pricing information based on child fare
+            $childFare = $childFares->first();
+            if ($childFare) {
+
+                $totalAmount = @$childFare->paxFareDetail->totalFareAmount;
+                if ($totalAmount !== null) {
+                    $result
+                        ->getCalculation()
+                            ->getFlight()
+                                ->getFare()
+                                    ->getPassengerTypes()
+                                        ->setChild($totalAmount);
+                }
+
+                $totalTax = @$childFare->paxFareDetail->totalTaxAmount;
+                if ($totalTax !== null) {
+                    $result
+                        ->getCalculation()
+                            ->getFlight()
+                                ->getTax()
+                                    ->getPassengerTypes()
+                                        ->setChild($totalTax);
+                }
+            }
 
             $searchResponse->getResult()->add($result);
         }
