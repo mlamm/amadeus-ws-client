@@ -244,6 +244,39 @@ class AmadeusResponseTransformer
                     $segments = [$segments];
                 }
 
+                $proposals = @$leg->propFlightGrDetail->flightProposal;
+                if (!is_array($proposals)) {
+                    $proposals = [$proposals];
+                }
+
+                $proposalCollection = new ArrayCollection($proposals);
+                $estimatedFlightTime = $proposalCollection->filter(
+                    function ($element) {
+                        return @$element->unitQualifier === 'EFT';
+                    }
+                )->first();
+
+                $mainCarrier = $proposalCollection->filter(
+                    function ($element) {
+                        return @$element->unitQualifier === 'MCX';
+                    }
+                )->first();
+
+                if ($estimatedFlightTime && $estimatedFlightTime->ref !== null) {
+                    $hours = (integer) substr($estimatedFlightTime->ref, 0, 2);
+                    $minutes = (integer) substr($estimatedFlightTime->ref, 2, 2);
+                    $itineraryLeg->setDuration($hours * 60 * 60 + $minutes * 60);
+                }
+
+                if ($mainCarrier && $mainCarrier->ref !== null) {
+                    $itineraryLeg
+                        ->setCarriers(new SearchResponse\Carriers())
+                        ->getCarriers()
+                            ->setMain(new SearchResponse\Carrier())
+                            ->getMain()
+                                ->setIata($mainCarrier->ref);
+                }
+
                 foreach ($segments as $segment) {
                     $legSegment = new SearchResponse\Segment();
 
