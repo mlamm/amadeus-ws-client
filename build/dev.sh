@@ -6,3 +6,6 @@ PROJECT="${PROJECT_COLOR}[AMADEUS SERVICE]${NORMAL_COLOR}";
 
 echo -e "==> ${PROJECT} -- ${TASK_COLOR}Setting config...${NORMAL_COLOR}";
 cp config/dist/dev.yml.dist config/app.yml
+echo -e "==> ${PROJECT} -- ${TASK_COLOR}Running composer install...${NORMAL_COLOR}";
+php composer.phar install -o
+
