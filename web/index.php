@@ -17,7 +17,10 @@ $app->register(
 
 // register a lazy DI container
 $app['service-container'] = function () {
-    return new \Symfony\Component\DependencyInjection\ContainerBuilder();
+    /** @var \Symfony\Component\DependencyInjection\ContainerBuilder $containerBuilder */
+    $containerBuilder = new \Symfony\Component\DependencyInjection\ContainerBuilder();
+    // register your services
+    return $containerBuilder;
 };
 
 // register config

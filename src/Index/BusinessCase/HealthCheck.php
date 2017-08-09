@@ -15,6 +15,14 @@ class HealthCheck extends BusinessCase
      */
     public function respond()
     {
-        return new HalResponse(null, 200);
+        return new HalResponse(
+            [
+                '_links' => [
+                    'search' => '/search'
+                ],
+                'state' => 'alive'
+            ],
+            200
+        );
     }
 }
