@@ -45,32 +45,81 @@ class AmadeusResponseTransformer
         $searchResponse = new SearchResponse();
         $searchResponse->setResult(new ArrayCollection());
 
-        // setup the flight index to be filterable
-        // $flightIndex = $this->amadeusResult->response->flightIndex;
-        // $this->mapFlightIndex($flightIndex)
-
         $offers = $this->amadeusResult->response->recommendation;
         if (!is_array($offers)) {
             $offers = [$offers];
         }
 
-        $currency = @$this->amadeusResult->response->conversionRate->conversionRateDetail[0]->currency;
+        // map the flight index to a leg collection the first layer represents the requested leg
+        // the second layer the indexed legs for said requested leg
+        $legCollection = $this->mapLegs();
 
+        // iterate through the recommendations
         foreach ($offers as $offer) {
+            $result = new SearchResponse\Result();
+            $requestedLegs = new ArrayCollection();
+
+            // iterate through the flight references
+            foreach (@$offer->segmentFlightRef as $referenceEntry) { // offer references
+                if (!is_array($referenceEntry)) {
+                    $referenceEntry = [$referenceEntry];
+                }
+
+                foreach ($referenceEntry as $referenceCollection) {
+
+                    $referenceDetails = $referenceCollection->referencingDetail;
+                    if (!is_array($referenceDetails)) {
+                        $referenceDetails = [$referenceDetail];
+                    }
+
+                    $skip = false;
+
+                    // this loop will iterate through the referencing details of one reference
+                    // one detail can be a segment (LEG) -- since the flight index is structured
+                    // the way that the first layer is the leg index, means that it is necessary to
+                    // keep track of the count so the legs are requested from the correct collection
+                    foreach ($referenceDetails as $referenceIndex => $singleSegmentReferenceDetail) {
+
+                        // if the first detail is no segment break the loop
+                        if ($singleSegmentReferenceDetail->refQualifier !== 'S') {
+                            $skip = true;
+                            break;
+                        }
+
+                        // if there are no legs registered for a leg index add a collection
+                        if (!$requestedLegs->offsetExists($referenceIndex)) {
+                            $requestedLegs->set($referenceIndex, new ArrayCollection());
+                        }
+
+                        $indexRefNumber = --$singleSegmentReferenceDetail->refNumber;
+
+                        $requestedLegs
+                            ->get($referenceIndex)
+                                ->add(
+                                    $legCollection
+                                        ->get($referenceIndex)
+                                            ->get($indexRefNumber)
+                                );
+                    }
+
+                    if (!$skip) {
+                        break;
+                    }
+                }
+            }
+
+            $result
+                ->setItinerary(new SearchResponse\ItineraryResult())
+                ->getItinerary()
+                    ->setLegs($requestedLegs);
+
             $paxFareProduct = @$offer->paxFareProduct;
             if (!is_array($paxFareProduct)) {
                 $paxFareProduct = [$paxFareProduct];
             }
 
             $fareProducts = new ArrayCollection($paxFareProduct);
-
-            $result = new SearchResponse\Result();
-            $offset = $searchResponse->getResult()->count();
-
-            $result
-                ->setItinerary(new SearchResponse\ItineraryResult())
-                ->getItinerary()
-                    ->setLegs($this->mapLegs($offset));
+            $currency = @$this->amadeusResult->response->conversionRate->conversionRateDetail[0]->currency;
 
             $result->setCalculation(new SearchResponse\CalculationResult());
 
@@ -81,19 +130,19 @@ class AmadeusResponseTransformer
             // setup calculation & fare
             $result
                 ->getCalculation()
-                    ->setFlight(new SearchResponse\Flight())
-                    ->getFlight()
-                        ->setFare(new SearchResponse\PriceBreakdown())
-                        ->getFare()
-                            ->setPassengerTypes(new SearchResponse\PassengerTypes());
+                ->setFlight(new SearchResponse\Flight())
+                ->getFlight()
+                ->setFare(new SearchResponse\PriceBreakdown())
+                ->getFare()
+                ->setPassengerTypes(new SearchResponse\PassengerTypes());
 
             // setup tax
             $result
                 ->getCalculation()
-                    ->getFlight()
-                        ->setTax(new SearchResponse\PriceBreakdown())
-                        ->getTax()
-                            ->setPassengerTypes(new SearchResponse\PassengerTypes());
+                ->getFlight()
+                ->setTax(new SearchResponse\PriceBreakdown())
+                ->getTax()
+                ->setPassengerTypes(new SearchResponse\PassengerTypes());
 
             // filter for adult fare
             $adultFares = $fareProducts->filter(
@@ -111,19 +160,19 @@ class AmadeusResponseTransformer
                 if ($totalAmount !== null) {
                     $result
                         ->getCalculation()
-                            ->getFlight()
-                                ->getFare()
-                                    ->getPassengerTypes()
-                                        ->setAdult($totalAmount);
+                        ->getFlight()
+                        ->getFare()
+                        ->getPassengerTypes()
+                        ->setAdult($totalAmount);
 
                     $adultCount = count(@$adultFare->paxReference->traveller);
                     if ($adultCount !== null) {
                         $currentTotal = $result->getCalculation()->getFlight()->getFare()->getTotal();
                         $result
                             ->getCalculation()
-                                ->getFlight()
-                                    ->getFare()
-                                        ->setTotal($currentTotal + ($adultCount * $totalAmount));
+                            ->getFlight()
+                            ->getFare()
+                            ->setTotal($currentTotal + ($adultCount * $totalAmount));
                     }
                 }
 
@@ -131,19 +180,19 @@ class AmadeusResponseTransformer
                 if ($totalTax !== null) {
                     $result
                         ->getCalculation()
-                            ->getFlight()
-                                ->getTax()
-                                    ->getPassengerTypes()
-                                        ->setAdult($totalTax);
+                        ->getFlight()
+                        ->getTax()
+                        ->getPassengerTypes()
+                        ->setAdult($totalTax);
 
                     $adultCount = count(@$adultFare->paxReference->traveller);
                     if ($adultCount !== null) {
                         $currentTotal = $result->getCalculation()->getFlight()->getTax()->getTotal();
                         $result
                             ->getCalculation()
-                                ->getFlight()
-                                    ->getTax()
-                                        ->setTotal($currentTotal + ($adultCount * $totalTax));
+                            ->getFlight()
+                            ->getTax()
+                            ->setTotal($currentTotal + ($adultCount * $totalTax));
                     }
                 }
             }
@@ -164,19 +213,19 @@ class AmadeusResponseTransformer
                 if ($totalAmount !== null) {
                     $result
                         ->getCalculation()
-                            ->getFlight()
-                                ->getFare()
-                                    ->getPassengerTypes()
-                                        ->setChild($totalAmount);
+                        ->getFlight()
+                        ->getFare()
+                        ->getPassengerTypes()
+                        ->setChild($totalAmount);
 
                     $childCount = count(@$childFare->paxReference->traveller);
                     if ($childCount !== null) {
                         $currentTotal = $result->getCalculation()->getFlight()->getFare()->getTotal();
                         $result
                             ->getCalculation()
-                                ->getFlight()
-                                    ->getFare()
-                                        ->setTotal($currentTotal + ($childCount * $totalAmount));
+                            ->getFlight()
+                            ->getFare()
+                            ->setTotal($currentTotal + ($childCount * $totalAmount));
                     }
                 }
 
@@ -184,19 +233,19 @@ class AmadeusResponseTransformer
                 if ($totalTax !== null) {
                     $result
                         ->getCalculation()
-                            ->getFlight()
-                                ->getTax()
-                                    ->getPassengerTypes()
-                                        ->setChild($totalTax);
+                        ->getFlight()
+                        ->getTax()
+                        ->getPassengerTypes()
+                        ->setChild($totalTax);
 
                     $childCount = count(@$childFare->paxReference->traveller);
                     if ($childCount !== null) {
                         $currentTotal = $result->getCalculation()->getFlight()->getTax()->getTotal();
                         $result
                             ->getCalculation()
-                                ->getFlight()
-                                    ->getTax()
-                                        ->setTotal($currentTotal + ($childCount * $totalTax));
+                            ->getFlight()
+                            ->getTax()
+                            ->setTotal($currentTotal + ($childCount * $totalTax));
                     }
                 }
             }
@@ -212,7 +261,7 @@ class AmadeusResponseTransformer
      * @param int $offset
      * @return ArrayCollection
      */
-    private function mapLegs($offset)
+    private function mapLegs()
     {
         $legCollection = new ArrayCollection();
         $flightIndex = @$this->amadeusResult->response->flightIndex;
@@ -222,7 +271,7 @@ class AmadeusResponseTransformer
         }
 
         foreach ($flightIndex as $itineraryDirection) {
-            $directionLegCollection = new ArrayCollection();
+            $indexLegCollection = new ArrayCollection();
             $groupOfFlights = @$itineraryDirection->groupOfFlights;
 
             if (!is_array($groupOfFlights)) {
@@ -230,12 +279,7 @@ class AmadeusResponseTransformer
             }
             $groupOfFlights = new \ArrayObject($groupOfFlights);
 
-            $group = $groupOfFlights->offsetGet($offset);
-            if (!is_array($group)) {
-                $group = [$group];
-            }
-
-            foreach ($group as $leg) {
+            foreach ($groupOfFlights as $leg) {
                 $itineraryLeg = new SearchResponse\Leg();
                 $itineraryLeg->setSegments(new ArrayCollection());
 
@@ -362,10 +406,10 @@ class AmadeusResponseTransformer
                     $itineraryLeg->getSegments()->add($legSegment);
                 }
 
-                $directionLegCollection->add($itineraryLeg);
+                $indexLegCollection->add($itineraryLeg);
             }
 
-            $legCollection->add($directionLegCollection);
+            $legCollection->add($indexLegCollection);
         }
 
         return $legCollection;
