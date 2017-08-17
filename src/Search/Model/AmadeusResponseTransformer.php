@@ -2,6 +2,7 @@
 namespace AmadeusService\Search\Model;
 
 use Amadeus\Client\Result;
+use AmadeusService\Console\Command\AddBusinessCase;
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\Library\SearchRequest\ResponseMapping\Mapper;
@@ -12,6 +13,12 @@ use Flight\Library\SearchRequest\ResponseMapping\Mapper;
  */
 class AmadeusResponseTransformer
 {
+    const SEGMENT_REF_QUALIFIER = 'S';
+
+    const PTC_CHILD = 'CH';
+
+    const PTC_ADULT = 'ADT';
+
     /**
      * @var Result
      */
@@ -26,6 +33,12 @@ class AmadeusResponseTransformer
      * @var SearchResponse
      */
     private $mappedResponse;
+
+    /**
+     * Contains the flight index setup in entites
+     * @var ArrayCollection
+     */
+    private $legCollection;
 
     /**
      * AmadeusResponseTransformer constructor.
@@ -52,57 +65,56 @@ class AmadeusResponseTransformer
 
         // map the flight index to a leg collection the first layer represents the requested leg
         // the second layer the indexed legs for said requested leg
-        $legCollection = $this->mapLegs();
+        $this->legCollection = $this->mapLegs();
 
         // iterate through the recommendations
-        foreach ($offers as $offer) {
+        foreach ($offers as $offerIndex => $offer) {
             $result = new SearchResponse\Result();
             $requestedLegs = new ArrayCollection();
 
             // iterate through the flight references
-            foreach (@$offer->segmentFlightRef as $referenceEntry) { // offer references
+            foreach (@$offer->segmentFlightRef as $referenceEntry) {
+
+                // unify to array
                 if (!is_array($referenceEntry)) {
                     $referenceEntry = [$referenceEntry];
                 }
 
                 foreach ($referenceEntry as $referenceCollection) {
 
+                    // in case the reference entry is already a leg collection
+                    // break the loop and setup the response legs
+                    if (
+                        isset($referenceCollection->refQualifier)
+                        && $referenceCollection->refQualifier === self::SEGMENT_REF_QUALIFIER
+                    )
+                    {
+                        $requestedLegs = $this->setupResponseLegs($referenceEntry);
+                        break;
+                    }
+
                     $referenceDetails = $referenceCollection->referencingDetail;
                     if (!is_array($referenceDetails)) {
-                        $referenceDetails = [$referenceDetail];
+                        $referenceDetails = [$referenceDetails];
                     }
 
-                    $skip = false;
+                    $done = false;
 
-                    // this loop will iterate through the referencing details of one reference
-                    // one detail can be a segment (LEG) -- since the flight index is structured
-                    // the way that the first layer is the leg index, means that it is necessary to
-                    // keep track of the count so the legs are requested from the correct collection
-                    foreach ($referenceDetails as $referenceIndex => $singleSegmentReferenceDetail) {
+                    // iterate through the default reference details to identify segment references
+                    foreach ($referenceDetails as $singleSegmentReferenceDetail) {
 
-                        // if the first detail is no segment break the loop
-                        if ($singleSegmentReferenceDetail->refQualifier !== 'S') {
-                            $skip = true;
+                        // in case the first entry is a segment setup the request legs and close the looping
+                        if (
+                            $singleSegmentReferenceDetail->refQualifier === self::SEGMENT_REF_QUALIFIER
+                        )
+                        {
+                            $requestedLegs = $this->setupResponseLegs($referenceDetails);
+                            $done = true;
                             break;
                         }
-
-                        // if there are no legs registered for a leg index add a collection
-                        if (!$requestedLegs->offsetExists($referenceIndex)) {
-                            $requestedLegs->set($referenceIndex, new ArrayCollection());
-                        }
-
-                        $indexRefNumber = --$singleSegmentReferenceDetail->refNumber;
-
-                        $requestedLegs
-                            ->get($referenceIndex)
-                                ->add(
-                                    $legCollection
-                                        ->get($referenceIndex)
-                                            ->get($indexRefNumber)
-                                );
                     }
 
-                    if (!$skip) {
+                    if ($done === true) {
                         break;
                     }
                 }
@@ -148,7 +160,7 @@ class AmadeusResponseTransformer
             $adultFares = $fareProducts->filter(
                 function ($fareProduct) {
                     $preference = @$fareProduct->paxReference;
-                    return $preference->ptc === 'ADT';
+                    return $preference->ptc === self::PTC_ADULT;
                 }
             );
 
@@ -201,7 +213,7 @@ class AmadeusResponseTransformer
             $childFares = $fareProducts->filter(
                 function ($fareProduct) {
                     $preference = @$fareProduct->paxReference;
-                    return $preference->ptc === 'CH';
+                    return $preference->ptc === self::PTC_CHILD;
                 }
             );
 
@@ -254,6 +266,34 @@ class AmadeusResponseTransformer
         }
 
         $this->mappedResponse = $searchResponse;
+    }
+
+    /**
+     * Generate a leg collection for an search response based of
+     * reference entries off a recommendation
+     * @param array $segmentReferences
+     * @return ArrayCollection
+     */
+    private function setupResponseLegs($segmentReferences)
+    {
+        $requestedLegs = new ArrayCollection();
+
+        foreach ($segmentReferences as $index => $legReference) {
+
+            if (!$requestedLegs->offsetExists($index)) {
+                $requestedLegs->set($index, new ArrayCollection());
+            }
+
+            $requestedLegs
+                ->get($index)
+                ->add(
+                    $this->legCollection
+                        ->get($index)
+                            ->get(--$legReference->refNumber)
+                );
+        }
+
+        return $requestedLegs;
     }
 
     /**
