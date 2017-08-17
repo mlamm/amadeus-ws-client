@@ -1,0 +1,40 @@
+{
+  "agent": "fluege.de",
+  "adults": 2,
+  "children": 0,
+  "infants": 0,
+  "is-synthetic": false,
+  "filter-airline": [],
+  "filter-cabin-class": [],
+  "legs": [
+    {
+      "departure": "BER",
+      "arrival": "LON",
+      "depart-at": 1234567890,
+      "is-flexible-date": false,
+      "filter": []
+    }
+  ],
+  "business-cases": [
+    [
+      {
+        "content-provider": "amadeus",
+        "result-limit": 50,
+        "options": {
+          "is-one-way-combination": true,
+          "is-overnight": false,
+          "is-area-search": false,
+          "is-benchmark": false
+        },
+        "authentication": {
+          "office-id": "",
+          "user-id": "",
+          "password-data": "",
+          "password-length": 0,
+          "duty-code": "",
+          "organization-id": ""
+        }
+      }
+    ]
+  ]
+}

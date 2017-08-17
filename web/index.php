@@ -15,6 +15,25 @@ $app->register(
     ]
 );
 
+$app->error(
+    function (\Exception $ex, \Symfony\Component\HttpFoundation\Request $request, $code) {
+        return new \Symfony\Component\HttpFoundation\JsonResponse(
+            [
+                'error' => [
+                    '_' => [
+                        [
+                            'code' => 'ARS000X',
+                            'message' => $ex->getMessage(),
+                            'status' => $code
+                        ]
+                    ]
+                ]
+            ],
+            $code
+        );
+    }
+);
+
 // register a lazy DI container
 $app['service-container'] = function () {
     /** @var \Symfony\Component\DependencyInjection\ContainerBuilder $containerBuilder */
@@ -31,6 +50,6 @@ $app['config'] = \Symfony\Component\Yaml\Yaml::parse(
 
 // application provider
 $app->mount('/', new \AmadeusService\Index\IndexProvider());
-$app->mount('/search', new AmadeusService\Search\SearchProvider());
+$app->mount('/flight-search', new AmadeusService\Search\SearchProvider());
 
 $app->run();

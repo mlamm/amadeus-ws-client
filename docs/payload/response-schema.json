@@ -1,0 +1,227 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "properties": {
+    "result": {
+      "items": {
+        "properties": {
+          "_calculation": {
+            "properties": {
+              "currency": {
+                "default": "EUR",
+                "description": "An explanation about the purpose of this instance.",
+                "type": "string"
+              },
+              "flight": {
+                "properties": {
+                  "fare": {
+                    "properties": {
+                      "passenger-types": {
+                        "properties": {
+                          "adult": {
+                            "default": 113.26,
+                            "description": "An explanation about the purpose of this instance.",
+                            "title": "The Adult Schema",
+                            "type": "number"
+                          },
+                          "child": {
+                            "default": 0,
+                            "description": "An explanation about the purpose of this instance.",
+                            "title": "The Child Schema",
+                            "type": "integer"
+                          },
+                          "infant": {
+                            "default": 0,
+                            "description": "An explanation about the purpose of this instance.",
+                            "title": "The Infant Schema",
+                            "type": "integer"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "total": {
+                        "default": 226.52,
+                        "description": "An explanation about the purpose of this instance.",
+                        "title": "The Total Schema",
+                        "type": "number"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "tax": {
+                    "properties": {
+                      "passenger-types": {
+                        "properties": {
+                          "adult": {
+                            "default": 0,
+                            "description": "An explanation about the purpose of this instance.",
+                            "title": "The Adult Schema",
+                            "type": "integer"
+                          },
+                          "child": {
+                            "default": 0,
+                            "description": "An explanation about the purpose of this instance.",
+                            "title": "The Child Schema",
+                            "type": "integer"
+                          },
+                          "infant": {
+                            "default": 0,
+                            "description": "An explanation about the purpose of this instance.",
+                            "title": "The Infant Schema",
+                            "type": "integer"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "total": {
+                        "default": 0,
+                        "description": "An explanation about the purpose of this instance.",
+                        "title": "The Total Schema",
+                        "type": "integer"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "_itinerary": {
+            "properties": {
+              "legs": {
+                "items": {
+                  "items": {
+                    "properties": {
+                      "carriers": {
+                        "properties": {
+                          "main": {
+                            "properties": {
+                              "iata": {
+                                "default": "U2",
+                                "description": "An explanation about the purpose of this instance.",
+                                "title": "The Iata Schema",
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "duration": {
+                        "default": 7500,
+                        "description": "An explanation about the purpose of this instance.",
+                        "title": "The Duration Schema",
+                        "type": "integer"
+                      },
+                      "provider": {
+                        "default": "amadeus",
+                        "description": "An explanation about the purpose of this instance.",
+                        "title": "The Provider Schema",
+                        "type": "string"
+                      },
+                      "segments": {
+                        "items": {
+                          "properties": {
+                            "aircraftType": {
+                              "default": "319",
+                              "description": "An explanation about the purpose of this instance.",
+                              "title": "The Aircrafttype Schema",
+                              "type": "string"
+                            },
+                            "airports": {
+                              "properties": {
+                                "arrival": {
+                                  "properties": {
+                                    "iata": {
+                                      "default": "LGW",
+                                      "description": "An explanation about the purpose of this instance.",
+                                      "title": "The Iata Schema",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "departure": {
+                                  "properties": {
+                                    "iata": {
+                                      "default": "SXF",
+                                      "description": "An explanation about the purpose of this instance.",
+                                      "title": "The Iata Schema",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "arrive-at": {
+                              "default": 1503475800,
+                              "description": "An explanation about the purpose of this instance.",
+                              "title": "The Arrive-at Schema",
+                              "type": "integer"
+                            },
+                            "carriers": {
+                              "properties": {
+                                "marketing": {
+                                  "properties": {
+                                    "iata": {
+                                      "default": "U2",
+                                      "description": "An explanation about the purpose of this instance.",
+                                      "title": "The Iata Schema",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "operating": {
+                                  "properties": {
+                                    "iata": {
+                                      "default": "U2",
+                                      "description": "An explanation about the purpose of this instance.",
+                                      "title": "The Iata Schema",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "depart-at": {
+                              "default": 1503471900,
+                              "description": "An explanation about the purpose of this instance.",
+                              "title": "The Depart-at Schema",
+                              "type": "integer"
+                            },
+                            "flight-number": {
+                              "default": 8208,
+                              "description": "An explanation about the purpose of this instance.",
+                              "title": "The Flight-number Schema",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "type": "array"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object"
+}
