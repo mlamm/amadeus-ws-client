@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Amadeus service that handles search and book requests.",
   "scripts": {
-    "docs": "./node_modules/.bin/aglio --theme-template triple -i ./docs/api.apib -o ./var/docs/index.html"
+    "docs": "./node_modules/.bin/aglio --theme-variables flatly --theme-full-width -i ./docs/api.apib -o ./var/docs/index.html"
   },
   "repository": {
     "type": "git",
