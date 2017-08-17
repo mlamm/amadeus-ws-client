@@ -1,4 +1,4 @@
-version: "3"
+version: "2"
 
 services:
   php:
@@ -8,6 +8,8 @@ services:
     container_name: service-amadeus-php
     volumes:
       - ./:/var/www
+      - ./_docker/20-xdebug.ini:/etc/php/7.1/fpm/conf.d/20-xdebug.ini
+      - ./var/logs/xdebug.log:/tmp/xdebug.log
 
   nginx:
     image: nginx:latest
