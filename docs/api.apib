@@ -2,16 +2,16 @@ FORMAT: 1A
 
 # Amadeus Service
 
-This service is the main communication operator to Amadeus. It handles search and booking processes.
+This service is the main communication operator to Amadeus. It shall handle any kind
+of request concerning the GDS.
 
-#### Search [POST /flight-search]
+#### Search [POST /flight-search/]
 
-This request will request flights based of sent parameters and sent business case configuration of the agent.
+This request will access the flight search endpoint of amadeus with mapped sent parameters
+and business case configurations of the use-case, request an result and return it in the standardized
+format.
 
 + Request
-
-    + Header
-        Accept: application/hal+json
 
     + Body
         <!-- include(payload/request.json) -->
@@ -19,23 +19,29 @@ This request will request flights based of sent parameters and sent business cas
 
 + Response 200 (application/hal+json)
 
-    This response resembles a default response with.
+    This response resembles a default response of mapped itineraries as search result.
 
     + Body
+    
         <!-- include(payload/response.json) -->
         
     + Schema
+    
         <!-- include(payload/response-schema.json) -->
 
 + Response 500 (application/hal+json)
 
-    This response represents an error response.
+    This response represents an error response. The errors of this application can vary a lot depending of the
+    the nature of the error, for example also amadeus response errors will be returned in that format, but maybe
+    with a lot of missing information.
 
-    |Code | Message |
-    |---|---|
-    | ARS0001 | The `Amadeus\Client::securityAuthenticate` method didn't return state OK |
-    | ARS0002 | The provided search parameters do not suffice the necessary data to start a new search |
-    | ARS000X | *Every unspecific exception thrown by PHP will return such response if handled correctly* |
+    |Code | Message | Hint |
+    |---|---|---|
+    | ARS0001 | The `Amadeus\Client::securityAuthenticate` method didn't return state OK | |
+    | ARS0002 | The provided search parameters do not suffice the necessary data to start a new search | |
+    | ARS0003 | The provided request could not be mapped into the appropriate format | Usually occurs when the request is not send in the right format |
+    | ARS000X | *Every unspecific exception thrown by PHP will return such response if handled correctly, aswell as Amadeus response errors.* | |
 
     + Body
+    
         <!-- include(payload/error.json) -->
