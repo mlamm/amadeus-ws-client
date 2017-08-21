@@ -6,7 +6,7 @@
     "BER"
   ],
   "depart-at": [
-    1234567890
+    1514725420
   ],
   "is-flexible-date": [
 
@@ -49,7 +49,7 @@
     {
       "departure": "BER",
       "arrival": "LON",
-      "depart-at": 1234567890,
+      "depart-at": 1514725420,
       "is-flexible-date": false,
       "filter": [
 
@@ -57,12 +57,12 @@
     }
   ],
   "business-cases": [
-    [
+
       {
         "content-provider": "amadeus",
         "type": "roundtrip",
         "fare-type": "net",
-        "result-limit": 50,
+        "result-limit": 3,
         "options": {
           "is-one-way-combination": true,
           "is-overnight": false,
@@ -70,14 +70,8 @@
           "is-benchmark": false
         },
         "authentication": {
-          "office-id": "",
-          "user-id": "",
-          "password-data": "",
-          "password-length": 0,
-          "duty-code": "",
-          "organization-id": ""
         }
       }
-    ]
+
   ]
 }

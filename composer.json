@@ -43,7 +43,8 @@
         "symfony/finder": "~3.3",
         "symfony/filesystem": "~3.3",
         "zendframework/zend-code": "^3.2",
-        "symfony/var-dumper": "^3.3"
+        "symfony/var-dumper": "^3.3",
+        "justinrainbow/json-schema": "^5.2"
     },
     "repositories": {
         "flight-search-request-mapping": {
