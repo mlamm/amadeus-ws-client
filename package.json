@@ -16,8 +16,6 @@
   "author": "Willi Eßer <willi.esser@invia.de>",
   "license": "UNLICENSED",
   "dependencies": {
-    "aglio": "~2.3",
-    "gulp": "^3.9.1",
-    "gulp-util": "^3.0.8"
+    "aglio": "~2.3"
   }
 }

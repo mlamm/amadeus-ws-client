@@ -1,9 +1,2 @@
-<?php
-chdir(__DIR__ . '/..');
-
-require_once getcwd() . '/vendor/autoload.php';
-
-$app = new \Symfony\Component\Console\Application();
-$app->add(new \AmadeusService\Console\Command\AddEndpoint());
-$app->add(new \AmadeusService\Console\Command\AddBusinessCase());
-$app->run();
+#!/bin/sh
+docker exec -it service-amadeus-php php ./bin/php-console $
