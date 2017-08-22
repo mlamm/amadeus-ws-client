@@ -262,6 +262,41 @@ class AmadeusResponseTransformer
                 }
             }
 
+            $fareDetails = @reset($paxFareProduct)->fareDetails;
+
+            if (!is_array($fareDetails)) {
+                $fareDetails = [$fareDetails];
+            }
+
+            foreach ($fareDetails as $legIndex => $singleFareDetail) {
+                $groupOfFares = $singleFareDetail->groupOfFares;
+
+                if (!is_array($groupOfFares)) {
+                    $groupOfFares = [$groupOfFares];
+                }
+
+                foreach ($groupOfFares as $segmentIndex => $segmentFare) {
+
+                    // add cabin class
+                    /** @var SearchResponse\Segment $legSegment */
+                    $legSegment = $result
+                        ->getItinerary()
+                            ->getLegs()
+                                ->first()
+                                ->offsetGet($legIndex)
+                                    ->getSegments()
+                                        ->offsetGet($segmentIndex);
+
+                    $legSegment
+                        ->setCabinClass(new SearchResponse\CabinClass())
+                        ->getCabinClass()
+                            ->setCode(@$segmentFare->productInformation->cabinProduct->cabin);
+
+                    // add remaining seats
+                    $legSegment->setRemainingSeats(@$segmentFare->productInformation->cabinProduct->avlStatus);
+                }
+            }
+
             $searchResponse->getResult()->add($result);
         }
 

@@ -95,7 +95,8 @@ class AmadeusClient
                         ),
                         'date' => new Client\RequestOptions\Fare\MPDate(
                             [
-                                'dateTime' => $leg->getDepartAt()
+                                'dateTime' => $leg->getDepartAt(),
+                                // 'timeWindow' => 48 // +- h before/after
                             ]
                         )
                     ]
@@ -108,7 +109,13 @@ class AmadeusClient
                 'nrOfRequestedResults' => $request->getBusinessCases()->first()->first()->getResultLimit(),
                 'nrOfRequestedPassengers' => $request->getPassengerCount(),
                 'passengers' => $this->setupPassengers($request),
-                'itinerary' => $itineraries
+                'itinerary' => $itineraries,
+                'flightOptions' => [
+                    Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_ELECTRONIC_TICKET
+                ],
+                'airlineOptions' => [
+                    // Client\RequestOptions\FareMasterPricerTbSearch::AIRLINEOPT_EXCLUDED => ['VY']
+                ]
             ]
         );
 
