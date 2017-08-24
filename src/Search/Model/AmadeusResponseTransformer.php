@@ -131,7 +131,12 @@ class AmadeusResponseTransformer
             }
 
             $fareProducts = new ArrayCollection($paxFareProduct);
-            $currency = @$this->amadeusResult->response->conversionRate->conversionRateDetail[0]->currency;
+
+            $conversionRateDetail = @$this->amadeusResult->response->conversionRate->conversionRateDetail;
+            if (!is_array($conversionRateDetail)) {
+                $conversionRateDetail = [$conversionRateDetail];
+            }
+            $currency = reset($conversionRateDetail)->currency;
 
             $result->setCalculation(new SearchResponse\CalculationResult());
 
