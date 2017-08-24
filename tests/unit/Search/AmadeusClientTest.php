@@ -3,6 +3,7 @@ namespace Search;
 
 use Amadeus\Client;
 use AmadeusService\Search\Model\AmadeusClient;
+use Doctrine\DBAL\Connection;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\BusinessCaseAuthentication;
 use Psr\Log\LoggerInterface;
@@ -50,9 +51,12 @@ class AmadeusClientTest extends \Codeception\Test\Unit
             ->times(6)
             ->andReturn($authentication);
 
+        $databaseMock = \Mockery::mock(Connection::class);
+
         $amaClient = new AmadeusClient(
             $logger,
             $businessCase,
+            $databaseMock,
             __DIR__ . '/../../_support/fixtures/dummy.wsdl'
         );
         $client = $amaClient->getClient();
