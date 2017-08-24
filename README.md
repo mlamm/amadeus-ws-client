@@ -40,6 +40,19 @@ $ bin/console prototype:add-business-case <businessCaseName>
 2. write code (endpoints to be found in `./src`, application setup in `./web/index.php`)
 3. write tests (hint: `vendor/bin/codecept run`) -- see #Testing
 
+### Application component (`./src/Application`)
+
+This component does NOT contain an endpoint, but rather an REALLY REALLY lightweight abstraction layer to be used
+during the development of endpoints.
+It ONLY contains abstraction for business case, exception and response. DO NOT EXTEND IT with unecessary things!
+It should stay light.
+
+### Healthcheck (`GET /_hc`)
+
+The healthcheck is supposed to give an idea how the application works, it is also the entry into the application.
+If you add a new endpoint or a new database system please consider adding it in the `_links`
+section in `./src/Index/BusinessCase/HealthCheck`.
+
 ## Docs
 
 Docs are written in API Blueprint. See [docs](https://apiblueprint.org/) for more information about
