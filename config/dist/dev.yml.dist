@@ -1,2 +1,9 @@
 search:
     wsdl: 1ASIWUFITBD_PDT_20170727_125137.wsdl
+
+    database:
+        ibe:
+            host: edb06.l.unister.lan
+            user: fluege_de
+            password: dcfv98
+            db_name: flight_ibe_us

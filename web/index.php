@@ -34,19 +34,37 @@ $app->error(
     }
 );
 
-// register a lazy DI container
-$app['service-container'] = function () {
-    /** @var \Symfony\Component\DependencyInjection\ContainerBuilder $containerBuilder */
-    $containerBuilder = new \Symfony\Component\DependencyInjection\ContainerBuilder();
-    // register your services
-    return $containerBuilder;
-};
-
 // register config
-$app['config'] = \Symfony\Component\Yaml\Yaml::parse(
+$app['config'] = $config= \Symfony\Component\Yaml\Yaml::parse(
     file_get_contents(getcwd() . '/config/app.yml'),
     \Symfony\Component\Yaml\Yaml::PARSE_OBJECT_FOR_MAP
 );
+
+// register a lazy DI container
+$app['service-container'] = function () use ($config) {
+    /** @var \Symfony\Component\DependencyInjection\ContainerBuilder $containerBuilder */
+    $containerBuilder = new \Symfony\Component\DependencyInjection\ContainerBuilder();
+
+    // IBE DATABASE SETUP
+    $ibeDatabaseConfig = new \Doctrine\DBAL\Configuration();
+
+    $ibeDatabaseConnectionParams = [
+        'dbname' => $config->search->database->ibe->db_name,
+        'user' => $config->search->database->ibe->user,
+        'password' => $config->search->database->ibe->password,
+        'host' => $config->search->database->ibe->host,
+        'driver' => 'pdo_mysql'
+    ];
+
+    $containerBuilder
+        ->set(
+            'database.ibe',
+            \Doctrine\DBAL\DriverManager::getConnection($ibeDatabaseConnectionParams, $ibeDatabaseConfig)
+        );
+
+    // register your services
+    return $containerBuilder;
+};
 
 // application provider
 $app->mount('/', new \AmadeusService\Index\IndexProvider());

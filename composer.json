@@ -34,7 +34,8 @@
         "doctrine/cache": "~1.7",
         "symfony/yaml": "~3.3",
         "jms/serializer": "^1.8",
-        "flight/library-search-request-response-mapping": "~1.0"
+        "flight/library-search-request-response-mapping": "~1.0",
+        "doctrine/dbal": "~2.2"
     },
     "require-dev": {
         "codeception/codeception": "~2.3",

@@ -4,3 +4,4 @@ WORKDIR /var/www
 
 RUN apt-get update
 RUN apt-get install php7.1-soap -y
+RUN apt-get install php7.1-mysql -y
