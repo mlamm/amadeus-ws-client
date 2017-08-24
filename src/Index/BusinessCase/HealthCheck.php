@@ -18,9 +18,12 @@ class HealthCheck extends BusinessCase
         return new HalResponse(
             [
                 '_links' => [
-                    'search' => '/search'
+                    'search' => '/flight-search/'
                 ],
-                'state' => 'alive'
+                'state' => 'alive',
+                'database' => [
+                    'ibe' => $this->get('database.ibe')->ping() ? 'alive' : 'dead'
+                ]
             ],
             200
         );
