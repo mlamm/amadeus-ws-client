@@ -13,6 +13,7 @@ use AmadeusService\Search\Model\AmadeusClient;
 use AmadeusService\Search\Model\AmadeusResponseTransformer;
 use AmadeusService\Search\Response\SearchResultResponse;
 use AmadeusService\Search\Traits\SearchRequestMappingTrait;
+use Flight\SearchRequestMapping\Entity\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -35,6 +36,7 @@ class Search extends BusinessCase
             $amadeusClient = new AmadeusClient(
                 $this->getLogger(),
                 $request->getBusinessCases()->first()->first(),
+                $this->getIBEDatabase(),
                 getcwd() . '/wsdl/' . $this->getConfiguration()->search->wsdl
             );
 

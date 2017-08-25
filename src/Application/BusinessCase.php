@@ -1,6 +1,7 @@
 <?php
 namespace AmadeusService\Application;
 
+use Doctrine\DBAL\Connection;
 use Monolog\Logger;
 use Silex\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -55,6 +56,14 @@ abstract class BusinessCase implements BusinessCaseInterface
     public function getConfiguration()
     {
         return $this->application['config'];
+    }
+
+    /**
+     * @return Connection
+     */
+    public function getIBEDatabase()
+    {
+        return $this->get('database.ibe');
     }
 
     /**
