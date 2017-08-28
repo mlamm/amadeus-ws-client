@@ -7,3 +7,9 @@ search:
             user: fluege_de
             password: dcfv98
             db_name: flight_ibe_us
+
+        ibe_cache:
+            host: edb06.l.unister.lan
+            user: fluege_de
+            password: dcfv98
+            db_name: flight_ibe_cache
