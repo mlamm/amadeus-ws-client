@@ -45,21 +45,21 @@ $app['service-container'] = function () use ($config) {
     /** @var \Symfony\Component\DependencyInjection\ContainerBuilder $containerBuilder */
     $containerBuilder = new \Symfony\Component\DependencyInjection\ContainerBuilder();
 
-    // IBE DATABASE SETUP
-    $ibeDatabaseConfig = new \Doctrine\DBAL\Configuration();
+    // IBE CACHE DATABASE SETUP
+    $ibeCacheDatabaseConfig = new \Doctrine\DBAL\Configuration();
 
-    $ibeDatabaseConnectionParams = [
-        'dbname' => $config->search->database->ibe->db_name,
-        'user' => $config->search->database->ibe->user,
-        'password' => $config->search->database->ibe->password,
-        'host' => $config->search->database->ibe->host,
+    $ibeCacheDatabaseConnectionParams = [
+        'dbname' => $config->search->database->ibe_cache->db_name,
+        'user' => $config->search->database->ibe_cache->user,
+        'password' => $config->search->database->ibe_cache->password,
+        'host' => $config->search->database->ibe_cache->host,
         'driver' => 'pdo_mysql'
     ];
 
     $containerBuilder
         ->set(
-            'database.ibe',
-            \Doctrine\DBAL\DriverManager::getConnection($ibeDatabaseConnectionParams, $ibeDatabaseConfig)
+            'database.ibe_cache',
+            \Doctrine\DBAL\DriverManager::getConnection($ibeCacheDatabaseConnectionParams, $ibeCacheDatabaseConfig)
         );
 
     // register your services
