@@ -59,14 +59,6 @@ abstract class BusinessCase implements BusinessCaseInterface
     }
 
     /**
-     * @return Connection
-     */
-    public function getIBEDatabase()
-    {
-        return $this->get('database.ibe');
-    }
-
-    /**
      * @param mixed $id
      * @param int $invalidBehavior
      * @return object

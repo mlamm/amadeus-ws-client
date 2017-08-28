@@ -13,6 +13,7 @@ use AmadeusService\Search\Model\AmadeusClient;
 use AmadeusService\Search\Model\AmadeusResponseTransformer;
 use AmadeusService\Search\Response\SearchResultResponse;
 use AmadeusService\Search\Traits\SearchRequestMappingTrait;
+use Doctrine\DBAL\Connection;
 use Flight\SearchRequestMapping\Entity\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -33,10 +34,13 @@ class Search extends BusinessCase
             // search process
             $request = $this->getMappedRequest($this->getRequest());
 
+            /** @var Connection $cacheDatabase */
+            $cacheDatabase = $this->get('database.ibe_cache');
+
             $amadeusClient = new AmadeusClient(
                 $this->getLogger(),
                 $request->getBusinessCases()->first()->first(),
-                $this->getIBEDatabase(),
+                $cacheDatabase,
                 getcwd() . '/wsdl/' . $this->getConfiguration()->search->wsdl
             );
 

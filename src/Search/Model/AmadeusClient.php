@@ -188,7 +188,7 @@ class AmadeusClient
     }
 
     /**
-     * Method to check if flight cache available for request
+     * Method to check if flight cache is available for request
      *
      * @param Request $request
      * @return bool
@@ -196,12 +196,13 @@ class AmadeusClient
     public function checkFlightCache(Request $request): bool
     {
         $cacheKey = $this->createCacheKey($request);
+        $query = "SELECT * FROM `{$this->createTableName($cacheKey)}` WHERE `CacheId` = ?";
 
         $result =
             $this->connection
-                ->fetchAssoc("SELECT * FROM `{$this->createTableName($cacheKey)}` WHERE `CacheId` = ?", $cacheKey);
+                ->fetchAssoc($query, [$cacheKey]);
 
-        return $result !== false;
+        return $result != null;
     }
 
     /**
@@ -212,6 +213,9 @@ class AmadeusClient
      */
     public function retrieveFlightCache(Request $request)
     {
+        $cacheKey = $this->createCacheKey($request);
+        $query = "SELECT * FROM `{$this->createTableName($cacheKey)}` WHERE `CacheId` = ?";
+
         $sendResult = new Client\Session\Handler\SendResult();
         $sendResult->responseXml = '';
         $sendResult->responseObject = '';
@@ -235,7 +239,7 @@ class AmadeusClient
     protected function createTableName($cacheKey): string
     {
         $tablePostfix = strtoupper(substr($cacheKey, 1, 1));
-        return "{$this->tablePrefix}_$tablePostfix";
+        return "{$this->tablePrefix}$tablePostfix";
     }
 
     /**
@@ -245,7 +249,7 @@ class AmadeusClient
     protected function createCacheKey(Request $request): string
     {
         $values = [
-            'nonStop' => $request->getBusinessCases()->first()->first()->getOptions()->get('is-non-stop'),
+            'nonStop' => '',//$request->getBusinessCases()->first()->first()->getOptions()->get('is-non-stop'),
             'cabinClass' => reset($request->getFilterCabinClass()),
             'depAirline' => '',
             'paxAdt' => $request->getAdults(),
