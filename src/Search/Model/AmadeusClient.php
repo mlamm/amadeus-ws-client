@@ -193,14 +193,13 @@ class AmadeusClient
      * @param Request $request
      * @return bool
      */
-    public function checkFlightCache(Request $request)
+    public function checkFlightCache(Request $request): bool
     {
-        $entropy = $this->createEntropy($request);
         $cacheKey = $this->createCacheKey($request);
 
         $result =
             $this->connection
-                ->fetchAssoc("SELECT * FROM `{$this->tablePrefix}{substr($entropy, 0, 1)}` WHERE `CacheId` = ?", $cacheKey);
+                ->fetchAssoc("SELECT * FROM `{$this->createTableName($cacheKey)}` WHERE `CacheId` = ?", $cacheKey);
 
         return $result !== false;
     }
@@ -230,20 +229,20 @@ class AmadeusClient
     }
 
     /**
-     * @param Request $request
+     * @param string $cacheKey
      * @return string
      */
-    protected function createEntropy(Request $request)
+    protected function createTableName($cacheKey): string
     {
-        $entropy = '';
-        return $entropy;
+        $tablePostfix = strtoupper(substr($cacheKey, 1, 1));
+        return "{$this->tablePrefix}_$tablePostfix";
     }
 
     /**
      * @param Request $request
      * @return string
      */
-    protected function createCacheKey(Request $request)
+    protected function createCacheKey(Request $request): string
     {
         $values = [
             'nonStop' => $request->getBusinessCases()->first()->first()->getOptions()->get('is-non-stop'),
