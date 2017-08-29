@@ -6,6 +6,7 @@ use AmadeusService\Search\Exception\MissingRequestParameterException;
 use AmadeusService\Search\Exception\ServiceRequestAuthenticationFailedException;
 use Doctrine\DBAL\Connection;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
+use Flight\SearchRequestMapping\Entity\BusinessCaseAuthentication;
 use Flight\SearchRequestMapping\Entity\Leg;
 use Flight\SearchRequestMapping\Entity\Request;
 use Psr\Log\LoggerInterface;
@@ -32,33 +33,46 @@ class AmadeusClient
     protected $tablePrefix = 'IbeFlightCache_';
 
     /**
+     * @var \stdClass
+     */
+    protected $config;
+
+    /**
+     * @var BusinessCaseAuthentication
+     */
+    protected $authentication;
+
+    /**
      * AmadeusClient constructor.
      * @param LoggerInterface $logger
      * @param BusinessCase $businessCase
-     * @param string $wsdlPath
+     * @param Connection $connection
+     * @param $searchConfiguration
      */
     public function __construct(
         LoggerInterface $logger,
         BusinessCase $businessCase,
         Connection $connection,
-        $wsdlPath
+        $searchConfiguration
     )
     {
+        $this->config = $searchConfiguration;
         $this->connection = $connection;
+        $this->authentication = $businessCase->getAuthentication();
         $this->client = new Client(
             new Client\Params(
                 [
                     'authParams' => [
-                        'officeId' => $businessCase->getAuthentication()->getOfficeId(),
-                        'userId' => $businessCase->getAuthentication()->getUserId(),
-                        'passwordData' => $businessCase->getAuthentication()->getPasswordData(),
-                        'passwordLength' => $businessCase->getAuthentication()->getPasswordLength(),
-                        'dutyCode' => $businessCase->getAuthentication()->getDutyCode(),
-                        'organizationId' => $businessCase->getAuthentication()->getOrganizationId()
+                        'officeId' => $this->authentication->getOfficeId(),
+                        'userId' => $this->authentication->getUserId(),
+                        'passwordData' => $this->authentication->getPasswordData(),
+                        'passwordLength' => $this->authentication->getPasswordLength(),
+                        'dutyCode' => $this->authentication->getDutyCode(),
+                        'organizationId' => $this->authentication->getOrganizationId()
                     ],
                     'sessionHandlerParams' => [
                         'soapHeaderVersion' => Client::HEADER_V2,
-                        'wsdl' => $wsdlPath,
+                        'wsdl' => $searchConfiguration->wsdl,
                         'logger' => $logger
                     ],
                     'requestCreatorParams' => [
@@ -78,9 +92,11 @@ class AmadeusClient
      */
     public function search(Request $request)
     {
-        if ($this->checkFlightCache($request)) {
-            return $this->retrieveFlightCache($request);
-        }
+        // method to check if flight cache is available
+        //if ($this->checkFlightCache($request)) {
+            // return the flight cache
+        //    return $this->retrieveFormattedFlightCache($request);
+        //}
 
         if ($request->getLegs()->count() < 1) {
             throw new MissingRequestParameterException();
@@ -188,6 +204,18 @@ class AmadeusClient
     }
 
     /**
+     * Method to retrieve a cache entry by cache key
+     *
+     * @param string $cacheKey
+     * @return array|bool
+     */
+    protected function queryCache(string $cacheKey)
+    {
+        $query = "SELECT * FROM `{$this->createTableName($cacheKey)}` WHERE `CacheId` = ?";
+        return $this->connection->fetchAssoc($query, [$cacheKey]);
+    }
+
+    /**
      * Method to check if flight cache is available for request
      *
      * @param Request $request
@@ -196,13 +224,7 @@ class AmadeusClient
     public function checkFlightCache(Request $request): bool
     {
         $cacheKey = $this->createCacheKey($request);
-        $query = "SELECT * FROM `{$this->createTableName($cacheKey)}` WHERE `CacheId` = ?";
-
-        $result =
-            $this->connection
-                ->fetchAssoc($query, [$cacheKey]);
-
-        return $result != null;
+        return $this->queryCache($cacheKey) !== false;
     }
 
     /**
@@ -211,14 +233,19 @@ class AmadeusClient
      * @param Request $request
      * @return Client\Result
      */
-    public function retrieveFlightCache(Request $request)
+    public function retrieveFormattedFlightCache(Request $request)
     {
         $cacheKey = $this->createCacheKey($request);
-        $query = "SELECT * FROM `{$this->createTableName($cacheKey)}` WHERE `CacheId` = ?";
+        $databaseResult = $this->queryCache($cacheKey);
+        $result = $this->deserializeContent($databaseResult['Content']);
+
+        $simpleXmlRepresentation = simplexml_load_string($result, "SimpleXMLElement", LIBXML_NOCDATA);
+        $jsonRepresentation = json_encode($simpleXmlRepresentation);
+        $stdClassRepresentation = json_decode($jsonRepresentation);
 
         $sendResult = new Client\Session\Handler\SendResult();
-        $sendResult->responseXml = '';
-        $sendResult->responseObject = '';
+        $sendResult->responseXml = $result;
+        $sendResult->responseObject = $stdClassRepresentation;
         return new Client\Result($sendResult);
     }
 
@@ -229,7 +256,7 @@ class AmadeusClient
     public function putFlightCache(Request $request, $result)
     {
         $cacheKey = $this->createCacheKey($request);
-
+        // @TODO: INSERT OR UPDATE
     }
 
     /**
@@ -275,6 +302,42 @@ class AmadeusClient
 
         ksort($values);
         return md5(serialize($values));
+    }
+
+    /**
+     * Method to deserialize content from the flight cache
+     * @param string $content
+     * @return string
+     */
+    private function deserializeContent(string $content): string
+    {
+        // @TODO: deserialize content
+        return $content;
+    }
+
+    /**
+     * Method to serialize content before pushing it to database
+     * @param string $content
+     * @return string
+     */
+    private function serializeContent(string $content): string
+    {
+        // @TODO: serialize content
+        return $content;
+    }
+
+    /**
+     * Method to create the entropy that is used in cache key determination
+     *
+     * @return string
+     */
+    protected function createEntropy()
+    {
+        $sourceOffice = $this->authentication->getOfficeId();
+        $excludedAirlines = md5(json_encode($this->config->excluded_airlines));
+        $requestOptions = $this->config->request_options;
+
+        return "{$sourceOffice}_{$excludedAirlines}{$requestOptions}";
     }
 
     /**

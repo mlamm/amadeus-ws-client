@@ -41,7 +41,7 @@ class Search extends BusinessCase
                 $this->getLogger(),
                 $request->getBusinessCases()->first()->first(),
                 $cacheDatabase,
-                getcwd() . '/wsdl/' . $this->getConfiguration()->search->wsdl
+                getcwd() . '/wsdl/' . $this->getConfiguration()->search
             );
 
             $searchResult = $amadeusClient->search($request);
