@@ -93,10 +93,9 @@ class AmadeusClient
     public function search(Request $request)
     {
         // method to check if flight cache is available
-        //if ($this->checkFlightCache($request)) {
-            // return the flight cache
-        //    return $this->retrieveFormattedFlightCache($request);
-        //}
+        if ($this->checkFlightCache($request) && $this->config->cache_active) {
+            return $this->retrieveFormattedFlightCache($request);
+        }
 
         if ($request->getLegs()->count() < 1) {
             throw new MissingRequestParameterException();
@@ -235,10 +234,12 @@ class AmadeusClient
      */
     public function retrieveFormattedFlightCache(Request $request)
     {
+        // request
         $cacheKey = $this->createCacheKey($request);
         $databaseResult = $this->queryCache($cacheKey);
         $result = $this->deserializeContent($databaseResult['Content']);
 
+        // morph xml to std class collection
         $simpleXmlRepresentation = simplexml_load_string($result, "SimpleXMLElement", LIBXML_NOCDATA);
         $jsonRepresentation = json_encode($simpleXmlRepresentation);
         $stdClassRepresentation = json_decode($jsonRepresentation);
@@ -251,12 +252,14 @@ class AmadeusClient
 
     /**
      * @param Request $request
-     * @param null
+     * @param $result
+     * @return int
      */
     public function putFlightCache(Request $request, $result)
     {
         $cacheKey = $this->createCacheKey($request);
         // @TODO: INSERT OR UPDATE
+        return 1;
     }
 
     /**
@@ -301,7 +304,7 @@ class AmadeusClient
         }
 
         ksort($values);
-        return md5(serialize($values));
+        return md5("{md5(serialize($values))}{$this->createEntropy()}");
     }
 
     /**
@@ -337,7 +340,7 @@ class AmadeusClient
         $excludedAirlines = md5(json_encode($this->config->excluded_airlines));
         $requestOptions = $this->config->request_options;
 
-        return "{$sourceOffice}_{$excludedAirlines}{$requestOptions}";
+        return "{$sourceOffice}_{$excludedAirlines}{json_encode($requestOptions)}";
     }
 
     /**

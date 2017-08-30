@@ -1,4 +1,6 @@
 search:
+    cache_active: false
+
     wsdl: 1ASIWUFITBD_PDT_20170727_125137.wsdl
 
     database:
