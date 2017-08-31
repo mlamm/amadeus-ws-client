@@ -11,7 +11,7 @@ $I->canSeeResponseContainsJson(
         ],
         'state' => 'alive',
         'database' => [
-            'ibe' => 'alive'
+            'ibe_cache' => 'alive'
         ]
     ]
 );

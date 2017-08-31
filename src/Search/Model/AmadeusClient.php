@@ -56,6 +56,7 @@ class AmadeusClient
         $searchConfiguration
     )
     {
+        $root = getcwd();
         $this->config = $searchConfiguration;
         $this->connection = $connection;
         $this->authentication = $businessCase->getAuthentication();
@@ -72,7 +73,7 @@ class AmadeusClient
                     ],
                     'sessionHandlerParams' => [
                         'soapHeaderVersion' => Client::HEADER_V2,
-                        'wsdl' => $searchConfiguration->wsdl,
+                        'wsdl' => "{$root}/wsdl/{$searchConfiguration->search->wsdl}",
                         'logger' => $logger
                     ],
                     'requestCreatorParams' => [

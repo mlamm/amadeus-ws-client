@@ -53,11 +53,15 @@ class AmadeusClientTest extends \Codeception\Test\Unit
 
         $databaseMock = \Mockery::mock(Connection::class);
 
+        $config = new \stdClass();
+        $config->search = new \stdClass();
+        $config->search->wsdl = '/../tests/_support/fixtures/dummy.wsdl';
+
         $amaClient = new AmadeusClient(
             $logger,
             $businessCase,
             $databaseMock,
-            __DIR__ . '/../../_support/fixtures/dummy.wsdl'
+            $config
         );
         $client = $amaClient->getClient();
 

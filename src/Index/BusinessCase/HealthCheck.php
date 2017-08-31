@@ -22,7 +22,7 @@ class HealthCheck extends BusinessCase
                 ],
                 'state' => 'alive',
                 'database' => [
-                    'ibe' => $this->get('database.ibe')->ping() ? 'alive' : 'dead'
+                    'ibe_cache' => $this->get('database.ibe_cache')->ping() ? 'alive' : 'dead'
                 ]
             ],
             200
