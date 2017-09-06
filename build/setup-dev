@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+GREEN="\e[0;32m"
+RED="\e[0;31m"
+RESET="\e[0;0m"
+
+COMPOSER_VERSION=1.5.1
+
+function build() {
+
+    buildImages
+    createBinaries
+
+    local env
+    echo -e "[*] ${GREEN}building dev...${RESET}";
+    fetchDependencies
+    prepareDirectories
+    configure
+    createDocs
+
+    echo -e "[*] ${GREEN}...done!${RESET}";
+}
+
+function buildImages(){
+    # for local environment, we will use the current branch name
+    #DOCKER_IMAGE_PHP_VERSION=$(git branch | sed -nE '/\* /s/.*\///p; t; /\* /s///p')
+    DOCKER_IMAGE=flight/service.search.logic
+    # build php docker image (latest + version tag)
+    docker build -t $DOCKER_IMAGE -f Dockerfile .
+}
+
+function createBinaries(){
+    if [ ! -d ./bin ]; then
+        mkdir ./bin
+    fi
+
+    # build helper scripts
+    echo -e '#!/bin/sh\n\ndocker run --rm -it -v $(pwd):/var/www -w /var/www -u $(id -u):$(id -g) christianbladescb/aglio "$@"' > bin/aglio
+    echo -e '#!/bin/sh\n\ndocker run --rm -it -v $(pwd):/var/www -w /var/www -u $(id -u):$(id -g) christianbladescb/aglio -i ./docs/api.apib -o ./public/docs/index.html --theme-variables flatly --theme-full-width' > bin/create-docs
+    echo -e '#!/bin/sh\n\ndocker run -it --rm -e "HOME=/home/$USER" -e "USER" -e "UID=$(id -u)" -e "GID=$(id -g)" -v $HOME:/home/$USER -v $PWD:/app -w /app --net="host" '$DOCKER_IMAGE' vendor/bin/codecept "$@"' > bin/codecept
+    echo -e '#!/bin/sh\n\ndocker run -it --rm -e "HOME=/home/$USER" -e "USER" -e "UID=$(id -u)" -e "GID=$(id -g)" -v $HOME:/home/$USER -v $PWD:/app -w /app --net="host" '$DOCKER_IMAGE' php bin/composer.phar "$@"' > bin/composer
+
+    if [ ! -f bin/composer.phar ]; then
+        php -r "copy('https://getcomposer.org/download/$COMPOSER_VERSION/composer.phar', 'bin/composer.phar');"
+    fi
+
+    chmod +x -R ./bin
+}
+
+function createDocs(){
+    echo -e "[*] ${GREEN}Creating docs...${RESET}";
+    bin/create-docs
+}
+
+function fetchDependencies(){
+    echo -e "[*] ${GREEN}Running composer...${RESET}";
+    bin/composer install -o
+}
+
+function prepareDirectories(){
+    echo -e "[*] ${GREEN}Preparing directories...${RESET}";
+    chmod -R 777 ./storage
+    chmod -R 777 ./tests/_output
+    mkdir -p public/docs
+}
+
+function configure(){
+    echo -e "[*] ${GREEN}Setting config...${RESET}";
+    cp .env.dev .env
+}
+
+build

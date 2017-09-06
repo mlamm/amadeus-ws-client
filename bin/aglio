@@ -1,2 +1,0 @@
-#!/bin/bash
-docker run -it -v $(pwd):/home -w /home node:8-alpine ./node_modules/.bin/aglio --theme-variables flatly --theme-full-width -i ./docs/api.apib -o ./var/docs/index.html

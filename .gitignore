@@ -9,3 +9,4 @@ var/docs
 node_modules
 config/app.yml
 composer.phar
+.idea

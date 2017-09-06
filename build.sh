@@ -1,8 +1,6 @@
 #!/bin/bash
 echo -e "\n";
 echo -e "==> \033[1;35mGetting new composer...\033[0m";
-docker exec -it service-amadeus-php rm -rf composer.phar
-docker exec -it service-amadeus-php wget https://getcomposer.org/composer.phar
 if [ $1 = "dev" ];
 then
     echo -e "==> \033[1;35mRunning 'DEV' build...\033[0m";
