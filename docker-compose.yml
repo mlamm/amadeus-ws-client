@@ -2,7 +2,7 @@ version: "2"
 
 services:
   amadeus-php:
-    image: flight/service.search
+    image: flight/service.amadeus.php
     container_name: service-amadeus-php
     volumes:
       - ./:/var/www
@@ -10,13 +10,12 @@ services:
 #      - ./var/logs/xdebug.log:/tmp/xdebug.log
 
   amadeus-nginx:
-    image: nginx:latest
+    image: flight/service.amadeus.nginx
     container_name: service-amadeus-nginx
     volumes:
       - ./:/var/www
-      - ./_docker/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./var/logs/nginx:/var/log/nginx
     ports:
-      - "8201:80"
+      - "8201:8080"
     depends_on:
       - amadeus-php

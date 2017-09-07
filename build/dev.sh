@@ -21,9 +21,11 @@ function build () {
 }
 
 function buildImages(){
-    DOCKER_IMAGE=flight/service.search
-    echo "docker build -t $DOCKER_IMAGE -f Dockerfile ."
-    docker build -t "$DOCKER_IMAGE" -f Dockerfile-dev .
+    # nginx
+    docker build -t flight/service.amadeus.nginx -f _docker/nginx/Dockerfile ./_docker/nginx
+
+    DOCKER_IMAGE=flight/service.amadeus.php
+    docker build -t "$DOCKER_IMAGE" -f _docker/php/Dockerfile ./_docker/php
 }
 
 function createBinaries(){

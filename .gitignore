@@ -4,7 +4,6 @@ vendor
 ~tmp\.*
 *.sublime-*
 var/cache
-var/logs
 var/docs
 node_modules
 config/app.yml

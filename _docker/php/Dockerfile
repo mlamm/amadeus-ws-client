@@ -1,5 +1,6 @@
 # Placeholder for the real Dockerfile
 FROM tsari/jessie-php-fpm-xdebug
+VOLUME /var/www
 WORKDIR /var/www
 
 RUN apt-get update
