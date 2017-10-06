@@ -1,7 +1,7 @@
 {
     "name": "flight/amadeus-service",
     "description": "A request service to amadeus",
-    "type": "application",    
+    "type": "application",
     "license": "proprietary",
     "authors": [
         {

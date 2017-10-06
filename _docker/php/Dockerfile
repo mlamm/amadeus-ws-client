@@ -3,6 +3,6 @@ FROM tsari/jessie-php-fpm-xdebug
 VOLUME /var/www
 WORKDIR /var/www
 
-RUN apt-get update
-RUN apt-get install php7.1-soap -y
-RUN apt-get install php7.1-mysql -y
+RUN apt-get update && apt-get install -y \
+    php7.1-soap \
+    php7.1-mysql

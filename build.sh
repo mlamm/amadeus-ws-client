@@ -17,6 +17,10 @@ elif [ $1 = "prod" ];
 then
     echo -e "==> \033[1;35mRunning 'PROD' build...\033[0m";
     ./build/prod.sh
+elif [ $1 = "unidev" ];
+then
+    echo -e "==> \033[1;35mRunning 'UNIDEV' build...\033[0m";
+    build/unidev.sh
 else
     echo -e "==> \033[1;31mEnvironment not registered. Stop.\033[0m"
 fi
