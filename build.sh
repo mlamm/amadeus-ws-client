@@ -1,7 +1,11 @@
 #!/bin/bash
 echo -e "\n";
-echo -e "==> \033[1;35mGetting new composer...\033[0m";
-if [ $1 = "dev" ];
+
+if [ $1 = "unidev" ];
+then
+    echo -e "==> \032[1;35mRunning 'UNIDEV' build...\032[0m";
+    ./build/unidev.sh
+elif [ $1 = "dev" ];
 then
     echo -e "==> \033[1;35mRunning 'DEV' build...\033[0m";
     ./build/dev.sh
