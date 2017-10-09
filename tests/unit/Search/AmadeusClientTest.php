@@ -17,6 +17,7 @@ class AmadeusClientTest extends \Codeception\Test\Unit
 
     public function testCreatingAnAmadeusClient()
     {
+        /** @var LoggerInterface|\Mockery\MockInterface $logger */
         $logger = \Mockery::mock(LoggerInterface::class);
         $logger->shouldReceive('log');
 
@@ -51,6 +52,7 @@ class AmadeusClientTest extends \Codeception\Test\Unit
             ->times(6)
             ->andReturn($authentication);
 
+        /** @var Connection|\Mockery\MockInterface $databaseMock */
         $databaseMock = \Mockery::mock(Connection::class);
 
         $config = new \stdClass();
@@ -59,10 +61,10 @@ class AmadeusClientTest extends \Codeception\Test\Unit
 
         $amaClient = new AmadeusClient(
             $logger,
-            $businessCase,
             $databaseMock,
             $config
         );
+        $amaClient->prepare($businessCase);
         $client = $amaClient->getClient();
 
         $this->assertInstanceOf(Client::class, $client);

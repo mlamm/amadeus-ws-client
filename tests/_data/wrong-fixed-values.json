@@ -1,7 +1,7 @@
 {
   "search-hash": "",
   "flight-hash": "",
-  "agent": "fluege.de",
+  "agent": "ab-in-den-urlaub-deals.de",
   "departure": [
     "BER"
   ],
@@ -59,8 +59,8 @@
   "business-cases": [
     [
       {
-        "content-provider": "amadeus",
-        "type": "round-trip",
+        "content-provider": "ypsilon",
+        "type": "cris-cross",
         "fare-type": "net",
         "result-limit": 1,
         "options": {

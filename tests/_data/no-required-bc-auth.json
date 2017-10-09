@@ -70,12 +70,7 @@
           "is-benchmark": false
         },
         "authentication": {
-          "office-id": "LEJL128AC",
-          "user-id": "WSTBDUFI",
-          "password-data": "dkhBM1J5VTU=",
-          "password-length": 8,
-          "duty-code": "SU",
-          "organization-id": "NMC-GERMAN"
+
         }
       }
     ]

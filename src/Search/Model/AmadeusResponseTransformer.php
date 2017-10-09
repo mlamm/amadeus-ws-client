@@ -42,18 +42,18 @@ class AmadeusResponseTransformer
 
     /**
      * AmadeusResponseTransformer constructor.
-     * @param Result $result
      */
-    public function __construct(Result $result)
+    public function __construct()
     {
-        $this->amadeusResult = $result;
+
         $this->mapper = new Mapper(getcwd() . '/var/cache/response-mapping/');
-        $this->mapResultToDefinedStructure();
     }
 
-
-    private function mapResultToDefinedStructure()
+    public function mapResultToDefinedStructure(Result $result)
     {
+
+        $this->amadeusResult = $result;
+
         /** @var SearchResponse $searchResponse */
         $searchResponse = new SearchResponse();
         $searchResponse->setResult(new ArrayCollection());

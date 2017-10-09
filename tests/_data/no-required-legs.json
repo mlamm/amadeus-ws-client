@@ -47,13 +47,6 @@
   "page": 1,
   "legs": [
     {
-      "departure": "BER",
-      "arrival": "LON",
-      "depart-at": 1514725420,
-      "is-flexible-date": false,
-      "filter": [
-
-      ]
     }
   ],
   "business-cases": [

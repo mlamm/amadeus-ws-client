@@ -1,7 +1,7 @@
 {
   "search-hash": "",
   "flight-hash": "",
-  "agent": "fluege.de",
+  "agent": 123,
   "departure": [
     "BER"
   ],
@@ -14,10 +14,10 @@
   "arrival": [
     "LON"
   ],
-  "adults": 2,
-  "children": 0,
-  "infants": 0,
-  "is-synthetic": false,
+  "adults": false,
+  "children": true,
+  "infants": true,
+  "is-synthetic": 1,
   "filter-airline": [
 
   ],
@@ -47,10 +47,10 @@
   "page": 1,
   "legs": [
     {
-      "departure": "BER",
-      "arrival": "LON",
-      "depart-at": 1514725420,
-      "is-flexible-date": false,
+      "departure": 123,
+      "arrival": 123,
+      "depart-at": false,
+      "is-flexible-date": 1,
       "filter": [
 
       ]
@@ -59,23 +59,23 @@
   "business-cases": [
     [
       {
-        "content-provider": "amadeus",
-        "type": "round-trip",
-        "fare-type": "net",
-        "result-limit": 1,
+        "content-provider": 123,
+        "type": 123,
+        "fare-type": 123,
+        "result-limit": "a",
         "options": {
-          "is-one-way-combination": true,
-          "is-overnight": false,
-          "is-area-search": false,
-          "is-benchmark": false
+          "is-one-way-combination": 1,
+          "is-overnight": 0,
+          "is-area-search": "a",
+          "is-benchmark": "b"
         },
         "authentication": {
-          "office-id": "LEJL128AC",
-          "user-id": "WSTBDUFI",
-          "password-data": "dkhBM1J5VTU=",
-          "password-length": 8,
-          "duty-code": "SU",
-          "organization-id": "NMC-GERMAN"
+          "office-id": true,
+          "user-id": 1,
+          "password-data": 2,
+          "password-length": "abc",
+          "duty-code": 3,
+          "organization-id": false
         }
       }
     ]

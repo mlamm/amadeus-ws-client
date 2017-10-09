@@ -14,7 +14,7 @@
   "arrival": [
     "LON"
   ],
-  "adults": 2,
+  "adults": ,
   "children": 0,
   "infants": 0,
   "is-synthetic": false,
@@ -57,10 +57,10 @@
     }
   ],
   "business-cases": [
-
+    [
       {
         "content-provider": "amadeus",
-        "type": "roundtrip",
+        "type": "round-trip",
         "fare-type": "net",
         "result-limit": 3,
         "options": {
@@ -70,8 +70,14 @@
           "is-benchmark": false
         },
         "authentication": {
+          "office-id": "LEJL128AC",
+          "user-id": "WSTBDUFI",
+          "password-data": "dkhBM1J5VTU=",
+          "password-length": 8,
+          "duty-code": "SU",
+          "organization-id": "NMC-GERMAN"
         }
       }
-
+    ]
   ]
 }

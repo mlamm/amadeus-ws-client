@@ -60,7 +60,7 @@
     [
       {
         "content-provider": "amadeus",
-        "type": "roundtrip",
+        "type": "round-trip",
         "fare-type": "net",
         "result-limit": 3,
         "options": {

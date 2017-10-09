@@ -2,6 +2,7 @@
 namespace AmadeusService\Search\Model;
 
 use Amadeus\Client;
+use Amadeus\Client\Result;
 use AmadeusService\Search\Exception\MissingRequestParameterException;
 use AmadeusService\Search\Exception\ServiceRequestAuthenticationFailedException;
 use Doctrine\DBAL\Connection;
@@ -43,55 +44,35 @@ class AmadeusClient
     protected $authentication;
 
     /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * AmadeusClient constructor.
      * @param LoggerInterface $logger
-     * @param BusinessCase $businessCase
      * @param Connection $connection
      * @param $searchConfiguration
      */
     public function __construct(
         LoggerInterface $logger,
-        BusinessCase $businessCase,
         Connection $connection,
         $searchConfiguration
     )
     {
-        $root = getcwd();
         $this->config = $searchConfiguration;
         $this->connection = $connection;
-        $this->authentication = $businessCase->getAuthentication();
-        $this->client = new Client(
-            new Client\Params(
-                [
-                    'authParams' => [
-                        'officeId' => $this->authentication->getOfficeId(),
-                        'userId' => $this->authentication->getUserId(),
-                        'passwordData' => $this->authentication->getPasswordData(),
-                        'passwordLength' => $this->authentication->getPasswordLength(),
-                        'dutyCode' => $this->authentication->getDutyCode(),
-                        'organizationId' => $this->authentication->getOrganizationId()
-                    ],
-                    'sessionHandlerParams' => [
-                        'soapHeaderVersion' => Client::HEADER_V2,
-                        'wsdl' => "{$root}/wsdl/{$searchConfiguration->search->wsdl}",
-                        'logger' => $logger
-                    ],
-                    'requestCreatorParams' => [
-                        'receivedFrom' => 'service.search'
-                    ]
-                ]
-            )
-        );
+        $this->logger = $logger;
     }
 
     /**
      * Method to start a search request based on a sent Request object
      * @param Request $request
-     * @return Client\Result
+     * @return Result
      * @throws MissingRequestParameterException
      * @throws ServiceRequestAuthenticationFailedException
      */
-    public function search(Request $request)
+    public function search(Request $request) : Result
     {
         // method to check if flight cache is available
         if ($this->checkFlightCache($request) && $this->config->cache_active) {
@@ -153,6 +134,42 @@ class AmadeusClient
         );
 
         return $this->getClient()->fareMasterPricerTravelBoardSearch($options);
+    }
+
+    /**
+     * builds the client
+     *
+     * @param BusinessCase $businessCase
+     *
+     * @return AmadeusClient
+     */
+    public function prepare(BusinessCase $businessCase) : AmadeusClient
+    {
+        $this->authentication = $businessCase->getAuthentication();
+        $this->client = new Client(
+            new Client\Params(
+                [
+                    'authParams' => [
+                        'officeId' => $this->authentication->getOfficeId(),
+                        'userId' => $this->authentication->getUserId(),
+                        'passwordData' => $this->authentication->getPasswordData(),
+                        'passwordLength' => $this->authentication->getPasswordLength(),
+                        'dutyCode' => $this->authentication->getDutyCode(),
+                        'organizationId' => $this->authentication->getOrganizationId()
+                    ],
+                    'sessionHandlerParams' => [
+                        'soapHeaderVersion' => Client::HEADER_V2,
+                        'wsdl' => "./wsdl/{$this->config->search->wsdl}",
+                        'logger' => $this->logger
+                    ],
+                    'requestCreatorParams' => [
+                        'receivedFrom' => 'service.search'
+                    ]
+                ]
+            )
+        );
+
+        return $this;
     }
 
     /**

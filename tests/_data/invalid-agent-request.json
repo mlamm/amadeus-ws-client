@@ -1,7 +1,7 @@
 {
   "search-hash": "",
   "flight-hash": "",
-  "agent": "fluege.de",
+  "agent": "ab-in-den-urlaub-deals.de",
   "departure": [
     "BER"
   ],
@@ -59,18 +59,18 @@
   "business-cases": [
     [
       {
-        "content-provider": "amadeus",
+        "content-provider": "ypsilon",
         "type": "round-trip",
-        "fare-type": "net",
-        "result-limit": 1,
+        "fare-type": "low",
+        "result-limit": 2,
         "options": {
           "is-one-way-combination": true,
           "is-overnight": false,
-          "is-area-search": false,
+          "is-area-search": true,
           "is-benchmark": false
         },
         "authentication": {
-          "office-id": "LEJL128AC",
+          "office-id": "AAAAAAA",
           "user-id": "WSTBDUFI",
           "password-data": "dkhBM1J5VTU=",
           "password-length": 8,
