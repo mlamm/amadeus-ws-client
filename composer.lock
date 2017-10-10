@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e7e34bf875288bd19f8b89ee3fbcd2a7",
-    "content-hash": "30ee2bf13f21518477fa0a322c3fff64",
+    "hash": "024833a4db36f8520a45608ba9c6ebd0",
+    "content-hash": "b6988f04f907756183317ec244344f38",
     "packages": [
         {
             "name": "amabnl/amadeus-ws-client",
@@ -639,11 +639,11 @@
         },
         {
             "name": "flight/search-request-mapping",
-            "version": "3.0.0",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "ssh://git@stash.unister.lan:2200/flight/library.search-request-mapping.git",
-                "reference": "49aceaf1e9d0e7ab9d4dd39be2734fa09a9bbc5e"
+                "reference": "edaa1e54cae038bf7374e0d075a90c32459e5232"
             },
             "require": {
                 "doctrine/collections": "~1.5",
@@ -668,7 +668,7 @@
                 }
             ],
             "description": "A micro library to map the search request for the request services.",
-            "time": "2017-08-04 12:50:07"
+            "time": "2017-10-10 09:21:55"
         },
         {
             "name": "jms/metadata",

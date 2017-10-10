@@ -62,12 +62,12 @@
         "content-provider": "amadeus",
         "type": "roundtrip",
         "fare-type": "net",
-        "result-limit": 50,
         "options": {
           "is-one-way-combination": true,
           "is-overnight": false,
           "is-area-search": false,
-          "is-benchmark": false
+          "is-benchmark": false,
+          "result-limit": 50
         },
         "authentication": {
           "office-id": "",
