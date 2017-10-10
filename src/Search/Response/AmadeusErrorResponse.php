@@ -9,9 +9,9 @@ use AmadeusService\Application\Response\ErrorResponse;
 use AmadeusService\Search\Exception\ValidationException;
 
 /**
- * YpsilonErrorResponse.php
+ * AmadeusErrorResponse.php
  *
- * Ypsilon Service specific error response
+ * Amadeus service error response
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

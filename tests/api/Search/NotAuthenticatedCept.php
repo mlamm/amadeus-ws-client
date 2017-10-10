@@ -1,6 +1,6 @@
 <?php
 $I = new ApiTester($scenario);
-$I->wantTo('see an error for authentication when the authentication node in the request is missing');
+$I->wantTo('see an error for authentication when the authentication node contains wrong credentials');
 $I->sendPOST(
     '/flight-search/',
     file_get_contents(codecept_data_dir('not-authenticated-request.json'))

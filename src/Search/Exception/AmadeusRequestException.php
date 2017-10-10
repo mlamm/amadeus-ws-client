@@ -45,6 +45,6 @@ class AmadeusRequestException extends ServiceException
         }
 
         $concatedErrorText = implode(', ', $errorText);
-        return "Amadeus Response Error -- $errorCode -- $concatedErrorText";
+        return "AMADEUS RESPONSE ERROR -- $errorCode -- $concatedErrorText";
     }
 }

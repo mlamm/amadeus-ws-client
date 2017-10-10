@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Search\Request\Validator;
+namespace AmadeusService\Tests\Search\Request\Validator;
 
 use AmadeusService\Search\Exception\InvalidRequestParameterException;
 use AmadeusService\Search\Request\Validator\AmadeusRequestValidator;
@@ -10,7 +10,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * YpsilonRequestValidatorTest.php
+ * AmadeusRequestValidatorTest.php
  *
  * tests the main function of the class
  *

@@ -1,0 +1,83 @@
+{
+  "search-hash": "",
+  "flight-hash": "",
+  "agent": "",
+  "departure": [
+    "BER"
+  ],
+  "depart-at": [
+    1514725420
+  ],
+  "is-flexible-date": [
+
+  ],
+  "arrival": [
+    "LON"
+  ],
+  "adults": "",
+  "children": "",
+  "infants": "",
+  "is-synthetic": "",
+  "filter-airline": [
+
+  ],
+  "filter-cabin-class": [
+
+  ],
+  "filter-arrive-before": [
+
+  ],
+  "filter-depart-after": [
+
+  ],
+  "filter-duration": [
+
+  ],
+  "filter-free-beggage": false,
+  "filter-identical-origin": false,
+  "filter-airports": [
+
+  ],
+  "filter-payment-method": [
+
+  ],
+  "filter-price-min": "",
+  "filter-price-max": "",
+  "filter-stops": null,
+  "page": 1,
+  "legs": [
+    {
+      "departure": "",
+      "arrival": "",
+      "depart-at": "",
+      "is-flexible-date": "",
+      "filter": [
+
+      ]
+    }
+  ],
+  "business-cases": [
+    [
+      {
+        "content-provider": "",
+        "type": "",
+        "fare-type": "",
+        "result-limit": 1,
+        "options": {
+          "is-one-way-combination": "",
+          "is-overnight": "",
+          "is-area-search": "",
+          "is-benchmark": ""
+        },
+        "authentication": {
+          "office-id": "",
+          "user-id": "",
+          "password-data": "",
+          "password-length": "",
+          "duty-code": "",
+          "organization-id": ""
+        }
+      }
+    ]
+  ]
+}
