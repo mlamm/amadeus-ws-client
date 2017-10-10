@@ -6,7 +6,6 @@ namespace AmadeusService\Search\Request\Validator;
 use Particle\Validator\Exception\InvalidValueException;
 use Particle\Validator\ValidationResult;
 use Particle\Validator\Validator;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use AmadeusService\Search\Exception\InvalidRequestException;
 use AmadeusService\Search\Exception\InvalidRequestParameterException;
@@ -27,14 +26,8 @@ class AmadeusRequestValidator
      */
     protected $config;
 
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    public function __construct(LoggerInterface $logger, \stdClass $config)
+    public function __construct(\stdClass $config)
     {
-        $this->logger  = $logger;
         $this->config  = $config;
     }
 
@@ -99,12 +92,6 @@ class AmadeusRequestValidator
 
         $validator->optional('filter-airline')->isArray()->callback(
             function ($element) {
-                if (count($element) > 20) {
-                    throw new InvalidValueException(
-                        'To many elements in filter-airline. Maximum is 20.',
-                        'filter-airline'
-                    );
-                }
                 foreach ($element as $airlineCode) {
                     if (!is_string($airlineCode) || strlen($airlineCode) != 2) {
                         throw new InvalidValueException(

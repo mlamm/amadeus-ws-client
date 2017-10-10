@@ -68,12 +68,16 @@ class AmadeusClient
     /**
      * Method to start a search request based on a sent Request object
      * @param Request $request
+     * @param BusinessCase $businessCase
+     *
      * @return Result
      * @throws MissingRequestParameterException
      * @throws ServiceRequestAuthenticationFailedException
      */
-    public function search(Request $request) : Result
+    public function search(Request $request, BusinessCase $businessCase) : Result
     {
+        $this->prepare($businessCase);
+
         // method to check if flight cache is available
         if ($this->checkFlightCache($request) && $this->config->cache_active) {
             return $this->retrieveFormattedFlightCache($request);

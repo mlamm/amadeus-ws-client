@@ -30,7 +30,6 @@
         "amabnl/amadeus-ws-client": "~1.4",
         "monolog/monolog": "~1.23",
         "flight/search-request-mapping": "~3.0",
-        "symfony/dependency-injection": "~3.3",
         "doctrine/cache": "~1.7",
         "symfony/yaml": "~3.3",
         "jms/serializer": "^1.8",

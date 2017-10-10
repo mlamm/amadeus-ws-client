@@ -57,8 +57,7 @@ class Search extends BusinessCase
             $request = $this->getMappedRequest($this->getRequest());
 
             $searchResult = $this->application['amadeus.client']
-                ->prepare($request->getBusinessCases()->first()->first())
-                ->search($request);
+                ->search($request, $request->getBusinessCases()->first()->first());
 
             if ($searchResult->status !== Result::STATUS_OK) {
                 $ex = new AmadeusRequestException();
@@ -66,13 +65,12 @@ class Search extends BusinessCase
                 throw $ex;
             }
 
-            $this->responseTransformer->mapResultToDefinedStructure($searchResult);
+            $mappedResponse = $this->responseTransformer->mapResultToDefinedStructure($searchResult);
 
             return new SearchResultResponse(
-                json_decode($this->responseTransformer->getMappedResponseAsJson())
+                json_decode($this->responseTransformer->getMappedResponseAsJson($mappedResponse))
             );
-        } catch (InvalidRequestException $ex)
-        {
+        } catch (InvalidRequestException $ex) {
             $this->getLogger()->critical($ex);
             $ex->setResponseCode(Response::HTTP_BAD_REQUEST);
 

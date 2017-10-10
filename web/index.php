@@ -44,9 +44,10 @@ $app['config'] = $config= \Symfony\Component\Yaml\Yaml::parse(
 
 $app['businesscase.search'] = $app->factory(function () use ($app) {
 
-    $responseTransformer = new AmadeusService\Search\Model\AmadeusResponseTransformer();
+    $mapper = new Flight\Library\SearchRequest\ResponseMapping\Mapper(getcwd() . '/var/cache/response-mapping/');
+
+    $responseTransformer = new AmadeusService\Search\Model\AmadeusResponseTransformer($mapper);
     $validator = new AmadeusService\Search\Request\Validator\AmadeusRequestValidator(
-        $app['monolog'],
         $app['config']->search
     );
 

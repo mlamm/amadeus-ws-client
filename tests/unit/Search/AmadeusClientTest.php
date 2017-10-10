@@ -85,12 +85,4 @@ class AmadeusClientTest extends Unit
 
         $this->assertInstanceOf(Client::class, $client);
     }
-
-    /**
-     * @covers ::search
-     */
-    public function testInitiatesAmaClientCall() : void
-    {
-
-    }
 }

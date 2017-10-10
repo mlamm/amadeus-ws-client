@@ -14,26 +14,26 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * tests the main function of the class
  *
+ * @covers AmadeusService\Search\Request\Validator\AmadeusRequestValidator
+ *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
  * @author    Fluege-Dev <fluege-dev@invia.de>
  */
 class AmadeusRequestValidatorTest extends Unit
 {
-
     public function testValidateCorrectRequestFunction() : void
     {
         $requestContent = file_get_contents(codecept_data_dir('valid-request.json'));
         $request = new Request([], [], [], [], [], [], $requestContent);
 
-        $logger = new NullLogger();
 
         $config = new \stdClass();
         $config->allowed_agents      = ['fluege.de'];
         $config->allowed_types       = ['round-trip', 'one-way', 'open-jaw'];
         $config->allowed_cabin_class = ['Y', 'B', 'F'];
 
-        $validator = new AmadeusRequestValidator($logger, $config);
+        $validator = new AmadeusRequestValidator($config);
         $validator->validateRequest($request);
     }
 
@@ -53,7 +53,7 @@ class AmadeusRequestValidatorTest extends Unit
         $config->allowed_types = ['round-trip', 'one-way', 'open-jaw'];
         $config->allowed_cabin_class = ['Y', 'B', 'F'];
 
-        $validator = new AmadeusRequestValidator($logger, $config);
+        $validator = new AmadeusRequestValidator($config);
 
         $this->expectException($expected['exceptionClass']);
         $validator->validateRequest($request);
