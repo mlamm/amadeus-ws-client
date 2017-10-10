@@ -3,6 +3,7 @@ namespace AmadeusService\Search\Model;
 
 use Amadeus\Client\Result;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\Library\SearchRequest\ResponseMapping\Mapper;
 
@@ -12,8 +13,6 @@ use Flight\Library\SearchRequest\ResponseMapping\Mapper;
  */
 class AmadeusResponseTransformer
 {
-    const SEGMENT_REF_QUALIFIER = 'S';
-
     const PTC_CHILD = 'CH';
 
     const PTC_ADULT = 'ADT';
@@ -27,6 +26,11 @@ class AmadeusResponseTransformer
      * @var Mapper
      */
     protected $mapper;
+
+    /**
+     * @var SearchResponse
+     */
+    private $mappedResponse;
 
     /**
      * Contains the flight index setup in entites
@@ -44,93 +48,35 @@ class AmadeusResponseTransformer
         $this->mapper = $mapper;
     }
 
-    public function mapResultToDefinedStructure(Result $result) : SearchResponse
+    public function mapResultToDefinedStructure(Result $amadeusResult) : SearchResponse
     {
-        $this->amadeusResult = $result;
+        $this->amadeusResult = $amadeusResult;
 
         /** @var SearchResponse $searchResponse */
         $searchResponse = new SearchResponse();
         $searchResponse->setResult(new ArrayCollection());
 
-        $offers = $this->amadeusResult->response->recommendation;
-        if (!is_array($offers)) {
-            $offers = [$offers];
-        }
+        $offers = new NodeList($this->amadeusResult->response->recommendation);
 
         // map the flight index to a leg collection the first layer represents the requested leg
         // the second layer the indexed legs for said requested leg
-        $this->legCollection = $this->mapLegs();
+        $legCollection = $this->mapLegs();
 
         // iterate through the recommendations
         foreach ($offers as $offerIndex => $offer) {
             $result = new SearchResponse\Result();
-            $requestedLegs = new ArrayCollection();
 
-            // iterate through the flight references
-            foreach (@$offer->segmentFlightRef as $referenceEntry) {
-
-                // unify to array
-                if (!is_array($referenceEntry)) {
-                    $referenceEntry = [$referenceEntry];
-                }
-
-                foreach ($referenceEntry as $referenceCollection) {
-
-                    // in case the reference entry is already a leg collection
-                    // break the loop and setup the response legs
-                    if (
-                        isset($referenceCollection->refQualifier)
-                        && $referenceCollection->refQualifier === self::SEGMENT_REF_QUALIFIER
-                    )
-                    {
-                        $requestedLegs = $this->setupResponseLegs($referenceEntry);
-                        break;
-                    }
-
-                    $referenceDetails = $referenceCollection->referencingDetail;
-                    if (!is_array($referenceDetails)) {
-                        $referenceDetails = [$referenceDetails];
-                    }
-
-                    $done = false;
-
-                    // iterate through the default reference details to identify segment references
-                    foreach ($referenceDetails as $singleSegmentReferenceDetail) {
-
-                        // in case the first entry is a segment setup the request legs and close the looping
-                        if (
-                            $singleSegmentReferenceDetail->refQualifier === self::SEGMENT_REF_QUALIFIER
-                        )
-                        {
-                            $requestedLegs = $this->setupResponseLegs($referenceDetails);
-                            $done = true;
-                            break;
-                        }
-                    }
-
-                    if ($done === true) {
-                        break;
-                    }
-                }
-            }
+            $segmentFlightRefs = SegmentFlightRefs::fromRecommendation($offer);
 
             $result
                 ->setItinerary(new SearchResponse\ItineraryResult())
                 ->getItinerary()
-                    ->setLegs($requestedLegs);
+                    ->setLegs($this->setupResponseLegs($legCollection, $segmentFlightRefs));
 
-            $paxFareProduct = @$offer->paxFareProduct;
-            if (!is_array($paxFareProduct)) {
-                $paxFareProduct = [$paxFareProduct];
-            }
+            $fareProducts = new NodeList($offer->paxFareProduct);
 
-            $fareProducts = new ArrayCollection($paxFareProduct);
-
-            $conversionRateDetail = @$this->amadeusResult->response->conversionRate->conversionRateDetail;
-            if (!is_array($conversionRateDetail)) {
-                $conversionRateDetail = [$conversionRateDetail];
-            }
-            $currency = reset($conversionRateDetail)->currency;
+            $conversionRateDetail = new NodeList($this->amadeusResult->response->conversionRate->conversionRateDetail);
+            $currency = $conversionRateDetail->first()->currency;
 
             $result->setCalculation(new SearchResponse\CalculationResult());
 
@@ -261,18 +207,10 @@ class AmadeusResponseTransformer
                 }
             }
 
-            $fareDetails = @reset($paxFareProduct)->fareDetails;
-
-            if (!is_array($fareDetails)) {
-                $fareDetails = [$fareDetails];
-            }
+            $fareDetails = new NodeList($fareProducts->first()->fareDetails);
 
             foreach ($fareDetails as $legIndex => $singleFareDetail) {
-                $groupOfFares = $singleFareDetail->groupOfFares;
-
-                if (!is_array($groupOfFares)) {
-                    $groupOfFares = [$groupOfFares];
-                }
+                $groupOfFares = new NodeList($singleFareDetail->groupOfFares);
 
                 foreach ($groupOfFares as $segmentIndex => $segmentFare) {
 
@@ -281,8 +219,8 @@ class AmadeusResponseTransformer
                     $legSegment = $result
                         ->getItinerary()
                             ->getLegs()
-                                ->first()
                                 ->offsetGet($legIndex)
+                                ->first()
                                     ->getSegments()
                                         ->offsetGet($segmentIndex);
 
@@ -292,7 +230,7 @@ class AmadeusResponseTransformer
                             ->setCode(@$segmentFare->productInformation->cabinProduct->cabin);
 
                     // add remaining seats
-                    $legSegment->setRemainingSeats(@$segmentFare->productInformation->cabinProduct->avlStatus);
+                    $legSegment->setRemainingSeats($segmentFare->productInformation->cabinProduct->avlStatus);
                 }
             }
 
@@ -305,25 +243,24 @@ class AmadeusResponseTransformer
     /**
      * Generate a leg collection for an search response based of
      * reference entries off a recommendation
-     * @param array $segmentReferences
+     *
+     * @param Collection        $legCollection
+     * @param SegmentFlightRefs $segmentFlightRefs
      * @return ArrayCollection
      */
-    private function setupResponseLegs($segmentReferences)
+    private function setupResponseLegs(Collection $legCollection, SegmentFlightRefs $segmentFlightRefs): ArrayCollection
     {
         $requestedLegs = new ArrayCollection();
 
-        foreach ($segmentReferences as $index => $legReference) {
-
-            if (!$requestedLegs->offsetExists($index)) {
-                $requestedLegs->set($index, new ArrayCollection());
-            }
+        foreach ($segmentFlightRefs->getSegmentRefNumbers() as $legIndex => $flightRefNumber) {
+            $requestedLegs->set($legIndex, new ArrayCollection());
 
             $requestedLegs
-                ->get($index)
+                ->get($legIndex)
                 ->add(
-                    $this->legCollection
-                        ->get($index)
-                            ->get(--$legReference->refNumber)
+                    $legCollection
+                        ->get($legIndex)
+                        ->get($flightRefNumber - 1)
                 );
         }
 
@@ -333,66 +270,36 @@ class AmadeusResponseTransformer
     /**
      * Method to setup the leg collection for an itinerary
      *
-     * @return ArrayCollection
+     * @return Collection
      */
-    private function mapLegs()
+    private function mapLegs() : Collection
     {
         $legCollection = new ArrayCollection();
-        $flightIndex = @$this->amadeusResult->response->flightIndex;
-
-        if (!is_array($flightIndex)) {
-            $flightIndex = [$flightIndex];
-        }
+        $flightIndex = new NodeList($this->amadeusResult->response->flightIndex);
 
         foreach ($flightIndex as $itineraryDirection) {
             $indexLegCollection = new ArrayCollection();
-            $groupOfFlights = @$itineraryDirection->groupOfFlights;
-
-            if (!is_array($groupOfFlights)) {
-                $groupOfFlights = [$groupOfFlights];
-            }
-            $groupOfFlights = new \ArrayObject($groupOfFlights);
+            $groupOfFlights = new NodeList($itineraryDirection->groupOfFlights);
 
             foreach ($groupOfFlights as $leg) {
                 $itineraryLeg = new SearchResponse\Leg();
                 $itineraryLeg->setSegments(new ArrayCollection());
 
-                $segments = @$leg->flightDetails;
-                if (!is_array($segments)) {
-                    $segments = [$segments];
+                $segments = new NodeList($leg->flightDetails);
+
+                $proposals = FlightProposals::fromGroupOfFlights($leg);
+
+                if ($proposals->hasElapsedFlyingTime()) {
+                    $itineraryLeg->setDuration($proposals->getElapsedFlyingTime());
                 }
 
-                $proposals = @$leg->propFlightGrDetail->flightProposal;
-                if (!is_array($proposals)) {
-                    $proposals = [$proposals];
-                }
-
-                $proposalCollection = new ArrayCollection($proposals);
-                $estimatedFlightTime = $proposalCollection->filter(
-                    function ($element) {
-                        return @$element->unitQualifier === 'EFT';
-                    }
-                )->first();
-
-                $mainCarrier = $proposalCollection->filter(
-                    function ($element) {
-                        return @$element->unitQualifier === 'MCX';
-                    }
-                )->first();
-
-                if ($estimatedFlightTime && $estimatedFlightTime->ref !== null) {
-                    $hours = (integer) substr($estimatedFlightTime->ref, 0, 2);
-                    $minutes = (integer) substr($estimatedFlightTime->ref, 2, 2);
-                    $itineraryLeg->setDuration($hours * 60 * 60 + $minutes * 60);
-                }
-
-                if ($mainCarrier && $mainCarrier->ref !== null) {
+                if ($proposals->hasMajorityCarrier()) {
                     $itineraryLeg
                         ->setCarriers(new SearchResponse\Carriers())
                         ->getCarriers()
                             ->setMain(new SearchResponse\Carrier())
                             ->getMain()
-                                ->setIata($mainCarrier->ref);
+                                ->setIata($proposals->getMajorityCarrier());
                 }
 
                 foreach ($segments as $segment) {

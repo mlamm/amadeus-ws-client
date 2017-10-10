@@ -23,7 +23,7 @@ trait SearchRequestMappingTrait
             $mapper = new Mapper($request->getContent(), getcwd() . '/var/cache/request');
             return $mapper->getRequest();
         } catch (\Exception $ex) {
-            throw new InvalidRequestException();
+            throw new InvalidRequestException('', 0, $ex);
         }
     }
 }
