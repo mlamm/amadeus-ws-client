@@ -90,7 +90,7 @@ class AmadeusClient
         $authResult = $this->client->securityAuthenticate();
 
         if ($authResult->status !== Client\Result::STATUS_OK) {
-            throw new ServiceRequestAuthenticationFailedException();
+            throw new ServiceRequestAuthenticationFailedException($authResult->messages);
         }
 
         $itineraries = [];

@@ -1,12 +1,14 @@
 <?php
 chdir(__DIR__ . '/..');
-require_once getcwd() . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
+set_time_limit(0);
 
 $app = new Silex\Application();
 
 // general service provider
 $app->register(
-    new Silex\Provider\MonologServiceProvider(), 
+    new Silex\Provider\MonologServiceProvider(),
     [
         'monolog.logfile' => getcwd() . '/var/logs/app.log',
         'monolog.formatter' => function () {

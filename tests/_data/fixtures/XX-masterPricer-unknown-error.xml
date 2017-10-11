@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope
+        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:awss="http://xml.amadeus.com/ws/2009/01/WBS_Session-2.0.xsd"><SOAP-ENV:Header>
+<awss:Session>
+    <awss:SessionId>00B9OV277M</awss:SessionId>
+    <awss:SequenceNumber>2</awss:SequenceNumber>
+    <awss:SecurityToken>35I8KGQ8AH5MR2M3PND12KSZ2Y</awss:SecurityToken>
+</awss:Session>
+</SOAP-ENV:Header><SOAP-ENV:Body><soap:Fault xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<faultcode>soap:Server</faultcode>
+<faultstring>91|Application|Unknown error</faultstring>
+<faultactor>SI:Backend</faultactor>
+</soap:Fault></SOAP-ENV:Body></SOAP-ENV:Envelope>

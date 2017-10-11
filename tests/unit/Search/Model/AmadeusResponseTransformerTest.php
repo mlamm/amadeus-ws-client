@@ -6,6 +6,7 @@ namespace AmadeusService\Tests\Search\Model;
 use Amadeus\Client\Result;
 use Amadeus\Client\Session\Handler\SendResult;
 use AmadeusService\Search\Model\AmadeusResponseTransformer;
+use Flight\Library\SearchRequest\ResponseMapping\Mapper;
 
 /**
  * AmadeusResponseTransformerTest.php
@@ -31,11 +32,12 @@ class AmadeusResponseTransformerTest extends \Codeception\Test\Unit
         $amaResult->responseXml = $amaResponse;
         $amaResult->response = json_decode(json_encode(new \SimpleXMLElement($amaResponse)));
 
-        $transformer = new AmadeusResponseTransformer($amaResult);
+        $transformer = new AmadeusResponseTransformer(new Mapper());
+        $response = $transformer->mapResultToDefinedStructure($amaResult);
 
         $this->assertEquals(
             json_decode(file_get_contents(codecept_data_dir($expectedSearchResponseFile)), true),
-            json_decode($transformer->getMappedResponseAsJson(), true)
+            json_decode($transformer->getMappedResponseAsJson($response), true)
         );
     }
 

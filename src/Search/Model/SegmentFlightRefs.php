@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace AmadeusService\Search\Model;
 
+use Codeception\Util\Debug;
+
 /**
  * SegmentFlightRefs.php
  *
@@ -15,21 +17,16 @@ namespace AmadeusService\Search\Model;
 class SegmentFlightRefs
 {
     /**
-     * Segment/service reference number
+     * @var array
      */
-    private const SEGMENT_REF_QUALIFIER = 'S';
-
-    /**
-     * @var \stdClass[]
-     */
-    private $referencingDetails;
+    private $flights;
 
     /**
      * @param iterable $segmentFlightRefs
      */
     public function __construct(iterable $segmentFlightRefs)
     {
-        $this->referencingDetails = $this->indexByQualifier($segmentFlightRefs);
+        $this->flights = $this->extractFlights($segmentFlightRefs);
     }
 
     /**
@@ -39,9 +36,9 @@ class SegmentFlightRefs
      *
      * @return array
      */
-    private function indexByQualifier(iterable $segmentFlightRefs) : array
+    private function extractFlights(iterable $segmentFlightRefs) : array
     {
-        $segmentFlightRefsByQualifier = [];
+        $flights = [];
 
         foreach ($segmentFlightRefs as $segmentFlightRef) {
             if (isset($segmentFlightRef->referencingDetail)) {
@@ -51,12 +48,12 @@ class SegmentFlightRefs
                 $refs = [];
             }
 
-            if (isset($refs[0]->refQualifier)) {
-                $segmentFlightRefsByQualifier[$refs[0]->refQualifier] = $refs;
+            if (isset($refs[0]->refQualifier) && $refs[0]->refQualifier === SegmentFlightRef::SEGMENT_REF_QUALIFIER) {
+                $flights[] = new SegmentFlightRef($refs);
             }
         }
 
-        return $segmentFlightRefsByQualifier;
+        return $flights;
     }
 
     /**
@@ -76,21 +73,10 @@ class SegmentFlightRefs
     }
 
     /**
-     * Returns the list of <refNumber> values
-     *
-     * @return array
+     * @return SegmentFlightRef[]
      */
-    public function getSegmentRefNumbers() : array
+    public function getSegmentRefsForFlights() : array
     {
-        if (!isset($this->referencingDetails[self::SEGMENT_REF_QUALIFIER])) {
-            return [];
-        }
-
-        $refNumbers = [];
-        foreach ($this->referencingDetails[self::SEGMENT_REF_QUALIFIER] as $referencingDetail) {
-            $refNumbers[] = $referencingDetail->refNumber;
-        }
-
-        return $refNumbers;
+        return $this->flights;
     }
 }

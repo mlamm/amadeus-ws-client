@@ -1,8 +1,8 @@
 <?php
 namespace AmadeusService\Search\Exception;
 
+use Amadeus\Client\Result;
 use AmadeusService\Application\Exception\ServiceException;
-use Throwable;
 
 /**
  * Class AmadeusRequestException
@@ -11,18 +11,27 @@ use Throwable;
 class AmadeusRequestException extends ServiceException
 {
     /**
-     * @var \stdClass
+     * @var Result\NotOk[]
      */
-    protected $error;
+    protected $errors = [];
+
+    protected $internalErrorMessage = 'AMADEUS RESPONSE ERROR';
 
     /**
      * @param \stdClass $error
-     * @return $this
      */
-    public function assignError($error)
+    public function __construct(array $messages)
     {
-        $this->error = $error;
-        return $this;
+        foreach ($messages as $error) {
+            if ($error instanceof Result\NotOk) {
+                $this->errors[] = $error;
+            }
+            $this->internalErrorMessage .= " [{$error->code},{$error->text}],";
+        }
+
+        $this->internalErrorMessage = rtrim($this->internalErrorMessage, ',');
+
+        parent::__construct($this->getInternalErrorMessage());
     }
 
     /**
@@ -38,13 +47,6 @@ class AmadeusRequestException extends ServiceException
      */
     public function getInternalErrorMessage()
     {
-        $errorCode = $this->error->applicationError->applicationErrorDetail->error;
-        $errorText = $this->error->errorMessageText->description;
-        if (!is_array($errorText)) {
-            $errorText = [$errorText];
-        }
-
-        $concatedErrorText = implode(', ', $errorText);
-        return "AMADEUS RESPONSE ERROR -- $errorCode -- $concatedErrorText";
+        return $this->internalErrorMessage;
     }
 }

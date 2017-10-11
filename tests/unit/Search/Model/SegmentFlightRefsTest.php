@@ -10,7 +10,8 @@ use Codeception\Util\Debug;
 /**
  * SegmentFlightRefsTest.php
  *
- * @coversDefaultClass AmadeusService\Search\Model\SegmentFlightRefs
+ * @covers AmadeusService\Search\Model\SegmentFlightRefs
+ * @covers AmadeusService\Search\Model\SegmentFlightRef
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -19,55 +20,28 @@ use Codeception\Util\Debug;
 class SegmentFlightRefsTest extends \Codeception\Test\Unit
 {
     /**
-     * @covers ::__construct
-     * @covers ::getSegmentRefNumbers
-     * @covers ::indexByQualifier
-     */
-    public function testItExtractsSegmentRefNumbers()
-    {
-        $flightRefs = json_decode(json_encode(new \SimpleXMLElement('
-            <recommendation>
-                <segmentFlightRef>
-                    <referencingDetail>
-                        <refQualifier>C</refQualifier>
-                        <refNumber>1</refNumber>
-                    </referencingDetail>
-                </segmentFlightRef>
-                <segmentFlightRef>
-                    <referencingDetail>
-                        <refQualifier>S</refQualifier>
-                        <refNumber>1</refNumber>
-                    </referencingDetail>
-                    <referencingDetail>
-                        <refQualifier>S</refQualifier>
-                        <refNumber>1</refNumber>
-                    </referencingDetail>
-                </segmentFlightRef>
-            </recommendation>
-        ')));
-
-        $object = new SegmentFlightRefs($flightRefs->segmentFlightRef);
-
-        $this->assertEquals([1, 1], $object->getSegmentRefNumbers());
-    }
-
-    /**
-     * @covers ::fromRecommendation
-     *
      * @dataProvider provideBuildFromRecommendationTestCases
      */
-    public function testItBuildsFromRecommendationNode(string $recommendation, array $expectedSegmentNumbers)
+    public function testItBuildsFlightIndex(string $recommendation, array $expectedSegmentsPerFlight)
     {
         $recommendationNode = json_decode(json_encode(new \SimpleXMLElement($recommendation)));
 
         $object = SegmentFlightRefs::fromRecommendation($recommendationNode);
-        $this->assertEquals($expectedSegmentNumbers, $object->getSegmentRefNumbers());
+
+        $flights = $object->getSegmentRefsForFlights();
+
+        $this->assertCount(count($expectedSegmentsPerFlight), $flights);
+
+        foreach ($expectedSegmentsPerFlight as $index => $expectedSegments) {
+            $this->assertArrayHasKey($index, $flights);
+            $this->assertEquals($expectedSegments, $flights[$index]->getSegmentRefNumbers());
+        }
     }
 
     public function provideBuildFromRecommendationTestCases()
     {
         return [
-            'segmentFlightRef is object' => [
+            'single flight, two legs' => [
                 'recommendation' =>
                     '<recommendation>
                         <segmentFlightRef>
@@ -81,10 +55,12 @@ class SegmentFlightRefsTest extends \Codeception\Test\Unit
                             </referencingDetail>
                         </segmentFlightRef>
                     </recommendation>',
-                'expected-segment-numbers' => [1, 1],
+                'expected-segments-per-flight' => [
+                    [1, 1], // first flight
+                ],
             ],
 
-            'segmentFlightRef is array' => [
+            'single flight, two legs, first must be ignored' => [
                 'recommendation' =>
                     '<recommendation>
                         <segmentFlightRef>
@@ -104,13 +80,53 @@ class SegmentFlightRefsTest extends \Codeception\Test\Unit
                             </referencingDetail>
                         </segmentFlightRef>
                     </recommendation>',
-                'expected-segment-numbers' => [1, 1],
+                'expected-segments-per-flight' => [
+                    [1, 1], // first flight
+                ],
             ],
 
             'no segmentFlightRef' => [
                 'recommendation' => '<recommendation />',
-                'expected-segment-numbers' => [],
-            ]
+                'expected-segments-per-flight' => [],
+            ],
+
+            'multiple flights, each with two legs' => [
+                'recommendation' =>
+                    '<recommendation>
+                        <segmentFlightRef>
+                            <referencingDetail>
+                                <refQualifier>S</refQualifier>
+                                <refNumber>1</refNumber>
+                            </referencingDetail>
+                            <referencingDetail>
+                                <refQualifier>S</refQualifier>
+                                <refNumber>1</refNumber>
+                            </referencingDetail>
+                            <referencingDetail>
+                                <refQualifier>B</refQualifier>
+                                <refNumber>1</refNumber>
+                            </referencingDetail>
+                        </segmentFlightRef>
+                        <segmentFlightRef>
+                            <referencingDetail>
+                                <refQualifier>S</refQualifier>
+                                <refNumber>2</refNumber>
+                            </referencingDetail>
+                            <referencingDetail>
+                                <refQualifier>S</refQualifier>
+                                <refNumber>1</refNumber>
+                            </referencingDetail>
+                            <referencingDetail>
+                                <refQualifier>B</refQualifier>
+                                <refNumber>1</refNumber>
+                            </referencingDetail>
+                        </segmentFlightRef>
+                    </recommendation>',
+                'expected-segments-per-flight' => [
+                    [1, 1], // first flight
+                    [2, 1], // second flight
+                ],
+            ],
         ];
     }
 }

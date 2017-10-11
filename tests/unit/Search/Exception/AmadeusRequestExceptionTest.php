@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AmadeusService\Tests\FlightSearch\Exception;
 
+use Amadeus\Client\Result\NotOk;
 use Codeception\Test\Unit;
 use AmadeusService\Search\Exception\AmadeusRequestException;
 
@@ -25,25 +26,13 @@ class AmadeusRequestExceptionTest extends Unit
      */
     public function testItAssignsExternalError() : void
     {
-        //prepareError
-        $text = 'something is wrong';
-        $code = 99;
-
-        $expectedMessage = 'AMADEUS RESPONSE ERROR -- 101 -- first error description, second error description';
+        $expectedMessage = 'AMADEUS RESPONSE ERROR [100,first error description], [101,second error description]';
         $expectedInternalErrorCode = 'ARS000X';
 
-        $error = new \stdClass();
-        $error->applicationError = new \stdClass();
-        $error->applicationError->applicationErrorDetail = new \stdClass();
-        $error->applicationError->applicationErrorDetail->error = 101;
-        $error->errorMessageText = new \stdClass();
-        $error->errorMessageText->description = [
-            'first error description',
-            'second error description'
-        ];
-
-        $exception = new AmadeusRequestException($text, $code);
-        $exception->assignError($error);
+        $exception = new AmadeusRequestException([
+            new NotOk(100, 'first error description'),
+            new NotOk(101, 'second error description'),
+        ]);
 
         $this->assertEquals($expectedMessage, $exception->getInternalErrorMessage());
         $this->assertEquals($expectedInternalErrorCode, $exception->getInternalErrorCode());

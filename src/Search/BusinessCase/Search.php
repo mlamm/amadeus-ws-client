@@ -58,11 +58,10 @@ class Search extends BusinessCase
 
             $searchResult = $this->application['amadeus.client']
                 ->search($request, $request->getBusinessCases()->first()->first());
+            file_put_contents('var/logs/result_' . date('Y-m-d H:i:s') . '.xml', $searchResult->responseXml);
 
             if ($searchResult->status !== Result::STATUS_OK) {
-                $ex = new AmadeusRequestException();
-                $ex->assignError($searchResult->response->errorMessage);
-                throw $ex;
+                throw new AmadeusRequestException($searchResult->messages);
             }
 
             $mappedResponse = $this->responseTransformer->mapResultToDefinedStructure($searchResult);

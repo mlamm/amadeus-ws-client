@@ -28,9 +28,9 @@ class ServiceRequestAuthenticationFailedExceptionTest extends Unit
         $expectedMessage = 'The `Amadeus\Client::securityAuthenticate` method didn\'t return state OK';
         $expectedInternalErrorCode = 'ARS0001';
 
-        $exception = new ServiceRequestAuthenticationFailedException();
+        $exception = new ServiceRequestAuthenticationFailedException([]);
 
-        $this->assertEquals($expectedMessage, $exception->getInternalErrorMessage());
+        $this->assertStringStartsWith($expectedMessage, $exception->getInternalErrorMessage());
         $this->assertEquals($expectedInternalErrorCode, $exception->getInternalErrorCode());
     }
 }

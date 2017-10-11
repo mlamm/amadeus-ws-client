@@ -4,3 +4,8 @@ modules:
         - REST:
             url: http://amadeus-nginx:8080
             depends: PhpBrowser
+    config:
+        PhpBrowser:
+            url: ''
+            curl:
+                CURLOPT_TIMEOUT: 300

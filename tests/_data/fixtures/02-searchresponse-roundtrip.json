@@ -28,7 +28,6 @@
                   },
                   "arrive-at": 1514745300,
                   "depart-at": 1514741400,
-                  "duration": 7500,
                   "cabin-class": {
                     "code": "Y",
                     "name": "Economy"
@@ -71,7 +70,6 @@
                   },
                   "arrive-at": 1514827500,
                   "depart-at": 1514817300,
-                  "duration": 6600,
                   "cabin-class": {
                     "code": "Y",
                     "name": "Economy"

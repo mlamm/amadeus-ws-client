@@ -13,9 +13,11 @@ use Flight\Library\SearchRequest\ResponseMapping\Mapper;
  */
 class AmadeusResponseTransformer
 {
-    const PTC_CHILD = 'CH';
+    private const PTC_CHILD = 'CH';
 
-    const PTC_ADULT = 'ADT';
+    private const PTC_ADULT = 'ADT';
+
+    private const CLASSIFICATION_SCHEDULED = 'scheduled';
 
     /**
      * @var Result
@@ -56,32 +58,41 @@ class AmadeusResponseTransformer
         $searchResponse = new SearchResponse();
         $searchResponse->setResult(new ArrayCollection());
 
-        $offers = new NodeList($this->amadeusResult->response->recommendation);
-
         // map the flight index to a leg collection the first layer represents the requested leg
         // the second layer the indexed legs for said requested leg
         $legCollection = $this->mapLegs();
 
-        // iterate through the recommendations
-        foreach ($offers as $offerIndex => $offer) {
-            $result = new SearchResponse\Result();
+        // A single <recommendation> can contain multiple flights.
+        // Returns a flat list of all flights from the recommendations and their segmentFlightRefs
+        $allOffers = function () {
+            $recommendations = new NodeList($this->amadeusResult->response->recommendation);
 
-            $segmentFlightRefs = SegmentFlightRefs::fromRecommendation($offer);
+            foreach ($recommendations as $recommendation) {
+                $segmentFlightRefs = SegmentFlightRefs::fromRecommendation($recommendation);
+
+                foreach ($segmentFlightRefs->getSegmentRefsForFlights() as $segmentFlightRef) {
+                    yield [$recommendation, $segmentFlightRef];
+                }
+            }
+        };
+
+        // iterate through the recommendations
+        foreach ($allOffers() as list($recommendation, $segmentFlightRefs)) {
+            $result = new SearchResponse\Result();
 
             $result
                 ->setItinerary(new SearchResponse\ItineraryResult())
                 ->getItinerary()
                     ->setLegs($this->setupResponseLegs($legCollection, $segmentFlightRefs));
 
-            $fareProducts = new NodeList($offer->paxFareProduct);
-
-            $conversionRateDetail = new NodeList($this->amadeusResult->response->conversionRate->conversionRateDetail);
-            $currency = $conversionRateDetail->first()->currency;
+            $fareProducts = new NodeList($recommendation->paxFareProduct);
 
             $result->setCalculation(new SearchResponse\CalculationResult());
 
-            if ($currency !== null) {
-                $result->getCalculation()->setCurrency($currency);
+            $conversionRateDetail = new NodeList($this->amadeusResult->response->conversionRate->conversionRateDetail);
+
+            if (!$conversionRateDetail->isEmpty()) {
+                $result->getCalculation()->setCurrency($conversionRateDetail->first()->currency);
             }
 
             // setup calculation & fare
@@ -207,6 +218,11 @@ class AmadeusResponseTransformer
                 }
             }
 
+            $result->getCalculation()->getFlight()->setTotal(
+                $result->getCalculation()->getFlight()->getFare()->getTotal()
+                + $result->getCalculation()->getFlight()->getTax()->getTotal()
+            );
+
             $fareDetails = new NodeList($fareProducts->first()->fareDetails);
 
             foreach ($fareDetails as $legIndex => $singleFareDetail) {
@@ -244,11 +260,11 @@ class AmadeusResponseTransformer
      * Generate a leg collection for an search response based of
      * reference entries off a recommendation
      *
-     * @param Collection        $legCollection
-     * @param SegmentFlightRefs $segmentFlightRefs
+     * @param Collection       $legCollection
+     * @param SegmentFlightRef $segmentFlightRefs
      * @return ArrayCollection
      */
-    private function setupResponseLegs(Collection $legCollection, SegmentFlightRefs $segmentFlightRefs): ArrayCollection
+    private function setupResponseLegs(Collection $legCollection, SegmentFlightRef $segmentFlightRefs): ArrayCollection
     {
         $requestedLegs = new ArrayCollection();
 
@@ -283,6 +299,7 @@ class AmadeusResponseTransformer
 
             foreach ($groupOfFlights as $leg) {
                 $itineraryLeg = new SearchResponse\Leg();
+                $itineraryLeg->setClassification(self::CLASSIFICATION_SCHEDULED);
                 $itineraryLeg->setSegments(new ArrayCollection());
 
                 $segments = new NodeList($leg->flightDetails);
@@ -386,6 +403,8 @@ class AmadeusResponseTransformer
 
                     $itineraryLeg->getSegments()->add($legSegment);
                 }
+
+                $itineraryLeg->setNights((new Nights($itineraryLeg->getSegments()))->getNights());
 
                 $indexLegCollection->add($itineraryLeg);
             }
