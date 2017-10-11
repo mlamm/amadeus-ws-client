@@ -62,12 +62,12 @@
         "content-provider": 123,
         "type": 123,
         "fare-type": 123,
-        "result-limit": "a",
         "options": {
           "is-one-way-combination": 1,
           "is-overnight": 0,
           "is-area-search": "a",
-          "is-benchmark": "b"
+          "is-benchmark": "b",
+          "result-limit": "a"
         },
         "authentication": {
           "office-id": true,

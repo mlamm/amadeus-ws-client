@@ -15,10 +15,10 @@ $I->seeHttpHeader('content-type', 'application/hal+json');
 $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
 
 $I->canSeeResponseContainsJson(
-    ['business-cases.0.0.result-limit' => [
+    ['business-cases.0.0.options.result-limit' => [
         [
             'code'    => ValidationException::INTERNAL_ERROR_CODE,
-            'message' => 'INVALID OR MISSING REQUEST PARAM - result-limit must be greater than 0',
+            'message' => 'INVALID OR MISSING REQUEST PARAM - options.result-limit must be greater than 0',
             'status'  => 400
         ]
     ]]
