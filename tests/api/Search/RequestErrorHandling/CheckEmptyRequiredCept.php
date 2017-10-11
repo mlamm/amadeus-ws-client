@@ -170,6 +170,16 @@ $I->canSeeResponseContainsJson(
 );
 
 $I->canSeeResponseContainsJson(
+    ['business-cases.0.0.options.result-limit' => [
+        [
+            'code'    => ValidationException::INTERNAL_ERROR_CODE,
+            'message' => 'INVALID OR MISSING REQUEST PARAM - options.result-limit must not be empty',
+            'status'  => 400
+        ]
+    ]]
+);
+
+$I->canSeeResponseContainsJson(
     ['business-cases.0.0.authentication.office-id' => [
         [
             'code'    => ValidationException::INTERNAL_ERROR_CODE,

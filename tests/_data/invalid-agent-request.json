@@ -62,12 +62,12 @@
         "content-provider": "ypsilon",
         "type": "round-trip",
         "fare-type": "low",
-        "result-limit": 2,
         "options": {
           "is-one-way-combination": true,
           "is-overnight": false,
           "is-area-search": true,
-          "is-benchmark": false
+          "is-benchmark": false,
+          "result-limit": 2
         },
         "authentication": {
           "office-id": "AAAAAAA",

@@ -120,12 +120,12 @@ class AmadeusRequestValidator
                 $validator->required('content-provider')->string()->equals('amadeus');
                 $validator->required('type')->string()->inArray($allowedTypes);
                 $validator->required('fare-type')->string();
-                $validator->optional('result-limit')->allowEmpty(false)->integer(true)->greaterThan(0);
                 $validator->required('options');
                 $validator->required('options.is-one-way-combination')->bool();
                 $validator->required('options.is-overnight')->bool();
                 $validator->required('options.is-area-search')->bool();
                 $validator->required('options.is-benchmark')->bool();
+                $validator->optional('options.result-limit')->allowEmpty(false)->integer(true)->greaterThan(0);
                 $validator->required('authentication');
                 $validator->required('authentication.office-id')->string();
                 $validator->required('authentication.user-id')->string();

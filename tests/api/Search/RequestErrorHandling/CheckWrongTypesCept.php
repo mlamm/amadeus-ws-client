@@ -115,16 +115,6 @@ $I->canSeeResponseContainsJson(
 );
 
 $I->canSeeResponseContainsJson(
-    ['business-cases.0.0.result-limit' => [
-        [
-            'code'    => ValidationException::INTERNAL_ERROR_CODE,
-            'message' => 'INVALID OR MISSING REQUEST PARAM - result-limit must be an integer',
-            'status'  => 400
-        ]
-    ]]
-);
-
-$I->canSeeResponseContainsJson(
     ['business-cases.0.0.options.is-one-way-combination' => [
         [
             'code'    => ValidationException::INTERNAL_ERROR_CODE,
@@ -149,6 +139,26 @@ $I->canSeeResponseContainsJson(
         [
             'code'    => ValidationException::INTERNAL_ERROR_CODE,
             'message' => 'INVALID OR MISSING REQUEST PARAM - options.is-area-search must be either true or false',
+            'status'  => 400
+        ]
+    ]]
+);
+
+$I->canSeeResponseContainsJson(
+    ['business-cases.0.0.options.is-benchmark' => [
+        [
+            'code'    => ValidationException::INTERNAL_ERROR_CODE,
+            'message' => 'INVALID OR MISSING REQUEST PARAM - options.is-benchmark must be either true or false',
+            'status'  => 400
+        ]
+    ]]
+);
+
+$I->canSeeResponseContainsJson(
+    ['business-cases.0.0.options.result-limit' => [
+        [
+            'code'    => ValidationException::INTERNAL_ERROR_CODE,
+            'message' => 'INVALID OR MISSING REQUEST PARAM - options.result-limit must be an integer',
             'status'  => 400
         ]
     ]]
