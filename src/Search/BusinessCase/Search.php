@@ -64,7 +64,7 @@ class Search extends BusinessCase
                 throw new AmadeusRequestException($searchResult->messages);
             }
 
-            $mappedResponse = $this->responseTransformer->mapResultToDefinedStructure($searchResult);
+            $mappedResponse = $this->responseTransformer->mapResultToDefinedStructure($request, $searchResult);
 
             return new SearchResultResponse(
                 json_decode($this->responseTransformer->getMappedResponseAsJson($mappedResponse))

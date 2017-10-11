@@ -29,7 +29,7 @@
                   "arrive-at": 1514745300,
                   "depart-at": 1514741400,
                   "cabin-class": {
-                    "code": "Y",
+                    "code": "M",
                     "name": "Economy"
                   },
                   "flight-number": 8464,
@@ -71,7 +71,7 @@
                   "arrive-at": 1514827500,
                   "depart-at": 1514817300,
                   "cabin-class": {
-                    "code": "Y",
+                    "code": "M",
                     "name": "Economy"
                   },
                   "flight-number": 8463,

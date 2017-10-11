@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\Library\SearchRequest\ResponseMapping\Mapper;
+use Flight\SearchRequestMapping\Entity\Request;
 
 /**
  * Class AmadeusResponseTransformer
@@ -20,25 +21,9 @@ class AmadeusResponseTransformer
     private const CLASSIFICATION_SCHEDULED = 'scheduled';
 
     /**
-     * @var Result
-     */
-    protected $amadeusResult;
-
-    /**
      * @var Mapper
      */
     protected $mapper;
-
-    /**
-     * @var SearchResponse
-     */
-    private $mappedResponse;
-
-    /**
-     * Contains the flight index setup in entites
-     * @var ArrayCollection
-     */
-    private $legCollection;
 
     /**
      * @param Mapper $mapper
@@ -50,22 +35,20 @@ class AmadeusResponseTransformer
         $this->mapper = $mapper;
     }
 
-    public function mapResultToDefinedStructure(Result $amadeusResult) : SearchResponse
+    public function mapResultToDefinedStructure(Request $searchRequest, Result $amadeusResult) : SearchResponse
     {
-        $this->amadeusResult = $amadeusResult;
-
         /** @var SearchResponse $searchResponse */
         $searchResponse = new SearchResponse();
         $searchResponse->setResult(new ArrayCollection());
 
         // map the flight index to a leg collection the first layer represents the requested leg
         // the second layer the indexed legs for said requested leg
-        $legCollection = $this->mapLegs();
+        $legCollection = $this->mapLegs($amadeusResult);
 
         // A single <recommendation> can contain multiple flights.
         // Returns a flat list of all flights from the recommendations and their segmentFlightRefs
-        $allOffers = function () {
-            $recommendations = new NodeList($this->amadeusResult->response->recommendation);
+        $allOffers = function (Result $amadeusResult) {
+            $recommendations = new NodeList($amadeusResult->response->recommendation);
 
             foreach ($recommendations as $recommendation) {
                 $segmentFlightRefs = SegmentFlightRefs::fromRecommendation($recommendation);
@@ -77,19 +60,20 @@ class AmadeusResponseTransformer
         };
 
         // iterate through the recommendations
-        foreach ($allOffers() as list($recommendation, $segmentFlightRefs)) {
+        foreach ($allOffers($amadeusResult) as list($recommendation, $segmentFlightRefs)) {
             $result = new SearchResponse\Result();
 
             $result
                 ->setItinerary(new SearchResponse\ItineraryResult())
                 ->getItinerary()
+                    ->setType($searchRequest->getBusinessCases()->first()->first()->getType())
                     ->setLegs($this->setupResponseLegs($legCollection, $segmentFlightRefs));
 
             $fareProducts = new NodeList($recommendation->paxFareProduct);
 
             $result->setCalculation(new SearchResponse\CalculationResult());
 
-            $conversionRateDetail = new NodeList($this->amadeusResult->response->conversionRate->conversionRateDetail);
+            $conversionRateDetail = new NodeList($amadeusResult->response->conversionRate->conversionRateDetail);
 
             if (!$conversionRateDetail->isEmpty()) {
                 $result->getCalculation()->setCurrency($conversionRateDetail->first()->currency);
@@ -240,10 +224,15 @@ class AmadeusResponseTransformer
                                     ->getSegments()
                                         ->offsetGet($segmentIndex);
 
-                    $legSegment
-                        ->setCabinClass(new SearchResponse\CabinClass())
-                        ->getCabinClass()
-                            ->setCode(@$segmentFare->productInformation->cabinProduct->cabin);
+                    $cabinClass = new CabinClass($segmentFare);
+
+                    if ($cabinClass->getCode()) {
+                        $legSegment
+                            ->setCabinClass(new SearchResponse\CabinClass())
+                            ->getCabinClass()
+                                ->setCode($cabinClass->getCode())
+                                ->setName($cabinClass->getName());
+                    }
 
                     // add remaining seats
                     $legSegment->setRemainingSeats($segmentFare->productInformation->cabinProduct->avlStatus);
@@ -286,12 +275,14 @@ class AmadeusResponseTransformer
     /**
      * Method to setup the leg collection for an itinerary
      *
+     * @param Result $amadeusResult
+     *
      * @return Collection
      */
-    private function mapLegs() : Collection
+    private function mapLegs(Result $amadeusResult) : Collection
     {
         $legCollection = new ArrayCollection();
-        $flightIndex = new NodeList($this->amadeusResult->response->flightIndex);
+        $flightIndex = new NodeList($amadeusResult->response->flightIndex);
 
         foreach ($flightIndex as $itineraryDirection) {
             $indexLegCollection = new ArrayCollection();

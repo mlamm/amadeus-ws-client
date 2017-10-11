@@ -1,4 +1,9 @@
 <?php
+
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 chdir(__DIR__ . '/..');
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -20,8 +25,8 @@ $app->register(
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
 $app->error(
-    function (\Exception $ex, \Symfony\Component\HttpFoundation\Request $request, $code) {
-        return new \Symfony\Component\HttpFoundation\JsonResponse(
+    function (\Exception $ex, Request $request, $code) {
+        return new JsonResponse(
             [
                 'error' => [
                     '_' => [
@@ -37,6 +42,19 @@ $app->error(
         );
     }
 );
+
+// set json ecoding options from config
+$app->after(function (Request $request, Response $response) use ($app) {
+    if ($response instanceof JsonResponse) {
+        if (isset($app['config']->search->response->json_encoding_options)) {
+            $value = 0;
+            foreach ($app['config']->search->response->json_encoding_options as $option) {
+                $value |= constant($option);
+            }
+            $response->setEncodingOptions($value);
+        }
+    }
+});
 
 // register config
 $app['config'] = $config= \Symfony\Component\Yaml\Yaml::parse(
