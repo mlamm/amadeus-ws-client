@@ -2,9 +2,9 @@
 namespace AmadeusService\Search\Traits;
 
 use AmadeusService\Search\Exception\InvalidRequestException;
-use AmadeusService\Search\Exception\MissingRequestParameterException;
 use Flight\SearchRequestMapping\Mapper;
 use Symfony\Component\HttpFoundation\Request;
+use \Flight\SearchRequestMapping\Entity\Request as FlightRequest;
 
 /**
  * Trait SearchRequestMappingTrait
@@ -14,7 +14,8 @@ trait SearchRequestMappingTrait
 {
     /**
      * @param Request $request
-     * @return \Flight\SearchRequestMapping\Entity\Request
+     * @return FlightRequest
+     * @throws InvalidRequestException
      */
     public function getMappedRequest(Request $request)
     {

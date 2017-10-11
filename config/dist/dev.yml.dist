@@ -3,6 +3,17 @@ search:
 
     wsdl: 1ASIWUFITBD_PDT_20170727_125137.wsdl
 
+    allowed_agents:
+        - fluege.de
+    allowed_types:
+        - round-trip
+        - one-way
+        - open-jaw
+    allowed_cabin_class:
+        - Y
+        - F
+        - C
+
     database:
         ibe:
             host: edb06.l.unister.lan

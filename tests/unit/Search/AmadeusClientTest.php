@@ -1,22 +1,38 @@
 <?php
-namespace Search;
+namespace amadeusService\Tests\Search;
 
 use Amadeus\Client;
 use AmadeusService\Search\Model\AmadeusClient;
+use Codeception\Test\Unit;
 use Doctrine\DBAL\Connection;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\BusinessCaseAuthentication;
 use Psr\Log\LoggerInterface;
 
-class AmadeusClientTest extends \Codeception\Test\Unit
+/**
+ * AmadeusClientTest.php
+ *
+ * test functionality of the class
+ *
+ * @coversDefaultClass AmadeusService\Search\Model\AmadeusClient
+ *
+ * @copyright Copyright (c) ${YEAR} Invia Flights Germany GmbH
+ * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
+ * @author    Fluege-Dev <fluege-dev@invia.de>
+ */
+class AmadeusClientTest extends Unit
 {
     /**
      * @var \UnitTester
      */
     protected $tester;
 
-    public function testCreatingAnAmadeusClient()
+    /**
+     * @covers ::prepare
+     */
+    public function testCreatingAnAmadeusClient() : void
     {
+        /** @var LoggerInterface|\Mockery\MockInterface $logger */
         $logger = \Mockery::mock(LoggerInterface::class);
         $logger->shouldReceive('log');
 
@@ -45,12 +61,14 @@ class AmadeusClientTest extends \Codeception\Test\Unit
             ->shouldReceive('getOrganizationId')
             ->once();
 
+        /** @var BusinessCase|\Mockery\MockInterface $businessCase */
         $businessCase = \Mockery::mock(BusinessCase::class);
         $businessCase
             ->shouldReceive('getAuthentication')
             ->times(6)
             ->andReturn($authentication);
 
+        /** @var Connection|\Mockery\MockInterface $databaseMock */
         $databaseMock = \Mockery::mock(Connection::class);
 
         $config = new \stdClass();
@@ -59,10 +77,10 @@ class AmadeusClientTest extends \Codeception\Test\Unit
 
         $amaClient = new AmadeusClient(
             $logger,
-            $businessCase,
             $databaseMock,
             $config
         );
+        $amaClient->prepare($businessCase);
         $client = $amaClient->getClient();
 
         $this->assertInstanceOf(Client::class, $client);

@@ -5,12 +5,12 @@ $I->sendPOST(
     '/flight-search/',
     file_get_contents(codecept_data_dir('invalid-request.json'))
 );
-$I->seeResponseCodeIs(500);
+$I->seeResponseCodeIs(400);
 $I->haveHttpHeader('content-type', 'application/hal+json');
 $I->canSeeResponseContainsJson(
     [
         'code' => 'ARS0003',
         'message' => 'The provided request could not be mapped into the appropriate format',
-        'status' => 500
+        'status' => 400
     ]
 );

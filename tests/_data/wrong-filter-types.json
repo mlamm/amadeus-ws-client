@@ -18,12 +18,8 @@
   "children": 0,
   "infants": 0,
   "is-synthetic": false,
-  "filter-airline": [
-
-  ],
-  "filter-cabin-class": [
-
-  ],
+  "filter-airline": "a",
+  "filter-cabin-class": "a",
   "filter-arrive-before": [
 
   ],

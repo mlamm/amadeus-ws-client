@@ -2,7 +2,6 @@
 namespace AmadeusService\Search\Model;
 
 use Amadeus\Client\Result;
-use AmadeusService\Console\Command\AddBusinessCase;
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\Library\SearchRequest\ResponseMapping\Mapper;
@@ -30,30 +29,25 @@ class AmadeusResponseTransformer
     protected $mapper;
 
     /**
-     * @var SearchResponse
-     */
-    private $mappedResponse;
-
-    /**
      * Contains the flight index setup in entites
      * @var ArrayCollection
      */
     private $legCollection;
 
     /**
+     * @param Mapper $mapper
+     *
      * AmadeusResponseTransformer constructor.
-     * @param Result $result
      */
-    public function __construct(Result $result)
+    public function __construct(Mapper $mapper)
     {
-        $this->amadeusResult = $result;
-        $this->mapper = new Mapper(getcwd() . '/var/cache/response-mapping/');
-        $this->mapResultToDefinedStructure();
+        $this->mapper = $mapper;
     }
 
-
-    private function mapResultToDefinedStructure()
+    public function mapResultToDefinedStructure(Result $result) : SearchResponse
     {
+        $this->amadeusResult = $result;
+
         /** @var SearchResponse $searchResponse */
         $searchResponse = new SearchResponse();
         $searchResponse->setResult(new ArrayCollection());
@@ -305,7 +299,7 @@ class AmadeusResponseTransformer
             $searchResponse->getResult()->add($result);
         }
 
-        $this->mappedResponse = $searchResponse;
+        return $searchResponse;
     }
 
     /**
@@ -338,7 +332,7 @@ class AmadeusResponseTransformer
 
     /**
      * Method to setup the leg collection for an itinerary
-     * @param int $offset
+     *
      * @return ArrayCollection
      */
     private function mapLegs()
@@ -496,18 +490,11 @@ class AmadeusResponseTransformer
     }
 
     /**
-     * @return SearchResponse
-     */
-    public function getMappedResponse()
-    {
-        return $this->mappedResponse;
-    }
-
-    /**
+     * @param SearchResponse $mappedResponse
      * @return string
      */
-    public function getMappedResponseAsJson()
+    public function getMappedResponseAsJson(SearchResponse $mappedResponse)
     {
-        return $this->mapper->createJson($this->getMappedResponse());
+        return $this->mapper->createJson($mappedResponse);
     }
 }

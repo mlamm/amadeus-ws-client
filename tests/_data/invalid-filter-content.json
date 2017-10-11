@@ -19,10 +19,13 @@
   "infants": 0,
   "is-synthetic": false,
   "filter-airline": [
-
+    "SU",
+    "AF",
+    "LH",
+    "SACCCC"
   ],
   "filter-cabin-class": [
-
+    "Y", "X"
   ],
   "filter-arrive-before": [
 

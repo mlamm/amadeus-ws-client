@@ -62,7 +62,7 @@
         "content-provider": "amadeus",
         "type": "round-trip",
         "fare-type": "net",
-        "result-limit": 1,
+        "result-limit": 0,
         "options": {
           "is-one-way-combination": true,
           "is-overnight": false,

@@ -15,6 +15,8 @@ $app->register(
     ]
 );
 
+$app->register(new Silex\Provider\ServiceControllerServiceProvider());
+
 $app->error(
     function (\Exception $ex, \Symfony\Component\HttpFoundation\Request $request, $code) {
         return new \Symfony\Component\HttpFoundation\JsonResponse(
@@ -40,31 +42,42 @@ $app['config'] = $config= \Symfony\Component\Yaml\Yaml::parse(
     \Symfony\Component\Yaml\Yaml::PARSE_OBJECT_FOR_MAP
 );
 
-// register a lazy DI container
-$app['service-container'] = function () use ($config) {
-    /** @var \Symfony\Component\DependencyInjection\ContainerBuilder $containerBuilder */
-    $containerBuilder = new \Symfony\Component\DependencyInjection\ContainerBuilder();
+$app['businesscase.search'] = $app->factory(function () use ($app) {
 
+    $mapper = new Flight\Library\SearchRequest\ResponseMapping\Mapper(getcwd() . '/var/cache/response-mapping/');
+
+    $responseTransformer = new AmadeusService\Search\Model\AmadeusResponseTransformer($mapper);
+    $validator = new AmadeusService\Search\Request\Validator\AmadeusRequestValidator(
+        $app['config']->search
+    );
+
+    return new AmadeusService\Search\BusinessCase\Search(
+        $responseTransformer,
+        $validator
+    );
+});
+
+$app['amadeus.client'] = $app->factory(function() use ($app) {
     // IBE CACHE DATABASE SETUP
     $ibeCacheDatabaseConfig = new \Doctrine\DBAL\Configuration();
 
     $ibeCacheDatabaseConnectionParams = [
-        'dbname' => $config->search->database->ibe_cache->db_name,
-        'user' => $config->search->database->ibe_cache->user,
-        'password' => $config->search->database->ibe_cache->password,
-        'host' => $config->search->database->ibe_cache->host,
+        'dbname' => $app['config']->search->database->ibe_cache->db_name,
+        'user' => $app['config']->search->database->ibe_cache->user,
+        'password' => $app['config']->search->database->ibe_cache->password,
+        'host' => $app['config']->search->database->ibe_cache->host,
         'driver' => 'pdo_mysql'
     ];
 
-    $containerBuilder
-        ->set(
-            'database.ibe_cache',
-            \Doctrine\DBAL\DriverManager::getConnection($ibeCacheDatabaseConnectionParams, $ibeCacheDatabaseConfig)
-        );
+    $ibeCacheDatabaseConnection = \Doctrine\DBAL\DriverManager::getConnection($ibeCacheDatabaseConnectionParams, $ibeCacheDatabaseConfig);
 
-    // register your services
-    return $containerBuilder;
-};
+    return new \AmadeusService\Search\Model\AmadeusClient(
+        $app['monolog'],
+        $ibeCacheDatabaseConnection,
+        $app['config']
+    );
+
+});
 
 // application provider
 $app->mount('/', new \AmadeusService\Index\IndexProvider());

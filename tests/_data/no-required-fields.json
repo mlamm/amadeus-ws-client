@@ -1,0 +1,32 @@
+{
+  "search-hash": "",
+  "flight-hash": "",
+  "is-synthetic": false,
+  "filter-airline": [
+
+  ],
+  "filter-cabin-class": [
+
+  ],
+  "filter-arrive-before": [
+
+  ],
+  "filter-depart-after": [
+
+  ],
+  "filter-duration": [
+
+  ],
+  "filter-free-beggage": false,
+  "filter-identical-origin": false,
+  "filter-airports": [
+
+  ],
+  "filter-payment-method": [
+
+  ],
+  "filter-price-min": "",
+  "filter-price-max": "",
+  "filter-stops": null,
+  "page": 1
+}
