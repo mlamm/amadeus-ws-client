@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace AmadeusService\Tests\FlightSearch\Exception;
 
-use Codeception\Test\Unit;
 use AmadeusService\Search\Exception\MissingRequestParameterException;
+use Codeception\Test\Unit;
 
 /**
  * MissingRequestParameterExceptionTest.php

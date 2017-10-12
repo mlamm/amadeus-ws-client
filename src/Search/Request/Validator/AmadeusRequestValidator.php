@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace AmadeusService\Search\Request\Validator;
 
+use AmadeusService\Search\Exception\InvalidRequestException;
+use AmadeusService\Search\Exception\InvalidRequestParameterException;
 use Particle\Validator\Exception\InvalidValueException;
 use Particle\Validator\ValidationResult;
 use Particle\Validator\Validator;
 use Symfony\Component\HttpFoundation\Request;
-use AmadeusService\Search\Exception\InvalidRequestException;
-use AmadeusService\Search\Exception\InvalidRequestParameterException;
 
 /**
  * AmadeusRequestValidator.php

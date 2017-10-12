@@ -1,4 +1,4 @@
-<?php 
+<?php
 $I = new ApiTester($scenario);
 $I->wantTo('see an error for authentication when the authentication node in the request is missing');
 $I->sendPOST(
@@ -10,7 +10,7 @@ $I->haveHttpHeader('content-type', 'application/hal+json');
 $I->canSeeResponseContainsJson(
     [
         'code' => 'ARS000X',
-        'message' => 'AMADEUS RESPONSE ERROR -- 920 -- Past date/time not allowed',
+        'message' => 'AMADEUS RESPONSE ERROR [920,Past date/time not allowed]',
         'status' => 500
     ]
 );

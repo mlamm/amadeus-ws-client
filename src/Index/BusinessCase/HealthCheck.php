@@ -21,9 +21,6 @@ class HealthCheck extends BusinessCase
                     'search' => '/flight-search/'
                 ],
                 'state' => 'alive',
-                'database' => [
-                    'ibe_cache' => $this->get('database.ibe_cache')->ping() ? 'alive' : 'dead'
-                ]
             ],
             200
         );

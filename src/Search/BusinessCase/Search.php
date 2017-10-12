@@ -60,12 +60,10 @@ class Search extends BusinessCase
                 ->search($request, $request->getBusinessCases()->first()->first());
 
             if ($searchResult->status !== Result::STATUS_OK) {
-                $ex = new AmadeusRequestException();
-                $ex->assignError($searchResult->response->errorMessage);
-                throw $ex;
+                throw new AmadeusRequestException($searchResult->messages);
             }
 
-            $mappedResponse = $this->responseTransformer->mapResultToDefinedStructure($searchResult);
+            $mappedResponse = $this->responseTransformer->mapResultToDefinedStructure($request, $searchResult);
 
             return new SearchResultResponse(
                 json_decode($this->responseTransformer->getMappedResponseAsJson($mappedResponse))

@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace AmadeusService\Search\Response;
 
-use Particle\Validator\Failure;
-use Symfony\Component\HttpFoundation\Response;
 use AmadeusService\Application\Response\ErrorResponse;
 use AmadeusService\Search\Exception\ValidationException;
+use Particle\Validator\Failure;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * AmadeusErrorResponse.php

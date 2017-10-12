@@ -57,19 +57,4 @@ abstract class BusinessCase implements BusinessCaseInterface
     {
         return $this->application['config'];
     }
-
-    /**
-     * @param mixed $id
-     * @param int $invalidBehavior
-     * @return object
-     */
-    public function get(
-        $id,
-        $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE
-    )
-    {
-        /** @var ContainerBuilder $container */
-        $container = $this->application['service-container'];
-        return $container->get($id, $invalidBehavior);
-    }
 }

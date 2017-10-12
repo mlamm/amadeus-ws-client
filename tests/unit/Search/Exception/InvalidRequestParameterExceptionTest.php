@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace AmadeusService\Tests\Search\Exception;
 
-use Particle\Validator\Failure;
 use AmadeusService\Search\Exception\InvalidRequestParameterException;
-use \Codeception\Test\Unit;
+use Codeception\Test\Unit;
+use Particle\Validator\Failure;
 
 /**
  * InvalidRequestParamExceptionTest.php
  *
- * @coversDefaultClass AmadeusService\Search\Exception\InvalidRequestParameterException;
+ * @coversDefaultClass AmadeusService\Search\Exception\InvalidRequestParameterException
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -20,10 +20,10 @@ class InvalidRequestParameterExceptionTest extends Unit
 {
     /**
      * Verify that it makes the validation failures accessible
+     *
      * @covers ::__construct
      * @covers ::getFailures
      * @covers ::getInternalErrorCode
-     *
      */
     public function testItStoresFailures()
     {

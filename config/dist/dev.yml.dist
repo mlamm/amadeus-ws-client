@@ -126,3 +126,8 @@ search:
         - "VG"
         - "W3"
         - "8U"
+
+    response:
+        json_encoding_options:
+            - JSON_PRETTY_PRINT
+            - JSON_UNESCAPED_SLASHES

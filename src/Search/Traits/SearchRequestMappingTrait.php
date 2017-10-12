@@ -2,9 +2,9 @@
 namespace AmadeusService\Search\Traits;
 
 use AmadeusService\Search\Exception\InvalidRequestException;
+use Flight\SearchRequestMapping\Entity\Request as FlightRequest;
 use Flight\SearchRequestMapping\Mapper;
 use Symfony\Component\HttpFoundation\Request;
-use \Flight\SearchRequestMapping\Entity\Request as FlightRequest;
 
 /**
  * Trait SearchRequestMappingTrait
@@ -23,7 +23,7 @@ trait SearchRequestMappingTrait
             $mapper = new Mapper($request->getContent(), getcwd() . '/var/cache/request');
             return $mapper->getRequest();
         } catch (\Exception $ex) {
-            throw new InvalidRequestException();
+            throw new InvalidRequestException('', 0, $ex);
         }
     }
 }

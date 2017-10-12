@@ -6,12 +6,13 @@ namespace AmadeusService\Tests\Search\Response;
 use AmadeusService\Search\Response\AmadeusErrorResponse;
 use Codeception\Test\Unit;
 use Particle\Validator\Failure;
+
 /**
  * AmadeusErrorResponseTest.php
  *
  * test functionality of the class
  *
- * @coversDefaultClass AmadeusService\Search\Response\AmadeusErrorResponse;
+ * @coversDefaultClass AmadeusService\Search\Response\AmadeusErrorResponse
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

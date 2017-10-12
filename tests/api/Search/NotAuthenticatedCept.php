@@ -10,7 +10,6 @@ $I->haveHttpHeader('content-type', 'application/hal+json');
 $I->canSeeResponseContainsJson(
     [
         'code' => 'ARS0001',
-        'message' => 'The `Amadeus\Client::securityAuthenticate` method didn\'t return state OK',
         'status' => 500
     ]
 );

@@ -1,0 +1,75 @@
+{
+  "result": [
+    {
+      "_itinerary": {
+        "type": "one-way",
+        "legs": [
+          [
+            {
+              "provider": "amadeus",
+              "classification": "scheduled",
+              "carriers": {
+                "main": {
+                  "iata": "4U"
+                }
+              },
+              "duration": 7500,
+              "nights": 0,
+              "segments": [
+                {
+                  "aircraft-type": "319",
+                  "airports": {
+                    "arrival": {
+                      "iata": "LHR"
+                    },
+                    "departure": {
+                      "iata": "TXL"
+                    }
+                  },
+                  "arrive-at": 1514745300,
+                  "depart-at": 1514741400,
+                  "cabin-class": {
+                    "code": "M",
+                    "name": "Economy"
+                  },
+                  "flight-number": 8464,
+                  "carriers": {
+                    "marketing": {
+                      "iata": "4U"
+                    },
+                    "operating": {
+                      "iata": "4U"
+                    }
+                  },
+                  "remaining-seats": 9
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      "_calculation": {
+        "flight": {
+          "total": 174.98,
+          "fare": {
+            "total": 174.98,
+            "passenger-types": {
+              "adult": 87.49,
+              "child": 0,
+              "infant": 0
+            }
+          },
+          "tax": {
+            "total": 0,
+            "passenger-types": {
+              "adult": 0,
+              "child": 0,
+              "infant": 0
+            }
+          }
+        },
+        "currency": "EUR"
+      }
+    }
+  ]
+}

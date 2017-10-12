@@ -15,7 +15,7 @@
     "LON"
   ],
   "adults": 2,
-  "children": 0,
+  "children": 1,
   "infants": 0,
   "is-synthetic": false,
   "filter-airline": [
@@ -54,20 +54,29 @@
       "filter": [
 
       ]
+    },
+    {
+      "departure": "LON",
+      "arrival": "BER",
+      "depart-at": 1514811820,
+      "is-flexible-date": false,
+      "filter": [
+
+      ]
     }
   ],
   "business-cases": [
     [
       {
         "content-provider": "amadeus",
-        "type": "one-way",
+        "type": "round-trip",
         "fare-type": "net",
+        "result-limit": 1,
         "options": {
           "is-one-way-combination": true,
           "is-overnight": false,
           "is-area-search": false,
-          "is-benchmark": false,
-          "result-limit": 1
+          "is-benchmark": false
         },
         "authentication": {
           "office-id": "LEJL128AC",

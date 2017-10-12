@@ -1,0 +1,117 @@
+{
+  "result": [
+    {
+      "_itinerary": {
+        "type": "round-trip",
+        "legs": [
+          [
+            {
+              "provider": "amadeus",
+              "classification": "scheduled",
+              "carriers": {
+                "main": {
+                  "iata": "4U"
+                }
+              },
+              "duration": 7500,
+              "nights": 0,
+              "segments": [
+                {
+                  "aircraft-type": "319",
+                  "airports": {
+                    "arrival": {
+                      "iata": "LHR"
+                    },
+                    "departure": {
+                      "iata": "TXL"
+                    }
+                  },
+                  "arrive-at": 1514745300,
+                  "depart-at": 1514741400,
+                  "cabin-class": {
+                    "code": "M",
+                    "name": "Economy"
+                  },
+                  "flight-number": 8464,
+                  "carriers": {
+                    "marketing": {
+                      "iata": "4U"
+                    },
+                    "operating": {
+                      "iata": "4U"
+                    }
+                  },
+                  "remaining-seats": 9
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "provider": "amadeus",
+              "classification": "scheduled",
+              "carriers": {
+                "main": {
+                  "iata": "4U"
+                }
+              },
+              "duration": 6600,
+              "nights": 0,
+              "segments": [
+                {
+                  "aircraft-type": "319",
+                  "airports": {
+                    "arrival": {
+                      "iata": "TXL"
+                    },
+                    "departure": {
+                      "iata": "LHR"
+                    }
+                  },
+                  "arrive-at": 1514827500,
+                  "depart-at": 1514817300,
+                  "cabin-class": {
+                    "code": "M",
+                    "name": "Economy"
+                  },
+                  "flight-number": 8463,
+                  "carriers": {
+                    "marketing": {
+                      "iata": "4U"
+                    },
+                    "operating": {
+                      "iata": "4U"
+                    }
+                  },
+                  "remaining-seats": 9
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      "_calculation": {
+        "flight": {
+          "total": 494.94,
+          "fare": {
+            "total": 494.94,
+            "passenger-types": {
+              "adult": 164.98,
+              "child": 164.98,
+              "infant": 0
+            }
+          },
+          "tax": {
+            "total": 0,
+            "passenger-types": {
+              "adult": 0,
+              "child": 0,
+              "infant": 0
+            }
+          }
+        },
+        "currency": "EUR"
+      }
+    }
+  ]
+}

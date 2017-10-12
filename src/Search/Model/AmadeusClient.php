@@ -79,9 +79,9 @@ class AmadeusClient
         $this->prepare($businessCase);
 
         // method to check if flight cache is available
-        if ($this->checkFlightCache($request) && $this->config->cache_active) {
-            return $this->retrieveFormattedFlightCache($request);
-        }
+//        if ($this->checkFlightCache($request) && $this->config->cache_active) {
+//            return $this->retrieveFormattedFlightCache($request);
+//        }
 
         if ($request->getLegs()->count() < 1) {
             throw new MissingRequestParameterException();
@@ -90,7 +90,7 @@ class AmadeusClient
         $authResult = $this->client->securityAuthenticate();
 
         if ($authResult->status !== Client\Result::STATUS_OK) {
-            throw new ServiceRequestAuthenticationFailedException();
+            throw new ServiceRequestAuthenticationFailedException($authResult->messages);
         }
 
         $itineraries = [];
