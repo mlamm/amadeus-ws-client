@@ -93,6 +93,10 @@ class AmadeusClient
             throw new ServiceRequestAuthenticationFailedException($authResult->messages);
         }
 
+        $reqTransformer = new AmadeusRequestTransformer();
+
+
+
         $itineraries = [];
 
         /** @var Leg $leg */
@@ -122,22 +126,9 @@ class AmadeusClient
             );
         }
 
-        $options = new Client\RequestOptions\FareMasterPricerTbSearch(
-            [
-                'nrOfRequestedResults' => $request->getBusinessCases()->first()->first()->getOptions()->getResultLimit(),
-                'nrOfRequestedPassengers' => $request->getPassengerCount(),
-                'passengers' => $this->setupPassengers($request),
-                'itinerary' => $itineraries,
-                'flightOptions' => [
-                    Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_ELECTRONIC_TICKET
-                ],
-                'airlineOptions' => [
-                    // Client\RequestOptions\FareMasterPricerTbSearch::AIRLINEOPT_EXCLUDED => ['VY']
-                ]
-            ]
-        );
+        $requestOptions = $this->buildFareMasterRequestOptions($request, $itineraries);
 
-        return $this->getClient()->fareMasterPricerTravelBoardSearch($options);
+        return $this->getClient()->fareMasterPricerTravelBoardSearch($requestOptions);
     }
 
     /**
@@ -174,6 +165,40 @@ class AmadeusClient
         );
 
         return $this;
+    }
+
+    /**
+     * @param Request $request
+     * @param array   $itineraries
+     *
+     * @return Client\RequestOptions\FareMasterPricerTbSearch
+     */
+    protected function buildFareMasterRequestOptions(Request $request,array $itineraries) : Client\RequestOptions\FareMasterPricerTbSearch
+    {
+        $options = [
+            'nrOfRequestedResults' => $request->getBusinessCases()->first()->first()->getResultLimit(),
+            'nrOfRequestedPassengers' => $request->getPassengerCount(),
+            'passengers' => $this->setupPassengers($request),
+            'itinerary' => $itineraries,
+            'flightOptions' => [
+                Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_ELECTRONIC_TICKET
+            ],
+        ];
+
+        if (isset($this->config->search->excluded_airlines) && !empty($this->config->search->excluded_airlines)) {
+            $options['airlineOptions'][Client\RequestOptions\FareMasterPricerTbSearch::AIRLINEOPT_EXCLUDED] = $this->config->search->excluded_airlines;
+        }
+
+        if ($request->getFilterAirline() !== null && !empty($request->getFilterAirline())) {
+            $options['airlineOptions'][Client\RequestOptions\FareMasterPricerTbSearch::AIRLINEOPT_MANDATORY ] = $request->getFilterAirline();
+        }
+
+        if ($request->getFilterCabinClass() != null && !empty(($request->getFilterCabinClass()))) {
+            $options['cabinOption'] = Client\RequestOptions\FareMasterPricerTbSearch::CABINOPT_MANDATORY;
+            $options['cabinClass'] = $request->getFilterCabinClass();
+        }
+
+        return new Client\RequestOptions\FareMasterPricerTbSearch($options);
     }
 
     /**
@@ -359,8 +384,8 @@ class AmadeusClient
     protected function createEntropy()
     {
         $sourceOffice = $this->authentication->getOfficeId();
-        $excludedAirlines = md5(json_encode($this->config->excluded_airlines));
-        $requestOptions = $this->config->request_options;
+        $excludedAirlines = md5(json_encode($this->config->search->excluded_airlines));
+        $requestOptions = $this->config->search->request_options;
 
         return "{$sourceOffice}_{$excludedAirlines}{json_encode($requestOptions)}";
     }
