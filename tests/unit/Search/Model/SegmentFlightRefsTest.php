@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace AmadeusService\Tests\Search\Model;
 
 use AmadeusService\Search\Model\SegmentFlightRefs;
-use Codeception\Util\Debug;
-
 
 /**
  * SegmentFlightRefsTest.php
@@ -20,6 +18,8 @@ use Codeception\Util\Debug;
 class SegmentFlightRefsTest extends \Codeception\Test\Unit
 {
     /**
+     * Verify that the index returns the correct values
+     *
      * @dataProvider provideBuildFromRecommendationTestCases
      */
     public function testItBuildsFlightIndex(string $recommendation, array $expectedSegmentsPerFlight)

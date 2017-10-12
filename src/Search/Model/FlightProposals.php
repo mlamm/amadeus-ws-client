@@ -41,6 +41,12 @@ class FlightProposals
         }
     }
 
+    /**
+     * Named constructor to build the object directly from a <groupOfFlights> node
+     *
+     * @param \stdClass $groupOfFlights
+     * @return FlightProposals
+     */
     public static function fromGroupOfFlights(\stdClass $groupOfFlights) : self
     {
         if (!isset($groupOfFlights->propFlightGrDetail->flightProposal)) {
@@ -50,21 +56,33 @@ class FlightProposals
         return new static(new NodeList($groupOfFlights->propFlightGrDetail->flightProposal));
     }
 
+    /**
+     * @return bool
+     */
     public function hasMajorityCarrier() : bool
     {
         return isset($this->proposals[self::UNIT_MCX]->ref);
     }
 
+    /**
+     * @return string
+     */
     public function getMajorityCarrier() : string
     {
         return $this->proposals[self::UNIT_MCX]->ref;
     }
 
+    /**
+     * @return bool
+     */
     public function hasElapsedFlyingTime() : bool
     {
         return isset($this->proposals[self::UNIT_EFT]->ref);
     }
 
+    /**
+     * @return int
+     */
     public function getElapsedFlyingTime() : int
     {
         $estimatedFlightTime = $this->proposals[self::UNIT_EFT]->ref;

@@ -35,14 +35,14 @@ class NodeListTest extends \Codeception\Test\Unit
     public function provideTestCases()
     {
         return [
-            'wrap int'     => [1, [1]],
-            'wrap string'  => ['a', ['a']],
+            'wrap int'     => [1,                   [1]],
+            'wrap string'  => ['a',                 ['a']],
             'wrap object'  => [(object) ['a' => 1], [(object) ['a' => 1]]],
-            'convert null' => [null, []],
+            'convert null' => [null,                []],
 
-            'pass empty array'     => [[], []],
-            'pass array of int'    => [[1], [1]],
-            'pass array of string' => [['a'], ['a']],
+            'pass empty array'     => [[],         []],
+            'pass array of int'    => [[1],        [1]],
+            'pass array of string' => [['a'],      ['a']],
             'pass assoc keys'      => [['a' => 1], ['a' => 1]],
         ];
     }

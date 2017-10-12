@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace AmadeusService\Search\Model;
 
-use Codeception\Util\Debug;
+use Amadeus\Client\Result;
 
 /**
  * FreeBaggageIndex.php
  *
- * <Description>
+ * Builds an index over the free baggage information for easy query via the relevant references
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -20,9 +20,28 @@ class FreeBaggageIndex
 
     private $freeBagAllowanceGrpIndex;
 
-    public function __construct(\stdClass $response)
+    public function __construct(Result $amaResult)
     {
-        $this->build($response);
+        $this->build($amaResult->response);
+    }
+
+    public function hasFreeBagAllowanceInfo($refFromSegmentFlightRef, $flightNumber, $segmentNumber) : bool
+    {
+        return
+            isset($this->serviceCoverageInfoGrpIndex[$refFromSegmentFlightRef][$flightNumber][$segmentNumber])
+            && isset(
+                $this->freeBagAllowanceGrpIndex[
+                    $this->serviceCoverageInfoGrpIndex[$refFromSegmentFlightRef][$flightNumber][$segmentNumber]
+                ]
+            );
+    }
+
+    public function getFreeBagAllowanceInfo($refFromSegmentFlightRef, $flightNumber, $segmentNumber) : \stdClass
+    {
+        return
+            $this->freeBagAllowanceGrpIndex[
+                $this->serviceCoverageInfoGrpIndex[$refFromSegmentFlightRef][$flightNumber][$segmentNumber]
+            ];
     }
 
     private function build(\stdClass $response)
@@ -40,9 +59,6 @@ class FreeBaggageIndex
                 }
             }
         }
-
-        Debug::debug($this->serviceCoverageInfoGrpIndex);
-        Debug::debug($this->freeBagAllowanceGrpIndex);
     }
 
     private function buildServiceCoverageInfoGrp(iterable $serviceCoverageInfoGrps) : array
@@ -50,16 +66,13 @@ class FreeBaggageIndex
         $serviceCoverageInfoGrpByRef = [];
 
         foreach ($serviceCoverageInfoGrps as $serviceCoverageInfoGrp) {
-            $serviceCoverageInfoGrpByRef[$this->serviceCoverageInfoGrpKey($serviceCoverageInfoGrp)]
-                = $this->buildServiceCovInfoGrp(new NodeList($serviceCoverageInfoGrp->serviceCovInfoGrp));
+            $key = $serviceCoverageInfoGrp->itemNumberInfo->itemNumber->number;
+
+            $serviceCoverageInfoGrpByRef[$key]
+                = $this->buildServiceCovInfoGrp($serviceCoverageInfoGrp);
         }
 
         return $serviceCoverageInfoGrpByRef;
-    }
-
-    private function serviceCoverageInfoGrpKey(\stdClass $serviceCoverageInfoGrp) : string
-    {
-        return $serviceCoverageInfoGrp->itemNumberInfo->itemNumber->number;
     }
 
     private function buildFreeBaggageAllowanceGrp(iterable $freeBagAllowanceGrps) : array
@@ -67,54 +80,47 @@ class FreeBaggageIndex
         $freeBagAllowanceGrpByRef = [];
 
         foreach ($freeBagAllowanceGrps as $freeBagAllowanceGrp) {
-            $freeBagAllowanceGrpByRef[$this->freeBagAllowanceGrpKey($freeBagAllowanceGrp)]
-                = $freeBagAllowanceGrp;
+            $key = $freeBagAllowanceGrp->itemNumberInfo->itemNumberDetails->number;
+
+            $freeBagAllowanceGrpByRef[$key] = $freeBagAllowanceGrp->freeBagAllownceInfo->baggageDetails;
         }
 
         return $freeBagAllowanceGrpByRef;
     }
 
-    private function freeBagAllowanceGrpKey(\stdClass $freeBagAllowanceGrp) : string
+    private function buildServiceCovInfoGrp(\stdClass $serviceCoverageInfoGrp) : array
     {
-        return $freeBagAllowanceGrp->itemNumberInfo->itemNumberDetails->number;
-    }
-
-    private function buildServiceCovInfoGrp(iterable $serviceCovInfoGrps) : array
-    {
-        $serviceCovInfoGrpByRef = [];
-
-        foreach ($serviceCovInfoGrps as $serviceCovInfoGrp) {
-            $serviceCovInfoGrpByRef[$this->serviceCovInfoGrpKey($serviceCovInfoGrp)]
-                = $this->buildCoveragePerFlightsInfo(new NodeList($serviceCovInfoGrp->coveragePerFlightsInfo));
+        if (is_object($serviceCoverageInfoGrp->serviceCovInfoGrp)
+            && isset($serviceCoverageInfoGrp->serviceCovInfoGrp->refInfo->referencingDetail)
+            && $serviceCoverageInfoGrp->serviceCovInfoGrp->refInfo->referencingDetail->refQualifier = 'F'
+        ) {
+            return $this->buildCoveragePerFlightsInfo(
+                new NodeList($serviceCoverageInfoGrp->serviceCovInfoGrp->coveragePerFlightsInfo),
+                $serviceCoverageInfoGrp->serviceCovInfoGrp->refInfo->referencingDetail->refNumber
+            );
         }
 
-        return $serviceCovInfoGrpByRef;
+        return [];
     }
 
-    private function serviceCovInfoGrpKey(\stdClass $serviceCovInfoGrp) : string
-    {
-        return $serviceCovInfoGrp->refInfo->referencingDetail->refQualifier
-            . ':' . $serviceCovInfoGrp->refInfo->referencingDetail->refNumber;
-    }
-
-    private function buildCoveragePerFlightsInfo(iterable $coveragePerFlightsInfos) : array
-    {
+    private function buildCoveragePerFlightsInfo(
+        iterable $coveragePerFlightsInfos,
+        string $freeBagAllowanceRefNumber
+    ) : array {
         $coveragePerFlightsInfoByRef = [];
 
         foreach ($coveragePerFlightsInfos as $coveragePerFlightsInfo) {
-            foreach (new NodeList($coveragePerFlightsInfo->lastItemsDetails) as $lastItemsDetails) {
-                $coveragePerFlightsInfoByRef[$this->coveragePerInfoGrpKey($coveragePerFlightsInfo, $lastItemsDetails)]
-                    = $coveragePerFlightsInfo;
+            if ($coveragePerFlightsInfo->numberOfItemsDetails->referenceQualifier === 'RS') {
+                $refNum = $coveragePerFlightsInfo->numberOfItemsDetails->refNum;
+                $coveragePerFlightsInfoByRef[$refNum] = [];
+
+                foreach (new NodeList($coveragePerFlightsInfo->lastItemsDetails) as $lastItemsDetails) {
+                    $coveragePerFlightsInfoByRef[$refNum][$lastItemsDetails->refOfLeg]
+                        = $freeBagAllowanceRefNumber;
+                }
             }
         }
 
         return $coveragePerFlightsInfoByRef;
-    }
-
-    private function coveragePerInfoGrpKey(\stdClass $coveragePerFlightsInfo, \stdClass $lastItemsDetails) : string
-    {
-        return $coveragePerFlightsInfo->numberOfItemsDetails->referenceQualifier
-            . ':' . $coveragePerFlightsInfo->numberOfItemsDetails->refNum
-            . ':' . $lastItemsDetails->refOfLeg;
     }
 }

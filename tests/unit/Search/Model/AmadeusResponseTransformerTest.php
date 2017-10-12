@@ -14,7 +14,7 @@ use Flight\SearchRequestMapping\Entity\Request;
 /**
  * AmadeusResponseTransformerTest.php
  *
- * <Description>
+ * @covers AmadeusService\Search\Model\AmadeusResponseTransformer
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -23,7 +23,8 @@ use Flight\SearchRequestMapping\Entity\Request;
 class AmadeusResponseTransformerTest extends \Codeception\Test\Unit
 {
     /**
-     * @covers AmadeusService\Search\Model\AmadeusResponseTransformer
+     * Verify that it generates the expected output from the amadeus response
+     *
      *
      * @dataProvider provideTestCases
      */
@@ -50,6 +51,9 @@ class AmadeusResponseTransformerTest extends \Codeception\Test\Unit
         );
     }
 
+    /**
+     * @return array
+     */
     public function provideTestCases()
     {
         return [

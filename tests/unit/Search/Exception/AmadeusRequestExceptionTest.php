@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace AmadeusService\Tests\FlightSearch\Exception;
 
 use Amadeus\Client\Result\NotOk;
-use Codeception\Test\Unit;
 use AmadeusService\Search\Exception\AmadeusRequestException;
+use Codeception\Test\Unit;
 
 /**
  * AmadeusRequestExceptionTest.php

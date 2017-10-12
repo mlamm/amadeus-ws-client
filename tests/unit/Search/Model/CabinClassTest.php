@@ -17,6 +17,8 @@ use AmadeusService\Search\Model\CabinClass;
 class CabinClassTest extends \Codeception\Test\Unit
 {
     /**
+     * Verify that it creates the correct names for the cabin classes
+     *
      * @dataProvider provideTestCodes
      */
     public function testItDeterminesName(string $amaCabin, string $expectedCode, string $expectedName)
@@ -47,6 +49,9 @@ class CabinClassTest extends \Codeception\Test\Unit
         $this->assertEquals($expectedName, $object->getName());
     }
 
+    /**
+     * @return array
+     */
     public function provideTestCodes()
     {
         return [
@@ -78,6 +83,9 @@ class CabinClassTest extends \Codeception\Test\Unit
         ];
     }
 
+    /**
+     * Verify that it returns empty values on missing input (does not crash)
+     */
     public function testItReturnsEmptyValuesOnInvalidInput()
     {
         $object = new CabinClass(new \stdClass);

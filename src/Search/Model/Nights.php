@@ -3,15 +3,12 @@ declare(strict_types=1);
 
 namespace AmadeusService\Search\Model;
 
-use Codeception\Util\Debug;
 use Doctrine\Common\Collections\Collection;
-use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\Segment;
-
 
 /**
  * Nights.php
  *
- * <Description>
+ * Calculate the number of nights
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -19,6 +16,9 @@ use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\Segment;
  */
 class Nights
 {
+    /**
+     * @var int
+     */
     private $nights = 0;
 
     /**

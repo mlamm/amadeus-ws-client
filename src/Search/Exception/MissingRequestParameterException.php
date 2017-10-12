@@ -2,7 +2,6 @@
 namespace AmadeusService\Search\Exception;
 
 use AmadeusService\Application\Exception\ServiceException;
-use Throwable;
 
 /**
  * Class SearchRequestFailedException

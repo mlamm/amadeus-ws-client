@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace AmadeusService\Search\Model;
 
-use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\Segment;
-
 /**
  * CabinClass.php
  *
- * <Description>
+ * Convert the cabin class info
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -34,6 +32,9 @@ class CabinClass
      */
     private $name;
 
+    /**
+     * @param \stdClass $groupOfFares
+     */
     public function __construct(\stdClass $groupOfFares)
     {
         $this->code = $groupOfFares->productInformation->cabinProduct->cabin ?? '';

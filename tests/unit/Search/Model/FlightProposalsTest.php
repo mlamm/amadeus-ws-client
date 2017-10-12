@@ -17,6 +17,8 @@ use AmadeusService\Search\Model\FlightProposals;
 class FlightProposalsTest extends \Codeception\Test\Unit
 {
     /**
+     * Verify that it extracts the Majority Carrier correctly
+     *
      * @covers ::__construct
      * @covers ::hasMajorityCarrier
      * @covers ::getMajorityCarrier
@@ -38,6 +40,8 @@ class FlightProposalsTest extends \Codeception\Test\Unit
     }
 
     /**
+     * Verify that it extracts the ElapsedFlyingTime correctly
+     *
      * @covers ::hasElapsedFlyingTime
      * @covers ::getElapsedFlyingTime
      */
@@ -58,6 +62,8 @@ class FlightProposalsTest extends \Codeception\Test\Unit
     }
 
     /**
+     * Verify that it build the object from a <groupOfFlights> node
+     *
      * @covers ::fromGroupOfFlights
      */
     public function testItBuildsFromGroupOfFlights()

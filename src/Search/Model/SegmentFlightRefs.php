@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace AmadeusService\Search\Model;
 
-use Codeception\Util\Debug;
-
 /**
  * SegmentFlightRefs.php
  *
- * Provides easy access to <segmentFlightRef> nodes via refQualifier
+ * Provides a list of flights to be generated
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -30,7 +28,23 @@ class SegmentFlightRefs
     }
 
     /**
-     * Build the index
+     * Named constructor to build the object from a <recommendation> node
+     *
+     * @param \stdClass $recommendation
+     *
+     * @return SegmentFlightRefs
+     */
+    public static function fromRecommendation(\stdClass $recommendation) : self
+    {
+        if (!isset($recommendation->segmentFlightRef)) {
+            return new static([]);
+        }
+
+        return new static(new NodeList($recommendation->segmentFlightRef));
+    }
+
+    /**
+     * Get a list of all the flights to be generated
      *
      * @param iterable $segmentFlightRefs
      *
@@ -54,22 +68,6 @@ class SegmentFlightRefs
         }
 
         return $flights;
-    }
-
-    /**
-     * Named constructor to build the object from a <recommendation> node
-     *
-     * @param \stdClass $recommendation
-     *
-     * @return SegmentFlightRefs
-     */
-    public static function fromRecommendation(\stdClass $recommendation) : self
-    {
-        if (!isset($recommendation->segmentFlightRef)) {
-            return new static([]);
-        }
-
-        return new static(new NodeList($recommendation->segmentFlightRef));
     }
 
     /**
