@@ -46,7 +46,8 @@
         "symfony/filesystem": "~3.3",
         "zendframework/zend-code": "^3.2",
         "symfony/var-dumper": "^3.3",
-        "justinrainbow/json-schema": "^5.2"
+        "justinrainbow/json-schema": "^5.2",
+        "sorien/silex-pimple-dumper": "^2.0"
     },
     "repositories": {
         "flight-search-request-mapping": {

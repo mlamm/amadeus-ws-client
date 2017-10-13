@@ -43,10 +43,8 @@ class CabinClassTest extends \Codeception\Test\Unit
 
         $groupOfFares->productInformation->cabinProduct->cabin = $amaCabin;
 
-        $object = new CabinClass($groupOfFares);
-
-        $this->assertEquals($expectedCode, $object->getCode());
-        $this->assertEquals($expectedName, $object->getName());
+        $this->assertEquals($expectedCode, CabinClass::code($groupOfFares));
+        $this->assertEquals($expectedName, CabinClass::name($groupOfFares));
     }
 
     /**
@@ -88,8 +86,7 @@ class CabinClassTest extends \Codeception\Test\Unit
      */
     public function testItReturnsEmptyValuesOnInvalidInput()
     {
-        $object = new CabinClass(new \stdClass);
-        $this->assertEquals('', $object->getName());
-        $this->assertEquals('', $object->getCode());
+        $this->assertEquals('', CabinClass::name(new \stdClass));
+        $this->assertEquals('', CabinClass::code(new \stdClass));
     }
 }

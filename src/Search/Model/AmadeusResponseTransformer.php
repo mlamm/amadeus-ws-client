@@ -3,9 +3,10 @@ namespace AmadeusService\Search\Model;
 
 use Amadeus\Client\Result;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\Library\SearchRequest\ResponseMapping\Mapper;
-use Flight\SearchRequestMapping\Entity\Request;
+use Flight\SearchRequestMapping\Entity\BusinessCase;
 
 /**
  * Class AmadeusResponseTransformer
@@ -14,8 +15,8 @@ use Flight\SearchRequestMapping\Entity\Request;
 class AmadeusResponseTransformer
 {
     private const PTC_CHILD = 'CH';
-
     private const PTC_ADULT = 'ADT';
+    private const PTC_INFANT = 'INF';
 
     private const CLASSIFICATION_SCHEDULED = 'scheduled';
 
@@ -34,20 +35,20 @@ class AmadeusResponseTransformer
         $this->mapper = $mapper;
     }
 
-    public function mapResultToDefinedStructure(Request $searchRequest, Result $amadeusResult) : SearchResponse
+    public function mapResultToDefinedStructure(BusinessCase $businessCase, Result $amadeusResult) : SearchResponse
     {
         $searchResponse = new SearchResponse();
         $searchResponse->setResult(new ArrayCollection());
 
         $legIndex = new LegIndex($amadeusResult);
         $freeBaggageIndex = new FreeBaggageIndex($amadeusResult);
+        $conversionRateDetail = new NodeList($amadeusResult->response->conversionRate->conversionRateDetail);
+
 
         // A single <recommendation> can contain multiple flights.
         // Returns a flat list of all flights from the recommendations and their segmentFlightRefs
         $allOffers = function (Result $amadeusResult) {
-            $recommendations = new NodeList($amadeusResult->response->recommendation);
-
-            foreach ($recommendations as $recommendation) {
+            foreach (new NodeList($amadeusResult->response->recommendation) as $recommendation) {
                 $segmentFlightRefs = SegmentFlightRefs::fromRecommendation($recommendation);
 
                 foreach ($segmentFlightRefs->getSegmentRefsForFlights() as $segmentFlightRef) {
@@ -60,207 +61,184 @@ class AmadeusResponseTransformer
         foreach ($allOffers($amadeusResult) as list($recommendation, $segmentFlightRefs)) {
             $result = new SearchResponse\Result();
 
-            $result
-                ->setItinerary(new SearchResponse\ItineraryResult())
-                ->getItinerary()
-                    ->setType($searchRequest->getBusinessCases()->first()->first()->getType())
-                    ->setLegs(new ArrayCollection());
-
-            foreach ($legIndex->groupOfFlights($segmentFlightRefs) as $groupOfFlights) {
-                $leg = $this->mapLeg($groupOfFlights, $freeBaggageIndex);
-                $result->getItinerary()->getLegs()->add(new ArrayCollection([$leg]));
-            }
-
             $fareProducts = new NodeList($recommendation->paxFareProduct);
-
-            $result->setCalculation(new SearchResponse\CalculationResult());
-
-            $conversionRateDetail = new NodeList($amadeusResult->response->conversionRate->conversionRateDetail);
-
-            if (!$conversionRateDetail->isEmpty()) {
-                $result->getCalculation()->setCurrency($conversionRateDetail->first()->currency);
-            }
-
-            // setup calculation & fare
-            $result
-                ->getCalculation()
-                ->setFlight(new SearchResponse\Flight())
-                ->getFlight()
-                ->setFare(new SearchResponse\PriceBreakdown())
-                ->getFare()
-                ->setPassengerTypes(new SearchResponse\PassengerTypes());
-
-            // setup tax
-            $result
-                ->getCalculation()
-                ->getFlight()
-                ->setTax(new SearchResponse\PriceBreakdown())
-                ->getTax()
-                ->setPassengerTypes(new SearchResponse\PassengerTypes());
-
-            // filter for adult fare
-            $adultFares = $fareProducts->filter(
-                function ($fareProduct) {
-                    $preference = @$fareProduct->paxReference;
-                    return $preference->ptc === self::PTC_ADULT;
-                }
-            );
-
-            // setup pricing information based on adult fare
-            $adultFare = $adultFares->first();
-            if ($adultFare) {
-
-                $totalAmount = @$adultFare->paxFareDetail->totalFareAmount;
-                if ($totalAmount !== null) {
-                    $result
-                        ->getCalculation()
-                        ->getFlight()
-                        ->getFare()
-                        ->getPassengerTypes()
-                        ->setAdult($totalAmount);
-
-                    $adultCount = count(@$adultFare->paxReference->traveller);
-                    if ($adultCount !== null) {
-                        $currentTotal = $result->getCalculation()->getFlight()->getFare()->getTotal();
-                        $result
-                            ->getCalculation()
-                            ->getFlight()
-                            ->getFare()
-                            ->setTotal($currentTotal + ($adultCount * $totalAmount));
-                    }
-                }
-
-                $totalTax = @$adultFare->paxFareDetail->totalTaxAmount;
-                if ($totalTax !== null) {
-                    $result
-                        ->getCalculation()
-                        ->getFlight()
-                        ->getTax()
-                        ->getPassengerTypes()
-                        ->setAdult($totalTax);
-
-                    $adultCount = count(@$adultFare->paxReference->traveller);
-                    if ($adultCount !== null) {
-                        $currentTotal = $result->getCalculation()->getFlight()->getTax()->getTotal();
-                        $result
-                            ->getCalculation()
-                            ->getFlight()
-                            ->getTax()
-                            ->setTotal($currentTotal + ($adultCount * $totalTax));
-                    }
-                }
-            }
-
-            // filter for child fare
-            $childFares = $fareProducts->filter(
-                function ($fareProduct) {
-                    $preference = @$fareProduct->paxReference;
-                    return $preference->ptc === self::PTC_CHILD;
-                }
-            );
-
-            // setup pricing information based on child fare
-            $childFare = $childFares->first();
-            if ($childFare) {
-
-                $totalAmount = @$childFare->paxFareDetail->totalFareAmount;
-                if ($totalAmount !== null) {
-                    $result
-                        ->getCalculation()
-                        ->getFlight()
-                        ->getFare()
-                        ->getPassengerTypes()
-                        ->setChild($totalAmount);
-
-                    $childCount = count(@$childFare->paxReference->traveller);
-                    if ($childCount !== null) {
-                        $currentTotal = $result->getCalculation()->getFlight()->getFare()->getTotal();
-                        $result
-                            ->getCalculation()
-                            ->getFlight()
-                            ->getFare()
-                            ->setTotal($currentTotal + ($childCount * $totalAmount));
-                    }
-                }
-
-                $totalTax = @$childFare->paxFareDetail->totalTaxAmount;
-                if ($totalTax !== null) {
-                    $result
-                        ->getCalculation()
-                        ->getFlight()
-                        ->getTax()
-                        ->getPassengerTypes()
-                        ->setChild($totalTax);
-
-                    $childCount = count(@$childFare->paxReference->traveller);
-                    if ($childCount !== null) {
-                        $currentTotal = $result->getCalculation()->getFlight()->getTax()->getTotal();
-                        $result
-                            ->getCalculation()
-                            ->getFlight()
-                            ->getTax()
-                            ->setTotal($currentTotal + ($childCount * $totalTax));
-                    }
-                }
-            }
-
-            $result->getCalculation()->getFlight()->setTotal(
-                $result->getCalculation()->getFlight()->getFare()->getTotal()
-                + $result->getCalculation()->getFlight()->getTax()->getTotal()
-            );
-
             $fareDetails = new NodeList($fareProducts->first()->fareDetails);
 
-            foreach ($fareDetails as $legIndex => $singleFareDetail) {
-                $groupOfFares = new NodeList($singleFareDetail->groupOfFares);
+            $this->setupItinerary(
+                $result,
+                $businessCase,
+                $segmentFlightRefs,
+                $legIndex,
+                $freeBaggageIndex,
+                $fareDetails
+            );
 
-                foreach ($groupOfFares as $segmentIndex => $segmentFare) {
-
-                    // add cabin class
-                    /** @var SearchResponse\Segment $legSegment */
-                    $legSegment = $result
-                        ->getItinerary()
-                            ->getLegs()
-                                ->offsetGet($legIndex)
-                                ->first()
-                                    ->getSegments()
-                                        ->offsetGet($segmentIndex);
-
-                    $cabinClass = new CabinClass($segmentFare);
-
-                    if ($cabinClass->getCode()) {
-                        $legSegment
-                            ->setCabinClass(new SearchResponse\CabinClass())
-                            ->getCabinClass()
-                                ->setCode($cabinClass->getCode())
-                                ->setName($cabinClass->getName());
-                    }
-
-                    // add remaining seats
-                    $legSegment->setRemainingSeats($segmentFare->productInformation->cabinProduct->avlStatus);
-                }
-            }
+            $this->setupCalculation(
+                $result,
+                $conversionRateDetail,
+                $fareProducts
+            );
 
             $searchResponse->getResult()->add($result);
+
+            if ($businessCase->getOptions()->getResultLimit()
+                && $searchResponse->getResult()->count() >= $businessCase->getOptions()->getResultLimit()
+            ) {
+                break;
+            }
         }
 
         return $searchResponse;
     }
 
     /**
+     * @param SearchResponse\Result $result
+     * @param BusinessCase          $businessCase
+     * @param SegmentFlightref      $segmentFlightRefs
+     * @param LegIndex              $legIndex
+     * @param FreeBaggageIndex      $freeBaggageIndex
+     * @param Collection            $fareDetails
+     */
+    private function setupItinerary(
+        SearchResponse\Result $result,
+        BusinessCase $businessCase,
+        SegmentFlightref $segmentFlightRefs,
+        LegIndex $legIndex,
+        FreeBaggageIndex $freeBaggageIndex,
+        Collection $fareDetails
+    ) : void {
+
+        $result
+            ->setItinerary(new SearchResponse\ItineraryResult())
+            ->getItinerary()
+            ->setType($businessCase->getType())
+            ->setLegs(new ArrayCollection());
+
+
+        foreach ($segmentFlightRefs->getSegmentRefNumbers() as $legOffset => $refToGroupOfFlights) {
+            $leg = $this->mapLeg(
+                $legIndex,
+                $freeBaggageIndex,
+                $legOffset,
+                $refToGroupOfFlights,
+                $fareDetails
+            );
+
+            $result->getItinerary()->getLegs()->add(new ArrayCollection([$leg]));
+        }
+    }
+
+    /**
+     * @param SearchResponse\Result $result
+     * @param Collection            $conversionRateDetail
+     * @param Collection            $fareProducts
+     */
+    private function setupCalculation(
+        SearchResponse\Result $result,
+        Collection $conversionRateDetail,
+        Collection $fareProducts
+    ) : void {
+
+        $result->setCalculation(new SearchResponse\CalculationResult());
+
+        if (!$conversionRateDetail->isEmpty()) {
+            $result->getCalculation()->setCurrency($conversionRateDetail->first()->currency);
+        }
+
+        // setup calculation & fare
+        $result
+            ->getCalculation()
+            ->setFlight(new SearchResponse\Flight())
+            ->getFlight()
+            ->setFare(new SearchResponse\PriceBreakdown())
+            ->getFare()
+            ->setPassengerTypes(new SearchResponse\PassengerTypes());
+
+        // setup tax
+        $result
+            ->getCalculation()
+            ->getFlight()
+            ->setTax(new SearchResponse\PriceBreakdown())
+            ->getTax()
+            ->setPassengerTypes(new SearchResponse\PassengerTypes());
+
+        $adultFares = $fareProducts->filter(
+            function ($fareProduct) {
+                return $fareProduct->paxReference->ptc === self::PTC_ADULT;
+            }
+        )->first();
+        $childFares = $fareProducts->filter(
+            function ($fareProduct) {
+                return $fareProduct->paxReference->ptc === self::PTC_CHILD;
+            }
+        )->first();
+        $infantFares = $fareProducts->filter(
+            function ($fareProduct) {
+                return $fareProduct->paxReference->ptc === self::PTC_INFANT;
+            }
+        )->first();
+
+        $fares = $result
+            ->getCalculation()
+            ->getFlight()
+            ->getFare();
+
+        $fares->getPassengerTypes()
+            ->setAdult($adultFares->paxFareDetail->totalFareAmount ?? 0.0)
+            ->setChild($childFares->paxFareDetail->totalFareAmount ?? 0.0)
+            ->setInfant($infantFares->paxFareDetail->totalFareAmount ?? 0.0);
+
+        $fares->setTotal(
+            count($adultFares->paxReference->traveller ?? []) * $fares->getPassengerTypes()->getAdult()
+            + count($childFares->paxReference->traveller ?? []) * $fares->getPassengerTypes()->getChild()
+            + count($infantFares->paxReference->traveller ?? []) * $fares->getPassengerTypes()->getInfant()
+        );
+
+        $taxes = $result
+            ->getCalculation()
+            ->getFlight()
+            ->getTax();
+
+        $taxes->getPassengerTypes()
+            ->setAdult($adultFares->paxFareDetail->totalTaxAmount ?? 0.0)
+            ->setChild($childFares->paxFareDetail->totalTaxAmount ?? 0.0)
+            ->setInfant($infantFares->paxFareDetail->totalTaxAmount ?? 0.0);
+
+        $taxes->setTotal(
+            count($adultFares->paxReference->traveller ?? []) * $taxes->getPassengerTypes()->getAdult()
+            + count($childFares->paxReference->traveller ?? []) * $taxes->getPassengerTypes()->getChild()
+            + count($infantFares->paxReference->traveller ?? []) * $taxes->getPassengerTypes()->getInfant()
+        );
+
+        $result->getCalculation()->getFlight()->setTotal(
+            $result->getCalculation()->getFlight()->getFare()->getTotal()
+            + $result->getCalculation()->getFlight()->getTax()->getTotal()
+        );
+    }
+
+    /**
      * Convert the leg
      *
-     * @param \stdClass        $groupOfFlights
+     * @param LegIndex         $legIndex
      * @param FreeBaggageIndex $freeBaggageIndex
-     *
+     * @param string           $legOffset
+     * @param string           $refToGroupOfFlights
+     * @param Collection       $fareDetails
      * @return SearchResponse\Leg
      */
-    private function mapLeg(\stdClass $groupOfFlights, FreeBaggageIndex $freeBaggageIndex) : SearchResponse\Leg
-    {
+    private function mapLeg(
+        LegIndex $legIndex,
+        FreeBaggageIndex $freeBaggageIndex,
+        string $legOffset,
+        string $refToGroupOfFlights,
+        Collection $fareDetails
+    ) : SearchResponse\Leg {
+
         $itineraryLeg = new SearchResponse\Leg();
         $itineraryLeg->setClassification(self::CLASSIFICATION_SCHEDULED);
         $itineraryLeg->setSegments(new ArrayCollection());
 
+        $groupOfFlights = $legIndex->groupOfFlights($legOffset, $refToGroupOfFlights);
         $segments = new NodeList($groupOfFlights->flightDetails);
 
         $proposals = FlightProposals::fromGroupOfFlights($groupOfFlights);
@@ -278,7 +256,7 @@ class AmadeusResponseTransformer
                         ->setIata($proposals->getMajorityCarrier());
         }
 
-        foreach ($segments as $segment) {
+        foreach ($segments as $segmentOffset => $segment) {
             $legSegment = new SearchResponse\Segment();
 
             // set arrival and departure
@@ -323,8 +301,8 @@ class AmadeusResponseTransformer
             }
 
             // set carriers
-            $marketingCarrier = @$segment->flightInformation->companyId->marketingCarrier;
-            $operatingCarrier = @$segment->flightInformation->companyId->operatingCarrier;
+            $marketingCarrier = $segment->flightInformation->companyId->marketingCarrier ?? null;
+            $operatingCarrier = $segment->flightInformation->companyId->operatingCarrier ?? null;
 
             $legSegment->setCarriers(new SearchResponse\Carriers());
 
@@ -345,7 +323,9 @@ class AmadeusResponseTransformer
             }
 
             // set flight number
-            $flightNumber = @$segment->flightInformation->flightNumber;
+            $flightNumber = $segment->flightInformation->flightNumber
+                ?? $segment->flightInformation->flightOrtrainNumber
+                ?? null;
 
             if ($flightNumber !== null) {
                 $legSegment
@@ -360,10 +340,48 @@ class AmadeusResponseTransformer
                     ->setAircraftType($aircraft);
             }
 
+            $baggageDetails = $freeBaggageIndex->getFreeBagAllowanceInfo($refToGroupOfFlights, $legOffset + 1, $segmentOffset + 1);
+
+            if ($baggageDetails) {
+                if ($baggageDetails->quantityCode === 'W') {
+                    $legSegment->setBaggageRules(new SearchResponse\BaggageRules());
+                    $legSegment->getBaggageRules()
+                        ->setWeight($baggageDetails->freeAllowance)
+                        ->setUnit('kg');
+                } elseif ($baggageDetails->quantityCode === 'N') {
+                    $legSegment->setBaggageRules(new SearchResponse\BaggageRules());
+                    $legSegment->getBaggageRules()
+                        ->setPieces($baggageDetails->freeAllowance);
+                }
+            }
+
             $itineraryLeg->getSegments()->add($legSegment);
         }
 
-        $itineraryLeg->setNights((new Nights($itineraryLeg->getSegments()))->getNights());
+        $itineraryLeg->setNights(Nights::calc($itineraryLeg->getSegments()));
+
+        foreach ($fareDetails as $fareLegOffset => $singleFareDetail) {
+            $groupOfFares = new NodeList($singleFareDetail->groupOfFares);
+
+            foreach ($groupOfFares as $segmentIndex => $segmentFare) {
+                // add cabin class
+                /** @var SearchResponse\Segment $legSegment */
+                $legSegment = $itineraryLeg
+                    ->getSegments()
+                    ->offsetGet($segmentIndex);
+
+                if (CabinClass::code($segmentFare)) {
+                    $legSegment
+                        ->setCabinClass(new SearchResponse\CabinClass())
+                        ->getCabinClass()
+                        ->setCode(CabinClass::code($segmentFare))
+                        ->setName(CabinClass::name($segmentFare));
+                }
+
+                // add remaining seats
+                $legSegment->setRemainingSeats($segmentFare->productInformation->cabinProduct->avlStatus);
+            }
+        }
 
         return $itineraryLeg;
     }

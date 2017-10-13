@@ -33,9 +33,7 @@ class NightsTest extends \Codeception\Test\Unit
                 return $segment;
             });
 
-        $object = new Nights($segmentEntities);
-
-        $this->assertEquals($expectedOvernights, $object->getNights());
+        $this->assertEquals($expectedOvernights, Nights::calc($segmentEntities));
     }
 
     /**
@@ -131,8 +129,7 @@ class NightsTest extends \Codeception\Test\Unit
         $segment->setDepartAt(new \DateTime('2017-10-11 13:13:00'));
         $segment->setArriveAt(new \DateTime('2017-10-11 14:13:00'));
 
-        $object = new Nights(new ArrayCollection([$segment]));
-        $object->getNights();
+        Nights::calc(new ArrayCollection([$segment]));
 
         $this->assertEquals(new \DateTime('2017-10-11 13:13:00'), $segment->getDepartAt());
         $this->assertEquals(new \DateTime('2017-10-11 14:13:00'), $segment->getArriveAt());

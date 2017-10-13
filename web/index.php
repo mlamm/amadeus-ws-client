@@ -106,4 +106,10 @@ $app['amadeus.client'] = $app->factory(function() use ($app) {
 $app->mount('/', new \AmadeusService\Index\IndexProvider());
 $app->mount('/flight-search', new AmadeusService\Search\SearchProvider());
 
+if ($config->debug->pimpledump->enabled) {
+    $app->register(new \Sorien\Provider\PimpleDumpProvider(), [
+        'pimpledump.output_dir' => __DIR__ . '/../var/logs',
+    ]);
+}
+
 $app->run();

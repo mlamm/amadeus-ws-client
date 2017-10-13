@@ -1,0 +1,202 @@
+[
+    {
+        "name": "request.http_port",
+        "type": "int",
+        "value": 80
+    },
+    {
+        "name": "request.https_port",
+        "type": "int",
+        "value": 443
+    },
+    {
+        "name": "debug",
+        "type": "bool",
+        "value": false
+    },
+    {
+        "name": "charset",
+        "type": "string",
+        "value": "UTF-8"
+    },
+    {
+        "name": "logger",
+        "type": "class",
+        "value": "Monolog\\Logger"
+    },
+    {
+        "name": "resolver",
+        "type": "class",
+        "value": "Silex\\ServiceControllerResolver"
+    },
+    {
+        "name": "argument_metadata_factory",
+        "type": "class",
+        "value": "Symfony\\Component\\HttpKernel\\ControllerMetadata\\ArgumentMetadataFactory"
+    },
+    {
+        "name": "argument_value_resolvers",
+        "type": "array",
+        "value": ""
+    },
+    {
+        "name": "argument_resolver",
+        "type": "class",
+        "value": "Symfony\\Component\\HttpKernel\\Controller\\ArgumentResolver"
+    },
+    {
+        "name": "kernel",
+        "type": "class",
+        "value": "Symfony\\Component\\HttpKernel\\HttpKernel"
+    },
+    {
+        "name": "request_stack",
+        "type": "class",
+        "value": "Symfony\\Component\\HttpFoundation\\RequestStack"
+    },
+    {
+        "name": "dispatcher",
+        "type": "class",
+        "value": "Symfony\\Component\\EventDispatcher\\EventDispatcher"
+    },
+    {
+        "name": "callback_resolver",
+        "type": "class",
+        "value": "Silex\\CallbackResolver"
+    },
+    {
+        "name": "route_class",
+        "type": "string",
+        "value": "Silex\\Route"
+    },
+    {
+        "name": "route_factory",
+        "type": "class",
+        "value": "Silex\\Route"
+    },
+    {
+        "name": "routes_factory",
+        "type": "class",
+        "value": "Symfony\\Component\\Routing\\RouteCollection"
+    },
+    {
+        "name": "routes",
+        "type": "class",
+        "value": "Symfony\\Component\\Routing\\RouteCollection"
+    },
+    {
+        "name": "url_generator",
+        "type": "class",
+        "value": "Symfony\\Component\\Routing\\Generator\\UrlGenerator"
+    },
+    {
+        "name": "request_matcher",
+        "type": "class",
+        "value": "Silex\\Provider\\Routing\\RedirectableUrlMatcher"
+    },
+    {
+        "name": "request_context",
+        "type": "class",
+        "value": "Symfony\\Component\\Routing\\RequestContext"
+    },
+    {
+        "name": "controllers",
+        "type": "class",
+        "value": "Silex\\ControllerCollection"
+    },
+    {
+        "name": "controllers_factory",
+        "type": "class",
+        "value": "Silex\\ControllerCollection"
+    },
+    {
+        "name": "routing.listener",
+        "type": "class",
+        "value": "Symfony\\Component\\HttpKernel\\EventListener\\RouterListener"
+    },
+    {
+        "name": "exception_handler",
+        "type": "class",
+        "value": "Silex\\ExceptionHandler"
+    },
+    {
+        "name": "monolog.logger.class",
+        "type": "string",
+        "value": "Monolog\\Logger"
+    },
+    {
+        "name": "monolog",
+        "type": "class",
+        "value": "Monolog\\Logger"
+    },
+    {
+        "name": "monolog.formatter",
+        "type": "class",
+        "value": "Monolog\\Formatter\\JsonFormatter"
+    },
+    {
+        "name": "monolog.handler",
+        "type": "class",
+        "value": "Monolog\\Handler\\StreamHandler"
+    },
+    {
+        "name": "monolog.handlers",
+        "type": "array",
+        "value": ""
+    },
+    {
+        "name": "monolog.level",
+        "type": "int",
+        "value": 100
+    },
+    {
+        "name": "monolog.listener",
+        "type": "class",
+        "value": "Silex\\EventListener\\LogListener"
+    },
+    {
+        "name": "monolog.name",
+        "type": "string",
+        "value": "app"
+    },
+    {
+        "name": "monolog.bubble",
+        "type": "bool",
+        "value": true
+    },
+    {
+        "name": "monolog.permission",
+        "type": "null",
+        "value": ""
+    },
+    {
+        "name": "monolog.exception.logger_filter",
+        "type": "null",
+        "value": ""
+    },
+    {
+        "name": "monolog.logfile",
+        "type": "string",
+        "value": "\/var\/www\/var\/logs\/app.log"
+    },
+    {
+        "name": "monolog.use_error_handler",
+        "type": "bool",
+        "value": true
+    },
+    {
+        "name": "config",
+        "type": "class",
+        "value": "stdClass"
+    },
+    {
+        "name": "businesscase.search",
+        "type": "class",
+        "value": "AmadeusService\\Search\\BusinessCase\\Search"
+    },
+    {
+        "name": "amadeus.client",
+        "type": "class",
+        "value": "AmadeusService\\Search\\Model\\AmadeusClient"
+    }
+]
