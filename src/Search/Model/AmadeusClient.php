@@ -93,40 +93,9 @@ class AmadeusClient
             throw new ServiceRequestAuthenticationFailedException($authResult->messages);
         }
 
-        $reqTransformer = new AmadeusRequestTransformer();
+        $reqTransformer = new AmadeusRequestTransformer($this->config);
 
-
-
-        $itineraries = [];
-
-        /** @var Leg $leg */
-        foreach ($request->getLegs() as $leg) {
-            array_push(
-                $itineraries,
-                new Client\RequestOptions\Fare\MPItinerary(
-                    [
-                        'departureLocation' => new Client\RequestOptions\Fare\MPLocation(
-                            [
-                                'city' => $leg->getDeparture()
-                            ]
-                        ),
-                        'arrivalLocation' => new Client\RequestOptions\Fare\MPLocation(
-                            [
-                                'city' => $leg->getArrival()
-                            ]
-                        ),
-                        'date' => new Client\RequestOptions\Fare\MPDate(
-                            [
-                                'dateTime' => $leg->getDepartAt(),
-                                // 'timeWindow' => 48 // +- h before/after
-                            ]
-                        )
-                    ]
-                )
-            );
-        }
-
-        $requestOptions = $this->buildFareMasterRequestOptions($request, $itineraries);
+        $requestOptions = $reqTransformer->buildFareMasterRequestOptions($request);
 
         return $this->getClient()->fareMasterPricerTravelBoardSearch($requestOptions);
     }
@@ -165,88 +134,6 @@ class AmadeusClient
         );
 
         return $this;
-    }
-
-    /**
-     * @param Request $request
-     * @param array   $itineraries
-     *
-     * @return Client\RequestOptions\FareMasterPricerTbSearch
-     */
-    protected function buildFareMasterRequestOptions(Request $request,array $itineraries) : Client\RequestOptions\FareMasterPricerTbSearch
-    {
-        $options = [
-            'nrOfRequestedResults' => $request->getBusinessCases()->first()->first()->getResultLimit(),
-            'nrOfRequestedPassengers' => $request->getPassengerCount(),
-            'passengers' => $this->setupPassengers($request),
-            'itinerary' => $itineraries,
-            'flightOptions' => [
-                Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_ELECTRONIC_TICKET
-            ],
-        ];
-
-        if (isset($this->config->search->excluded_airlines) && !empty($this->config->search->excluded_airlines)) {
-            $options['airlineOptions'][Client\RequestOptions\FareMasterPricerTbSearch::AIRLINEOPT_EXCLUDED] = $this->config->search->excluded_airlines;
-        }
-
-        if ($request->getFilterAirline() !== null && !empty($request->getFilterAirline())) {
-            $options['airlineOptions'][Client\RequestOptions\FareMasterPricerTbSearch::AIRLINEOPT_MANDATORY ] = $request->getFilterAirline();
-        }
-
-        if ($request->getFilterCabinClass() != null && !empty(($request->getFilterCabinClass()))) {
-            $options['cabinOption'] = Client\RequestOptions\FareMasterPricerTbSearch::CABINOPT_MANDATORY;
-            $options['cabinClass'] = $request->getFilterCabinClass();
-        }
-
-        return new Client\RequestOptions\FareMasterPricerTbSearch($options);
-    }
-
-    /**
-     * Method to setup passengers to request for based on sent Request object
-     * @param Request $request
-     * @return Client\RequestOptions\Fare\MPPassenger[]
-     */
-    protected function setupPassengers(Request $request)
-    {
-        $passengers = [];
-
-        if ($request->getAdults() > 0 ) {
-            array_push(
-                $passengers,
-                new Client\RequestOptions\Fare\MPPassenger(
-                    [
-                        'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_ADULT,
-                        'count' => $request->getAdults()
-                    ]
-                )
-            );
-        }
-
-        if ($request->getChildren() > 0 ) {
-            array_push(
-                $passengers,
-                new Client\RequestOptions\Fare\MPPassenger(
-                    [
-                        'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_CHILD,
-                        'count' => $request->getChildren()
-                    ]
-                )
-            );
-        }
-
-        if ($request->getInfants() > 0 ) {
-            array_push(
-                $passengers,
-                new Client\RequestOptions\Fare\MPPassenger(
-                    [
-                        'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_INFANT,
-                        'count' => $request->getInfants()
-                    ]
-                )
-            );
-        }
-
-        return $passengers;
     }
 
     /**

@@ -37,6 +37,10 @@ search:
         - "TAC"
         - "XLC" # To avoid ATLA (Amadeus Ticketless Access) carriers
 
+    area_search_distance: 100
+
+    flexible_date_range: 1
+
     excluded_airlines:
         - "GA"
         - "O4"

@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace AmadeusService\Search\Model;
 
 use Flight\SearchRequestMapping\Entity\Request;
+use Flight\SearchRequestMapping\Entity\Leg;
+use Amadeus\Client;
 
 /**
  * AmadeusRequestTransformer.php
@@ -16,9 +18,177 @@ use Flight\SearchRequestMapping\Entity\Request;
  */
 class AmadeusRequestTransformer
 {
+    /**
+     * @var \stdClass
+     */
+    protected $config;
 
-    public function buildFareMasterRequestOptions(Request $request)
+    /**
+     * AmadeusRequestTransformer constructor.
+     *
+     * @param \stdClass $config
+     */
+    public function __construct(\stdClass $config)
     {
-
+        $this->config = $config;
     }
+
+    /**
+     * transforms the request option object out of given request and adds excluded airline information if needed
+     *
+     * @param Request     $request
+     *
+     * @return Client\RequestOptions\FareMasterPricerTbSearch
+     */
+    public function buildFareMasterRequestOptions(Request $request) : Client\RequestOptions\FareMasterPricerTbSearch
+    {
+        $itineraries = $this->buildItineraries($request);
+
+        $excludedAirlines = [];
+        if (isset($this->config->search->excluded_airlines) && !empty($this->config->search->excluded_airlines)) {
+            $excludedAirlines = $this->config->search->excluded_airlines;
+        }
+
+        $options = [
+            'nrOfRequestedResults' => $request->getBusinessCases()->first()->first()->getOptions()->getResultLimit(),
+            'nrOfRequestedPassengers' => $request->getPassengerCount(),
+            'passengers' => $this->setupPassengers($request),
+            'itinerary' => $itineraries,
+            'flightOptions' => [
+                Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_ELECTRONIC_TICKET
+            ],
+        ];
+
+        if (!empty($excludedAirlines)) {
+            $options['airlineOptions'][Client\RequestOptions\FareMasterPricerTbSearch::AIRLINEOPT_EXCLUDED] = $excludedAirlines;
+        }
+
+        if ($request->getFilterAirline() !== null && !empty($request->getFilterAirline())) {
+            $options['airlineOptions'][Client\RequestOptions\FareMasterPricerTbSearch::AIRLINEOPT_MANDATORY ] = $request->getFilterAirline();
+        }
+
+        if ($request->getFilterCabinClass() != null && !empty(($request->getFilterCabinClass()))) {
+            $options['cabinOption'] = Client\RequestOptions\FareMasterPricerTbSearch::CABINOPT_MANDATORY;
+            $options['cabinClass'] = $request->getFilterCabinClass();
+        }
+
+        return new Client\RequestOptions\FareMasterPricerTbSearch($options);
+    }
+
+    /**
+     * build the itinerary part of the request object
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function buildItineraries(Request $request ) : array
+    {
+        $itineraries = [];
+        $areaSearchEnabled = $request->getBusinessCases()->first()->first()->getOptions()->IsAreaSearch();
+
+        /** @var Leg $leg */
+        foreach ($request->getLegs() as $leg) {
+            $itineraryOptions = $this->buildItineraryOptions($leg, $areaSearchEnabled, (bool) $leg->getIsFlexibleDate());
+            array_push(
+                $itineraries,
+                new Client\RequestOptions\Fare\MPItinerary(
+                    $itineraryOptions
+                )
+            );
+        }
+
+        return $itineraries;
+    }
+
+    /**
+     * Method to setup passengers to request for based on sent Request object
+     * @param Request $request
+     * @return Client\RequestOptions\Fare\MPPassenger[]
+     */
+    private function setupPassengers(Request $request)
+    {
+        $passengers = [];
+
+        if ($request->getAdults() > 0 ) {
+            array_push(
+                $passengers,
+                new Client\RequestOptions\Fare\MPPassenger(
+                    [
+                        'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_ADULT,
+                        'count' => $request->getAdults()
+                    ]
+                )
+            );
+        }
+
+        if ($request->getChildren() > 0 ) {
+            array_push(
+                $passengers,
+                new Client\RequestOptions\Fare\MPPassenger(
+                    [
+                        'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_CHILD,
+                        'count' => $request->getChildren()
+                    ]
+                )
+            );
+        }
+
+        if ($request->getInfants() > 0 ) {
+            array_push(
+                $passengers,
+                new Client\RequestOptions\Fare\MPPassenger(
+                    [
+                        'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_INFANT,
+                        'count' => $request->getInfants()
+                    ]
+                )
+            );
+        }
+
+        return $passengers;
+    }
+
+    /**
+     * builds options array for leg adds area search information if needed
+     *
+     * @param Leg  $leg
+     * @param bool $isAreaSearch
+     * @param bool $isFlexibleDate
+     *
+     * @return array
+     */
+    private function buildItineraryOptions(Leg $leg, bool $isAreaSearch, bool $isFlexibleDate) : array
+    {
+        $options =  [
+            'departureLocation' => new Client\RequestOptions\Fare\MPLocation(
+                [
+                    'city' => $leg->getDeparture(),
+                ]
+            ),
+            'arrivalLocation'   => new Client\RequestOptions\Fare\MPLocation(
+                [
+                    'city' => $leg->getArrival()
+                ]
+            ),
+            'date'              => new Client\RequestOptions\Fare\MPDate(
+                [
+                    'dateTime' => $leg->getDepartAt(),
+                ]
+            )
+        ];
+
+        if ($isAreaSearch) {
+            $options['arrivalLocation']->radiusDistance = $options['departureLocation']->radiusDistance = $this->config->search->area_search_distance;
+            $options['arrivalLocation']->radiusUnit = $options['departureLocation']->radiusUnit = Client\RequestOptions\Fare\MPLocation::RADIUSUNIT_KILOMETERS;
+        }
+
+        if ($isFlexibleDate) {
+            $options['date']->rangeMode = Client\RequestOptions\Fare\MPDate::RANGEMODE_MINUS_PLUS;
+            $options['date']->range = $this->config->search->flexible_date_range;
+        }
+
+        return $options;
+    }
+
 }
