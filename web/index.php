@@ -91,7 +91,10 @@ $app['amadeus.client'] = $app->factory(function() use ($app) {
 
     $ibeCacheDatabaseConnection = \Doctrine\DBAL\DriverManager::getConnection($ibeCacheDatabaseConnectionParams, $ibeCacheDatabaseConfig);
 
+    $requestTransformer  = new \AmadeusService\Search\Model\AmadeusRequestTransformer($app['config']);
+
     return new \AmadeusService\Search\Model\AmadeusClient(
+        $requestTransformer,
         $app['monolog'],
         $ibeCacheDatabaseConnection,
         $app['config']

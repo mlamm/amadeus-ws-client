@@ -3,6 +3,7 @@ namespace amadeusService\Tests\Search;
 
 use Amadeus\Client;
 use AmadeusService\Search\Model\AmadeusClient;
+use AmadeusService\Search\Model\AmadeusRequestTransformer;
 use Codeception\Test\Unit;
 use Doctrine\DBAL\Connection;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
@@ -32,6 +33,11 @@ class AmadeusClientTest extends Unit
      */
     public function testCreatingAnAmadeusClient() : void
     {
+        /** @var AmadeusRequestTransformer|\Mockery\MockInterface $requestTransformer **/
+        $requestTransformer = \Mockery::mock(AmadeusRequestTransformer::class);
+        $requestTransformer->shouldReceive('buildFareMasterRequestOptions')
+            ->once();
+
         /** @var LoggerInterface|\Mockery\MockInterface $logger */
         $logger = \Mockery::mock(LoggerInterface::class);
         $logger->shouldReceive('log');
@@ -76,6 +82,7 @@ class AmadeusClientTest extends Unit
         $config->search->wsdl = '/../tests/_support/fixtures/dummy.wsdl';
 
         $amaClient = new AmadeusClient(
+            $requestTransformer,
             $logger,
             $databaseMock,
             $config

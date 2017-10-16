@@ -19,6 +19,10 @@ use AmadeusService\Tests\Helper\RequestFaker;
  */
 class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
 {
+
+    /**
+     * test the main functionality of the class with a standard request
+     */
     public function testItBuildsOptions()
     {
         $config = new \stdClass();
@@ -105,6 +109,9 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
 
     }
 
+    /**
+     * tests the handling for airline filter
+     */
     public function testItTransformsAirlineFilter()
     {
         $config = new \stdClass();
@@ -172,6 +179,10 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
 
     }
 
+    /**
+     * tests if it processes the airline blacklist and transform it into the request
+     *
+     */
     public function testItProcessesAirlineBlacklist()
     {
         $config = new \stdClass();
@@ -238,6 +249,9 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $this->assertArraySubset($expectedExcludedAL, $options->airlineOptions);
     }
 
+    /**
+     * test if it handles the cabin class filter with 2 defined values in the airline filter
+     */
     public function testItTransformsCabinClassFilter()
     {
         $config = new \stdClass();
@@ -304,6 +318,10 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $this->assertArraySubset($expectedCabinClass, $options->cabinClass);
     }
 
+    /**
+     * test if it sets the right parts for area search
+     *
+     */
     public function testItSetsAreaSearchFilter()
     {
         $config = new \stdClass();
@@ -371,6 +389,9 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $this->assertArraySubset(['ET'], $options->flightOptions);
     }
 
+    /**
+     * test if it handles flexible date flag
+     */
     public function testItSetsFlexibleDate()
     {
         $config = new \stdClass();

@@ -49,17 +49,26 @@ class AmadeusClient
     protected $logger;
 
     /**
+     * @var AmadeusRequestTransformer
+     */
+    protected $requestTransformer;
+
+    /**
      * AmadeusClient constructor.
+     *
+     * @param AmadeusRequestTransformer $requestTransformer
      * @param LoggerInterface $logger
      * @param Connection $connection
      * @param $searchConfiguration
      */
     public function __construct(
+        AmadeusRequestTransformer $requestTransformer,
         LoggerInterface $logger,
         Connection $connection,
         $searchConfiguration
     )
     {
+        $this->requestTransformer = $requestTransformer;
         $this->config = $searchConfiguration;
         $this->connection = $connection;
         $this->logger = $logger;
@@ -93,9 +102,7 @@ class AmadeusClient
             throw new ServiceRequestAuthenticationFailedException($authResult->messages);
         }
 
-        $reqTransformer = new AmadeusRequestTransformer($this->config);
-
-        $requestOptions = $reqTransformer->buildFareMasterRequestOptions($request);
+        $requestOptions = $this->requestTransformer->buildFareMasterRequestOptions($request);
 
         return $this->getClient()->fareMasterPricerTravelBoardSearch($requestOptions);
     }

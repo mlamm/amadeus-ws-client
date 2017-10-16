@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AmadeusService\Search\Model;
 
+use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Request;
 use Flight\SearchRequestMapping\Entity\Leg;
 use Amadeus\Client;
@@ -42,15 +43,18 @@ class AmadeusRequestTransformer
      */
     public function buildFareMasterRequestOptions(Request $request) : Client\RequestOptions\FareMasterPricerTbSearch
     {
-        $itineraries = $this->buildItineraries($request);
+        /** @var BusinessCase $businessCase */
+        $businessCase = $request->getBusinessCases()->first()->first();
+
+        $itineraries = $this->buildItineraries($request, $businessCase);
 
         $excludedAirlines = [];
-        if (isset($this->config->search->excluded_airlines) && !empty($this->config->search->excluded_airlines)) {
+        if (!empty($this->config->search->excluded_airlines)) {
             $excludedAirlines = $this->config->search->excluded_airlines;
         }
 
         $options = [
-            'nrOfRequestedResults' => $request->getBusinessCases()->first()->first()->getOptions()->getResultLimit(),
+            'nrOfRequestedResults' => $businessCase->getOptions()->getResultLimit(),
             'nrOfRequestedPassengers' => $request->getPassengerCount(),
             'passengers' => $this->setupPassengers($request),
             'itinerary' => $itineraries,
@@ -63,11 +67,11 @@ class AmadeusRequestTransformer
             $options['airlineOptions'][Client\RequestOptions\FareMasterPricerTbSearch::AIRLINEOPT_EXCLUDED] = $excludedAirlines;
         }
 
-        if ($request->getFilterAirline() !== null && !empty($request->getFilterAirline())) {
+        if (!empty($request->getFilterAirline())) {
             $options['airlineOptions'][Client\RequestOptions\FareMasterPricerTbSearch::AIRLINEOPT_MANDATORY ] = $request->getFilterAirline();
         }
 
-        if ($request->getFilterCabinClass() != null && !empty(($request->getFilterCabinClass()))) {
+        if (!empty(($request->getFilterCabinClass()))) {
             $options['cabinOption'] = Client\RequestOptions\FareMasterPricerTbSearch::CABINOPT_MANDATORY;
             $options['cabinClass'] = $request->getFilterCabinClass();
         }
@@ -79,13 +83,14 @@ class AmadeusRequestTransformer
      * build the itinerary part of the request object
      *
      * @param Request $request
+     * @param BusinessCase $businessCase
      *
      * @return array
      */
-    private function buildItineraries(Request $request ) : array
+    private function buildItineraries(Request $request, BusinessCase $businessCase) : array
     {
         $itineraries = [];
-        $areaSearchEnabled = $request->getBusinessCases()->first()->first()->getOptions()->IsAreaSearch();
+        $areaSearchEnabled = $businessCase->getOptions()->IsAreaSearch();
 
         /** @var Leg $leg */
         foreach ($request->getLegs() as $leg) {
@@ -101,9 +106,10 @@ class AmadeusRequestTransformer
     /**
      * Method to setup passengers to request for based on sent Request object
      * @param Request $request
+     *
      * @return Client\RequestOptions\Fare\MPPassenger[]
      */
-    private function setupPassengers(Request $request)
+    private function setupPassengers(Request $request) : array
     {
         $passengers = [];
 

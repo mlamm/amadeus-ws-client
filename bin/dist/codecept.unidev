@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-# Run tests inside the php docker container
-
-DOCKER_CONTAINER=service-amadeus-php
-
-exec sudo docker exec -ti -u "$(id -u):$(id -g)" "$DOCKER_CONTAINER" vendor/bin/codecept "$@"
