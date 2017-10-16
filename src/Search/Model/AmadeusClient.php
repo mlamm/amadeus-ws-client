@@ -49,17 +49,26 @@ class AmadeusClient
     protected $logger;
 
     /**
+     * @var AmadeusRequestTransformer
+     */
+    protected $requestTransformer;
+
+    /**
      * AmadeusClient constructor.
+     *
+     * @param AmadeusRequestTransformer $requestTransformer
      * @param LoggerInterface $logger
      * @param Connection $connection
      * @param $searchConfiguration
      */
     public function __construct(
+        AmadeusRequestTransformer $requestTransformer,
         LoggerInterface $logger,
         Connection $connection,
         $searchConfiguration
     )
     {
+        $this->requestTransformer = $requestTransformer;
         $this->config = $searchConfiguration;
         $this->connection = $connection;
         $this->logger = $logger;
@@ -93,51 +102,9 @@ class AmadeusClient
             throw new ServiceRequestAuthenticationFailedException($authResult->messages);
         }
 
-        $itineraries = [];
+        $requestOptions = $this->requestTransformer->buildFareMasterRequestOptions($request);
 
-        /** @var Leg $leg */
-        foreach ($request->getLegs() as $leg) {
-            array_push(
-                $itineraries,
-                new Client\RequestOptions\Fare\MPItinerary(
-                    [
-                        'departureLocation' => new Client\RequestOptions\Fare\MPLocation(
-                            [
-                                'city' => $leg->getDeparture()
-                            ]
-                        ),
-                        'arrivalLocation' => new Client\RequestOptions\Fare\MPLocation(
-                            [
-                                'city' => $leg->getArrival()
-                            ]
-                        ),
-                        'date' => new Client\RequestOptions\Fare\MPDate(
-                            [
-                                'dateTime' => $leg->getDepartAt(),
-                                // 'timeWindow' => 48 // +- h before/after
-                            ]
-                        )
-                    ]
-                )
-            );
-        }
-
-        $options = new Client\RequestOptions\FareMasterPricerTbSearch(
-            [
-                'nrOfRequestedResults' => $request->getBusinessCases()->first()->first()->getOptions()->getResultLimit(),
-                'nrOfRequestedPassengers' => $request->getPassengerCount(),
-                'passengers' => $this->setupPassengers($request),
-                'itinerary' => $itineraries,
-                'flightOptions' => [
-                    Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_ELECTRONIC_TICKET
-                ],
-                'airlineOptions' => [
-                    // Client\RequestOptions\FareMasterPricerTbSearch::AIRLINEOPT_EXCLUDED => ['VY']
-                ]
-            ]
-        );
-
-        return $this->getClient()->fareMasterPricerTravelBoardSearch($options);
+        return $this->getClient()->fareMasterPricerTravelBoardSearch($requestOptions);
     }
 
     /**
@@ -174,54 +141,6 @@ class AmadeusClient
         );
 
         return $this;
-    }
-
-    /**
-     * Method to setup passengers to request for based on sent Request object
-     * @param Request $request
-     * @return Client\RequestOptions\Fare\MPPassenger[]
-     */
-    protected function setupPassengers(Request $request)
-    {
-        $passengers = [];
-
-        if ($request->getAdults() > 0 ) {
-            array_push(
-                $passengers,
-                new Client\RequestOptions\Fare\MPPassenger(
-                    [
-                        'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_ADULT,
-                        'count' => $request->getAdults()
-                    ]
-                )
-            );
-        }
-
-        if ($request->getChildren() > 0 ) {
-            array_push(
-                $passengers,
-                new Client\RequestOptions\Fare\MPPassenger(
-                    [
-                        'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_CHILD,
-                        'count' => $request->getChildren()
-                    ]
-                )
-            );
-        }
-
-        if ($request->getInfants() > 0 ) {
-            array_push(
-                $passengers,
-                new Client\RequestOptions\Fare\MPPassenger(
-                    [
-                        'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_INFANT,
-                        'count' => $request->getInfants()
-                    ]
-                )
-            );
-        }
-
-        return $passengers;
     }
 
     /**
@@ -359,8 +278,8 @@ class AmadeusClient
     protected function createEntropy()
     {
         $sourceOffice = $this->authentication->getOfficeId();
-        $excludedAirlines = md5(json_encode($this->config->excluded_airlines));
-        $requestOptions = $this->config->request_options;
+        $excludedAirlines = md5(json_encode($this->config->search->excluded_airlines));
+        $requestOptions = $this->config->search->request_options;
 
         return "{$sourceOffice}_{$excludedAirlines}{json_encode($requestOptions)}";
     }

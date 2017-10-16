@@ -1,6 +1,6 @@
 #!/bin/bash
 echo -e "\n";
-echo -e "==> \033[1;35mGetting new composer...\033[0m";
+
 if [ $1 = "dev" ];
 then
     echo -e "==> \033[1;35mRunning 'DEV' build...\033[0m";
