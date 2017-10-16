@@ -90,11 +90,8 @@ class AmadeusRequestTransformer
         /** @var Leg $leg */
         foreach ($request->getLegs() as $leg) {
             $itineraryOptions = $this->buildItineraryOptions($leg, $areaSearchEnabled, (bool) $leg->getIsFlexibleDate());
-            array_push(
-                $itineraries,
-                new Client\RequestOptions\Fare\MPItinerary(
+            $itineraries[] = new Client\RequestOptions\Fare\MPItinerary(
                     $itineraryOptions
-                )
             );
         }
 
@@ -111,38 +108,29 @@ class AmadeusRequestTransformer
         $passengers = [];
 
         if ($request->getAdults() > 0 ) {
-            array_push(
-                $passengers,
-                new Client\RequestOptions\Fare\MPPassenger(
+            $passengers[] = new Client\RequestOptions\Fare\MPPassenger(
                     [
                         'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_ADULT,
                         'count' => $request->getAdults()
                     ]
-                )
             );
         }
 
         if ($request->getChildren() > 0 ) {
-            array_push(
-                $passengers,
-                new Client\RequestOptions\Fare\MPPassenger(
+            $passengers[] = new Client\RequestOptions\Fare\MPPassenger(
                     [
                         'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_CHILD,
                         'count' => $request->getChildren()
                     ]
-                )
             );
         }
 
         if ($request->getInfants() > 0 ) {
-            array_push(
-                $passengers,
-                new Client\RequestOptions\Fare\MPPassenger(
+            $passengers[] = new Client\RequestOptions\Fare\MPPassenger(
                     [
                         'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_INFANT,
                         'count' => $request->getInfants()
                     ]
-                )
             );
         }
 

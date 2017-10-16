@@ -29,7 +29,7 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $requestOptions = [
             RequestFaker::OPT_TYPE =>'round-trip',
             RequestFaker::OPT_FLEXIBLE_LEG_DATES => [false, false],
-            RequestFaker::OPT_PAX => [1, 2, 0],
+            RequestFaker::OPT_PAX => [1, 2, 1],
             RequestFaker::OPT_AREA_SEARCH => false,
             RequestFaker::OPT_RESULT_LIMIT => 10,
         ];
@@ -45,9 +45,14 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $expectedChild->type = Client\RequestOptions\Fare\MPPassenger::TYPE_CHILD;
         $expectedChild->count = 2;
 
+        $expectedInfants = new Client\RequestOptions\Fare\MPPassenger();
+        $expectedInfants->type = Client\RequestOptions\Fare\MPPassenger::TYPE_INFANT;
+        $expectedInfants->count = 1;
+
         $expectedPax = [
             0 => $expectedAdult,
-            1 => $expectedChild
+            1 => $expectedChild,
+            2 => $expectedInfants
         ];
 
         $expectedLegs = [
@@ -93,7 +98,7 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
 
         $this->assertInstanceOf(Client\RequestOptions\FareMasterPricerTbSearch::class, $options);
         $this->assertEquals(10, $options->nrOfRequestedResults);
-        $this->assertEquals(3, $options->nrOfRequestedPassengers);
+        $this->assertEquals(4, $options->nrOfRequestedPassengers);
         $this->assertArraySubset($expectedPax, $options->passengers);
         $this->assertArraySubset($expectedLegs, $options->itinerary);
         $this->assertArraySubset(['ET'], $options->flightOptions);
