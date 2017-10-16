@@ -135,3 +135,7 @@ search:
         json_encoding_options:
             - JSON_PRETTY_PRINT
             - JSON_UNESCAPED_SLASHES
+
+debug:
+    pimpledump:
+        enabled: true

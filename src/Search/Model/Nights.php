@@ -17,32 +17,22 @@ use Doctrine\Common\Collections\Collection;
 class Nights
 {
     /**
-     * @var int
-     */
-    private $nights = 0;
-
-    /**
      * @param Collection $segments
-     */
-    public function __construct(Collection $segments)
-    {
-        if ($segments->count() > 0) {
-            /** @var \DateTime $departure */
-            $departure = clone $segments->first()->getDepartAt();
-            $departure->setTime(0, 0, 0);
-            /** @var \DateTime $arrival */
-            $arrival = clone $segments->last()->getArriveAt();
-            $arrival->setTime(0, 0, 0);
-
-            $this->nights = (int) (($arrival->getTimestamp() - $departure->getTimestamp()) / 86400);
-        }
-    }
-
-    /**
      * @return int
      */
-    public function getNights() : int
+    public static function calc(Collection $segments) : int
     {
-        return $this->nights;
+        if ($segments->count() === 0) {
+            return 0;
+        }
+
+        /** @var \DateTime $departure */
+        $departure = clone $segments->first()->getDepartAt();
+        $departure->setTime(0, 0, 0);
+        /** @var \DateTime $arrival */
+        $arrival = clone $segments->last()->getArriveAt();
+        $arrival->setTime(0, 0, 0);
+
+        return (int) (($arrival->getTimestamp() - $departure->getTimestamp()) / 86400);
     }
 }

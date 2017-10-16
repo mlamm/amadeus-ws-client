@@ -19,10 +19,8 @@ class SegmentFlightRef
      */
     const SEGMENT_REF_QUALIFIER = 'S';
 
-    const BAGGAGE_REF_QUALIFIER = 'B';
-
     /**
-     * @var \stdClass[]
+     * @var array
      */
     private $referencingDetails;
 
@@ -58,21 +56,5 @@ class SegmentFlightRef
         }
 
         return $refNumbers;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasBaggageRefNumber() : bool
-    {
-        return isset($this->referencingDetails[self::BAGGAGE_REF_QUALIFIER]->refNumber);
-    }
-
-    /**
-     * @return int
-     */
-    public function getBaggageRefNumber() : int
-    {
-        return (int) $this->referencingDetails[self::BAGGAGE_REF_QUALIFIER]->refNumber;
     }
 }

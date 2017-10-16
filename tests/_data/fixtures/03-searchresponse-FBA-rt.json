@@ -1,0 +1,123 @@
+{
+  "result": [
+    {
+      "_itinerary": {
+        "type": "round-trip",
+        "legs": [
+          [
+            {
+              "provider": "amadeus",
+              "classification": "scheduled",
+              "carriers": {
+                "main": {
+                  "iata": "AB"
+                }
+              },
+              "duration": 8700,
+              "nights": 0,
+              "segments": [
+                {
+                  "aircraft-type": "738",
+                  "airports": {
+                    "arrival": {
+                      "iata": "PMI"
+                    },
+                    "departure": {
+                      "iata": "LEJ"
+                    }
+                  },
+                  "arrive-at": 1412754900,
+                  "depart-at": 1412746200,
+                  "cabin-class": {
+                    "code": "M",
+                    "name": "Economy"
+                  },
+                  "flight-number": 7616,
+                  "carriers": {
+                    "marketing": {
+                      "iata": "AB"
+                    },
+                    "operating": {
+                      "iata": "AB"
+                    }
+                  },
+                  "remaining-seats": 9,
+                  "baggage-rules": {
+                    "pieces": 1
+                  }
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "provider": "amadeus",
+              "classification": "scheduled",
+              "carriers": {
+                "main": {
+                  "iata": "AB"
+                }
+              },
+              "duration": 9000,
+              "nights": 0,
+              "segments": [
+                {
+                  "aircraft-type": "320",
+                  "airports": {
+                    "arrival": {
+                      "iata": "LEJ"
+                    },
+                    "departure": {
+                      "iata": "PMI"
+                    }
+                  },
+                  "arrive-at": 1413110400,
+                  "depart-at": 1413101400,
+                  "cabin-class": {
+                    "code": "M",
+                    "name": "Economy"
+                  },
+                  "flight-number": 7543,
+                  "carriers": {
+                    "marketing": {
+                      "iata": "AB"
+                    },
+                    "operating": {
+                      "iata": "AB"
+                    }
+                  },
+                  "remaining-seats": 9,
+                  "baggage-rules": {
+                    "pieces": 1
+                  }
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      "_calculation": {
+        "flight": {
+          "total": 1387.84,
+          "fare": {
+            "total": 889.42,
+            "passenger-types": {
+              "adult": 218.34,
+              "child": 196.34,
+              "infant": 30.03
+            }
+          },
+          "tax": {
+            "total": 498.42,
+            "passenger-types": {
+              "adult": 118.84,
+              "child": 118.84,
+              "infant": 11.53
+            }
+          }
+        },
+        "currency": "EUR"
+      }
+    }
+  ]
+}

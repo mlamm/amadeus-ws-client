@@ -16,111 +16,128 @@ use Amadeus\Client\Result;
  */
 class FreeBaggageIndex
 {
+    /**
+     * This index contains the reference number for the <freeBagAllowanceGrp>
+     *
+     * @var array
+     */
     private $serviceCoverageInfoGrpIndex;
 
+    /**
+     * This index contains the <baggageDetails> of all <freeBagAllowanceGrp>
+     *
+     * @var array
+     */
     private $freeBagAllowanceGrpIndex;
 
+    /**
+     * @param Result $amaResult
+     */
     public function __construct(Result $amaResult)
     {
         $this->build($amaResult->response);
     }
 
-    public function hasFreeBagAllowanceInfo($refFromSegmentFlightRef, $flightNumber, $segmentNumber) : bool
-    {
-        return
-            isset($this->serviceCoverageInfoGrpIndex[$refFromSegmentFlightRef][$flightNumber][$segmentNumber])
-            && isset(
-                $this->freeBagAllowanceGrpIndex[
-                    $this->serviceCoverageInfoGrpIndex[$refFromSegmentFlightRef][$flightNumber][$segmentNumber]
-                ]
-            );
+    /**
+     * Query the index for baggage details
+     *
+     * @param string $refToGroupOfFlights
+     * @param string $refToFlightIndex
+     * @param string $refToFlightDetails
+     *
+     * @return null|\stdClass               The content of a <baggageDetail> node
+     */
+    public function getFreeBagAllowanceInfo(
+        string $refToGroupOfFlights,
+        string $refToFlightIndex,
+        string $refToFlightDetails
+    ): ?\stdClass {
+
+        if (!isset($this->serviceCoverageInfoGrpIndex[$refToGroupOfFlights][$refToFlightIndex][$refToFlightDetails])) {
+            return null;
+        }
+
+        $baggageNumber = $this->serviceCoverageInfoGrpIndex[$refToGroupOfFlights][$refToFlightIndex][$refToFlightDetails];
+
+        if (!isset($this->freeBagAllowanceGrpIndex[$baggageNumber])) {
+            return null;
+        }
+
+        return $this->freeBagAllowanceGrpIndex[$baggageNumber];
     }
 
-    public function getFreeBagAllowanceInfo($refFromSegmentFlightRef, $flightNumber, $segmentNumber) : \stdClass
-    {
-        return
-            $this->freeBagAllowanceGrpIndex[
-                $this->serviceCoverageInfoGrpIndex[$refFromSegmentFlightRef][$flightNumber][$segmentNumber]
-            ];
-    }
-
-    private function build(\stdClass $response)
+    /**
+     * Build the indices
+     *
+     * @param \stdClass $response
+     */
+    private function build(\stdClass $response) : void
     {
         if (isset($response->serviceFeesGrp)) {
             foreach (new NodeList($response->serviceFeesGrp) as $serviceFeesGrp) {
                 if (($serviceFeesGrp->serviceTypeInfo->carrierFeeDetails->type ?? null) === 'FBA') {
-                    $this->serviceCoverageInfoGrpIndex = $this->buildServiceCoverageInfoGrp(
-                        new NodeList($serviceFeesGrp->serviceCoverageInfoGrp)
-                    );
-                    $this->freeBagAllowanceGrpIndex = $this->buildFreeBaggageAllowanceGrp(
-                        new NodeList($serviceFeesGrp->freeBagAllowanceGrp)
-                    );
+                    $this->serviceCoverageInfoGrpIndex = $this->buildServiceCoverageInfoGrp($serviceFeesGrp);
+                    $this->freeBagAllowanceGrpIndex = $this->buildFreeBaggageAllowanceGrp($serviceFeesGrp);
                     break;
                 }
             }
         }
     }
 
-    private function buildServiceCoverageInfoGrp(iterable $serviceCoverageInfoGrps) : array
+    /**
+     * Build the index which points to a specific <freeBagAllowance> node
+     *
+     * @param \stdClass $serviceFeesGrp
+     * @return array
+     */
+    private function buildServiceCoverageInfoGrp(\stdClass $serviceFeesGrp) : array
     {
-        $serviceCoverageInfoGrpByRef = [];
+        $index = [];
 
-        foreach ($serviceCoverageInfoGrps as $serviceCoverageInfoGrp) {
-            $key = $serviceCoverageInfoGrp->itemNumberInfo->itemNumber->number;
+        foreach (new NodeList($serviceFeesGrp->serviceCoverageInfoGrp) as $serviceCoverageInfoGrp) {
+            $refToGroupOfFlights = $serviceCoverageInfoGrp->itemNumberInfo->itemNumber->number;
 
-            $serviceCoverageInfoGrpByRef[$key]
-                = $this->buildServiceCovInfoGrp($serviceCoverageInfoGrp);
-        }
+            foreach (new NodeList($serviceCoverageInfoGrp->serviceCovInfoGrp) as $serviceCovInfoGrp) {
+                foreach (new NodeList($serviceCovInfoGrp->refInfo->referencingDetail) as $referencingDetail) {
+                    $refToFreeBaggAllowance = $referencingDetail->refNumber;
 
-        return $serviceCoverageInfoGrpByRef;
-    }
+                    foreach (new NodeList($serviceCovInfoGrp->coveragePerFlightsInfo) as $coveragePerFlightsInfo) {
+                        foreach (new NodeList($coveragePerFlightsInfo->numberOfItemsDetails) as $numberOfItemsDetails) {
+                            if ($numberOfItemsDetails->referenceQualifier === 'RS') {
+                                $refToFlightIndex = $coveragePerFlightsInfo->numberOfItemsDetails->refNum;
 
-    private function buildFreeBaggageAllowanceGrp(iterable $freeBagAllowanceGrps) : array
-    {
-        $freeBagAllowanceGrpByRef = [];
+                                foreach (new NodeList($coveragePerFlightsInfo->lastItemsDetails) as $lastItemsDetails) {
+                                    $refToFlightDetails = $lastItemsDetails->refOfLeg;
 
-        foreach ($freeBagAllowanceGrps as $freeBagAllowanceGrp) {
-            $key = $freeBagAllowanceGrp->itemNumberInfo->itemNumberDetails->number;
-
-            $freeBagAllowanceGrpByRef[$key] = $freeBagAllowanceGrp->freeBagAllownceInfo->baggageDetails;
-        }
-
-        return $freeBagAllowanceGrpByRef;
-    }
-
-    private function buildServiceCovInfoGrp(\stdClass $serviceCoverageInfoGrp) : array
-    {
-        if (is_object($serviceCoverageInfoGrp->serviceCovInfoGrp)
-            && isset($serviceCoverageInfoGrp->serviceCovInfoGrp->refInfo->referencingDetail)
-            && $serviceCoverageInfoGrp->serviceCovInfoGrp->refInfo->referencingDetail->refQualifier = 'F'
-        ) {
-            return $this->buildCoveragePerFlightsInfo(
-                new NodeList($serviceCoverageInfoGrp->serviceCovInfoGrp->coveragePerFlightsInfo),
-                $serviceCoverageInfoGrp->serviceCovInfoGrp->refInfo->referencingDetail->refNumber
-            );
-        }
-
-        return [];
-    }
-
-    private function buildCoveragePerFlightsInfo(
-        iterable $coveragePerFlightsInfos,
-        string $freeBagAllowanceRefNumber
-    ) : array {
-        $coveragePerFlightsInfoByRef = [];
-
-        foreach ($coveragePerFlightsInfos as $coveragePerFlightsInfo) {
-            if ($coveragePerFlightsInfo->numberOfItemsDetails->referenceQualifier === 'RS') {
-                $refNum = $coveragePerFlightsInfo->numberOfItemsDetails->refNum;
-                $coveragePerFlightsInfoByRef[$refNum] = [];
-
-                foreach (new NodeList($coveragePerFlightsInfo->lastItemsDetails) as $lastItemsDetails) {
-                    $coveragePerFlightsInfoByRef[$refNum][$lastItemsDetails->refOfLeg]
-                        = $freeBagAllowanceRefNumber;
+                                    $index[$refToGroupOfFlights][$refToFlightIndex][$refToFlightDetails]
+                                        = $refToFreeBaggAllowance;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        return $coveragePerFlightsInfoByRef;
+        return $index;
+    }
+
+    /**
+     * Build the index which contains the baggageDetails
+     *
+     * @param \stdClass $serviceFeesGrp
+     * @return array
+     */
+    private function buildFreeBaggageAllowanceGrp(\stdClass $serviceFeesGrp) : array
+    {
+        $freeBagAllowanceGrpByRef = [];
+
+        foreach (new NodeList($serviceFeesGrp->freeBagAllowanceGrp) as $freeBagAllowanceGrp) {
+            $baggageNumber = $freeBagAllowanceGrp->itemNumberInfo->itemNumberDetails->number;
+
+            $freeBagAllowanceGrpByRef[$baggageNumber] = $freeBagAllowanceGrp->freeBagAllownceInfo->baggageDetails;
+        }
+
+        return $freeBagAllowanceGrpByRef;
     }
 }

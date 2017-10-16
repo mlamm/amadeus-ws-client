@@ -4,11 +4,12 @@ declare(strict_types=1);
 namespace AmadeusService\Search\Model;
 
 use Amadeus\Client\Result;
+use Codeception\Util\Debug;
 
 /**
  * LegIndex.php
  *
- * <Description>
+ * Provides easy access to <groupOfFlights> nodes via refIds
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -21,30 +22,30 @@ class LegIndex
      */
     private $flightIndex;
 
+    /**
+     * @param Result $amadeusResult
+     */
     public function __construct(Result $amadeusResult)
     {
         $this->flightIndex = [];
 
-        foreach (new NodeList($amadeusResult->response->flightIndex) as $flightIndex) {
+        foreach (new NodeList($amadeusResult->response->flightIndex) as $flightOffset => $flightIndex) {
             foreach (new NodeList($flightIndex->groupOfFlights) as $groupOfFlights) {
                 $flightRefNumber = (new NodeList($groupOfFlights->propFlightGrDetail->flightProposal))->first()->ref;
 
-                $this->flightIndex[][$flightRefNumber] = $groupOfFlights;
+                $this->flightIndex[$flightOffset][$flightRefNumber] = $groupOfFlights;
             }
         }
     }
 
     /**
-     * Iterates over the <flightIndex> nodes identified by the parameter
+     * @param string $legOffset             Offset of the <flightIndex> node (zero-based)
+     * @param string $refToGroupOfFlights   Reference to the <groupOfFlights> node (starts at 1)
      *
-     * @param SegmentFlightRef $segmentFlightRef
-     *
-     * @return \Generator
+     * @return \stdClass  The <groupOfFlights> node
      */
-    public function groupOfFlights(SegmentFlightRef $segmentFlightRef) : \Generator
+    public function groupOfFlights(string $legOffset, string $refToGroupOfFlights) : \stdClass
     {
-        foreach ($segmentFlightRef->getSegmentRefNumbers() as $legIndex => $flightRefNumber) {
-            yield $this->flightIndex[$legIndex][$flightRefNumber];
-        }
+        return $this->flightIndex[$legOffset][$refToGroupOfFlights];
     }
 }

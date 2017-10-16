@@ -22,38 +22,13 @@ class CabinClass
         'Y' => 'Economy', // Economic
     ];
 
-    /**
-     * @var string
-     */
-    private $code;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @param \stdClass $groupOfFares
-     */
-    public function __construct(\stdClass $groupOfFares)
+    public static function name(\stdClass $groupOfFares)
     {
-        $this->code = $groupOfFares->productInformation->cabinProduct->cabin ?? '';
-        $this->name = self::$map[$this->code] ?? '';
+        return self::$map[self::code($groupOfFares)] ?? '';
     }
 
-    /**
-     * @return string
-     */
-    public function getCode() : string
+    public static function code(\stdClass $groupOfFares)
     {
-        return $this->code;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName() : string
-    {
-        return $this->name;
+        return $groupOfFares->productInformation->cabinProduct->cabin ?? '';
     }
 }
