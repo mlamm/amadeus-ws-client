@@ -35,6 +35,11 @@ class AmadeusResponseTransformer
         $this->mapper = $mapper;
     }
 
+    /**
+     * @param BusinessCase $businessCase
+     * @param Result       $amadeusResult
+     * @return SearchResponse
+     */
     public function mapResultToDefinedStructure(BusinessCase $businessCase, Result $amadeusResult) : SearchResponse
     {
         $searchResponse = new SearchResponse();

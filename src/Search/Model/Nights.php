@@ -16,7 +16,11 @@ use Doctrine\Common\Collections\Collection;
  */
 class Nights
 {
-    public static function calc(Collection $segments)
+    /**
+     * @param Collection $segments
+     * @return int
+     */
+    public static function calc(Collection $segments) : int
     {
         if ($segments->count() === 0) {
             return 0;

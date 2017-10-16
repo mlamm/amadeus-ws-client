@@ -71,7 +71,7 @@ class FreeBaggageIndex
      *
      * @param \stdClass $response
      */
-    private function build(\stdClass $response)
+    private function build(\stdClass $response) : void
     {
         if (isset($response->serviceFeesGrp)) {
             foreach (new NodeList($response->serviceFeesGrp) as $serviceFeesGrp) {
@@ -90,7 +90,7 @@ class FreeBaggageIndex
      * @param \stdClass $serviceFeesGrp
      * @return array
      */
-    private function buildServiceCoverageInfoGrp(\stdClass $serviceFeesGrp)
+    private function buildServiceCoverageInfoGrp(\stdClass $serviceFeesGrp) : array
     {
         $index = [];
 
