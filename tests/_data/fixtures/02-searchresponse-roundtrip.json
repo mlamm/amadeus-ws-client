@@ -41,7 +41,11 @@
                       "iata": "4U"
                     }
                   },
-                  "remaining-seats": 9
+                  "remaining-seats": 9,
+                  "gds-information": {
+                    "res-book-desig-code": "L",
+                    "provider": "amadeus"
+                  }
                 }
               ]
             }
@@ -83,7 +87,11 @@
                       "iata": "4U"
                     }
                   },
-                  "remaining-seats": 9
+                  "remaining-seats": 9,
+                  "gds-information": {
+                    "res-book-desig-code": "T",
+                    "provider": "amadeus"
+                  }
                 }
               ]
             }

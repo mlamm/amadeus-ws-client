@@ -365,27 +365,28 @@ class AmadeusResponseTransformer
 
         $itineraryLeg->setNights(Nights::calc($itineraryLeg->getSegments()));
 
-        foreach ($fareDetails as $fareLegOffset => $singleFareDetail) {
-            $groupOfFares = new NodeList($singleFareDetail->groupOfFares);
+        $groupOfFares = new NodeList($fareDetails->get($legOffset)->groupOfFares);
 
-            foreach ($groupOfFares as $segmentIndex => $segmentFare) {
-                // add cabin class
-                /** @var SearchResponse\Segment $legSegment */
-                $legSegment = $itineraryLeg
-                    ->getSegments()
-                    ->offsetGet($segmentIndex);
+        foreach ($groupOfFares as $segmentIndex => $segmentFare) {
+            // add cabin class
+            /** @var SearchResponse\Segment $legSegment */
+            $legSegment = $itineraryLeg
+                ->getSegments()
+                ->offsetGet($segmentIndex);
 
-                if (CabinClass::code($segmentFare)) {
-                    $legSegment
-                        ->setCabinClass(new SearchResponse\CabinClass())
-                        ->getCabinClass()
-                        ->setCode(CabinClass::code($segmentFare))
-                        ->setName(CabinClass::name($segmentFare));
-                }
-
-                // add remaining seats
-                $legSegment->setRemainingSeats($segmentFare->productInformation->cabinProduct->avlStatus);
+            if (CabinClass::code($segmentFare)) {
+                $legSegment
+                    ->setCabinClass(new SearchResponse\CabinClass())
+                    ->getCabinClass()
+                    ->setCode(CabinClass::code($segmentFare))
+                    ->setName(CabinClass::name($segmentFare));
             }
+
+            $legSegment->setGdsInformation(new SearchResponse\AmadeusSegmentGdsInformation());
+            $legSegment->getGdsInformation()->setResBookDesigCode(CabinClass::rbd($segmentFare));
+
+            // add remaining seats
+            $legSegment->setRemainingSeats($segmentFare->productInformation->cabinProduct->avlStatus);
         }
 
         return $itineraryLeg;

@@ -11,7 +11,7 @@ use Amadeus\Client;
 /**
  * AmadeusRequestTransformer.php
  *
- * <Description>
+ * Build an Amadeus search request
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -96,7 +96,7 @@ class AmadeusRequestTransformer
         foreach ($request->getLegs() as $leg) {
             $itineraryOptions = $this->buildItineraryOptions($leg, $areaSearchEnabled, (bool) $leg->getIsFlexibleDate());
             $itineraries[] = new Client\RequestOptions\Fare\MPItinerary(
-                    $itineraryOptions
+                $itineraryOptions
             );
         }
 
@@ -113,30 +113,30 @@ class AmadeusRequestTransformer
     {
         $passengers = [];
 
-        if ($request->getAdults() > 0 ) {
+        if ($request->getAdults() > 0) {
             $passengers[] = new Client\RequestOptions\Fare\MPPassenger(
-                    [
-                        'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_ADULT,
-                        'count' => $request->getAdults()
-                    ]
+                [
+                    'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_ADULT,
+                    'count' => $request->getAdults()
+                ]
             );
         }
 
-        if ($request->getChildren() > 0 ) {
+        if ($request->getChildren() > 0) {
             $passengers[] = new Client\RequestOptions\Fare\MPPassenger(
-                    [
-                        'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_CHILD,
-                        'count' => $request->getChildren()
-                    ]
+                [
+                    'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_CHILD,
+                    'count' => $request->getChildren()
+                ]
             );
         }
 
-        if ($request->getInfants() > 0 ) {
+        if ($request->getInfants() > 0) {
             $passengers[] = new Client\RequestOptions\Fare\MPPassenger(
-                    [
-                        'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_INFANT,
-                        'count' => $request->getInfants()
-                    ]
+                [
+                    'type' => Client\RequestOptions\Fare\MPPassenger::TYPE_INFANT,
+                    'count' => $request->getInfants()
+                ]
             );
         }
 
@@ -184,5 +184,4 @@ class AmadeusRequestTransformer
 
         return $options;
     }
-
 }

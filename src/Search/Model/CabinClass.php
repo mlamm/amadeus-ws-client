@@ -14,6 +14,9 @@ namespace AmadeusService\Search\Model;
  */
 class CabinClass
 {
+    /**
+     * @var string[]
+     */
     private static $map = [
         'C' => 'Business Class', // Business
         'F' => 'First Class', // First, supersonic
@@ -22,13 +25,32 @@ class CabinClass
         'Y' => 'Economy', // Economic
     ];
 
-    public static function name(\stdClass $groupOfFares)
+    /**
+     * Extract name of cabin class from groupOfFares node
+     *
+     * @param \stdClass $groupOfFares
+     * @return array|mixed|string
+     */
+    public static function name(\stdClass $groupOfFares) : string
     {
         return self::$map[self::code($groupOfFares)] ?? '';
     }
 
-    public static function code(\stdClass $groupOfFares)
+    /**
+     * @param \stdClass $groupOfFares
+     * @return string
+     */
+    public static function code(\stdClass $groupOfFares) : string
     {
         return $groupOfFares->productInformation->cabinProduct->cabin ?? '';
+    }
+
+    /**
+     * @param \stdClass $groupOfFares
+     * @return string
+     */
+    public static function rbd(\stdClass $groupOfFares) : string
+    {
+        return $groupOfFares->productInformation->cabinProduct->rbd ?? '';
     }
 }

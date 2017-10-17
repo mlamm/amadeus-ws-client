@@ -27,7 +27,7 @@ class AmadeusResponseTransformerTest extends \Codeception\Test\Unit
      *
      * @dataProvider provideTestCases
      */
-    public function testItTransforms(string $amaResponseFile, string $itinType, int $limit, string $expectedSearchResponseFile)
+    public function testItTransforms(string $amaResponseFile, string $itinType, $limit, string $expectedSearchResponseFile)
     {
         $amaResponse = file_get_contents(codecept_data_dir($amaResponseFile));
 
@@ -58,14 +58,14 @@ class AmadeusResponseTransformerTest extends \Codeception\Test\Unit
             'one-way' => [
                 'ama-response'            => 'fixtures/01-masterPricer-response-oneway.xml',
                 'type'                    => 'one-way',
-                'limit'                   => 0,
+                'limit'                   => null,
                 'expected-searchresponse' => 'fixtures/01-searchresponse-oneway.json',
             ],
 
             'round-trip' => [
                 'ama-response'            => 'fixtures/02-masterPricer-response-roundtrip.xml',
                 'type'                    => 'round-trip',
-                'limit'                   => 0,
+                'limit'                   => null,
                 'expected-searchresponse' => 'fixtures/02-searchresponse-roundtrip.json',
             ],
 
