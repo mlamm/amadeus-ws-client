@@ -44,7 +44,8 @@ class CabinClassTest extends \Codeception\Test\Unit
         $groupOfFares->productInformation->cabinProduct->cabin = $amaCabin;
 
         $this->assertEquals($expectedCode, CabinClass::code($groupOfFares));
-        $this->assertEquals($expectedName, CabinClass::name($groupOfFares));
+        $this->assertEquals($expectedCode, CabinClass::code($groupOfFares));
+        $this->assertEquals('L', CabinClass::rbd($groupOfFares));
     }
 
     /**
@@ -88,5 +89,6 @@ class CabinClassTest extends \Codeception\Test\Unit
     {
         $this->assertEquals('', CabinClass::name(new \stdClass));
         $this->assertEquals('', CabinClass::code(new \stdClass));
+        $this->assertEquals('', CabinClass::rbd(new \stdClass));
     }
 }

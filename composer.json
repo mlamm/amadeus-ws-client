@@ -34,7 +34,7 @@
         "doctrine/cache": "~1.7",
         "symfony/yaml": "~3.3",
         "jms/serializer": "^1.8",
-        "flight/library-search-request-response-mapping": "^2.0",
+        "flight/library-search-request-response-mapping": "^3.0",
         "particle/validator": "^2.2",
         "doctrine/dbal": "~2.2"
     },

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5191aa4e6ecf0762b3aa48531045e93b",
+    "content-hash": "ecad5e61301940ff5c719bffabfec3f2",
     "packages": [
         {
             "name": "amabnl/amadeus-ws-client",
@@ -604,11 +604,11 @@
         },
         {
             "name": "flight/library-search-request-response-mapping",
-            "version": "2.0.0",
+            "version": "dev-feature/VAN-352-ypsilon-request-service-re-enable",
             "source": {
                 "type": "git",
                 "url": "ssh://git@stash.unister.lan:2200/flight/library.search-request-response-mapping.git",
-                "reference": "1e8a992ad95667d3104806a2a92b2c9118be4948"
+                "reference": "3f6a09018f0ffa5612adf3e4f3e4266a431bb324"
             },
             "require": {
                 "doctrine/collections": "~1.5",
@@ -634,7 +634,7 @@
                 }
             ],
             "description": "Simple mapper library for/to the response of the request service.",
-            "time": "2017-10-11T11:21:31+00:00"
+            "time": "2017-10-16T14:35:21+00:00"
         },
         {
             "name": "flight/search-request-mapping",
@@ -1571,16 +1571,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803"
+                "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
-                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
+                "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
                 "shasum": ""
             },
             "require": {
@@ -1592,7 +1592,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -1626,7 +1626,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-14T15:44:48+00:00"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/routing",
@@ -2930,16 +2930,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "6.4.1",
+            "version": "6.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "b770d8ba7e60295ee91d69d5a5e01ae833cac220"
+                "reference": "06b28548fd2b4a20c3cd6e247dc86331a7d4db13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b770d8ba7e60295ee91d69d5a5e01ae833cac220",
-                "reference": "b770d8ba7e60295ee91d69d5a5e01ae833cac220",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/06b28548fd2b4a20c3cd6e247dc86331a7d4db13",
+                "reference": "06b28548fd2b4a20c3cd6e247dc86331a7d4db13",
                 "shasum": ""
             },
             "require": {
@@ -3010,7 +3010,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-10-07T17:53:53+00:00"
+            "time": "2017-10-16T13:18:59+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -4421,7 +4421,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "flight/library-search-request-response-mapping": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

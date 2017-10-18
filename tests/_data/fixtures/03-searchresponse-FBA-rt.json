@@ -44,6 +44,10 @@
                   "remaining-seats": 9,
                   "baggage-rules": {
                     "pieces": 1
+                  },
+                  "gds-information": {
+                    "res-book-desig-code": "O",
+                    "provider": "amadeus"
                   }
                 }
               ]
@@ -89,6 +93,10 @@
                   "remaining-seats": 9,
                   "baggage-rules": {
                     "pieces": 1
+                  },
+                  "gds-information": {
+                    "res-book-desig-code": "P",
+                    "provider": "amadeus"
                   }
                 }
               ]

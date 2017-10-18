@@ -134,4 +134,12 @@ class NightsTest extends \Codeception\Test\Unit
         $this->assertEquals(new \DateTime('2017-10-11 13:13:00'), $segment->getDepartAt());
         $this->assertEquals(new \DateTime('2017-10-11 14:13:00'), $segment->getArriveAt());
     }
+
+    /**
+     * Verify that it handles an empty collection of segments
+     */
+    public function testItReturnsZeroIfNoSegmentPresent()
+    {
+        $this->assertEquals(0, Nights::calc(new ArrayCollection()));
+    }
 }
