@@ -21,16 +21,16 @@ class IndexProvider extends BusinessCaseProvider
         $collection->match(
             '/',
             function () {
-                return new RedirectResponse('/_hc');
+                return new RedirectResponse('/health');
             }
         );
 
-        $collection->match('/_hc', HealthCheck::class);
+        $collection->match('/health', HealthCheck::class);
 
         $collection->match(
             '/docs',
             function () {
-                return new Response(file_get_contents(getcwd() . '/var/docs/index.html'));
+                return new Response(file_get_contents('./var/docs/index.html'));
             }
         );
     }
