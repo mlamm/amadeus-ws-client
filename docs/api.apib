@@ -45,3 +45,28 @@ format.
     + Body
     
         <!-- include(payload/error.json) -->
+        
+## Healthcheck [/health/]
+
+This endpoint will report main state of the service
+
+### Healthcheck [POST]
+
++ Request
+    + Headers
+        
+            Accept: text/plain
+    
++ Response 200 (text/plain)
+    
+            I am alive.
+### Healthcheck [GET]
+
++ Request
+    + Headers
+        
+            Accept: text/plain
+    
++ Response 200 (text/plain)
+    
+            I am alive.

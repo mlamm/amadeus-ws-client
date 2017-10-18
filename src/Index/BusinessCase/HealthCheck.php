@@ -2,7 +2,7 @@
 namespace AmadeusService\Index\BusinessCase;
 
 use AmadeusService\Application\BusinessCase;
-use AmadeusService\Application\Response\HalResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class HealthCheck
@@ -11,18 +11,12 @@ use AmadeusService\Application\Response\HalResponse;
 class HealthCheck extends BusinessCase
 {
     /**
-     * @return HalResponse
+     * @return Response
      */
-    public function respond()
+    public function respond() : Response
     {
-        return new HalResponse(
-            [
-                '_links' => [
-                    'search' => '/flight-search/'
-                ],
-                'state' => 'alive',
-            ],
-            200
-        );
+       $checkText = 'I am alive.';
+
+        return new Response($checkText, 200, ['content-type' => 'text/plain']);
     }
 }
