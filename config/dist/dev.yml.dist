@@ -37,6 +37,16 @@ search:
         - "TAC"
         - "XLC" # To avoid ATLA (Amadeus Ticketless Access) carriers
 
+    overnight_options: #copied from IbeConfig (l: 2250ff)
+        - "OVN"
+        - "NVS"
+
+    coop_codes:      #copied from IbeConfigAbstract (l: 5113ff)
+        - "000867" # AER
+        - "374186" # BA-NOBAG
+        - "513058" # SN-NOBAG
+        - "HBO01"  # AY-NOBAG
+
     area_search_distance: 100
 
     flexible_date_range: 1

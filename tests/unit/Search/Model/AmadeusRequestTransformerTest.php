@@ -105,8 +105,6 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $this->assertEquals(4, $options->nrOfRequestedPassengers);
         $this->assertArraySubset($expectedPax, $options->passengers);
         $this->assertArraySubset($expectedLegs, $options->itinerary);
-        $this->assertArraySubset(['ET'], $options->flightOptions);
-
     }
 
     /**
@@ -173,10 +171,7 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $this->assertEquals(2, $options->nrOfRequestedPassengers);
         $this->assertArraySubset($expectedPax, $options->passengers);
         $this->assertArraySubset($expectedLegs, $options->itinerary);
-        $this->assertArraySubset(['ET'], $options->flightOptions);
         $this->assertArraySubset($expectedAF, $options->airlineOptions);
-
-
     }
 
     /**
@@ -245,7 +240,6 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $this->assertEquals(2, $options->nrOfRequestedPassengers);
         $this->assertArraySubset($expectedPax, $options->passengers);
         $this->assertArraySubset($expectedLegs, $options->itinerary);
-        $this->assertArraySubset(['ET'], $options->flightOptions);
         $this->assertArraySubset($expectedExcludedAL, $options->airlineOptions);
     }
 
@@ -313,7 +307,6 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $this->assertEquals(2, $options->nrOfRequestedPassengers);
         $this->assertArraySubset($expectedPax, $options->passengers);
         $this->assertArraySubset($expectedLegs, $options->itinerary);
-        $this->assertArraySubset(['ET'], $options->flightOptions);
         $this->assertEquals('MD', $options->cabinOption);
         $this->assertArraySubset($expectedCabinClass, $options->cabinClass);
     }
@@ -386,7 +379,6 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $this->assertEquals(2, $options->nrOfRequestedPassengers);
         $this->assertArraySubset($expectedPax, $options->passengers);
         $this->assertArraySubset($expectedLegs, $options->itinerary);
-        $this->assertArraySubset(['ET'], $options->flightOptions);
     }
 
     /**
@@ -473,6 +465,175 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $this->assertEquals(2, $options->nrOfRequestedPassengers);
         $this->assertArraySubset($expectedPax, $options->passengers);
         $this->assertArraySubset($expectedLegs, $options->itinerary);
-        $this->assertArraySubset(['ET'], $options->flightOptions);
+    }
+
+    /**
+     * test it handles main FlightOptions set in config
+     */
+    public function testItAddsBaseRequestOptions()
+    {
+        $config = new \stdClass();
+        $config->search = new \stdClass();
+        $config->search->flexible_date_range = 1;
+        $config->search->request_options = [
+            "A",
+            "B",
+            "C"
+        ];
+
+        $transformer = new AmadeusRequestTransformer($config);
+
+        $requestOptions = [
+            RequestFaker::OPT_TYPE =>'round-trip',
+            RequestFaker::OPT_FLEXIBLE_LEG_DATES => [false, true],
+            RequestFaker::OPT_PAX => [1, 1, 0],
+            RequestFaker::OPT_AREA_SEARCH => false,
+            RequestFaker::OPT_RESULT_LIMIT => 3,
+            RequestFaker::OPT_CABIN_CLASS_FILTER => ['Y', 'C'],
+            RequestFaker::OPT_IS_OVERNIGHT => false
+        ];
+        $request = RequestFaker::getFakeRequest($requestOptions);
+
+        $expectedFlightOptions = ["A", "B",  "C"];
+
+        $options = $transformer->buildFareMasterRequestOptions($request);
+
+        $this->assertInstanceOf(Client\RequestOptions\FareMasterPricerTbSearch::class, $options);
+        $this->assertArraySubset($expectedFlightOptions, $options->flightOptions);
+    }
+
+    /**
+     * test it handles main FlightOptions and adds coop codes
+     */
+    public function testItAddsCoopCodes()
+    {
+        $config = new \stdClass();
+        $config->search = new \stdClass();
+        $config->search->flexible_date_range = 1;
+        $config->search->request_options = [
+            Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES,
+            "B",
+            "C"
+        ];
+        $config->search->coop_codes = [
+            "1234",
+            "5678",
+            "9ABC"
+        ];
+
+        $transformer = new AmadeusRequestTransformer($config);
+
+        $requestOptions = [
+            RequestFaker::OPT_TYPE =>'round-trip',
+            RequestFaker::OPT_FLEXIBLE_LEG_DATES => [false, true],
+            RequestFaker::OPT_PAX => [1, 1, 0],
+            RequestFaker::OPT_AREA_SEARCH => false,
+            RequestFaker::OPT_RESULT_LIMIT => 3,
+            RequestFaker::OPT_CABIN_CLASS_FILTER => ['Y', 'C'],
+            RequestFaker::OPT_IS_OVERNIGHT => false
+        ];
+        $request = RequestFaker::getFakeRequest($requestOptions);
+
+        $expectedFlightOptions = [Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES, "B",  "C"];
+        $expectedCoopQualifier = Client\RequestOptions\FareMasterPricerTbSearch::CORPORATE_QUALIFIER_UNIFARE;
+        $expectedCoopCodes     = ["1234", "5678", "9ABC"];
+
+        $options = $transformer->buildFareMasterRequestOptions($request);
+
+        $this->assertInstanceOf(Client\RequestOptions\FareMasterPricerTbSearch::class, $options);
+        $this->assertArraySubset($expectedFlightOptions, $options->flightOptions);
+        $this->assertEquals($expectedCoopQualifier, $options->corporateQualifier);
+        $this->assertArraySubset($expectedCoopCodes, $options->corporateCodesUnifares);
+    }
+
+    /**
+     * test it handles main FlightOptions and dont adds coop code data and remove UNIFARE Option
+     */
+    public function testRemovesUnifareOptionWithNoCoopCode()
+    {
+        $config = new \stdClass();
+        $config->search = new \stdClass();
+        $config->search->flexible_date_range = 1;
+        $config->search->request_options = [
+            Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES,
+            "B",
+            "C"
+        ];
+        $config->search->coop_codes = [
+        ];
+
+        $transformer = new AmadeusRequestTransformer($config);
+
+        $requestOptions = [
+            RequestFaker::OPT_TYPE =>'round-trip',
+            RequestFaker::OPT_FLEXIBLE_LEG_DATES => [false, true],
+            RequestFaker::OPT_PAX => [1, 1, 0],
+            RequestFaker::OPT_AREA_SEARCH => false,
+            RequestFaker::OPT_RESULT_LIMIT => 3,
+            RequestFaker::OPT_CABIN_CLASS_FILTER => ['Y', 'C'],
+            RequestFaker::OPT_IS_OVERNIGHT => false
+        ];
+        $request = RequestFaker::getFakeRequest($requestOptions);
+
+        $expectedFlightOptions = [1 => "B", 2 => "C"];
+        $coopQualifier = Client\RequestOptions\FareMasterPricerTbSearch::CORPORATE_QUALIFIER_UNIFARE;
+
+        $options = $transformer->buildFareMasterRequestOptions($request);
+
+        $this->assertInstanceOf(Client\RequestOptions\FareMasterPricerTbSearch::class, $options);
+        $this->assertArraySubset($expectedFlightOptions, $options->flightOptions);
+        $this->assertNotContains($coopQualifier, $options->flightOptions);
+        $this->assertEmpty($options->corporateQualifier);
+        $this->assertEmpty($options->corporateCodesUnifares);
+
+    }
+
+    /**
+     * test it handles main FlightOptions and extends them with overnight options
+     */
+    public function testItExtendsOvernightOptions()
+    {
+        $config = new \stdClass();
+        $config->search = new \stdClass();
+        $config->search->flexible_date_range = 1;
+        $config->search->request_options = [
+            Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES,
+            "B",
+            "C"
+        ];
+        $config->search->coop_codes = [
+            "1234",
+            "5678",
+            "9ABC"
+        ];
+
+        $config->search->overnight_options = [
+            "X",
+            "Y"
+        ];
+
+        $transformer = new AmadeusRequestTransformer($config);
+
+        $requestOptions = [
+            RequestFaker::OPT_TYPE =>'round-trip',
+            RequestFaker::OPT_FLEXIBLE_LEG_DATES => [false, true],
+            RequestFaker::OPT_PAX => [1, 1, 0],
+            RequestFaker::OPT_AREA_SEARCH => false,
+            RequestFaker::OPT_RESULT_LIMIT => 3,
+            RequestFaker::OPT_CABIN_CLASS_FILTER => ['Y', 'C'],
+            RequestFaker::OPT_IS_OVERNIGHT => true
+        ];
+        $request = RequestFaker::getFakeRequest($requestOptions);
+
+        $expectedFlightOptions = [Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES, "B", "C", "X", "Y"];
+        $expectedCoopQualifier = Client\RequestOptions\FareMasterPricerTbSearch::CORPORATE_QUALIFIER_UNIFARE;
+        $expectedCoopCodes     = ["1234", "5678", "9ABC"];
+
+        $options = $transformer->buildFareMasterRequestOptions($request);
+
+        $this->assertInstanceOf(Client\RequestOptions\FareMasterPricerTbSearch::class, $options);
+        $this->assertArraySubset($expectedFlightOptions, $options->flightOptions);
+        $this->assertEquals($expectedCoopQualifier, $options->corporateQualifier);
+        $this->assertArraySubset($expectedCoopCodes, $options->corporateCodesUnifares);
     }
 }
