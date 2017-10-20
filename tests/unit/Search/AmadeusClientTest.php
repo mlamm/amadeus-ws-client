@@ -84,14 +84,15 @@ class AmadeusClientTest extends Unit
         );
     }
 
+    /**
+     * Verify that the client is called with parameters from the request tranformer
+     */
     public function testItCallsTheClient()
     {
         $request = RequestFaker::buildDefaultRequest();
         $businessCase = $request->getBusinessCases()->first()->first();
         $clientParams = new Client\Params();
         $requestOptions = new Client\RequestOptions\FareMasterPricerTbSearch();
-        $authResult = new Client\Result(new Client\Session\Handler\SendResult());
-        $authResult->status = Client\Result::STATUS_OK;
         $amaResult = new Client\Result(new Client\Session\Handler\SendResult());
         $amaResult->status = Client\Result::STATUS_OK;
         $expecedSearchResponse = new SearchResponse();
@@ -110,11 +111,6 @@ class AmadeusClientTest extends Unit
 
         $this->client
             ->expects($this->once())
-            ->method('securityAuthenticate')
-            ->willReturn($authResult);
-
-        $this->client
-            ->expects($this->once())
             ->method('fareMasterPricerTravelBoardSearch')
             ->with($requestOptions)
             ->willReturn($amaResult);
@@ -129,43 +125,15 @@ class AmadeusClientTest extends Unit
         $this->assertSame($expecedSearchResponse, $searchResponse);
     }
 
-    public function testItThrowsOnFailedAuthentication()
-    {
-        $request = RequestFaker::buildDefaultRequest();
-        $businessCase = $request->getBusinessCases()->first()->first();
-        $clientParams = new Client\Params();
-        $requestOptions = new Client\RequestOptions\FareMasterPricerTbSearch();
-
-        $authResult = new Client\Result(new Client\Session\Handler\SendResult());
-        $authResult->status = Client\Result::STATUS_ERROR;
-
-        $this->requestTransformer
-            ->expects($this->any())
-            ->method('buildClientParams')
-            ->willReturn($clientParams);
-
-        $this->requestTransformer
-            ->expects($this->any())
-            ->method('buildFareMasterRequestOptions')
-            ->willReturn($requestOptions);
-
-        $this->client
-            ->expects($this->once())
-            ->method('securityAuthenticate')
-            ->willReturn($authResult);
-
-        $this->expectException(ServiceRequestAuthenticationFailedException::class);
-        $this->object->search($request, $businessCase);
-    }
-
+    /**
+     * Verify that it throws an exception if the return status of the ama call is not OK
+     */
     public function testItThrowsOnServiceError()
     {
         $request = RequestFaker::buildDefaultRequest();
         $businessCase = $request->getBusinessCases()->first()->first();
         $clientParams = new Client\Params();
         $requestOptions = new Client\RequestOptions\FareMasterPricerTbSearch();
-        $authResult = new Client\Result(new Client\Session\Handler\SendResult());
-        $authResult->status = Client\Result::STATUS_OK;
 
         $amaResult = new Client\Result(new Client\Session\Handler\SendResult());
         $amaResult->status = Client\Result::STATUS_ERROR;
@@ -182,11 +150,6 @@ class AmadeusClientTest extends Unit
             ->expects($this->any())
             ->method('buildFareMasterRequestOptions')
             ->willReturn($requestOptions);
-
-        $this->client
-            ->expects($this->any())
-            ->method('securityAuthenticate')
-            ->willReturn($authResult);
 
         $this->client
             ->expects($this->once())
