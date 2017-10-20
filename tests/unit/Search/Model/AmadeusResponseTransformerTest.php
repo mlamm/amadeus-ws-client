@@ -6,9 +6,8 @@ namespace AmadeusService\Tests\Search\Model;
 use Amadeus\Client\Result;
 use Amadeus\Client\Session\Handler\SendResult;
 use AmadeusService\Search\Model\AmadeusResponseTransformer;
-use Flight\Library\SearchRequest\ResponseMapping\Mapper;
+use Doctrine\Common\Collections\ArrayCollection;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
-use Flight\SearchRequestMapping\Entity\BusinessCaseOptions;
 
 /**
  * AmadeusResponseTransformerTest.php
@@ -24,10 +23,9 @@ class AmadeusResponseTransformerTest extends \Codeception\Test\Unit
     /**
      * Verify that it generates the expected output from the amadeus response
      *
-     *
      * @dataProvider provideTestCases
      */
-    public function testItTransforms(string $amaResponseFile, string $itinType, $limit, string $expectedSearchResponseFile)
+    public function testItTransforms(string $amaResponseFile, string $itinType, int $limit, string $expectedSearchResponseFile)
     {
         $amaResponse = file_get_contents(codecept_data_dir($amaResponseFile));
 
@@ -37,15 +35,20 @@ class AmadeusResponseTransformerTest extends \Codeception\Test\Unit
 
         $businessCase = new BusinessCase();
         $businessCase->setType($itinType);
-        $businessCase->setOptions(new BusinessCaseOptions());
-        $businessCase->getOptions()->setResultLimit($limit);
 
-        $transformer = new AmadeusResponseTransformer(new Mapper());
+        $transformer = new AmadeusResponseTransformer();
         $response = $transformer->mapResultToDefinedStructure($businessCase, $amaResult);
+
+        // limit response from fixture since we do not have expected values for all flights
+        $response->setResult(new ArrayCollection($response->getResult()->slice(0, $limit)));
+
+        \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
+        $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
+        $serializedResponse = $serializer->serialize($response, 'json');
 
         $this->assertEquals(
             json_decode(file_get_contents(codecept_data_dir($expectedSearchResponseFile)), true),
-            json_decode($transformer->getMappedResponseAsJson($response), true)
+            json_decode($serializedResponse, true)
         );
     }
 
@@ -58,14 +61,14 @@ class AmadeusResponseTransformerTest extends \Codeception\Test\Unit
             'one-way' => [
                 'ama-response'            => 'fixtures/01-masterPricer-response-oneway.xml',
                 'type'                    => 'one-way',
-                'limit'                   => null,
+                'limit'                   => 1,
                 'expected-searchresponse' => 'fixtures/01-searchresponse-oneway.json',
             ],
 
             'round-trip' => [
                 'ama-response'            => 'fixtures/02-masterPricer-response-roundtrip.xml',
                 'type'                    => 'round-trip',
-                'limit'                   => null,
+                'limit'                   => 1,
                 'expected-searchresponse' => 'fixtures/02-searchresponse-roundtrip.json',
             ],
 

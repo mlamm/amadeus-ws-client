@@ -1,11 +1,8 @@
 <?php
 namespace AmadeusService\Application;
 
-use Doctrine\DBAL\Connection;
 use Monolog\Logger;
 use Silex\Application;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class BusinessCase implements BusinessCaseInterface

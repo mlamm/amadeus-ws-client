@@ -56,6 +56,21 @@ class RequestFaker
         return $request;
     }
 
+    /**
+     * Builds a one-way request with two adult passengers. All options can be overridden.
+     *
+     * @param array $options
+     * @return Request
+     */
+    public static function buildDefaultRequest(array $options = []) : Request
+    {
+        $defaultOptions = [
+            self::OPT_TYPE => 'one-way',
+            self::OPT_PAX => [2],
+        ];
+
+        return self::getFakeRequest($options + $defaultOptions);
+    }
 
     /**
      * returns relative fixed departure DateTime object
@@ -207,8 +222,8 @@ class RequestFaker
      */
     public static function setPax(Request $request, $options) : void
     {
-        $request->setAdults(isset($options[self::OPT_PAX][0])? $options[self::OPT_PAX][0] : 0);
-        $request->setChildren(isset($options[self::OPT_PAX][1])? $options[self::OPT_PAX][1] :0);
-        $request->setInfants(isset($options[self::OPT_PAX][2])? $options[self::OPT_PAX][2] : 0);
+        $request->setAdults(isset($options[self::OPT_PAX][0]) ? $options[self::OPT_PAX][0] : 0);
+        $request->setChildren(isset($options[self::OPT_PAX][1]) ? $options[self::OPT_PAX][1] : 0);
+        $request->setInfants(isset($options[self::OPT_PAX][2]) ? $options[self::OPT_PAX][2] : 0);
     }
 }

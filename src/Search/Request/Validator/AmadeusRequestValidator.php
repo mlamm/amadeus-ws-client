@@ -8,7 +8,6 @@ use AmadeusService\Search\Exception\InvalidRequestParameterException;
 use Particle\Validator\Exception\InvalidValueException;
 use Particle\Validator\ValidationResult;
 use Particle\Validator\Validator;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * AmadeusRequestValidator.php
@@ -34,14 +33,14 @@ class AmadeusRequestValidator
     /**
      * receives the request and prepares it for validation
      *
-     * @param Request $request
+     * @param string $requestJson
      *
      * @throws InvalidRequestException
      * @throws InvalidRequestParameterException
      */
-    public function validateRequest(Request $request) : void
+    public function validateRequest(string $requestJson) : void
     {
-        $requestData = json_decode($request->getContent(), true);
+        $requestData = json_decode($requestJson, true);
 
         ///malformed request
         if (!is_array($requestData)) {
@@ -51,9 +50,7 @@ class AmadeusRequestValidator
         $validationResult = $this->doValidation($requestData);
 
         if ($validationResult->isNotValid()) {
-            $ex = new InvalidRequestParameterException($validationResult->getFailures());
-
-            throw $ex;
+            throw new InvalidRequestParameterException($validationResult->getFailures());
         }
     }
 

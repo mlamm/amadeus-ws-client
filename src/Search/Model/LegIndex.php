@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace AmadeusService\Search\Model;
 
 use Amadeus\Client\Result;
-use Codeception\Util\Debug;
 
 /**
  * LegIndex.php

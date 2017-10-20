@@ -20,3 +20,5 @@ $validator->validate(
 );
 
 $I->expect($validator->isValid());
+
+$I->seeResponseHasLinkToSelf('/flight-search/');

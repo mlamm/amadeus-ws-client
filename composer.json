@@ -21,12 +21,8 @@
             "AmadeusService\\Tests\\": ["tests/unit"]
         }
     },
-    "scripts": {
-        "test": "./vendor/bin/codecept run",
-        "docs": "./node_modules/.bin/gulp create-docs"
-    },
     "require": {
-        "php": "~7.0",
+        "php": "~7.1",
         "silex/silex": "~2.0",
         "amabnl/amadeus-ws-client": "~1.4",
         "monolog/monolog": "~1.23",
@@ -35,8 +31,7 @@
         "symfony/yaml": "~3.3",
         "jms/serializer": "^1.8",
         "flight/library-search-request-response-mapping": "^3.0",
-        "particle/validator": "^2.2",
-        "doctrine/dbal": "~2.2"
+        "particle/validator": "^2.2"
     },
     "require-dev": {
         "codeception/codeception": "~2.3",
@@ -47,7 +42,9 @@
         "zendframework/zend-code": "^3.2",
         "symfony/var-dumper": "^3.3",
         "justinrainbow/json-schema": "^5.2",
-        "sorien/silex-pimple-dumper": "^2.0"
+        "sorien/silex-pimple-dumper": "^2.0",
+        "flow/jsonpath": "^0.3.4",
+        "gamez/psr-testlogger": "^2.0"
     },
     "repositories": {
         "flight-search-request-mapping": {

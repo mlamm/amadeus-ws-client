@@ -20,7 +20,11 @@ class ApiTester extends \Codeception\Actor
 {
     use _generated\ApiTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    public function seeResponseHasLinkToSelf($selfUrl)
+    {
+        $jsonPath = '$_links.self.href';
+        $href = $this->grabDataFromResponseByJsonPath($jsonPath);
+        \PHPUnit_Framework_Assert::assertCount(1,$href,'Link not found at path `' . $jsonPath .'`');
+        \PHPUnit_Framework_Assert::assertEquals($selfUrl, $href[0]);
+    }
 }

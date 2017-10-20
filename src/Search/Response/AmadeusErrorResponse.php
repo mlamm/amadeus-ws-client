@@ -36,24 +36,4 @@ class AmadeusErrorResponse extends ErrorResponse
 
         return $this;
     }
-
-    /**
-     * adds meta info to error response
-     *
-     * @param array $meta
-     *
-     * @return $this
-     */
-    public function addMetaData(array $meta)
-    {
-        $currentData = json_decode($this->data, true);
-
-        $extendedData = array_merge($currentData, $meta);
-
-        $extendedData = new \ArrayObject($extendedData);
-        $this->setData($extendedData);
-        $this->update();
-
-        return $this;
-    }
 }
