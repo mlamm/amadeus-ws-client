@@ -2,9 +2,7 @@
 namespace AmadeusService\Search\Model;
 
 use Amadeus\Client;
-use Amadeus\Client\Result;
 use AmadeusService\Search\Exception\AmadeusRequestException;
-use AmadeusService\Search\Exception\MissingRequestParameterException;
 use AmadeusService\Search\Exception\ServiceRequestAuthenticationFailedException;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
@@ -68,6 +66,7 @@ class AmadeusClient
 
     /**
      * Method to start a search request based on a sent Request object
+     *
      * @param Request $request
      * @param BusinessCase $businessCase
      *
@@ -79,12 +78,6 @@ class AmadeusClient
     {
         /** @var Client $client */
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($businessCase, $this->logger));
-
-        $authResult = $client->securityAuthenticate();
-
-        if ($authResult->status !== Client\Result::STATUS_OK) {
-            throw new ServiceRequestAuthenticationFailedException($authResult->messages);
-        }
 
         $requestOptions = $this->requestTransformer->buildFareMasterRequestOptions($request);
 

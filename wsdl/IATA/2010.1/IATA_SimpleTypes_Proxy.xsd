@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.iata.org/IATA/2007/00/IATA2010.1" targetNamespace="http://www.iata.org/IATA/2007/00/IATA2010.1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="IATA_SimpleTypes.xsd"/>
+</xs:schema>
