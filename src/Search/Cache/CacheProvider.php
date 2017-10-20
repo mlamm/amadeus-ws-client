@@ -19,7 +19,10 @@ use Pimple\ServiceProviderInterface;
  */
 class CacheProvider implements ServiceProviderInterface
 {
-    public function register(Container $app)
+    /**
+     * @param Container $app
+     */
+    public function register(Container $app) : void
     {
         $config = $app['config'];
 

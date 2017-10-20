@@ -14,7 +14,7 @@ namespace AmadeusService\Search\Cache;
  */
 class RedisCache extends \Doctrine\Common\Cache\RedisCache
 {
-    protected function getSerializerValue()
+    protected function getSerializerValue() : int
     {
         return \Redis::SERIALIZER_NONE;
     }

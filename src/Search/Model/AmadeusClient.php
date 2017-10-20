@@ -38,6 +38,9 @@ class AmadeusClient
     protected $responseTransformer;
 
     /**
+     * The client must be created from request data. This makes it impossible to inject.
+     * Therefore inject a factory method which builds the client.
+     *
      * @var \Closure
      */
     protected $clientBuilder;
@@ -47,6 +50,7 @@ class AmadeusClient
      * @param LoggerInterface            $logger
      * @param AmadeusRequestTransformer  $requestTransformer
      * @param AmadeusResponseTransformer $responseTransformer
+     * @param \Closure                   $clientBuilder
      */
     public function __construct(
         \stdClass $config,
@@ -67,8 +71,8 @@ class AmadeusClient
      * @param Request $request
      * @param BusinessCase $businessCase
      *
-     * @return Result
-     * @throws MissingRequestParameterException
+     * @return SearchResponse
+     * @throws AmadeusRequestException
      * @throws ServiceRequestAuthenticationFailedException
      */
     public function search(Request $request, BusinessCase $businessCase) : SearchResponse

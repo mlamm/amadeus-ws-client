@@ -29,7 +29,7 @@ class HalResponse extends JsonResponse
      *
      * @return $this
      */
-    public function addMetaData(array $meta)
+    public function addMetaData(array $meta) : HalResponse
     {
         $currentData = json_decode($this->data, true);
 
