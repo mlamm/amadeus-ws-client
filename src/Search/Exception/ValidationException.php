@@ -9,7 +9,7 @@ use AmadeusService\Application\Exception\ServiceException;
  */
 class ValidationException extends ServiceException
 {
-    const INTERNAL_ERROR_CODE = 'ARS0004';
+    const INTERNAL_ERROR_CODE = 'ARS0002';
 
     /**
      * @inheritdoc

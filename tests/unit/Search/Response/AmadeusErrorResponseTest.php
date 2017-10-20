@@ -44,14 +44,14 @@ class AmadeusErrorResponseTest extends Unit
         $expectedErrorSubset = [
             'first' => [
                 0 => [
-                    'code' => 'ARS0004',
+                    'code' => 'ARS0002',
                     'message' => 'INVALID OR MISSING REQUEST PARAM - something is wrong with first',
                     'status' => 400
                 ]
             ],
             'second' => [
                 0 => [
-                    'code' => 'ARS0004',
+                    'code' => 'ARS0002',
                     'message' => 'INVALID OR MISSING REQUEST PARAM - another failure in second',
                     'status' => 400
                 ]

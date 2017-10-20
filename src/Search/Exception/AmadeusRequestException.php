@@ -18,7 +18,7 @@ class AmadeusRequestException extends ServiceException
     protected $internalErrorMessage = 'AMADEUS RESPONSE ERROR';
 
     /**
-     * @param \stdClass $error
+     * @param array $messages
      */
     public function __construct(array $messages)
     {
@@ -39,7 +39,7 @@ class AmadeusRequestException extends ServiceException
      */
     public function getInternalErrorCode()
     {
-        return 'ARS000X';
+        return 'ARS0004';
     }
 
     /**

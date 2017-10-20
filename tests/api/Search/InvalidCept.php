@@ -9,8 +9,8 @@ $I->seeResponseCodeIs(400);
 $I->haveHttpHeader('content-type', 'application/hal+json');
 $I->canSeeResponseContainsJson(
     [
-        'code' => 'ARS0003',
-        'message' => 'The provided request could not be mapped into the appropriate format',
+        'code' => 'ARS0001',
+        'message' => 'MALFORMED REQUEST',
         'status' => 400
     ]
 );

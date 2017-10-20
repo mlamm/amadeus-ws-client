@@ -26,7 +26,7 @@ class ServiceRequestAuthenticationFailedExceptionTest extends Unit
     public function testItGivesBackFixedMessageAndCode() : void
     {
         $expectedMessage = 'The `Amadeus\Client::securityAuthenticate` method didn\'t return state OK';
-        $expectedInternalErrorCode = 'ARS0001';
+        $expectedInternalErrorCode = 'ARS0003';
 
         $exception = new ServiceRequestAuthenticationFailedException([]);
 

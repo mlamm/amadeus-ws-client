@@ -3,6 +3,7 @@
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 chdir(__DIR__ . '/..');
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -24,6 +25,28 @@ $app->register(
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
+$app->error(function (NotFoundHttpException $ex, Request $request, $code) {
+    return new JsonResponse(
+        [
+            'errors' => [
+                '_' => [
+                    [
+                        'code'    => 'ARS0404',
+                        'message' => $ex->getMessage(),
+                        'status'  => $code
+                    ]
+                ]
+            ],
+            '_link' => [
+                'self' => [
+                    'href' => '/flight-search/'
+                ]
+            ]
+        ],
+        $code
+    );
+});
+
 $app->error(
     function (\Exception $ex, Request $request, $code) {
         return new JsonResponse(
@@ -32,7 +55,7 @@ $app->error(
                     '_' => [
                         [
                             'code' => 'ARS000X',
-                            'message' => $ex->getMessage(),
+                            'message' => 'SERVER ERROR - ' . $ex->getMessage(),
                             'status' => $code
                         ]
                     ]

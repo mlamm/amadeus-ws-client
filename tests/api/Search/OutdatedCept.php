@@ -9,7 +9,7 @@ $I->seeResponseCodeIs(500);
 $I->haveHttpHeader('content-type', 'application/hal+json');
 $I->canSeeResponseContainsJson(
     [
-        'code' => 'ARS000X',
+        'code' => 'ARS0004',
         'message' => 'AMADEUS RESPONSE ERROR [920,Past date/time not allowed]',
         'status' => 500
     ]

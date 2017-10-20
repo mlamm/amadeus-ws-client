@@ -5,6 +5,22 @@ FORMAT: 1A
 This service is the main communication operator to Amadeus. It shall handle any kind
 of request concerning the GDS.
 
+Possible error codes:
+
+|Code     | Message                                                                      | Hint                                                                 |
+|---------|------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| ARS000X | SERVER ERROR - {message}                                                     | a not further described error occurs                                 |
+| ARS0404 | No route found for {requested route}                                         | the requested route is not available                                 |
+| ASR0001 | MALFORMED REQUEST                                                            | The provided request could not be mapped into the appropriate format |
+| ARS0002 | INVALID OR MISSING REQUEST PARAM                                             | given field(s) of the request has an invalid value/format            |
+| ARS0003 | The `Amadeus\Client::securityAuthenticate` method didn't return state OK     | the credentials sent with request are invalid                        |
+| ARS0004 | AMADEUS RESPONSE ERROR [{errNo., message}]                                   | the request was technical valid, Amadeus returns failure             |
+
+
+
+
+
+
 #### Search [POST /flight-search/]
 
 This request will access the flight search endpoint of amadeus with mapped sent parameters
@@ -12,39 +28,152 @@ and business case configurations of the use-case, request an result and return i
 format.
 
 + Request
-
-    + Body
-        <!-- include(payload/request.json) -->
+    + Headers
+    
+            content-type: application/json
+    
+    + Attributes
+        + `agent`: fluege.de (string, required) - a string representation of the requesting client
+        + `adults`: 2 (number, required) - number of adults
+        + `children`: 0 (number, required) - number of children
+        + `infants`: 0 (number, required) - number of infants
+        + `filter-cabin-class` (array, optional)
+            + Y, F, C (enum) - request with this cabin class(es)
+        + `filter-airline`: AB (array, optional) - list of airline IATA codes 
+        + `legs` (array, fixed-type, required) 
+            + (object)
+                + `departure`: BER (string, required) - name of departure IATA airport code
+                + `arrival`: LON (string, required) - name of arrival IATA airport code
+                + `depart-at`: 123456789 (number, required) - unix local timestamp of departure for leg
+                + `is-flexible-date`: false (boolean, required) - flag if date boundaries should be extended
+        + `business-cases`(array, fixed, required)
+            + (array)
+                + (object)
+                    + `content-provider`: amadeus (string, required) - requested content provider
+                    + `type` : `one-way`, `round-trip`, `open-jaw` (enum, required) - requested type of offers
+                    + `fare-type`: net (string, required) - flag how fare should be returned
+                    + `options`
+                        + `result-limit`: 10 (number, optional) - limit of requested offers
+                        + `is-one-way-combination`: true (boolean, required) - flag if a combination of one way flights is requested
+                        + `is-overnight`: false (boolean, required) - flag if request includes overnight flights
+                        + `is-area-search`: false (boolean, required) - flag if area search should be activated
+                        + `is-benchmark` : false (boolean, required) - flag if request is a benchmark request
+                    + `authentication`
+                        + `office-id`: abdh363js== (string, required) - office id for amadeus authentication
+                        + `duty-code`: g423kdfas5321== (string, required) - duty code for amadeus authentication
+                        + `user-id`: jdfjksjhadf== (string, required) - user id for amadeus authentication
+                        + `password-data`: NAJAJKDGHK44jhHkjad278478 (string, required) - password for GDS request
+                        + `password-length`: 14 (number, required) - length of password
+                        + `organization`: `NMC-GERMAN` (string, required) - organization info
         
 
 + Response 200 (application/hal+json)
 
     This response resembles a default response of mapped itineraries as search result.
 
-    + Body
+    + Attributes
+        + `result` (array, fixed-type)
+            + (object)
+                + `_itinerary` (object)
+                    + `type`: `one-way`, `round-trip`, `open-jaw` (enum) - requested type of offers
+                    + `legs` (array, fixed-type)
+                        + (array, fixed-type)
+                            + (object)
+                                + `provider`: amadeus (enum) - requested gds
+                                + `classification`: scheduled, lowcost, charter (enum) - classification of leg information
+                                + `carriers` - carrier information
+                                    + `main`
+                                        + `iata`: AB (string) - IATA code of the main provider
+                                + `duration`: 7200 (number) - flight duration of leg in seconds
+                                + `nights`: 1 (number) - amount of nights
+                                + `segments` (array, fixed-type)
+                                    + (object)
+                                        + `aircraft-type`: 747 (string) - type of aircraft providing the flight
+                                        + `airports`
+                                            + `arrival`
+                                                + `iata`: STN (string) - IATA code of arrival airport
+                                            + `departure`
+                                                + `iata`: SXF (string) - IATA code of departure airport
+                                        + `arrive-at`: 1503831600 (number) - arrival timestamp in local time
+                                        + `depart-at`: 1503828000 (number) - departure timestamp in local time
+                                        + `duration`: 3600 (number) - flight duration in seconds
+                                        + `cabin-class`
+                                            + `code`: Y, F, C (enum) - code for offered cabin class
+                                            + `name`: Economy (string) - name of offered cabin class
+                                        + `flight-number`: 8543 (number) - number of the offered flight
+                                        + `carriers`
+                                            + `marketing`
+                                                + `iata`: AB (string) - IATA code of the marketing carrier
+                                            + `operating`
+                                                + `iata`: AB (string) - IATA code of the operating carrier
+                                        + `remaining-seats`: 9 (number) - number of seats remaining for that flight
+                                        + `baggage-rules`
+                                            + `pieces`: 1 (number) - number of baggage pieces included
+                                            + `weight`: 20 (number) - value of baggage weight
+                                            + `unit`: KG  (string) - unit of baggage weight
+                + `_calculation`
+                    + `flight`
+                        + `total`: 1479.96 (number) - total price including fare and tax for all requested passengers
+                        + `fare`
+                            + `total`: 1319.46 (number) - total fare for all requested passengers
+                            + `passenger-types`
+                                + `adult`: 659.73 (number) - fare price for each adult passenger
+                                + `child`: 659.73 (number) - fare price for each child passenger
+                                + `infant`: 659.73 (number) - fare price for each infant passenger
+                        + `tax`
+                            + `total`: 160.50 (number) - total fare for all requested passengers
+                            + `passenger-types`
+                                + `adult`: 80.25 (number) - tax for each adult passenger
+                                + `child`: 80.25 (number) - tax for each child passenger
+                                + `infant`: 80.25 (number) - tax for each infant passenger
+                    + `currency`: EUR - currency of the fare and tax values
+                + `_gds-information`
+                    + `session-id`: d22909ut02zfqvpxwdazqaaefag5a9 - session id reported by amadeus
+                    + `provider`: amadeus (enum)
+        + Include SelfLink
+
++ Response 400 (application/hal+json)
+
+    request contains invalid parameters or is malformed
     
-        <!-- include(payload/response.json) -->
-        
-    + Schema
+    + Attributes
+        + errors - list of errors associated with each property of the request
+            + adults (array, fixed-type)
+                + (object)
+                     + code: ARS0002 (string) - internal error code
+                     + message: `INVALID OR MISSING REQUEST PARAM - adults must be an integer` (string) - error message
+                     + status: 400 (number) - http response code          
+        + Include SelfLink
+
+
++ Response 404 (application/hal+json)
+
+    requested route not found
     
-        <!-- include(payload/response-schema.json) -->
+    + Attributes
+        + errors
+            + `_` (array, fixed-type)
+                + (object)
+                    + code: ARS0404 (string) - internal error code
+                    + message: No route found for POST `/flight-search/wrong` (string) - error message
+                    + status: 404 (number) - http response code
+        + Include SelfLink
+
 
 + Response 500 (application/hal+json)
 
-    This response represents an error response. The errors of this application can vary a lot depending of the
-    the nature of the error, for example also amadeus response errors will be returned in that format, but maybe
-    with a lot of missing information.
+    This response represents an internal server error response.
 
-    |Code | Message | Hint |
-    |---|---|---|
-    | ARS0001 | The `Amadeus\Client::securityAuthenticate` method didn't return state OK | |
-    | ARS0002 | The provided search parameters do not suffice the necessary data to start a new search | |
-    | ARS0003 | The provided request could not be mapped into the appropriate format | Usually occurs when the request is not send in the right format |
-    | ARS000X | *Every unspecific exception thrown by PHP will return such response if handled correctly, aswell as Amadeus response errors.* | |
-
-    + Body
-    
-        <!-- include(payload/error.json) -->
+     internal server error
+        
+    + Attributes
+        + errors
+            + `_` (array, fixed-type)
+                + (object)
+                    + code: ARS000X (string) - internal error code
+                    + message: SERVER ERROR (string) - error message
+                    + status: 500 (number) - http response code
+        + Include SelfLink
         
 ## Healthcheck [/health/]
 
@@ -70,3 +199,11 @@ This endpoint will report main state of the service
 + Response 200 (text/plain)
     
             I am alive.
+
+# Data Structures
+
+## SelfLink (object) 
+        
+   + _links
+       + self
+           + href: `/flight-search`
