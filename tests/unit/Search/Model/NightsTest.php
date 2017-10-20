@@ -33,7 +33,7 @@ class NightsTest extends \Codeception\Test\Unit
                 return $segment;
             });
 
-        $this->assertEquals($expectedOvernights, Nights::calc($segmentEntities));
+        $this->assertSame($expectedOvernights, Nights::calc($segmentEntities));
     }
 
     /**
@@ -136,10 +136,10 @@ class NightsTest extends \Codeception\Test\Unit
     }
 
     /**
-     * Verify that it handles an empty collection of segments
+     * Verify that it handles empty segments correctly
      */
-    public function testItReturnsZeroIfNoSegmentPresent()
+    public function testItReturnsZeroOnEmptySegments()
     {
-        $this->assertEquals(0, Nights::calc(new ArrayCollection()));
+        $this->assertSame(0, Nights::calc(new ArrayCollection()));
     }
 }

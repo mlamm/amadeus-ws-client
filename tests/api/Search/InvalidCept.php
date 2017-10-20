@@ -14,3 +14,4 @@ $I->canSeeResponseContainsJson(
         'status' => 400
     ]
 );
+$I->seeResponseHasLinkToSelf('/flight-search/');

@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace AmadeusService\Search\Model;
 
-use Flight\SearchRequestMapping\Entity\BusinessCase;
-use Flight\SearchRequestMapping\Entity\Request;
-use Flight\SearchRequestMapping\Entity\Leg;
 use Amadeus\Client;
+use Flight\SearchRequestMapping\Entity\BusinessCase;
+use Flight\SearchRequestMapping\Entity\Leg;
+use Flight\SearchRequestMapping\Entity\Request;
+use Psr\Log\LoggerInterface;
 
 /**
  * AmadeusRequestTransformer.php
@@ -33,6 +34,40 @@ class AmadeusRequestTransformer
     {
         $this->config = $config;
     }
+
+    /**
+     * builds the client
+     *
+     * @param BusinessCase $businessCase
+     *
+     * @return AmadeusClient
+     */
+    public function buildClientParams(BusinessCase $businessCase, LoggerInterface $logger) : Client\Params
+    {
+        $authentication = $businessCase->getAuthentication();
+
+        return new Client\Params(
+            [
+                'authParams' => [
+                    'officeId' => $authentication->getOfficeId(),
+                    'userId' => $authentication->getUserId(),
+                    'passwordData' => $authentication->getPasswordData(),
+                    'passwordLength' => $authentication->getPasswordLength(),
+                    'dutyCode' => $authentication->getDutyCode(),
+                    'organizationId' => $authentication->getOrganizationId()
+                ],
+                'sessionHandlerParams' => [
+                    'soapHeaderVersion' => Client::HEADER_V2,
+                    'wsdl' => "./wsdl/{$this->config->search->wsdl}",
+                    'logger' => $logger
+                ],
+                'requestCreatorParams' => [
+                    'receivedFrom' => 'service.search'
+                ]
+            ]
+        );
+    }
+
 
     /**
      * transforms the request option object out of given request and adds excluded airline information if needed

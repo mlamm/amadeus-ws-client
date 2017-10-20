@@ -10,4 +10,5 @@ use AmadeusService\Application\Response\HalResponse;
 class SearchResultResponse extends HalResponse
 {
 
+
 }

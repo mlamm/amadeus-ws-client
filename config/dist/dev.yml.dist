@@ -1,6 +1,4 @@
 search:
-    cache_active: false
-
     wsdl: 1ASIWUFITBD_PDT_20170727_125137.wsdl
 
     allowed_agents:
@@ -14,18 +12,15 @@ search:
         - F
         - C
 
-    database:
-        ibe:
-            host: edb06.l.unister.lan
-            user: fluege_de
-            password: dcfv98
-            db_name: flight_ibe_us
-
-        ibe_cache:
-            host: edb06.l.unister.lan
-            user: fluege_de
-            password: dcfv98
-            db_name: flight_ibe_cache
+    flight_cache:
+        adapter: void   # options are: void, apcu, file, memcache, redis (@see CacheProvider)
+        life_time: 3600
+        memcache:
+            host: amadeus-memcache
+            port: 11211
+        redis:
+            host: amadeus-redis
+            port: 6379
 
     request_options:
         - "RW" # only if coopCodes are given

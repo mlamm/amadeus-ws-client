@@ -62,45 +62,45 @@ $app['config'] = $config= \Symfony\Component\Yaml\Yaml::parse(
     \Symfony\Component\Yaml\Yaml::PARSE_OBJECT_FOR_MAP
 );
 
-$app['businesscase.search'] = $app->factory(function () use ($app) {
+$app['businesscase.search'] = function () use ($app) {
+    return new AmadeusService\Search\BusinessCase\Search(
+        $app['service.search'],
+        $app['monolog']
+    );
+};
 
-    $mapper = new Flight\Library\SearchRequest\ResponseMapping\Mapper(getcwd() . '/var/cache/response-mapping/');
-
-    $responseTransformer = new AmadeusService\Search\Model\AmadeusResponseTransformer($mapper);
+$app['service.search'] = function () use ($app) {
     $validator = new AmadeusService\Search\Request\Validator\AmadeusRequestValidator(
         $app['config']->search
     );
 
-    return new AmadeusService\Search\BusinessCase\Search(
-        $responseTransformer,
-        $validator
+    \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
+    $serializerBuilder = \JMS\Serializer\SerializerBuilder::create();
+    $serializerBuilder->setCacheDir('var/cache/serializer');
+
+    return new \AmadeusService\Search\Service\Search(
+        $validator,
+        $serializerBuilder->build(),
+        $app['cache.flights'],
+        $app['amadeus.client'],
+        $app['config']->search,
+        $app['monolog']
     );
-});
+};
 
-$app['amadeus.client'] = $app->factory(function() use ($app) {
-    // IBE CACHE DATABASE SETUP
-    $ibeCacheDatabaseConfig = new \Doctrine\DBAL\Configuration();
-
-    $ibeCacheDatabaseConnectionParams = [
-        'dbname' => $app['config']->search->database->ibe_cache->db_name,
-        'user' => $app['config']->search->database->ibe_cache->user,
-        'password' => $app['config']->search->database->ibe_cache->password,
-        'host' => $app['config']->search->database->ibe_cache->host,
-        'driver' => 'pdo_mysql'
-    ];
-
-    $ibeCacheDatabaseConnection = \Doctrine\DBAL\DriverManager::getConnection($ibeCacheDatabaseConnectionParams, $ibeCacheDatabaseConfig);
-
-    $requestTransformer  = new \AmadeusService\Search\Model\AmadeusRequestTransformer($app['config']);
-
+$app['amadeus.client'] = function () use ($app) {
     return new \AmadeusService\Search\Model\AmadeusClient(
-        $requestTransformer,
+        $app['config'],
         $app['monolog'],
-        $ibeCacheDatabaseConnection,
-        $app['config']
+        new \AmadeusService\Search\Model\AmadeusRequestTransformer($app['config']),
+        new \AmadeusService\Search\Model\AmadeusResponseTransformer(),
+        function (Amadeus\Client\Params $clientParams) {
+            return new Amadeus\Client($clientParams);
+        }
     );
+};
 
-});
+$app->register(new \AmadeusService\Search\Cache\CacheProvider());
 
 // application provider
 $app->mount('/', new \AmadeusService\Index\IndexProvider());

@@ -5,7 +5,6 @@ use Amadeus\Client\Result;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
-use Flight\Library\SearchRequest\ResponseMapping\Mapper;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 
 /**
@@ -19,21 +18,6 @@ class AmadeusResponseTransformer
     private const PTC_INFANT = 'INF';
 
     private const CLASSIFICATION_SCHEDULED = 'scheduled';
-
-    /**
-     * @var Mapper
-     */
-    protected $mapper;
-
-    /**
-     * @param Mapper $mapper
-     *
-     * AmadeusResponseTransformer constructor.
-     */
-    public function __construct(Mapper $mapper)
-    {
-        $this->mapper = $mapper;
-    }
 
     /**
      * @param BusinessCase $businessCase
@@ -85,12 +69,6 @@ class AmadeusResponseTransformer
             );
 
             $searchResponse->getResult()->add($result);
-
-            if ($businessCase->getOptions()->getResultLimit()
-                && $searchResponse->getResult()->count() >= $businessCase->getOptions()->getResultLimit()
-            ) {
-                break;
-            }
         }
 
         return $searchResponse;
@@ -390,14 +368,5 @@ class AmadeusResponseTransformer
         }
 
         return $itineraryLeg;
-    }
-
-    /**
-     * @param SearchResponse $mappedResponse
-     * @return string
-     */
-    public function getMappedResponseAsJson(SearchResponse $mappedResponse)
-    {
-        return $this->mapper->createJson($mappedResponse);
     }
 }

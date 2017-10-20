@@ -2,22 +2,25 @@
 namespace amadeusService\Tests\Search;
 
 use Amadeus\Client;
+use AmadeusService\Search\Exception\AmadeusRequestException;
+use AmadeusService\Search\Exception\ServiceRequestAuthenticationFailedException;
 use AmadeusService\Search\Model\AmadeusClient;
 use AmadeusService\Search\Model\AmadeusRequestTransformer;
+use AmadeusService\Search\Model\AmadeusResponseTransformer;
+use AmadeusService\Tests\Helper\RequestFaker;
 use Codeception\Test\Unit;
-use Doctrine\DBAL\Connection;
-use Flight\SearchRequestMapping\Entity\BusinessCase;
-use Flight\SearchRequestMapping\Entity\BusinessCaseAuthentication;
+use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * AmadeusClientTest.php
  *
  * test functionality of the class
  *
- * @coversDefaultClass AmadeusService\Search\Model\AmadeusClient
+ * @covers AmadeusService\Search\Model\AmadeusClient
  *
- * @copyright Copyright (c) ${YEAR} Invia Flights Germany GmbH
+ * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
  * @author    Fluege-Dev <fluege-dev@invia.de>
  */
@@ -29,67 +32,169 @@ class AmadeusClientTest extends Unit
     protected $tester;
 
     /**
-     * @covers ::prepare
+     * @var AmadeusClient
      */
-    public function testCreatingAnAmadeusClient() : void
+    private $object;
+
+    /**
+     * @var \stdClass|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $config;
+
+    /**
+     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $logger;
+
+    /**
+     * @var AmadeusRequestTransformer|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $requestTransformer;
+
+    /**
+     * @var AmadeusResponseTransformer|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $responseTransformer;
+
+    /**
+     * @var Client|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $client;
+
+    protected function _before()
     {
-        /** @var AmadeusRequestTransformer|\Mockery\MockInterface $requestTransformer **/
-        $requestTransformer = \Mockery::mock(AmadeusRequestTransformer::class);
-        $requestTransformer->shouldReceive('buildFareMasterRequestOptions')
-            ->once();
+        $this->config = new \stdClass();
+        $this->logger = new NullLogger();
+        $this->requestTransformer = $this->getMockBuilder(AmadeusRequestTransformer::class)
+            ->disableOriginalConstructor()->getMock();
+        $this->responseTransformer = $this->getMockBuilder(AmadeusResponseTransformer::class)
+            ->disableOriginalConstructor()->getMock();
+        $this->client = $this->getMockBuilder(Client::class)
+            ->disableOriginalConstructor()->getMock();
+        $clientBuilder = function (Client\Params $clientParams) {
+            return $this->client;
+        };
 
-        /** @var LoggerInterface|\Mockery\MockInterface $logger */
-        $logger = \Mockery::mock(LoggerInterface::class);
-        $logger->shouldReceive('log');
-
-        $authentication = \Mockery::mock(BusinessCaseAuthentication::class);
-        $authentication
-            ->shouldReceive('getOfficeId')
-            ->once();
-
-        $authentication
-            ->shouldReceive('getUserId')
-            ->once();
-
-        $authentication
-            ->shouldReceive('getPasswordData')
-            ->once();
-
-        $authentication
-            ->shouldReceive('getPasswordLength')
-            ->once();
-
-        $authentication
-            ->shouldReceive('getDutyCode')
-            ->once();
-
-        $authentication
-            ->shouldReceive('getOrganizationId')
-            ->once();
-
-        /** @var BusinessCase|\Mockery\MockInterface $businessCase */
-        $businessCase = \Mockery::mock(BusinessCase::class);
-        $businessCase
-            ->shouldReceive('getAuthentication')
-            ->times(6)
-            ->andReturn($authentication);
-
-        /** @var Connection|\Mockery\MockInterface $databaseMock */
-        $databaseMock = \Mockery::mock(Connection::class);
-
-        $config = new \stdClass();
-        $config->search = new \stdClass();
-        $config->search->wsdl = '/../tests/_support/fixtures/dummy.wsdl';
-
-        $amaClient = new AmadeusClient(
-            $requestTransformer,
-            $logger,
-            $databaseMock,
-            $config
+        $this->object = new AmadeusClient(
+            $this->config,
+            $this->logger,
+            $this->requestTransformer,
+            $this->responseTransformer,
+            $clientBuilder
         );
-        $amaClient->prepare($businessCase);
-        $client = $amaClient->getClient();
+    }
 
-        $this->assertInstanceOf(Client::class, $client);
+    public function testItCallsTheClient()
+    {
+        $request = RequestFaker::buildDefaultRequest();
+        $businessCase = $request->getBusinessCases()->first()->first();
+        $clientParams = new Client\Params();
+        $requestOptions = new Client\RequestOptions\FareMasterPricerTbSearch();
+        $authResult = new Client\Result(new Client\Session\Handler\SendResult());
+        $authResult->status = Client\Result::STATUS_OK;
+        $amaResult = new Client\Result(new Client\Session\Handler\SendResult());
+        $amaResult->status = Client\Result::STATUS_OK;
+        $expecedSearchResponse = new SearchResponse();
+
+        $this->requestTransformer
+            ->expects($this->once())
+            ->method('buildClientParams')
+            ->with($businessCase)
+            ->willReturn($clientParams);
+
+        $this->requestTransformer
+            ->expects($this->once())
+            ->method('buildFareMasterRequestOptions')
+            ->with($request)
+            ->willReturn($requestOptions);
+
+        $this->client
+            ->expects($this->once())
+            ->method('securityAuthenticate')
+            ->willReturn($authResult);
+
+        $this->client
+            ->expects($this->once())
+            ->method('fareMasterPricerTravelBoardSearch')
+            ->with($requestOptions)
+            ->willReturn($amaResult);
+
+        $this->responseTransformer
+            ->expects($this->once())
+            ->method('mapResultToDefinedStructure')
+            ->with($businessCase, $amaResult)
+            ->willReturn($expecedSearchResponse);
+
+        $searchResponse = $this->object->search($request, $businessCase);
+        $this->assertSame($expecedSearchResponse, $searchResponse);
+    }
+
+    public function testItThrowsOnFailedAuthentication()
+    {
+        $request = RequestFaker::buildDefaultRequest();
+        $businessCase = $request->getBusinessCases()->first()->first();
+        $clientParams = new Client\Params();
+        $requestOptions = new Client\RequestOptions\FareMasterPricerTbSearch();
+
+        $authResult = new Client\Result(new Client\Session\Handler\SendResult());
+        $authResult->status = Client\Result::STATUS_ERROR;
+
+        $this->requestTransformer
+            ->expects($this->any())
+            ->method('buildClientParams')
+            ->willReturn($clientParams);
+
+        $this->requestTransformer
+            ->expects($this->any())
+            ->method('buildFareMasterRequestOptions')
+            ->willReturn($requestOptions);
+
+        $this->client
+            ->expects($this->once())
+            ->method('securityAuthenticate')
+            ->willReturn($authResult);
+
+        $this->expectException(ServiceRequestAuthenticationFailedException::class);
+        $this->object->search($request, $businessCase);
+    }
+
+    public function testItThrowsOnServiceError()
+    {
+        $request = RequestFaker::buildDefaultRequest();
+        $businessCase = $request->getBusinessCases()->first()->first();
+        $clientParams = new Client\Params();
+        $requestOptions = new Client\RequestOptions\FareMasterPricerTbSearch();
+        $authResult = new Client\Result(new Client\Session\Handler\SendResult());
+        $authResult->status = Client\Result::STATUS_OK;
+
+        $amaResult = new Client\Result(new Client\Session\Handler\SendResult());
+        $amaResult->status = Client\Result::STATUS_ERROR;
+        $amaResult->messages = [
+            new Client\Result\NotOk()
+        ];
+
+        $this->requestTransformer
+            ->expects($this->any())
+            ->method('buildClientParams')
+            ->willReturn($clientParams);
+
+        $this->requestTransformer
+            ->expects($this->any())
+            ->method('buildFareMasterRequestOptions')
+            ->willReturn($requestOptions);
+
+        $this->client
+            ->expects($this->any())
+            ->method('securityAuthenticate')
+            ->willReturn($authResult);
+
+        $this->client
+            ->expects($this->once())
+            ->method('fareMasterPricerTravelBoardSearch')
+            ->with($requestOptions)
+            ->willReturn($amaResult);
+
+        $this->expectException(AmadeusRequestException::class);
+        $this->object->search($request, $businessCase);
     }
 }

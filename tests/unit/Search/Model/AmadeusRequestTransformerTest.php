@@ -6,7 +6,9 @@ namespace AmadeusService\Tests\Search\Model;
 use Amadeus\Client;
 use AmadeusService\Search\Model\AmadeusRequestTransformer;
 use AmadeusService\Tests\Helper\RequestFaker;
-
+use Flight\SearchRequestMapping\Entity\BusinessCase;
+use Flight\SearchRequestMapping\Entity\BusinessCaseAuthentication;
+use Psr\Log\NullLogger;
 
 /**
  * AmadeusRequestTransformerTest.php
@@ -474,5 +476,34 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $this->assertArraySubset($expectedPax, $options->passengers);
         $this->assertArraySubset($expectedLegs, $options->itinerary);
         $this->assertArraySubset(['ET'], $options->flightOptions);
+    }
+
+    /**
+     * Verify that it creates the client params from the given business case
+     */
+    public function testItBuildsClientParams()
+    {
+        $config = new \stdClass();
+        $config->search = new \stdClass();
+        $config->search->wsdl = 'wsdl';
+
+        $businessCase = new BusinessCase();
+        $businessCase->setAuthentication(new BusinessCaseAuthentication());
+        $businessCase->getAuthentication()->setDutyCode('duty-code');
+        $businessCase->getAuthentication()->setOfficeId('office-id');
+        $businessCase->getAuthentication()->setOrganizationId('organization-id');
+        $businessCase->getAuthentication()->setPasswordData('password-data');
+        $businessCase->getAuthentication()->setPasswordLength('password-length');
+        $businessCase->getAuthentication()->setUserId('user-id');
+
+        $transformer = new AmadeusRequestTransformer($config);
+        $params = $transformer->buildClientParams($businessCase, new NullLogger());
+
+        $this->assertEquals('duty-code', $params->authParams->dutyCode);
+        $this->assertEquals('office-id', $params->authParams->officeId);
+        $this->assertEquals('organization-id', $params->authParams->organizationId);
+        $this->assertEquals('password-data', $params->authParams->passwordData);
+        $this->assertEquals('password-length', $params->authParams->passwordLength);
+        $this->assertEquals('user-id', $params->authParams->userId);
     }
 }
