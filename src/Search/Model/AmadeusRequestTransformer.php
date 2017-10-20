@@ -57,7 +57,8 @@ class AmadeusRequestTransformer
                     'organizationId' => $authentication->getOrganizationId()
                 ],
                 'sessionHandlerParams' => [
-                    'soapHeaderVersion' => Client::HEADER_V2,
+                    'soapHeaderVersion' => Client::HEADER_V4,
+                    'stateful' => false,
                     'wsdl' => "./wsdl/{$this->config->search->wsdl}",
                     'logger' => $logger
                 ],

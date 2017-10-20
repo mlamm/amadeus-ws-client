@@ -1,5 +1,5 @@
 search:
-    wsdl: 1ASIWUFITBD_PDT_20170727_125137.wsdl
+    wsdl: 1ASIWUFITBD_PDT_20170215_083717.wsdl
 
     allowed_agents:
         - fluege.de
