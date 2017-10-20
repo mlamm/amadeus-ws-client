@@ -476,9 +476,9 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $config->search = new \stdClass();
         $config->search->flexible_date_range = 1;
         $config->search->request_options = [
-            "A",
-            "B",
-            "C"
+            'A',
+            'B',
+            'C'
         ];
 
         $transformer = new AmadeusRequestTransformer($config);
@@ -494,7 +494,7 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         ];
         $request = RequestFaker::getFakeRequest($requestOptions);
 
-        $expectedFlightOptions = ["A", "B",  "C"];
+        $expectedFlightOptions = ['A', 'B', 'C'];
 
         $options = $transformer->buildFareMasterRequestOptions($request);
 
@@ -512,13 +512,13 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $config->search->flexible_date_range = 1;
         $config->search->request_options = [
             Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES,
-            "B",
-            "C"
+            'B',
+            'C'
         ];
         $config->search->coop_codes = [
-            "1234",
-            "5678",
-            "9ABC"
+            '1234',
+            '5678',
+            '9ABC'
         ];
 
         $transformer = new AmadeusRequestTransformer($config);
@@ -534,9 +534,9 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         ];
         $request = RequestFaker::getFakeRequest($requestOptions);
 
-        $expectedFlightOptions = [Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES, "B",  "C"];
+        $expectedFlightOptions = [Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES, 'B',  'C'];
         $expectedCoopQualifier = Client\RequestOptions\FareMasterPricerTbSearch::CORPORATE_QUALIFIER_UNIFARE;
-        $expectedCoopCodes     = ["1234", "5678", "9ABC"];
+        $expectedCoopCodes     = ['1234', '5678', '9ABC'];
 
         $options = $transformer->buildFareMasterRequestOptions($request);
 
@@ -556,8 +556,8 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $config->search->flexible_date_range = 1;
         $config->search->request_options = [
             Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES,
-            "B",
-            "C"
+            'B',
+            'C'
         ];
         $config->search->coop_codes = [
         ];
@@ -575,7 +575,7 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         ];
         $request = RequestFaker::getFakeRequest($requestOptions);
 
-        $expectedFlightOptions = [1 => "B", 2 => "C"];
+        $expectedFlightOptions = [1 => 'B', 2 => 'C'];
         $coopQualifier = Client\RequestOptions\FareMasterPricerTbSearch::CORPORATE_QUALIFIER_UNIFARE;
 
         $options = $transformer->buildFareMasterRequestOptions($request);
@@ -598,18 +598,18 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $config->search->flexible_date_range = 1;
         $config->search->request_options = [
             Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES,
-            "B",
-            "C"
+            'B',
+            'C'
         ];
         $config->search->coop_codes = [
-            "1234",
-            "5678",
-            "9ABC"
+            '1234',
+            '5678',
+            '9ABC'
         ];
 
         $config->search->overnight_options = [
-            "X",
-            "Y"
+            'X',
+            'Y'
         ];
 
         $transformer = new AmadeusRequestTransformer($config);
@@ -625,9 +625,9 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         ];
         $request = RequestFaker::getFakeRequest($requestOptions);
 
-        $expectedFlightOptions = [Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES, "B", "C", "X", "Y"];
+        $expectedFlightOptions = [Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES, 'B', 'C', 'X', 'Y'];
         $expectedCoopQualifier = Client\RequestOptions\FareMasterPricerTbSearch::CORPORATE_QUALIFIER_UNIFARE;
-        $expectedCoopCodes     = ["1234", "5678", "9ABC"];
+        $expectedCoopCodes     = ['1234', '5678', '9ABC'];
 
         $options = $transformer->buildFareMasterRequestOptions($request);
 

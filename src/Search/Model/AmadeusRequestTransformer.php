@@ -81,9 +81,8 @@ class AmadeusRequestTransformer
 
         if (!empty($coopCodes)) {
             $options['corporateQualifier'] = Client\RequestOptions\FareMasterPricerTbSearch::CORPORATE_QUALIFIER_UNIFARE;
-            foreach($coopCodes as $code) {
-                $options['corporateCodesUnifares'][] = $code;
-            }
+            $options['corporateCodesUnifares'] = array_values($coopCodes);
+
         }
 
         return new Client\RequestOptions\FareMasterPricerTbSearch($options);
