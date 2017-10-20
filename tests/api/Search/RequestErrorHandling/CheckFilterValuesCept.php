@@ -9,7 +9,7 @@ $I->wantTo('see an error telling me that the request contains invalid values for
 $I->haveHttpHeader('content-type', 'application/json');
 $I->sendPOST(
     '/flight-search/',
-    file_get_contents(codecept_data_dir('invalid-filter-content.json'))
+    file_get_contents(codecept_data_dir('requests/invalid-filter-content.json'))
 );
 $I->seeHttpHeader('content-type', 'application/hal+json');
 $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);

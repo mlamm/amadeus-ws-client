@@ -9,7 +9,7 @@ $I->wantTo('see an error telling me that the request does not contain values in 
 $I->haveHttpHeader('content-type', 'application/json');
 $I->sendPOST(
     '/flight-search/',
-    file_get_contents(codecept_data_dir('wrong-filter-types.json'))
+    file_get_contents(codecept_data_dir('requests/wrong-filter-types.json'))
 );
 $I->seeHttpHeader('content-type', 'application/hal+json');
 $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);

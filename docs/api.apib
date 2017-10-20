@@ -17,10 +17,6 @@ Possible error codes:
 | ARS0004 | AMADEUS RESPONSE ERROR [{errNo., message}]                                   | the request was technical valid, Amadeus returns failure             |
 
 
-
-
-
-
 #### Search [POST /flight-search/]
 
 This request will access the flight search endpoint of amadeus with mapped sent parameters
@@ -111,6 +107,9 @@ format.
                                             + `pieces`: 1 (number) - number of baggage pieces included
                                             + `weight`: 20 (number) - value of baggage weight
                                             + `unit`: KG  (string) - unit of baggage weight
+                                        + `gds-information`
+                                            + `provider`: amadeus (string)
+                                            + `res-book-desig-code`: Y (string) - the "reservation booking designator" code
                 + `_calculation`
                     + `flight`
                         + `total`: 1479.96 (number) - total price including fare and tax for all requested passengers
@@ -127,9 +126,6 @@ format.
                                 + `child`: 80.25 (number) - tax for each child passenger
                                 + `infant`: 80.25 (number) - tax for each infant passenger
                     + `currency`: EUR - currency of the fare and tax values
-                + `_gds-information`
-                    + `session-id`: d22909ut02zfqvpxwdazqaaefag5a9 - session id reported by amadeus
-                    + `provider`: amadeus (enum)
         + Include SelfLink
 
 + Response 400 (application/hal+json)
