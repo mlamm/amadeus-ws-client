@@ -27,6 +27,7 @@ class RequestFaker
     const OPT_AREA_SEARCH = 'areaSearch';
     const OPT_PAX = 'pax';
     const OPT_RESULT_LIMIT = 'resultLimit';
+    const OPT_IS_OVERNIGHT = 'isOvernight';
 
     /**
      * builds a whole Request with options given
@@ -184,6 +185,11 @@ class RequestFaker
         if (isset($options[self::OPT_RESULT_LIMIT])) {
             $businessCaseOptions->setResultLimit($options[self::OPT_RESULT_LIMIT]);
         }
+        $businessCaseOptions->setIsOvernight(false);
+        if (isset($options[self::OPT_IS_OVERNIGHT])) {
+            $businessCaseOptions->setIsOvernight($options[self::OPT_IS_OVERNIGHT]);
+        }
+
 
         $businessCase = new BusinessCase();
         $businessCase->setOptions($businessCaseOptions);

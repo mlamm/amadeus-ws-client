@@ -32,10 +32,20 @@ search:
         - "RP"
         - "RU"
         - "ET"
-        - "RDI" # include cross-border airports (z.B. EAP (MLH, BSL))
+        - "RDI" # include cross-border airports (e.g. EAP (MLH, BSL))
         - "PSB" # return best applicable fare, which does not need to split the pnr
         - "TAC"
         - "XLC" # To avoid ATLA (Amadeus Ticketless Access) carriers
+
+    overnight_options: #copied from IbeConfig
+        - "OVN"
+        - "NVS"
+
+    coop_codes:      #copied from IbeConfigAbstract
+        - "000867" # AER
+        - "374186" # BA-NOBAG
+        - "513058" # SN-NOBAG
+        - "HBO01"  # AY-NOBAG
 
     area_search_distance: 100
 

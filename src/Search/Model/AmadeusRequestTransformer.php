@@ -48,6 +48,11 @@ class AmadeusRequestTransformer
 
         $itineraries = $this->buildItineraries($request, $businessCase);
 
+        $coopCodes = [];
+        if (!empty($this->config->search->coop_codes)) {
+            $coopCodes = $this->config->search->coop_codes;
+        }
+
         $excludedAirlines = [];
         if (!empty($this->config->search->excluded_airlines)) {
             $excludedAirlines = $this->config->search->excluded_airlines;
@@ -58,9 +63,7 @@ class AmadeusRequestTransformer
             'nrOfRequestedPassengers' => $request->getPassengerCount(),
             'passengers' => $this->setupPassengers($request),
             'itinerary' => $itineraries,
-            'flightOptions' => [
-                Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_ELECTRONIC_TICKET
-            ],
+            'flightOptions' => $this->buildFlightOptions($businessCase, $coopCodes)
         ];
 
         if (!empty($excludedAirlines)) {
@@ -74,6 +77,12 @@ class AmadeusRequestTransformer
         if (!empty(($request->getFilterCabinClass()))) {
             $options['cabinOption'] = Client\RequestOptions\FareMasterPricerTbSearch::CABINOPT_MANDATORY;
             $options['cabinClass'] = $request->getFilterCabinClass();
+        }
+
+        if (!empty($coopCodes)) {
+            $options['corporateQualifier'] = Client\RequestOptions\FareMasterPricerTbSearch::CORPORATE_QUALIFIER_UNIFARE;
+            $options['corporateCodesUnifares'] = array_values($coopCodes);
+
         }
 
         return new Client\RequestOptions\FareMasterPricerTbSearch($options);
@@ -184,4 +193,38 @@ class AmadeusRequestTransformer
 
         return $options;
     }
+
+    /**
+     * builds FlightOption array out of request and config settings
+     *
+     * @param BusinessCase $businessCase
+     * @param array|null   $coopCodes
+     *
+     * @return array
+     */
+    protected function buildFlightOptions(BusinessCase $businessCase, array $coopCodes) : array
+    {
+        $pricingOptions = [];
+        if (!empty($this->config->search->request_options)) {
+            $pricingOptions = $this->config->search->request_options;
+        }
+
+        $overnightOptions = [];
+        if (!empty($this->config->search->overnight_options)) {
+            $overnightOptions = $this->config->search->overnight_options;
+        }
+
+        //removes CorpUnifare option if no CoopCode is set in config
+        if (empty($coopCodes)) {
+            $pricingOptions = array_diff($pricingOptions, [Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES]);
+        }
+
+        if ($businessCase->getOptions()->isOvernight()) {
+            $pricingOptions = array_merge($pricingOptions, $overnightOptions);
+        }
+
+        return $pricingOptions;
+    }
+
+
 }
