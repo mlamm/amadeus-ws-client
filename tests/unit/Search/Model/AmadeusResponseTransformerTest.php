@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Model;
+namespace Flight\Service\Amadeus\Tests\Search\Model;
 
 use Amadeus\Client\Result;
 use Amadeus\Client\Session\Handler\SendResult;
-use AmadeusService\Search\Model\AmadeusResponseTransformer;
+use Flight\Service\Amadeus\Search\Model\AmadeusResponseTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 
 /**
  * AmadeusResponseTransformerTest.php
  *
- * @covers AmadeusService\Search\Model\AmadeusResponseTransformer
+ * @covers Flight\Service\Amadeus\Search\Model\AmadeusResponseTransformer
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

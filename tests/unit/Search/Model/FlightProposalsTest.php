@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Model;
+namespace Flight\Service\Amadeus\Tests\Search\Model;
 
-use AmadeusService\Search\Model\FlightProposals;
+use Flight\Service\Amadeus\Search\Model\FlightProposals;
 
 /**
  * FlightProposalsTest.php
  *
- * @coversDefaultClass AmadeusService\Search\Model\FlightProposals
+ * @coversDefaultClass Flight\Service\Amadeus\Search\Model\FlightProposals
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

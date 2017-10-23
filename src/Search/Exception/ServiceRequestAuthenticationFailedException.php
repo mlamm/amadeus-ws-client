@@ -1,9 +1,9 @@
 <?php
-namespace AmadeusService\Search\Exception;
+namespace Flight\Service\Amadeus\Search\Exception;
 
 /**
  * Class SearchRequestFailedException
- * @package AmadeusService\Search\Exception
+ * @package Flight\Service\Amadeus\Search\Exception
  */
 class ServiceRequestAuthenticationFailedException extends AmadeusRequestException
 {

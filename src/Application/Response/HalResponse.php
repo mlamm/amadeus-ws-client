@@ -1,11 +1,11 @@
 <?php
-namespace AmadeusService\Application\Response;
+namespace Flight\Service\Amadeus\Application\Response;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class HalResponse
- * @package AmadeusService\Search\Response
+ * @package Flight\Service\Amadeus\Search\Response
  */
 class HalResponse extends JsonResponse
 {

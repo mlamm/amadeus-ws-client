@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\FlightSearch\Exception;
+namespace Flight\Service\Amadeus\Tests\FlightSearch\Exception;
 
-use AmadeusService\Search\Exception\ServiceRequestAuthenticationFailedException;
+use Flight\Service\Amadeus\Search\Exception\ServiceRequestAuthenticationFailedException;
 use Codeception\Test\Unit;
 
 /**
@@ -11,7 +11,7 @@ use Codeception\Test\Unit;
  *
  * Tests the functionality of the class
  *
- * @coversDefaultClass AmadeusService\Search\Exception\ServiceRequestAuthenticationFailedException
+ * @coversDefaultClass Flight\Service\Amadeus\Search\Exception\ServiceRequestAuthenticationFailedException
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

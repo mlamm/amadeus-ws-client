@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 use Codeception\Util\HttpCode;
-use AmadeusService\Search\Exception\ValidationException;
+use Flight\Service\Amadeus\Search\Exception\ValidationException;
 
 /* @var \Codeception\Scenario $scenario */
 $I = new ApiTester($scenario);

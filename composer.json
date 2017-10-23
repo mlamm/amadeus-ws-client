@@ -12,13 +12,13 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "AmadeusService\\": "./src"
+            "Flight\\Service\\Amadeus\\": "./src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "AmadeusService\\Console\\": "./bin",
-            "AmadeusService\\Tests\\": ["tests/unit"]
+            "Flight\\Service\\Amadeus\\Console\\": "./bin",
+            "Flight\\Service\\Amadeus\\Tests\\": ["tests/unit"]
         }
     },
     "require": {

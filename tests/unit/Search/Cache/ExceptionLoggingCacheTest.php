@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Cache;
+namespace Flight\Service\Amadeus\Tests\Search\Cache;
 
-use AmadeusService\Search\Cache\DoctrineFlightCache;
-use AmadeusService\Search\Cache\ExceptionLoggingCache;
-use AmadeusService\Search\Cache\FlightCacheInterface;
+use Flight\Service\Amadeus\Search\Cache\DoctrineFlightCache;
+use Flight\Service\Amadeus\Search\Cache\ExceptionLoggingCache;
+use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
 use Doctrine\Common\Cache\ArrayCache;
 use Gamez\Psr\Log\TestLogger;
 use Psr\Log\LogLevel;
@@ -14,7 +14,7 @@ use Psr\Log\NullLogger;
 /**
  * ExceptionLoggingCacheTest.php
  *
- * @covers AmadeusService\Search\Cache\ExceptionLoggingCache
+ * @covers Flight\Service\Amadeus\Search\Cache\ExceptionLoggingCache
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

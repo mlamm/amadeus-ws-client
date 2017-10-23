@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Search\Request\Validator;
+namespace Flight\Service\Amadeus\Search\Request\Validator;
 
-use AmadeusService\Search\Exception\InvalidRequestException;
-use AmadeusService\Search\Exception\InvalidRequestParameterException;
+use Flight\Service\Amadeus\Search\Exception\InvalidRequestException;
+use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
 use Particle\Validator\Exception\InvalidValueException;
 use Particle\Validator\ValidationResult;
 use Particle\Validator\Validator;

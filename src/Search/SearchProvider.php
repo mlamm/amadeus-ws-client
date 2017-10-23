@@ -1,7 +1,7 @@
 <?php
-namespace AmadeusService\Search;
+namespace Flight\Service\Amadeus\Search;
 
-use AmadeusService\Application\BusinessCaseProvider;
+use Flight\Service\Amadeus\Application\BusinessCaseProvider;
 use Silex\ControllerCollection;
 
 class SearchProvider extends BusinessCaseProvider

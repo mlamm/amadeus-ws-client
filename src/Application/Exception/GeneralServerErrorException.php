@@ -1,9 +1,9 @@
 <?php
-namespace AmadeusService\Application\Exception;
+namespace Flight\Service\Amadeus\Application\Exception;
 
 /**
  * Class GeneralServerErrorException
- * @package AmadeusService\Application\Exception
+ * @package Flight\Service\Amadeus\Application\Exception
  */
 class GeneralServerErrorException extends ServiceException
 {

@@ -81,14 +81,14 @@ $app['config'] = $config= \Symfony\Component\Yaml\Yaml::parse(
 );
 
 $app['businesscase.search'] = function () use ($app) {
-    return new AmadeusService\Search\BusinessCase\Search(
+    return new Flight\Service\Amadeus\Search\BusinessCase\Search(
         $app['service.search'],
         $app['monolog']
     );
 };
 
 $app['service.search'] = function () use ($app) {
-    $validator = new AmadeusService\Search\Request\Validator\AmadeusRequestValidator(
+    $validator = new Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator(
         $app['config']->search
     );
 
@@ -96,7 +96,7 @@ $app['service.search'] = function () use ($app) {
     $serializerBuilder = \JMS\Serializer\SerializerBuilder::create();
     $serializerBuilder->setCacheDir('var/cache/serializer');
 
-    return new \AmadeusService\Search\Service\Search(
+    return new \Flight\Service\Amadeus\Search\Service\Search(
         $validator,
         $serializerBuilder->build(),
         $app['cache.flights'],
@@ -107,22 +107,22 @@ $app['service.search'] = function () use ($app) {
 };
 
 $app['amadeus.client'] = function () use ($app) {
-    return new \AmadeusService\Search\Model\AmadeusClient(
+    return new \Flight\Service\Amadeus\Search\Model\AmadeusClient(
         $app['config'],
         $app['monolog'],
-        new \AmadeusService\Search\Model\AmadeusRequestTransformer($app['config']),
-        new \AmadeusService\Search\Model\AmadeusResponseTransformer(),
+        new \Flight\Service\Amadeus\Search\Model\AmadeusRequestTransformer($app['config']),
+        new \Flight\Service\Amadeus\Search\Model\AmadeusResponseTransformer(),
         function (Amadeus\Client\Params $clientParams) {
             return new Amadeus\Client($clientParams);
         }
     );
 };
 
-$app->register(new \AmadeusService\Search\Cache\CacheProvider());
+$app->register(new \Flight\Service\Amadeus\Search\Cache\CacheProvider());
 
 // application provider
-$app->mount('/', new \AmadeusService\Index\IndexProvider());
-$app->mount('/flight-search', new AmadeusService\Search\SearchProvider());
+$app->mount('/', new \Flight\Service\Amadeus\Index\IndexProvider());
+$app->mount('/flight-search', new Flight\Service\Amadeus\Search\SearchProvider());
 
 if ($config->debug->pimpledump->enabled) {
     $app->register(new \Sorien\Provider\PimpleDumpProvider(), [

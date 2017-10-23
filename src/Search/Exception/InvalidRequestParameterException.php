@@ -1,13 +1,13 @@
 <?php
-namespace AmadeusService\Search\Exception;
+namespace Flight\Service\Amadeus\Search\Exception;
 
-use AmadeusService\Application\Exception\ServiceException;
+use Flight\Service\Amadeus\Application\Exception\ServiceException;
 use Particle\Validator\Failure;
 use Throwable;
 
 /**
  * Class SearchRequestFailedException
- * @package AmadeusService\Search\Exception
+ * @package Flight\Service\Amadeus\Search\Exception
  */
 class InvalidRequestParameterException extends ServiceException
 {

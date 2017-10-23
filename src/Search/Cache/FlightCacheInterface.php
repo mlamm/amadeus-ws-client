@@ -1,6 +1,6 @@
 <?php
 
-namespace AmadeusService\Search\Cache;
+namespace Flight\Service\Amadeus\Search\Cache;
 
 /**
  * FlightCacheInterface.php

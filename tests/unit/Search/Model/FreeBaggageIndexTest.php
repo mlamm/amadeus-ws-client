@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Model;
+namespace Flight\Service\Amadeus\Tests\Search\Model;
 
 use Amadeus\Client\Result;
 use Amadeus\Client\Session\Handler\SendResult;
-use AmadeusService\Search\Model\FreeBaggageIndex;
+use Flight\Service\Amadeus\Search\Model\FreeBaggageIndex;
 
 /**
  * FreeBaggageIndexTest.php
  *
  * Test the functionality of the class
  *
- * @covers AmadeusService\Search\Model\FreeBaggageIndex
+ * @covers Flight\Service\Amadeus\Search\Model\FreeBaggageIndex
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

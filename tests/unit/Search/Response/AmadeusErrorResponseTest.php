@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Response;
+namespace Flight\Service\Amadeus\Tests\Search\Response;
 
-use AmadeusService\Search\Response\AmadeusErrorResponse;
+use Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse;
 use Codeception\Test\Unit;
 use Particle\Validator\Failure;
 
@@ -12,7 +12,7 @@ use Particle\Validator\Failure;
  *
  * test functionality of the class
  *
- * @coversDefaultClass AmadeusService\Search\Response\AmadeusErrorResponse
+ * @coversDefaultClass Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

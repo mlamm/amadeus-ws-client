@@ -1,15 +1,15 @@
 <?php
-namespace AmadeusService\Index;
+namespace Flight\Service\Amadeus\Index;
 
-use AmadeusService\Application\BusinessCaseProvider;
-use AmadeusService\Index\BusinessCase\HealthCheck;
+use Flight\Service\Amadeus\Application\BusinessCaseProvider;
+use Flight\Service\Amadeus\Index\BusinessCase\HealthCheck;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class IndexProvider
- * @package AmadeusService\Index
+ * @package Flight\Service\Amadeus\Index
  */
 class IndexProvider extends BusinessCaseProvider
 {

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Model;
+namespace Flight\Service\Amadeus\Tests\Search\Model;
 
 use Amadeus\Client;
-use AmadeusService\Search\Model\AmadeusRequestTransformer;
-use AmadeusService\Tests\Helper\RequestFaker;
+use Flight\Service\Amadeus\Search\Model\AmadeusRequestTransformer;
+use Flight\Service\Amadeus\Tests\Helper\RequestFaker;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\BusinessCaseAuthentication;
 use Psr\Log\NullLogger;
@@ -13,7 +13,7 @@ use Psr\Log\NullLogger;
 /**
  * AmadeusRequestTransformerTest.php
  *
- * @covers \AmadeusService\Search\Model\AmadeusRequestTransformer
+ * @covers \Flight\Service\Amadeus\Search\Model\AmadeusRequestTransformer
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

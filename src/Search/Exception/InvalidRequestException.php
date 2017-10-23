@@ -1,11 +1,11 @@
 <?php
-namespace AmadeusService\Search\Exception;
+namespace Flight\Service\Amadeus\Search\Exception;
 
-use AmadeusService\Application\Exception\ServiceException;
+use Flight\Service\Amadeus\Application\Exception\ServiceException;
 
 /**
  * Class InvalidRequestException
- * @package AmadeusService\Search\Exception
+ * @package Flight\Service\Amadeus\Search\Exception
  */
 class InvalidRequestException extends ServiceException
 {

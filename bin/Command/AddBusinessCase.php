@@ -1,8 +1,8 @@
 <?php
-namespace AmadeusService\Console\Command;
+namespace Flight\Service\Amadeus\Console\Command;
 
-use AmadeusService\Application\BusinessCase;
-use AmadeusService\Application\Response\HalResponse;
+use Flight\Service\Amadeus\Application\BusinessCase;
+use Flight\Service\Amadeus\Application\Response\HalResponse;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,7 +19,7 @@ use Zend\Code\Reflection\ClassReflection;
 
 /**
  * Class AddBusinessCase
- * @package AmadeusService\Console\Command
+ * @package Flight\Service\Amadeus\Console\Command
  */
 class AddBusinessCase extends Command
 {
@@ -76,7 +76,7 @@ class AddBusinessCase extends Command
         $businessCasePath = './src/' . $endpoint . '/BusinessCase/' . $studlyCaps . '.php';
 
         $classGenerator = new ClassGenerator();
-        $classGenerator->setNamespaceName('AmadeusService\\' . $endpoint . '\BusinessCase');
+        $classGenerator->setNamespaceName('Flight\Service\Amadeus\\' . $endpoint . '\BusinessCase');
         $classGenerator->setDocBlock(
             DocBlockGenerator::fromArray(
                 [
@@ -84,7 +84,7 @@ class AddBusinessCase extends Command
                     'tags' => [
                         [
                             'name' => "package",
-                            'description' => "AmadeusService\\$endpoint\BusinessCase"
+                            'description' => "Flight\Service\Amadeus\\$endpoint\BusinessCase"
                         ]
                     ]
                 ]
@@ -116,12 +116,12 @@ class AddBusinessCase extends Command
 
         $providerName = $endpoint . 'Provider';
         $class = ClassGenerator::fromReflection(
-            new ClassReflection("AmadeusService\\$endpoint\\$providerName")
+            new ClassReflection("Flight\Service\Amadeus\\$endpoint\\$providerName")
         );
 
         $method = $class->getMethod('routing');
         $currentBody = $method->getBody();
-        $currentBody .= "\n" . "\$collection->match('/', \AmadeusService\\$endpoint\BusinessCase\\$studlyCaps::class);";
+        $currentBody .= "\n" . "\$collection->match('/', \Flight\Service\Amadeus\\$endpoint\BusinessCase\\$studlyCaps::class);";
         $class->getMethod('routing')->setBody($currentBody);
 
         $fs->dumpFile(getcwd() . '/' . $endpointProviderPath, "<?php\n" . $class->generate());

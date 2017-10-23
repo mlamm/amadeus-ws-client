@@ -1,7 +1,7 @@
 <?php
-namespace AmadeusService\Search\Exception;
+namespace Flight\Service\Amadeus\Search\Exception;
 
-use AmadeusService\Application\Exception\ServiceException;
+use Flight\Service\Amadeus\Application\Exception\ServiceException;
 
 /**
  * Class InvalidRequestParamException

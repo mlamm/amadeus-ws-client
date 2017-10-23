@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Request\Validator;
+namespace Flight\Service\Amadeus\Tests\Search\Request\Validator;
 
-use AmadeusService\Search\Exception\InvalidRequestParameterException;
-use AmadeusService\Search\Request\Validator\AmadeusRequestValidator;
+use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
+use Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator;
 use Codeception\Test\Unit;
 
 /**
@@ -12,7 +12,7 @@ use Codeception\Test\Unit;
  *
  * tests the main function of the class
  *
- * @covers AmadeusService\Search\Request\Validator\AmadeusRequestValidator
+ * @covers Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

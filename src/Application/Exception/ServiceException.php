@@ -1,11 +1,11 @@
 <?php
-namespace AmadeusService\Application\Exception;
+namespace Flight\Service\Amadeus\Application\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ServiceException
- * @package AmadeusService\Application\Exception
+ * @package Flight\Service\Amadeus\Application\Exception
  */
 abstract class ServiceException extends \Exception implements ServiceExceptionInterface, \JsonSerializable
 {

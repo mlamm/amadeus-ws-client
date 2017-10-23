@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Cache;
+namespace Flight\Service\Amadeus\Tests\Search\Cache;
 
-use AmadeusService\Search\Cache\CacheKey;
+use Flight\Service\Amadeus\Search\Cache\CacheKey;
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\BusinessCaseAuthentication;
@@ -14,7 +14,7 @@ use Flight\SearchRequestMapping\Entity\Request;
 /**
  * CacheKeyTest.php
  *
- * @covers AmadeusService\Search\Cache\CacheKey
+ * @covers Flight\Service\Amadeus\Search\Cache\CacheKey
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
