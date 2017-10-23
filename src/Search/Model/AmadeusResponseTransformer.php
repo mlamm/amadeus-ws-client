@@ -1,5 +1,5 @@
 <?php
-namespace AmadeusService\Search\Model;
+namespace Flight\Service\Amadeus\Search\Model;
 
 use Amadeus\Client\Result;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,7 +9,7 @@ use Flight\SearchRequestMapping\Entity\BusinessCase;
 
 /**
  * Class AmadeusResponseTransformer
- * @package AmadeusService\Search\Model
+ * @package Flight\Service\Amadeus\Search\Model
  */
 class AmadeusResponseTransformer
 {

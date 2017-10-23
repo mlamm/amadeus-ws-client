@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Search\Cache;
+namespace Flight\Service\Amadeus\Search\Cache;
 
 /**
  * CompressingFlightCache.php

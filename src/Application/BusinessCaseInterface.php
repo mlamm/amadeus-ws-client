@@ -1,5 +1,5 @@
 <?php
-namespace AmadeusService\Application;
+namespace Flight\Service\Amadeus\Application;
 
 use Symfony\Component\HttpFoundation\Response;
 

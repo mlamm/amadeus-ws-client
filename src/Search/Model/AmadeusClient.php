@@ -1,9 +1,9 @@
 <?php
-namespace AmadeusService\Search\Model;
+namespace Flight\Service\Amadeus\Search\Model;
 
 use Amadeus\Client;
-use AmadeusService\Search\Exception\AmadeusRequestException;
-use AmadeusService\Search\Exception\ServiceRequestAuthenticationFailedException;
+use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Search\Exception\ServiceRequestAuthenticationFailedException;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Request;
@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class AmadeusClient
- * @package AmadeusService\Search\Model
+ * @package Flight\Service\Amadeus\Search\Model
  */
 class AmadeusClient
 {

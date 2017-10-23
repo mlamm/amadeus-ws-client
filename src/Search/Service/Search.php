@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Search\Service;
+namespace Flight\Service\Amadeus\Search\Service;
 
-use AmadeusService\Search\Cache\CacheKey;
-use AmadeusService\Search\Cache\FlightCacheInterface;
-use AmadeusService\Search\Model\AmadeusClient;
-use AmadeusService\Search\Request\Validator\AmadeusRequestValidator;
+use Flight\Service\Amadeus\Search\Cache\CacheKey;
+use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
+use Flight\Service\Amadeus\Search\Model\AmadeusClient;
+use Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Request;
 use JMS\Serializer\Serializer;

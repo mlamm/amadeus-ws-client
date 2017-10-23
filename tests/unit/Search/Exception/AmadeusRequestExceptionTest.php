@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\FlightSearch\Exception;
+namespace Flight\Service\Amadeus\Tests\FlightSearch\Exception;
 
 use Amadeus\Client\Result\NotOk;
-use AmadeusService\Search\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
 use Codeception\Test\Unit;
 
 /**
@@ -12,7 +12,7 @@ use Codeception\Test\Unit;
  *
  * Tests the functionality of the class
  *
- * @coversDefaultClass AmadeusService\Search\Exception\AmadeusRequestException
+ * @coversDefaultClass Flight\Service\Amadeus\Search\Exception\AmadeusRequestException
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

@@ -1,14 +1,14 @@
 <?php
-namespace AmadeusService\Search\Traits;
+namespace Flight\Service\Amadeus\Search\Traits;
 
-use AmadeusService\Search\Exception\InvalidRequestException;
+use Flight\Service\Amadeus\Search\Exception\InvalidRequestException;
 use Flight\SearchRequestMapping\Entity\Request as FlightRequest;
 use Flight\SearchRequestMapping\Mapper;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Trait SearchRequestMappingTrait
- * @package AmadeusService\Search\Traits
+ * @package Flight\Service\Amadeus\Search\Traits
  */
 trait SearchRequestMappingTrait
 {

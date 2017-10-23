@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Search\Model;
+namespace Flight\Service\Amadeus\Search\Model;
 
 use Amadeus\Client;
 use Flight\SearchRequestMapping\Entity\BusinessCase;

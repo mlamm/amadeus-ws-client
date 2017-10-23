@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Search\Response;
+namespace Flight\Service\Amadeus\Search\Response;
 
-use AmadeusService\Application\Response\ErrorResponse;
-use AmadeusService\Search\Exception\ValidationException;
+use Flight\Service\Amadeus\Application\Response\ErrorResponse;
+use Flight\Service\Amadeus\Search\Exception\ValidationException;
 use Particle\Validator\Failure;
 use Symfony\Component\HttpFoundation\Response;
 

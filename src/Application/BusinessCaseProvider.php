@@ -1,5 +1,5 @@
 <?php
-namespace AmadeusService\Application;
+namespace Flight\Service\Amadeus\Application;
 
 use Pimple\Container;
 use Silex\Api\ControllerProviderInterface;

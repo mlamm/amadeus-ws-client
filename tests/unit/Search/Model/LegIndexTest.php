@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Model;
+namespace Flight\Service\Amadeus\Tests\Search\Model;
 
 use Amadeus\Client\Result;
 use Amadeus\Client\Session\Handler\SendResult;
-use AmadeusService\Search\Model\LegIndex;
+use Flight\Service\Amadeus\Search\Model\LegIndex;
 
 /**
  * LegIndexTest.php
  *
- * @covers AmadeusService\Search\Model\LegIndex
+ * @covers Flight\Service\Amadeus\Search\Model\LegIndex
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

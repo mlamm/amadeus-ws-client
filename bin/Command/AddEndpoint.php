@@ -1,7 +1,7 @@
 <?php
-namespace AmadeusService\Console\Command;
+namespace Flight\Service\Amadeus\Console\Command;
 
-use AmadeusService\Application\BusinessCaseProvider;
+use Flight\Service\Amadeus\Application\BusinessCaseProvider;
 use Silex\ControllerCollection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,7 +17,7 @@ use Zend\Code\Generator\MethodGenerator;
 
 /**
  * Class AddEndpoint
- * @package AmadeusService\Console\Command
+ * @package Flight\Service\Amadeus\Console\Command
  */
 class AddEndpoint extends Command
 {
@@ -59,7 +59,7 @@ class AddEndpoint extends Command
         $output->writeln("<info>Created <comment>$path/BusinessCase</comment></info>");
 
         $classGenerator = new ClassGenerator();
-        $classGenerator->setNamespaceName('AmadeusService\\' . $studlyCaps);
+        $classGenerator->setNamespaceName('Flight\Service\Amadeus\\' . $studlyCaps);
         $classGenerator->setDocBlock(
             DocBlockGenerator::fromArray(
                 [
@@ -67,7 +67,7 @@ class AddEndpoint extends Command
                     'tags' => [
                         [
                             'name' => "package",
-                            'description' => "AmadeusService\\$studlyCaps"
+                            'description' => "Flight\Service\Amadeus\\$studlyCaps"
                         ]
                     ]
                 ]
@@ -105,6 +105,6 @@ class AddEndpoint extends Command
         $output->writeln("<info>Please register your new endpoint in <comment>./web/index.php</comment></info>");
         $lowercase = strtolower($studlyCaps);
         $providerName = $studlyCaps . 'Provider';
-        $output->writeln("<info>Like <comment>\$app->mount('/$lowercase', new \AmadeusService\\$studlyCaps\\$providerName());</info>");
+        $output->writeln("<info>Like <comment>\$app->mount('/$lowercase', new \Flight\Service\Amadeus\\$studlyCaps\\$providerName());</info>");
     }
 }

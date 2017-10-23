@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Cache;
+namespace Flight\Service\Amadeus\Tests\Search\Cache;
 
-use AmadeusService\Search\Cache\CompressingFlightCache;
-use AmadeusService\Search\Cache\DoctrineFlightCache;
-use AmadeusService\Search\Cache\FlightCacheInterface;
+use Flight\Service\Amadeus\Search\Cache\CompressingFlightCache;
+use Flight\Service\Amadeus\Search\Cache\DoctrineFlightCache;
+use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
 use Doctrine\Common\Cache\ArrayCache;
 
 /**
  * CompressingFlightCacheTest.php
  *
- * @covers AmadeusService\Search\Cache\CompressingFlightCache
+ * @covers Flight\Service\Amadeus\Search\Cache\CompressingFlightCache
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

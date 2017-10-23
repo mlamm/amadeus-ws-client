@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Search\Request;
+namespace Flight\Service\Amadeus\Search\Request;
 
 use JMS\Serializer\Serializer;
 

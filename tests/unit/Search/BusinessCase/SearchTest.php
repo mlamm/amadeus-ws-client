@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\BusinessCase;
+namespace Flight\Service\Amadeus\Tests\Search\BusinessCase;
 
-use AmadeusService\Search\BusinessCase\Search;
-use AmadeusService\Search\Exception\InvalidRequestParameterException;
-use AmadeusService\Search\Response\AmadeusErrorResponse;
-use AmadeusService\Search\Response\SearchResultResponse;
+use Flight\Service\Amadeus\Search\BusinessCase\Search;
+use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
+use Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse;
+use Flight\Service\Amadeus\Search\Response\SearchResultResponse;
 use Gamez\Psr\Log\TestLogger;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * SearchTest.php
  *
- * @covers AmadeusService\Search\BusinessCase\Search
+ * @covers Flight\Service\Amadeus\Search\BusinessCase\Search
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -28,7 +28,7 @@ class SearchTest extends \Codeception\Test\Unit
     private $object;
 
     /**
-     * @var \AmadeusService\Search\Service\Search|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Flight\Service\Amadeus\Search\Service\Search|\PHPUnit_Framework_MockObject_MockObject
      */
     private $service;
 
@@ -39,7 +39,7 @@ class SearchTest extends \Codeception\Test\Unit
 
     protected function _before()
     {
-        $this->service = $this->getMockBuilder(\AmadeusService\Search\Service\Search::class)
+        $this->service = $this->getMockBuilder(\Flight\Service\Amadeus\Search\Service\Search::class)
             ->disableOriginalConstructor()->getMock();
         $this->logger = new TestLogger();
         $this->object = new Search($this->service, $this->logger);

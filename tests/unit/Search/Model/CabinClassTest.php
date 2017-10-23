@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Model;
+namespace Flight\Service\Amadeus\Tests\Search\Model;
 
-use AmadeusService\Search\Model\CabinClass;
+use Flight\Service\Amadeus\Search\Model\CabinClass;
 
 /**
  * CabinClassTest.php
  *
- * @covers AmadeusService\Search\Model\CabinClass
+ * @covers Flight\Service\Amadeus\Search\Model\CabinClass
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

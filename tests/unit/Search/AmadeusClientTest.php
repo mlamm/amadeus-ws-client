@@ -1,13 +1,13 @@
 <?php
-namespace amadeusService\Tests\Search;
+namespace Flight\Service\Amadeus\Tests\Search;
 
 use Amadeus\Client;
-use AmadeusService\Search\Exception\AmadeusRequestException;
-use AmadeusService\Search\Exception\ServiceRequestAuthenticationFailedException;
-use AmadeusService\Search\Model\AmadeusClient;
-use AmadeusService\Search\Model\AmadeusRequestTransformer;
-use AmadeusService\Search\Model\AmadeusResponseTransformer;
-use AmadeusService\Tests\Helper\RequestFaker;
+use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Search\Exception\ServiceRequestAuthenticationFailedException;
+use Flight\Service\Amadeus\Search\Model\AmadeusClient;
+use Flight\Service\Amadeus\Search\Model\AmadeusRequestTransformer;
+use Flight\Service\Amadeus\Search\Model\AmadeusResponseTransformer;
+use Flight\Service\Amadeus\Tests\Helper\RequestFaker;
 use Codeception\Test\Unit;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Psr\Log\LoggerInterface;
@@ -18,7 +18,7 @@ use Psr\Log\NullLogger;
  *
  * test functionality of the class
  *
- * @covers AmadeusService\Search\Model\AmadeusClient
+ * @covers Flight\Service\Amadeus\Search\Model\AmadeusClient
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

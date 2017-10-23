@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Service;
+namespace Flight\Service\Amadeus\Tests\Search\Service;
 
-use AmadeusService\Search\Cache\FlightCacheInterface;
-use AmadeusService\Search\Model\AmadeusClient;
-use AmadeusService\Search\Request\Validator\AmadeusRequestValidator;
-use AmadeusService\Search\Service\Search;
-use AmadeusService\Tests\Helper\RequestFaker;
+use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
+use Flight\Service\Amadeus\Search\Model\AmadeusClient;
+use Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator;
+use Flight\Service\Amadeus\Search\Service\Search;
+use Flight\Service\Amadeus\Tests\Helper\RequestFaker;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\BusinessCaseAuthentication;
@@ -17,7 +17,7 @@ use Psr\Log\NullLogger;
 /**
  * SearchTest.php
  *
- * @covers AmadeusService\Search\Service\Search
+ * @covers Flight\Service\Amadeus\Search\Service\Search
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

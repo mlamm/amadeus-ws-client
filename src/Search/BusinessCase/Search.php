@@ -1,25 +1,25 @@
 <?php
-namespace AmadeusService\Search\BusinessCase;
+namespace Flight\Service\Amadeus\Search\BusinessCase;
 
-use AmadeusService\Application\BusinessCase;
-use AmadeusService\Application\Exception\GeneralServerErrorException;
-use AmadeusService\Application\Exception\ServiceException;
-use AmadeusService\Application\Response\HalResponse;
-use AmadeusService\Search\Exception\InvalidRequestException;
-use AmadeusService\Search\Exception\InvalidRequestParameterException;
-use AmadeusService\Search\Response\AmadeusErrorResponse;
-use AmadeusService\Search\Response\SearchResultResponse;
+use Flight\Service\Amadeus\Application\BusinessCase;
+use Flight\Service\Amadeus\Application\Exception\GeneralServerErrorException;
+use Flight\Service\Amadeus\Application\Exception\ServiceException;
+use Flight\Service\Amadeus\Application\Response\HalResponse;
+use Flight\Service\Amadeus\Search\Exception\InvalidRequestException;
+use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
+use Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse;
+use Flight\Service\Amadeus\Search\Response\SearchResultResponse;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class Search
- * @package AmadeusService\Search\BusinessCase
+ * @package Flight\Service\Amadeus\Search\BusinessCase
  */
 class Search extends BusinessCase
 {
     /**
-     * @var \AmadeusService\Search\Service\Search
+     * @var \Flight\Service\Amadeus\Search\Service\Search
      */
     protected $searchService;
 
@@ -29,10 +29,10 @@ class Search extends BusinessCase
     protected $logger;
 
     /**
-     * @param \AmadeusService\Search\Service\Search $searchService
+     * @param \Flight\Service\Amadeus\Search\Service\Search $searchService
      * @param LoggerInterface                       $logger
      */
-    public function __construct(\AmadeusService\Search\Service\Search $searchService, LoggerInterface $logger)
+    public function __construct(\Flight\Service\Amadeus\Search\Service\Search $searchService, LoggerInterface $logger)
     {
         $this->searchService = $searchService;
         $this->logger = $logger;

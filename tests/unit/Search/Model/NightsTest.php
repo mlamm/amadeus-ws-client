@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Model;
+namespace Flight\Service\Amadeus\Tests\Search\Model;
 
-use AmadeusService\Search\Model\Nights;
+use Flight\Service\Amadeus\Search\Model\Nights;
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\Segment;
 
 /**
  * NightsTest.php
  *
- * @covers AmadeusService\Search\Model\Nights
+ * @covers Flight\Service\Amadeus\Search\Model\Nights
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

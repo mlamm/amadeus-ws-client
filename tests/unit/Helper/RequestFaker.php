@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Helper;
+namespace Flight\Service\Amadeus\Tests\Helper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\SearchRequestMapping\Entity\BusinessCase;

@@ -192,11 +192,11 @@
     {
         "name": "businesscase.search",
         "type": "class",
-        "value": "AmadeusService\\Search\\BusinessCase\\Search"
+        "value": "Flight\Service\Amadeus\\Search\\BusinessCase\\Search"
     },
     {
         "name": "amadeus.client",
         "type": "class",
-        "value": "AmadeusService\\Search\\Model\\AmadeusClient"
+        "value": "Flight\Service\Amadeus\\Search\\Model\\AmadeusClient"
     }
 ]

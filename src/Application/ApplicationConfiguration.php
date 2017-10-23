@@ -1,12 +1,12 @@
 <?php
-namespace AmadeusService\Application;
+namespace Flight\Service\Amadeus\Application;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Class ApplicationConfiguration
- * @package AmadeusService\Application
+ * @package Flight\Service\Amadeus\Application
  */
 class ApplicationConfiguration implements ConfigurationInterface
 {

@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace AmadeusService\Tests\Search\Exception;
+namespace Flight\Service\Amadeus\Tests\Search\Exception;
 
-use AmadeusService\Search\Exception\InvalidRequestParameterException;
+use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
 use Codeception\Test\Unit;
 use Particle\Validator\Failure;
 
 /**
  * InvalidRequestParamExceptionTest.php
  *
- * @coversDefaultClass AmadeusService\Search\Exception\InvalidRequestParameterException
+ * @coversDefaultClass Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

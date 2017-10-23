@@ -1,11 +1,11 @@
 <?php
-namespace AmadeusService\Search\Response;
+namespace Flight\Service\Amadeus\Search\Response;
 
-use AmadeusService\Application\Response\HalResponse;
+use Flight\Service\Amadeus\Application\Response\HalResponse;
 
 /**
  * Class SearchResultResponse
- * @package AmadeusService\Search\Response
+ * @package Flight\Service\Amadeus\Search\Response
  */
 class SearchResultResponse extends HalResponse
 {
