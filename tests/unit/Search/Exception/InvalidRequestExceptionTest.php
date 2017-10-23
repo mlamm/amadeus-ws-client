@@ -25,8 +25,8 @@ class InvalidRequestExceptionTest extends Unit
      */
     public function testItGivesBackFixedMessageAndCode() : void
     {
-        $expectedMessage = 'The provided request could not be mapped into the appropriate format';
-        $expectedInternalErrorCode = 'ARS0003';
+        $expectedMessage = 'MALFORMED REQUEST';
+        $expectedInternalErrorCode = 'ARS0001';
 
         $exception = new InvalidRequestException();
 

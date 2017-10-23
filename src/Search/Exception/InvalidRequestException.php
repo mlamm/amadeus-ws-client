@@ -14,7 +14,7 @@ class InvalidRequestException extends ServiceException
      */
     public function getInternalErrorCode()
     {
-        return 'ARS0003';
+        return 'ARS0001';
     }
 
     /**
@@ -22,6 +22,6 @@ class InvalidRequestException extends ServiceException
      */
     public function getInternalErrorMessage()
     {
-        return 'The provided request could not be mapped into the appropriate format';
+        return 'MALFORMED REQUEST';
     }
 }

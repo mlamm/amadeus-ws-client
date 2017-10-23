@@ -34,7 +34,7 @@ class InvalidRequestParameterExceptionTest extends Unit
         $exception = new InvalidRequestParameterException($failures);
 
         $this->assertEquals($failures, $exception->getFailures());
-        $this->assertEquals('ARS0004', $exception->getInternalErrorCode());
+        $this->assertEquals('ARS0002', $exception->getInternalErrorCode());
         $this->assertEquals('INVALID OR MISSING REQUEST PARAM', $exception->getInternalErrorMessage());
     }
 }

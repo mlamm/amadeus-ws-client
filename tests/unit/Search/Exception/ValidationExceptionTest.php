@@ -26,7 +26,7 @@ class ValidationExceptionTest extends Unit
     public function testItGivesBackFixedMessageAndCode() : void
     {
         $expectedMessage = 'INVALID OR MISSING REQUEST PARAM - this param is invalid';
-        $expectedInternalErrorCode = 'ARS0004';
+        $expectedInternalErrorCode = 'ARS0002';
 
         $exception = new ValidationException('this param is invalid');
         $exception->setResponseCode(404);

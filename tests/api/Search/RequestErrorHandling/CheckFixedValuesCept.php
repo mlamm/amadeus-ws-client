@@ -9,7 +9,7 @@ $I->wantTo('see an error telling me that the request does not contain allowed va
 $I->haveHttpHeader('content-type', 'application/json');
 $I->sendPOST(
     '/flight-search/',
-    file_get_contents(codecept_data_dir('wrong-fixed-values.json'))
+    file_get_contents(codecept_data_dir('requests/wrong-fixed-values.json'))
 );
 $I->seeHttpHeader('content-type', 'application/hal+json');
 $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);

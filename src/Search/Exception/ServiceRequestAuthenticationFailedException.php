@@ -18,6 +18,6 @@ class ServiceRequestAuthenticationFailedException extends AmadeusRequestExceptio
      */
     public function getInternalErrorCode()
     {
-        return 'ARS0001';
+        return 'ARS0003';
     }
 }

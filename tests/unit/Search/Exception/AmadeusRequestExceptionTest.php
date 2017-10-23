@@ -27,7 +27,7 @@ class AmadeusRequestExceptionTest extends Unit
     public function testItAssignsExternalError() : void
     {
         $expectedMessage = 'AMADEUS RESPONSE ERROR [100,first error description], [101,second error description]';
-        $expectedInternalErrorCode = 'ARS000X';
+        $expectedInternalErrorCode = 'ARS0004';
 
         $exception = new AmadeusRequestException([
             new NotOk(100, 'first error description'),

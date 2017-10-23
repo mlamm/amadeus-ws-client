@@ -2,6 +2,7 @@
 namespace AmadeusService\Search\Exception;
 
 use AmadeusService\Application\Exception\ServiceException;
+use Particle\Validator\Failure;
 use Throwable;
 
 /**
@@ -27,7 +28,7 @@ class InvalidRequestParameterException extends ServiceException
      */
     public function getInternalErrorCode()
     {
-        return 'ARS0004';
+        return 'ARS0002';
     }
 
     public function getFailures()

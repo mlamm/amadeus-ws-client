@@ -22,7 +22,7 @@ class AmadeusRequestValidatorTest extends Unit
 {
     public function testValidateCorrectRequestFunction() : void
     {
-        $requestContent = file_get_contents(codecept_data_dir('valid-request.json'));
+        $requestContent = file_get_contents(codecept_data_dir('requests/valid-request.json'));
 
         $config = new \stdClass();
         $config->allowed_agents      = ['fluege.de'];
@@ -62,7 +62,7 @@ class AmadeusRequestValidatorTest extends Unit
         return [
             'testWithNotAllowedAgent' => [
                 'requestData' => [
-                    'rawJson' =>file_get_contents(codecept_data_dir('invalid-agent-request.json')),
+                    'rawJson' => file_get_contents(codecept_data_dir('requests/invalid-agent-request.json')),
                 ],
                 'expected' => [
                     'exceptionClass' => InvalidRequestParameterException::class
