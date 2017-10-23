@@ -64,9 +64,9 @@ $app->error(
 // set json ecoding options from config
 $app->after(function (Request $request, Response $response) use ($app) {
     if ($response instanceof JsonResponse) {
-        if (isset($app['config']->search->response->json_encoding_options)) {
+        if (isset($app['config']->response->json_encoding_options)) {
             $value = 0;
-            foreach ($app['config']->search->response->json_encoding_options as $option) {
+            foreach ($app['config']->response->json_encoding_options as $option) {
                 $value |= constant($option);
             }
             $response->setEncodingOptions($value);
