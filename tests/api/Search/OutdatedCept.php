@@ -6,7 +6,7 @@ $I->sendPOST(
     file_get_contents(codecept_data_dir('requests/outdated-request.json'))
 );
 $I->seeResponseCodeIs(500);
-$I->haveHttpHeader('content-type', 'application/hal+json');
+$I->seeHttpHeader('content-type', 'application/hal+json');
 $I->canSeeResponseContainsJson(
     [
         'code' => 'ARS0004',

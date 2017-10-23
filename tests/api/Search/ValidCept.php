@@ -7,7 +7,7 @@ $I->sendPOST(
     file_get_contents(codecept_data_dir('requests/valid-request.json'))
 );
 $I->seeResponseCodeIs(200);
-$I->haveHttpHeader('content-type', 'application/hal+json');
+$I->seeHttpHeader('content-type', 'application/hal+json');
 
 $response = $I->grabResponse();
 

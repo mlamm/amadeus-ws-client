@@ -37,11 +37,6 @@ $app->error(function (NotFoundHttpException $ex, Request $request, $code) {
                     ]
                 ]
             ],
-            '_link' => [
-                'self' => [
-                    'href' => '/flight-search/'
-                ]
-            ]
         ],
         $code
     );
@@ -51,7 +46,7 @@ $app->error(
     function (\Exception $ex, Request $request, $code) {
         return new JsonResponse(
             [
-                'error' => [
+                'errors' => [
                     '_' => [
                         [
                             'code' => 'ARS000X',
