@@ -46,16 +46,17 @@
         "flow/jsonpath": "^0.3.4",
         "gamez/psr-testlogger": "^2.0"
     },
-    "repositories": {
-        "flight-search-request-mapping": {
-            "type": "vcs",
-            "url": "ssh://git@stash.unister.lan:2200/flight/library.search-request-mapping.git"
-        },
-        "library-search-request-response-mapping": {
-            "type": "vcs",
-            "url": "ssh://git@stash.unister.lan:2200/flight/library.search-request-response-mapping.git"
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.unister.lan",
+            "options": {
+                "ssl": {
+                    "verify_peer": false
+                }
+            }
         }
-    },
+    ],
     "config": {
         "platform": {
             "php": "7.1",
