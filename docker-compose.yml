@@ -2,20 +2,15 @@ version: "2"
 
 services:
   amadeus-php:
-    image: flight/service.amadeus.php
-    container_name: service-amadeus-php
+    image: 630542070554.dkr.ecr.eu-central-1.amazonaws.com/flight/invia/service/amadeus/app:latest
+    container_name: amadeus-php
     volumes:
       - ./:/var/www
-#      - ./_docker/20-xdebug.ini:/etc/php/7.1/fpm/conf.d/20-xdebug.ini
-#      - ./var/logs/xdebug.log:/tmp/xdebug.log
 
   amadeus-nginx:
-    image: flight/service.amadeus.nginx
-    container_name: service-amadeus-nginx
+    image: 630542070554.dkr.ecr.eu-central-1.amazonaws.com/flight/invia/service/amadeus/nginx:latest
+    container_name: amadeus-nginx
     volumes:
       - ./:/var/www
-      - ./var/logs/nginx:/var/log/nginx
     ports:
-      - "8201:8080"
-    depends_on:
-      - amadeus-php
+      - "80:80"
