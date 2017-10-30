@@ -35,7 +35,7 @@ function createBinaries(){
 
     # build helper scripts
     echo -e '#!/bin/sh\n\ndocker run --rm -it -v $(pwd):/var/www -w /var/www -u $(id -u):$(id -g) christianbladescb/aglio -i ./docs/api.apib -o ./var/docs/index.html --theme-variables flatly --theme-full-width' > bin/create-docs
-    echo -e '#!/bin/sh\n\nsudo docker exec -ti -u "$(id -u):$(id -g)" service-amadeus-php vendor/bin/codecept "$@" > bin/codecept
+    echo -e '#!/bin/sh\n\ndocker exec -ti -u "$(id -u):$(id -g)" service-amadeus-php vendor/bin/codecept "$@"' > bin/codecept
     echo -e '#!/bin/sh\n\ndocker run -it --rm -e "HOME=/home/$USER" -e "USER=$USER" -e "UID=$(id -u)" -e "GID=$(id -g)" -v $HOME:/home/$USER -v $PWD:/app -w /app --net="host" '$DOCKER_IMAGE' php bin/composer.phar "$@"' > bin/composer
 
     if [ ! -f bin/composer.phar ]; then
