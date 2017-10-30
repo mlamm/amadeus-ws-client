@@ -88,6 +88,9 @@ function undo_deployments() {
 
   for deployment in $deployments
   do
+    info "Logs from ${deployment}:"
+    kubectl logs $deployment
+
     info "Rolling back ${deployment}"
     kubectl rollout undo $deployment
   done
