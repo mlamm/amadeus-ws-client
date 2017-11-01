@@ -4,6 +4,8 @@ services:
   amadeus-php:
     image: 630542070554.dkr.ecr.eu-central-1.amazonaws.com/flight/invia/service/amadeus/app:latest
     container_name: amadeus-php
+    environment:
+      COMPOSE_HTTP_TIMEOUT: 120
     volumes:
       - ./:/var/www
 

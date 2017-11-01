@@ -164,7 +164,7 @@ spec:
       imagePullSecrets:
         - name: ecr
       containers:
-        - name: nginx
+        - name: ${APP_NAME}-nginx
           image: ${REGISTRY}/flight/invia/service/amadeus/nginx:${TAG}
           ports:
             - name: http
@@ -219,7 +219,7 @@ spec:
         - name: ecr
       hostAliases:
       containers:
-        - name: app
+        - name: ${APP_NAME}-php
           image: ${REGISTRY}/flight/invia/service/amadeus/app:${TAG}
           ports:
             - name: php

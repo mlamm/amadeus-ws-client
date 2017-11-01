@@ -30,10 +30,6 @@ pipeline {
     }
 
     stage('Test') {
-      environment {
-        COMPOSE_HTTP_TIMEOUT = '300'
-      }
-
       steps {
         sh './scripts/test.sh'
       }
