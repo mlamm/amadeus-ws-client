@@ -42,6 +42,14 @@ function buildImages(){
   # it to S3. Default, install all dependencies on build time.
   app_image="$REGISTRY/flight/invia/service/amadeus/app"
 
+  # Make sure we have the Git private setup for composer to install
+  # dependencies from the stash.unister.lan git private repo
+  if [[ -n $GIT_PRIVATE_KEY ]]
+  then
+    echo "${GIT_PRIVATE_KEY}" > ~/.ssh/id_stash_unister_lan
+    export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_stash_unister_lan"
+  fi
+
   if [[ -n $AWS_ACCESS_KEY_ID && -n $AWS_SECRET_ACCESS_KEY && -n $AWS_COMPOSER_CACHE_S3_BUCKET && -e "composer.json" ]]
   then
     archive_name=`md5sum composer.json | awk '{print $1}'`.tar.gz
@@ -89,7 +97,7 @@ function createBinaries(){
 
   # Build helper scripts
   echo -e '#!/bin/sh\n\ndocker run --rm -v $(pwd):/var/www -w /var/www christianbladescb/aglio -i var/docs/api/api.apib -o web/docs/index.html --theme-variables flatly --theme-full-width' > scripts/create-docs
-  echo -e '#!/bin/sh\n\ndocker run --rm -v ~/.composer:/.composer -v $(pwd):/var/www -w /var/www '$buildImage' php composer.phar "$@"' > scripts/composer
+  echo -e '#!/bin/sh\n\ndocker run --rm -e GIT_SSH_COMMAND="ssh -i ~/.ssh/id_stash_unister_lan" -v ~/.ssh:/root/.ssh -v ~/.composer:/root/.composer -v $(pwd):/var/www -w /var/www '$buildImage' php composer.phar "$@"' > scripts/composer
 
     if [ ! -f composer.phar ]; then
         wget -O composer.phar https://getcomposer.org/download/$COMPOSER_VERSION/composer.phar
