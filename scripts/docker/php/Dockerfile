@@ -3,7 +3,7 @@ FROM php:7.1-fpm-alpine
 ENV XDEBUG_VERSION=2.5.5
 
 # Install packages we want to keep
-RUN apk --no-cache add fcgi git libxml2-dev zlib-dev
+RUN apk --no-cache add fcgi git openssh libxml2-dev zlib-dev
 
 # Install dependcies that are only used during installation of other packages. Afterwards it will be cleaned up.
 RUN set -xe \

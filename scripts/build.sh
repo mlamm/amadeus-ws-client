@@ -46,6 +46,7 @@ function buildImages(){
   # dependencies from the stash.unister.lan git private repo
   if [[ -n $GIT_PRIVATE_KEY ]]
   then
+    mkdir -p ~/.ssh
     echo "${GIT_PRIVATE_KEY}" > ~/.ssh/id_stash_unister_lan
     export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_stash_unister_lan"
   fi
