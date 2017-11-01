@@ -88,11 +88,13 @@ function buildImages(){
 }
 
 function createBinaries(){
+  echo -e "Host stash.unister.lan.com\n\tStrictHostKeyChecking no\n" >> ./.ssh_config
+
   info "Creating binaries..."
 
   # Build helper scripts
   echo -e '#!/bin/sh\n\ndocker run --rm -v $(pwd):/var/www -w /var/www christianbladescb/aglio -i var/docs/api/api.apib -o web/docs/index.html --theme-variables flatly --theme-full-width' > scripts/create-docs
-  echo -e '#!/bin/sh\n\ndocker run --rm -v '$GIT_PRIVATE_KEY':/root/.ssh/id_rsa -v ~/.composer:/root/.composer -v $(pwd):/var/www -w /var/www '$buildImage' php composer.phar "$@"' > scripts/composer
+  echo -e '#!/bin/sh\n\ndocker run --rm -v '$GIT_PRIVATE_KEY':/root/.ssh/id_rsa -v $(pwd)/.ssh_config:/root/.ssh/config -v ~/.composer:/root/.composer -v $(pwd):/var/www -w /var/www '$buildImage' php composer.phar "$@"' > scripts/composer
 
     if [ ! -f composer.phar ]; then
         wget -O composer.phar https://getcomposer.org/download/$COMPOSER_VERSION/composer.phar
