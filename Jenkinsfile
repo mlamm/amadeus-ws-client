@@ -23,7 +23,7 @@ pipeline {
       steps {
         withCredentials([
           usernamePassword(credentialsId: 'AWS', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY'),
-          file(credentialsId: 'GIT_PRIVATE_KEY', variable: 'GIT_PRIVATE_KEY')
+          sshUserPrivateKey(credentialsId: 'GIT_PRIVATE_KEY', keyFileVariable: 'GIT_PRIVATE_KEY')
         ]) {
           sh './scripts/build.sh'
         }
