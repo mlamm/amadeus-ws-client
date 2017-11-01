@@ -7,6 +7,9 @@ set -e
 
 source $(dirname $0)/base.sh
 
+# optional variables
+GIT_PRIVATE_KEY=${GIT_PRIVATE_KEY:-"~/.ssh/id_rsa"}
+
 docker_image=$(awk '/FROM/{print $2}' scripts/docker/php/Dockerfile)
 buildImage=php-base-build
 COMPOSER_VERSION=1.5.2
@@ -41,15 +44,6 @@ function buildImages(){
   # download all the composer dependencies, then create the archive and upload
   # it to S3. Default, install all dependencies on build time.
   app_image="$REGISTRY/flight/invia/service/amadeus/app"
-
-  # Make sure we have the Git private setup for composer to install
-  # dependencies from the stash.unister.lan git private repo
-  if [[ -n $GIT_PRIVATE_KEY ]]
-  then
-    mkdir -p ~/.ssh
-    echo "${GIT_PRIVATE_KEY}" > ~/.ssh/id_stash_unister_lan
-    export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_stash_unister_lan"
-  fi
 
   if [[ -n $AWS_ACCESS_KEY_ID && -n $AWS_SECRET_ACCESS_KEY && -n $AWS_COMPOSER_CACHE_S3_BUCKET && -e "composer.json" ]]
   then
@@ -98,7 +92,7 @@ function createBinaries(){
 
   # Build helper scripts
   echo -e '#!/bin/sh\n\ndocker run --rm -v $(pwd):/var/www -w /var/www christianbladescb/aglio -i var/docs/api/api.apib -o web/docs/index.html --theme-variables flatly --theme-full-width' > scripts/create-docs
-  echo -e '#!/bin/sh\n\ndocker run --rm -e GIT_SSH_COMMAND="ssh -i ~/.ssh/id_stash_unister_lan" -v ~/.ssh:/root/.ssh -v ~/.composer:/root/.composer -v $(pwd):/var/www -w /var/www '$buildImage' php composer.phar "$@"' > scripts/composer
+  echo -e '#!/bin/sh\n\ndocker run --rm -v $GIT_PRIVATE_KEY:/root/.ssh/id_rsa -v ~/.composer:/root/.composer -v $(pwd):/var/www -w /var/www '$buildImage' php composer.phar "$@"' > scripts/composer
 
     if [ ! -f composer.phar ]; then
         wget -O composer.phar https://getcomposer.org/download/$COMPOSER_VERSION/composer.phar
