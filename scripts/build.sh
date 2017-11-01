@@ -88,7 +88,7 @@ function buildImages(){
 }
 
 function createBinaries(){
-  echo -e "Host stash.unister.lan.com\n\tStrictHostKeyChecking no\n" >> ./.ssh_config
+  echo -e "Host stash.unister.lan\n\tStrictHostKeyChecking no\n" >> ./.ssh_config
 
   info "Creating binaries..."
 
