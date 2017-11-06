@@ -32,6 +32,15 @@ $I->canSeeResponseContainsJson(
         ]
     ]]
 );
+$I->canSeeResponseContainsJson(
+    ['filter-stops' => [
+        [
+            'code'    => ValidationException::INTERNAL_ERROR_CODE,
+            'message' => 'INVALID OR MISSING REQUEST PARAM - filter-stops must be an integer',
+            'status'  => 400
+        ]
+    ]]
+);
 
 $I->canSeeResponseContainsJson(
     [

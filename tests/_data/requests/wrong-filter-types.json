@@ -39,7 +39,7 @@
   ],
   "filter-price-min": "",
   "filter-price-max": "",
-  "filter-stops": null,
+  "filter-stops": true,
   "page": 1,
   "legs": [
     {

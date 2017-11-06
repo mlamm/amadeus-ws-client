@@ -115,6 +115,12 @@ class AmadeusRequestTransformer
             $options['cabinClass'] = $request->getFilterCabinClass();
         }
 
+        if ($request->getFilterStops() === 0) {
+            $options['requestedFlightTypes'] = [
+                FareMasterPricerTbSearch::FLIGHTTYPE_NONSTOP,
+            ];
+        }
+
         if (!empty($coopCodes)) {
             $options['corporateQualifier'] = FareMasterPricerTbSearch::CORPORATE_QUALIFIER_UNIFARE;
             $options['corporateCodesUnifares'] = array_values($coopCodes);

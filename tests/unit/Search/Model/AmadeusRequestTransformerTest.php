@@ -492,4 +492,25 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $this->assertEquals('password-length', $params->authParams->passwordLength);
         $this->assertEquals('user-id', $params->authParams->userId);
     }
+
+    /**
+     * Verify that it adds the required flight types if the stops filter is set
+     */
+    public function testItSetsNonStopFilter()
+    {
+        $config = new \stdClass();
+        $config->search = new \stdClass();
+
+        $transformer = new AmadeusRequestTransformer($config);
+
+        $requestOptions = [
+            RequestFaker::OPT_NONSTOP_FILTER => true,
+        ];
+        $request = RequestFaker::buildDefaultRequest($requestOptions);
+
+        $options = $transformer->buildFareMasterRequestOptions($request);
+
+        $this->assertInstanceOf(Client\RequestOptions\FareMasterPricerTbSearch::class, $options);
+        $this->assertEquals(['N'], $options->requestedFlightTypes);
+    }
 }
