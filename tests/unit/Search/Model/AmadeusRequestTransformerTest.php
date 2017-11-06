@@ -116,63 +116,20 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
     {
         $config = new \stdClass();
         $config->search = new \stdClass();
+        $config->search->excluded_airlines = ['DY'];
 
         $transformer = new AmadeusRequestTransformer($config);
 
         $requestOptions = [
-            RequestFaker::OPT_TYPE =>'one-way',
-            RequestFaker::OPT_FLEXIBLE_LEG_DATES => [false, false],
-            RequestFaker::OPT_PAX => [1, 1, 0],
-            RequestFaker::OPT_AREA_SEARCH => false,
-            RequestFaker::OPT_RESULT_LIMIT => 3,
-            RequestFaker::OPT_AIRLINE_FILTER => ['AB', 'LH']
+            RequestFaker::OPT_AIRLINE_FILTER => ['AB', 'LH', 'DY']
         ];
-        $request = RequestFaker::getFakeRequest($requestOptions);
-
-        $options = $transformer->buildFareMasterRequestOptions($request);
-
-        $expectedAdult = new Client\RequestOptions\Fare\MPPassenger();
-        $expectedAdult->type = Client\RequestOptions\Fare\MPPassenger::TYPE_ADULT;
-        $expectedAdult->count = 1;
-
-        $expectedChild = new Client\RequestOptions\Fare\MPPassenger();
-        $expectedChild->type = Client\RequestOptions\Fare\MPPassenger::TYPE_CHILD;
-        $expectedChild->count = 1;
-
-        $expectedPax = [
-            0 => $expectedAdult,
-            1 => $expectedChild
-        ];
-
-        $expectedLegs = [
-            0 => new Client\RequestOptions\Fare\MPItinerary(
-                [
-                    'departureLocation' => new Client\RequestOptions\Fare\MPLocation(
-                        [
-                            'city' => 'BER'
-                        ]
-                    ),
-                    'arrivalLocation'   => new Client\RequestOptions\Fare\MPLocation(
-                        [
-                            'city' => 'LON'
-                        ]
-                    ),
-                    'date'              => new Client\RequestOptions\Fare\MPDate(
-                        [
-                            'dateTime' => RequestFaker::getDepartureDateTime(),
-                        ]
-                    )
-                ]
-            )
-        ];
+        $request = RequestFaker::buildDefaultRequest($requestOptions);
 
         $expectedAF = ['M' => ['AB', 'LH']];
 
+        $options = $transformer->buildFareMasterRequestOptions($request);
+
         $this->assertInstanceOf(Client\RequestOptions\FareMasterPricerTbSearch::class, $options);
-        $this->assertEquals(3, $options->nrOfRequestedResults);
-        $this->assertEquals(2, $options->nrOfRequestedPassengers);
-        $this->assertArraySubset($expectedPax, $options->passengers);
-        $this->assertArraySubset($expectedLegs, $options->itinerary);
         $this->assertArraySubset($expectedAF, $options->airlineOptions);
     }
 
@@ -188,60 +145,13 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
 
         $transformer = new AmadeusRequestTransformer($config);
 
-        $requestOptions = [
-            RequestFaker::OPT_TYPE =>'one-way',
-            RequestFaker::OPT_FLEXIBLE_LEG_DATES => [false, false],
-            RequestFaker::OPT_PAX => [1, 1, 0],
-            RequestFaker::OPT_AREA_SEARCH => false,
-            RequestFaker::OPT_RESULT_LIMIT => 3,
-            RequestFaker::OPT_AIRLINE_FILTER => ['AB', 'LH']
-        ];
-        $request = RequestFaker::getFakeRequest($requestOptions);
-
-        $options = $transformer->buildFareMasterRequestOptions($request);
-
-        $expectedAdult = new Client\RequestOptions\Fare\MPPassenger();
-        $expectedAdult->type = Client\RequestOptions\Fare\MPPassenger::TYPE_ADULT;
-        $expectedAdult->count = 1;
-
-        $expectedChild = new Client\RequestOptions\Fare\MPPassenger();
-        $expectedChild->type = Client\RequestOptions\Fare\MPPassenger::TYPE_CHILD;
-        $expectedChild->count = 1;
-
-        $expectedPax = [
-            0 => $expectedAdult,
-            1 => $expectedChild
-        ];
-
-        $expectedLegs = [
-            0 => new Client\RequestOptions\Fare\MPItinerary(
-                [
-                    'departureLocation' => new Client\RequestOptions\Fare\MPLocation(
-                        [
-                            'city' => 'BER'
-                        ]
-                    ),
-                    'arrivalLocation'   => new Client\RequestOptions\Fare\MPLocation(
-                        [
-                            'city' => 'LON'
-                        ]
-                    ),
-                    'date'              => new Client\RequestOptions\Fare\MPDate(
-                        [
-                            'dateTime' => RequestFaker::getDepartureDateTime(),
-                        ]
-                    )
-                ]
-            )
-        ];
+        $request = RequestFaker::buildDefaultRequest();
 
         $expectedExcludedAL = ['X' => ['DY', '3K', 'MX', 'OB']];
 
+        $options = $transformer->buildFareMasterRequestOptions($request);
+
         $this->assertInstanceOf(Client\RequestOptions\FareMasterPricerTbSearch::class, $options);
-        $this->assertEquals(3, $options->nrOfRequestedResults);
-        $this->assertEquals(2, $options->nrOfRequestedPassengers);
-        $this->assertArraySubset($expectedPax, $options->passengers);
-        $this->assertArraySubset($expectedLegs, $options->itinerary);
         $this->assertArraySubset($expectedExcludedAL, $options->airlineOptions);
     }
 
@@ -256,61 +166,17 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $transformer = new AmadeusRequestTransformer($config);
 
         $requestOptions = [
-            RequestFaker::OPT_TYPE =>'one-way',
-            RequestFaker::OPT_FLEXIBLE_LEG_DATES => [false, false],
-            RequestFaker::OPT_PAX => [1, 1, 0],
-            RequestFaker::OPT_AREA_SEARCH => false,
-            RequestFaker::OPT_RESULT_LIMIT => 3,
             RequestFaker::OPT_CABIN_CLASS_FILTER => ['Y', 'C'],
         ];
-        $request = RequestFaker::getFakeRequest($requestOptions);
-
-        $options = $transformer->buildFareMasterRequestOptions($request);
-
-        $expectedAdult = new Client\RequestOptions\Fare\MPPassenger();
-        $expectedAdult->type = Client\RequestOptions\Fare\MPPassenger::TYPE_ADULT;
-        $expectedAdult->count = 1;
-
-        $expectedChild = new Client\RequestOptions\Fare\MPPassenger();
-        $expectedChild->type = Client\RequestOptions\Fare\MPPassenger::TYPE_CHILD;
-        $expectedChild->count = 1;
-
-        $expectedPax = [
-            0 => $expectedAdult,
-            1 => $expectedChild
-        ];
-
-        $expectedLegs = [
-            0 => new Client\RequestOptions\Fare\MPItinerary(
-                [
-                    'departureLocation' => new Client\RequestOptions\Fare\MPLocation(
-                        [
-                            'city' => 'BER'
-                        ]
-                    ),
-                    'arrivalLocation'   => new Client\RequestOptions\Fare\MPLocation(
-                        [
-                            'city' => 'LON'
-                        ]
-                    ),
-                    'date'              => new Client\RequestOptions\Fare\MPDate(
-                        [
-                            'dateTime' => RequestFaker::getDepartureDateTime(),
-                        ]
-                    )
-                ]
-            )
-        ];
+        $request = RequestFaker::buildDefaultRequest($requestOptions);
 
         $expectedCabinClass = $requestOptions[RequestFaker::OPT_CABIN_CLASS_FILTER];
 
+        $options = $transformer->buildFareMasterRequestOptions($request);
+
         $this->assertInstanceOf(Client\RequestOptions\FareMasterPricerTbSearch::class, $options);
-        $this->assertEquals(3, $options->nrOfRequestedResults);
-        $this->assertEquals(2, $options->nrOfRequestedPassengers);
-        $this->assertArraySubset($expectedPax, $options->passengers);
-        $this->assertArraySubset($expectedLegs, $options->itinerary);
         $this->assertEquals('MD', $options->cabinOption);
-        $this->assertArraySubset($expectedCabinClass, $options->cabinClass);
+        $this->assertEquals($expectedCabinClass, $options->cabinClass);
     }
 
     /**
@@ -326,29 +192,9 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $transformer = new AmadeusRequestTransformer($config);
 
         $requestOptions = [
-            RequestFaker::OPT_TYPE =>'one-way',
-            RequestFaker::OPT_FLEXIBLE_LEG_DATES => [false, false],
-            RequestFaker::OPT_PAX => [1, 1, 0],
             RequestFaker::OPT_AREA_SEARCH => true,
-            RequestFaker::OPT_RESULT_LIMIT => 3,
-            RequestFaker::OPT_CABIN_CLASS_FILTER => ['Y', 'C'],
         ];
-        $request = RequestFaker::getFakeRequest($requestOptions);
-
-        $options = $transformer->buildFareMasterRequestOptions($request);
-
-        $expectedAdult = new Client\RequestOptions\Fare\MPPassenger();
-        $expectedAdult->type = Client\RequestOptions\Fare\MPPassenger::TYPE_ADULT;
-        $expectedAdult->count = 1;
-
-        $expectedChild = new Client\RequestOptions\Fare\MPPassenger();
-        $expectedChild->type = Client\RequestOptions\Fare\MPPassenger::TYPE_CHILD;
-        $expectedChild->count = 1;
-
-        $expectedPax = [
-            0 => $expectedAdult,
-            1 => $expectedChild
-        ];
+        $request = RequestFaker::buildDefaultRequest($requestOptions);
 
         $expectedLegs = [
             0 => new Client\RequestOptions\Fare\MPItinerary(
@@ -376,10 +222,9 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
             )
         ];
 
+        $options = $transformer->buildFareMasterRequestOptions($request);
+
         $this->assertInstanceOf(Client\RequestOptions\FareMasterPricerTbSearch::class, $options);
-        $this->assertEquals(3, $options->nrOfRequestedResults);
-        $this->assertEquals(2, $options->nrOfRequestedPassengers);
-        $this->assertArraySubset($expectedPax, $options->passengers);
         $this->assertArraySubset($expectedLegs, $options->itinerary);
     }
 
@@ -397,27 +242,10 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $requestOptions = [
             RequestFaker::OPT_TYPE =>'round-trip',
             RequestFaker::OPT_FLEXIBLE_LEG_DATES => [false, true],
-            RequestFaker::OPT_PAX => [1, 1, 0],
-            RequestFaker::OPT_AREA_SEARCH => false,
-            RequestFaker::OPT_RESULT_LIMIT => 3,
-            RequestFaker::OPT_CABIN_CLASS_FILTER => ['Y', 'C'],
         ];
-        $request = RequestFaker::getFakeRequest($requestOptions);
+        $request = RequestFaker::buildDefaultRequest($requestOptions);
 
         $options = $transformer->buildFareMasterRequestOptions($request);
-
-        $expectedAdult = new Client\RequestOptions\Fare\MPPassenger();
-        $expectedAdult->type = Client\RequestOptions\Fare\MPPassenger::TYPE_ADULT;
-        $expectedAdult->count = 1;
-
-        $expectedChild = new Client\RequestOptions\Fare\MPPassenger();
-        $expectedChild->type = Client\RequestOptions\Fare\MPPassenger::TYPE_CHILD;
-        $expectedChild->count = 1;
-
-        $expectedPax = [
-            0 => $expectedAdult,
-            1 => $expectedChild
-        ];
 
         $expectedLegs = [
             0 => new Client\RequestOptions\Fare\MPItinerary(
@@ -463,9 +291,6 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         ];
 
         $this->assertInstanceOf(Client\RequestOptions\FareMasterPricerTbSearch::class, $options);
-        $this->assertEquals(3, $options->nrOfRequestedResults);
-        $this->assertEquals(2, $options->nrOfRequestedPassengers);
-        $this->assertArraySubset($expectedPax, $options->passengers);
         $this->assertArraySubset($expectedLegs, $options->itinerary);
     }
 

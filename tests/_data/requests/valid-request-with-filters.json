@@ -1,0 +1,82 @@
+{
+  "search-hash": "",
+  "flight-hash": "",
+  "agent": "fluege.de",
+  "departure": [
+    "BER"
+  ],
+  "depart-at": [
+    1514725420
+  ],
+  "is-flexible-date": [
+  ],
+  "arrival": [
+    "LON"
+  ],
+  "adults": 2,
+  "children": 0,
+  "infants": 0,
+  "is-synthetic": false,
+  "filter-airline": [
+    "LH", "AB", "4U", "EJ"
+  ],
+  "filter-cabin-class": [
+    "Y", "F"
+  ],
+  "filter-arrive-before": [
+
+  ],
+  "filter-depart-after": [
+
+  ],
+  "filter-duration": [
+
+  ],
+  "filter-free-beggage": false,
+  "filter-identical-origin": false,
+  "filter-airports": [
+
+  ],
+  "filter-payment-method": [
+
+  ],
+  "filter-price-min": "",
+  "filter-price-max": "",
+  "filter-stops": 0,
+  "page": 1,
+  "legs": [
+    {
+      "departure": "BER",
+      "arrival": "LON",
+      "depart-at": 1514725420,
+      "is-flexible-date": false,
+      "filter": [
+
+      ]
+    }
+  ],
+  "business-cases": [
+    [
+      {
+        "content-provider": "amadeus",
+        "type": "one-way",
+        "fare-type": "net",
+        "options": {
+          "is-one-way-combination": true,
+          "is-overnight": false,
+          "is-area-search": false,
+          "is-benchmark": false,
+          "result-limit": 1
+        },
+        "authentication": {
+          "office-id": "LEJL128AC",
+          "user-id": "WSTBDUFI",
+          "password-data": "dkhBM1J5VTU=",
+          "password-length": 8,
+          "duty-code": "SU",
+          "organization-id": "NMC-GERMAN"
+        }
+      }
+    ]
+  ]
+}

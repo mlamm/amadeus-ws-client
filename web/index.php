@@ -5,10 +5,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+set_time_limit(0);
+ini_set('display_errors', 0);
+
 chdir(__DIR__ . '/..');
 require_once __DIR__ . '/../vendor/autoload.php';
-
-set_time_limit(0);
 
 $app = new Silex\Application();
 
