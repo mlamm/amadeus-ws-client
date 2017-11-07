@@ -16,6 +16,7 @@ COMPOSER_VERSION=1.5.2
 
 function build() {
   info "building app..."
+  cleanup
   configure
   createBinaries
   #createDocs
@@ -23,6 +24,12 @@ function build() {
   buildImages
 
   success "done!"
+}
+
+function cleanup(){
+    info "Cleaning old caches and logs..."
+    ./scripts/clean-cache.sh
+    ./scripts/clean-logs.sh
 }
 
 function buildImages(){
