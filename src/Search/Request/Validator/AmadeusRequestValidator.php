@@ -102,6 +102,8 @@ class AmadeusRequestValidator
             }
         );
 
+        $validator->optional('filter-stops')->integer(true);
+
         $validator->required('legs')->each(
             function (Validator $validator) {
                 $validator->required('departure');

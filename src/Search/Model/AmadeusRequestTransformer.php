@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Flight\Service\Amadeus\Search\Model;
 
 use Amadeus\Client;
+use Amadeus\Client\RequestOptions\FareMasterPricerTbSearch;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Leg;
 use Flight\SearchRequestMapping\Entity\Request;
@@ -75,9 +76,9 @@ class AmadeusRequestTransformer
      *
      * @param Request     $request
      *
-     * @return Client\RequestOptions\FareMasterPricerTbSearch
+     * @return FareMasterPricerTbSearch
      */
-    public function buildFareMasterRequestOptions(Request $request) : Client\RequestOptions\FareMasterPricerTbSearch
+    public function buildFareMasterRequestOptions(Request $request) : FareMasterPricerTbSearch
     {
         /** @var BusinessCase $businessCase */
         $businessCase = $request->getBusinessCases()->first()->first();
@@ -102,26 +103,31 @@ class AmadeusRequestTransformer
             'flightOptions' => $this->buildFlightOptions($businessCase, $coopCodes)
         ];
 
-        if (!empty($excludedAirlines)) {
-            $options['airlineOptions'][Client\RequestOptions\FareMasterPricerTbSearch::AIRLINEOPT_EXCLUDED] = $excludedAirlines;
-        }
-
         if (!empty($request->getFilterAirline())) {
-            $options['airlineOptions'][Client\RequestOptions\FareMasterPricerTbSearch::AIRLINEOPT_MANDATORY ] = $request->getFilterAirline();
+            $options['airlineOptions'][FareMasterPricerTbSearch::AIRLINEOPT_MANDATORY] =
+                array_diff($request->getFilterAirline(), $excludedAirlines);
+        } elseif (!empty($excludedAirlines)) {
+            $options['airlineOptions'][FareMasterPricerTbSearch::AIRLINEOPT_EXCLUDED] = $excludedAirlines;
         }
 
         if (!empty(($request->getFilterCabinClass()))) {
-            $options['cabinOption'] = Client\RequestOptions\FareMasterPricerTbSearch::CABINOPT_MANDATORY;
+            $options['cabinOption'] = FareMasterPricerTbSearch::CABINOPT_MANDATORY;
             $options['cabinClass'] = $request->getFilterCabinClass();
         }
 
+        if ($request->getFilterStops() === 0) {
+            $options['requestedFlightTypes'] = [
+                FareMasterPricerTbSearch::FLIGHTTYPE_NONSTOP,
+            ];
+        }
+
         if (!empty($coopCodes)) {
-            $options['corporateQualifier'] = Client\RequestOptions\FareMasterPricerTbSearch::CORPORATE_QUALIFIER_UNIFARE;
+            $options['corporateQualifier'] = FareMasterPricerTbSearch::CORPORATE_QUALIFIER_UNIFARE;
             $options['corporateCodesUnifares'] = array_values($coopCodes);
 
         }
 
-        return new Client\RequestOptions\FareMasterPricerTbSearch($options);
+        return new FareMasterPricerTbSearch($options);
     }
 
     /**
@@ -252,7 +258,7 @@ class AmadeusRequestTransformer
 
         //removes CorpUnifare option if no CoopCode is set in config
         if (empty($coopCodes)) {
-            $pricingOptions = array_diff($pricingOptions, [Client\RequestOptions\FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES]);
+            $pricingOptions = array_diff($pricingOptions, [FareMasterPricerTbSearch::FLIGHTOPT_CORPORATE_UNIFARES]);
         }
 
         if ($businessCase->getOptions()->isOvernight()) {

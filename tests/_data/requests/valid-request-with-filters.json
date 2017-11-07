@@ -9,7 +9,6 @@
     1514725420
   ],
   "is-flexible-date": [
-
   ],
   "arrival": [
     "LON"
@@ -18,8 +17,12 @@
   "children": 0,
   "infants": 0,
   "is-synthetic": false,
-  "filter-airline": "a",
-  "filter-cabin-class": "a",
+  "filter-airline": [
+    "LH", "AB", "4U", "EJ"
+  ],
+  "filter-cabin-class": [
+    "Y", "F"
+  ],
   "filter-arrive-before": [
 
   ],
@@ -39,7 +42,7 @@
   ],
   "filter-price-min": "",
   "filter-price-max": "",
-  "filter-stops": true,
+  "filter-stops": 0,
   "page": 1,
   "legs": [
     {
@@ -56,7 +59,7 @@
     [
       {
         "content-provider": "amadeus",
-        "type": "round-trip",
+        "type": "one-way",
         "fare-type": "net",
         "options": {
           "is-one-way-combination": true,
