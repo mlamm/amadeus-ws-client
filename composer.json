@@ -23,6 +23,7 @@
     },
     "require": {
         "php": "~7.1",
+        "ext-xsl": "^1.1",
         "silex/silex": "~2.0",
         "amabnl/amadeus-ws-client": "~1.4",
         "monolog/monolog": "~1.23",
@@ -56,11 +57,5 @@
                 }
             }
         }
-    ],
-    "config": {
-        "platform": {
-            "php": "7.1",
-            "ext-xsl": "1.1.28"
-        }
-    }
+    ]
 }
