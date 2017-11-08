@@ -57,7 +57,7 @@ spec:
     matchLabels:
       app: ${APP_NAME}
       component: nginx
-  minAvailable: 2
+  maxUnavailable: 1
 ---
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
@@ -73,7 +73,7 @@ spec:
     matchLabels:
       app: ${APP_NAME}
       component: php
-  minAvailable: 2
+  maxUnavailable: 1
 ---
 
 #
