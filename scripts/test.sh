@@ -49,12 +49,13 @@ fi
 
 run_tests
 
-if [ "$?" -ne "0" ]
+testResult=$?
+if [ "$testResult" -ne "0" ]
 then
   error "Failed while trying to run tests"
-  exit $?
+else
+  success "Done"
 fi
 
 cleanup
-
-success "Done"
+exit "$testResult"
