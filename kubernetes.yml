@@ -172,10 +172,10 @@ spec:
           resources:
             limits:
               cpu: 100m
-              memory: 128Mi
+              memory: 48Mi
             requests:
               cpu: 10m
-              memory: 64Mi
+              memory: 24Mi
           livenessProbe:
             httpGet:
               path: /-/liveness
@@ -226,11 +226,11 @@ spec:
               containerPort: 9000
           resources:
             limits:
-              cpu: 500m
-              memory: 400Mi
+              cpu: 200m
+              memory: 256Mi
             requests:
               cpu: 100m
-              memory: 200Mi
+              memory: 192Mi
           livenessProbe:
             tcpSocket:
               port: 9000
@@ -247,4 +247,3 @@ spec:
         - name: app-config
           secret:
             secretName: ${APP_NAME}
-
