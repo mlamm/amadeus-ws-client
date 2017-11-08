@@ -24,6 +24,7 @@ class RequestFaker
     const OPT_FLEXIBLE_LEG_DATES = 'flexibleDate';
     const OPT_AIRLINE_FILTER = 'airlineFilter';
     const OPT_CABIN_CLASS_FILTER = 'cabinClassFilter';
+    const OPT_NONSTOP_FILTER = 'nonstopFilter';
     const OPT_AREA_SEARCH = 'areaSearch';
     const OPT_PAX = 'pax';
     const OPT_RESULT_LIMIT = 'resultLimit';
@@ -48,6 +49,9 @@ class RequestFaker
         }
         if (isset($options[self::OPT_CABIN_CLASS_FILTER])) {
             $request->setFilterCabinClass($options[self::OPT_CABIN_CLASS_FILTER]);
+        }
+        if (isset($options[self::OPT_NONSTOP_FILTER])) {
+            $request->setFilterStops(0);
         }
         $request->setBusinessCases(new ArrayCollection());
         $request->getBusinessCases()->add(new ArrayCollection());
