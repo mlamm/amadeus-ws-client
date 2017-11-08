@@ -2,7 +2,7 @@ actor: ApiTester
 modules:
     enabled:
         - REST:
-            url: http://amadeus-nginx:8080
+            url: http://amadeus-nginx:80
             depends: PhpBrowser
     config:
         PhpBrowser:
