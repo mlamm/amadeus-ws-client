@@ -74,30 +74,32 @@ class AmadeusRequestValidator
         $validator->required('infants')->integer(true);
         $validator->optional('filter-cabin-class')->isArray()->callback(
             function ($element) use ($allowedCabinClasses) {
-                foreach ($element as $cabinClass) {
-                    if (!is_string($cabinClass) || !in_array(strtoupper($cabinClass), $allowedCabinClasses)) {
-                        throw new InvalidValueException(
-                            'Invalid cabin class value: ' . $cabinClass,
-                            'filter-cabin-class'
-                        );
+                if (is_array($element)) {
+                    foreach ($element as $cabinClass) {
+                        if (!is_string($cabinClass) || !in_array(strtoupper($cabinClass), $allowedCabinClasses)) {
+                            throw new InvalidValueException(
+                                'Invalid cabin class value: ' . $cabinClass,
+                                'filter-cabin-class'
+                            );
+                        }
                     }
                 }
-
                 return true;
             }
         );
 
         $validator->optional('filter-airline')->isArray()->callback(
             function ($element) {
-                foreach ($element as $airlineCode) {
-                    if (!is_string($airlineCode) || strlen($airlineCode) != 2) {
-                        throw new InvalidValueException(
-                            'Invalid airline code in filter-airline: ' . $airlineCode,
-                            'filter-airline'
-                        );
+                if (is_array($element)) {
+                    foreach ($element as $airlineCode) {
+                        if (!is_string($airlineCode) || strlen($airlineCode) != 2) {
+                            throw new InvalidValueException(
+                                'Invalid airline code in filter-airline: ' . $airlineCode,
+                                'filter-airline'
+                            );
+                        }
                     }
                 }
-
                 return true;
             }
         );
