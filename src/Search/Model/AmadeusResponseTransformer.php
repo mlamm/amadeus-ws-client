@@ -51,7 +51,6 @@ class AmadeusResponseTransformer
             $result = new SearchResponse\Result();
 
             $fareProducts = new NodeList($recommendation->paxFareProduct);
-            $fareDetails = new NodeList($fareProducts->first()->fareDetails);
 
             $this->setupItinerary(
                 $result,
@@ -59,7 +58,7 @@ class AmadeusResponseTransformer
                 $segmentFlightRefs,
                 $legIndex,
                 $freeBaggageIndex,
-                $fareDetails
+                $fareProducts
             );
 
             $this->setupCalculation(
@@ -80,7 +79,7 @@ class AmadeusResponseTransformer
      * @param SegmentFlightref      $segmentFlightRefs
      * @param LegIndex              $legIndex
      * @param FreeBaggageIndex      $freeBaggageIndex
-     * @param Collection            $fareDetails
+     * @param Collection            $fareProducts
      */
     private function setupItinerary(
         SearchResponse\Result $result,
@@ -88,7 +87,7 @@ class AmadeusResponseTransformer
         SegmentFlightref $segmentFlightRefs,
         LegIndex $legIndex,
         FreeBaggageIndex $freeBaggageIndex,
-        Collection $fareDetails
+        Collection $fareProducts
     ) : void {
 
         $result
@@ -97,6 +96,8 @@ class AmadeusResponseTransformer
             ->setType($businessCase->getType())
             ->setLegs(new ArrayCollection());
 
+        $fareDetails = new NodeList($fareProducts->first()->fareDetails);
+        $validatingCarrier = new ValidatingCarrier($fareProducts);
 
         foreach ($segmentFlightRefs->getSegmentRefNumbers() as $legOffset => $refToGroupOfFlights) {
             $leg = $this->mapLeg(
@@ -104,7 +105,8 @@ class AmadeusResponseTransformer
                 $freeBaggageIndex,
                 $legOffset,
                 $refToGroupOfFlights,
-                $fareDetails
+                $fareDetails,
+                $validatingCarrier
             );
 
             $result->getItinerary()->getLegs()->add(new ArrayCollection([$leg]));
@@ -202,11 +204,12 @@ class AmadeusResponseTransformer
     /**
      * Convert the leg
      *
-     * @param LegIndex         $legIndex
-     * @param FreeBaggageIndex $freeBaggageIndex
-     * @param string           $legOffset
-     * @param string           $refToGroupOfFlights
-     * @param Collection       $fareDetails
+     * @param LegIndex          $legIndex
+     * @param FreeBaggageIndex  $freeBaggageIndex
+     * @param string            $legOffset
+     * @param string            $refToGroupOfFlights
+     * @param Collection        $fareDetails
+     * @param ValidatingCarrier $validatingCarrier
      * @return SearchResponse\Leg
      */
     private function mapLeg(
@@ -214,7 +217,8 @@ class AmadeusResponseTransformer
         FreeBaggageIndex $freeBaggageIndex,
         string $legOffset,
         string $refToGroupOfFlights,
-        Collection $fareDetails
+        Collection $fareDetails,
+        ValidatingCarrier $validatingCarrier
     ) : SearchResponse\Leg {
 
         $itineraryLeg = new SearchResponse\Leg();
@@ -230,14 +234,16 @@ class AmadeusResponseTransformer
             $itineraryLeg->setDuration($proposals->getElapsedFlyingTime());
         }
 
+        $itineraryLeg->setCarriers(new SearchResponse\Carriers());
+
         if ($proposals->hasMajorityCarrier()) {
-            $itineraryLeg
-                ->setCarriers(new SearchResponse\Carriers())
-                ->getCarriers()
-                    ->setMain(new SearchResponse\Carrier())
-                    ->getMain()
-                        ->setIata($proposals->getMajorityCarrier());
+            $itineraryLeg->getCarriers()
+                ->setMain(new SearchResponse\Carrier())
+                ->getMain()
+                    ->setIata($proposals->getMajorityCarrier());
         }
+
+        $validatingCarrier->addToCarriers($itineraryLeg->getCarriers());
 
         foreach ($segments as $segmentOffset => $segment) {
             $legSegment = new SearchResponse\Segment();

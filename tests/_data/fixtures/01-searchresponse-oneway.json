@@ -11,6 +11,9 @@
               "carriers": {
                 "main": {
                   "iata": "4U"
+                },
+                "validating": {
+                  "iata": "4U"
                 }
               },
               "duration": 7500,
