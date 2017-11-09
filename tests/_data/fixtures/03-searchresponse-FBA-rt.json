@@ -11,6 +11,9 @@
               "carriers": {
                 "main": {
                   "iata": "AB"
+                },
+                "validating": {
+                  "iata": "AB"
                 }
               },
               "duration": 8700,
@@ -59,6 +62,9 @@
               "classification": "scheduled",
               "carriers": {
                 "main": {
+                  "iata": "AB"
+                },
+                "validating": {
                   "iata": "AB"
                 }
               },
