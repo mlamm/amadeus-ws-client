@@ -121,7 +121,7 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $transformer = new AmadeusRequestTransformer($config);
 
         $requestOptions = [
-            RequestFaker::OPT_AIRLINE_FILTER => ['AB', 'LH', 'DY']
+            RequestFaker::OPT_AIRLINE_FILTER => ['ab', 'lh', 'dy']
         ];
         $request = RequestFaker::buildDefaultRequest($requestOptions);
 
@@ -166,11 +166,11 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
         $transformer = new AmadeusRequestTransformer($config);
 
         $requestOptions = [
-            RequestFaker::OPT_CABIN_CLASS_FILTER => ['Y', 'C'],
+            RequestFaker::OPT_CABIN_CLASS_FILTER => ['y', 'c'],
         ];
         $request = RequestFaker::buildDefaultRequest($requestOptions);
 
-        $expectedCabinClass = $requestOptions[RequestFaker::OPT_CABIN_CLASS_FILTER];
+        $expectedCabinClass = ['Y', 'C'];
 
         $options = $transformer->buildFareMasterRequestOptions($request);
 

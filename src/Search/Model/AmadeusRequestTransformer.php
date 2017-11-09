@@ -104,15 +104,17 @@ class AmadeusRequestTransformer
         ];
 
         if (!empty($request->getFilterAirline())) {
+            $filterAirlines = array_map('strtoupper', $request->getFilterAirline());
             $options['airlineOptions'][FareMasterPricerTbSearch::AIRLINEOPT_MANDATORY] =
-                array_diff($request->getFilterAirline(), $excludedAirlines);
+                array_diff($filterAirlines, $excludedAirlines);
         } elseif (!empty($excludedAirlines)) {
             $options['airlineOptions'][FareMasterPricerTbSearch::AIRLINEOPT_EXCLUDED] = $excludedAirlines;
         }
 
         if (!empty(($request->getFilterCabinClass()))) {
+            $filterCabinClasses = array_map('strtoupper', $request->getFilterCabinClass());
             $options['cabinOption'] = FareMasterPricerTbSearch::CABINOPT_MANDATORY;
-            $options['cabinClass'] = $request->getFilterCabinClass();
+            $options['cabinClass'] = $filterCabinClasses;
         }
 
         if ($request->getFilterStops() === 0) {
