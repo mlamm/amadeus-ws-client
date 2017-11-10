@@ -217,7 +217,6 @@ spec:
     spec:
       imagePullSecrets:
         - name: ecr
-      hostAliases:
       containers:
         - name: ${APP_NAME}-php
           image: ${REGISTRY}/flight/invia/service/amadeus/app:${TAG}
