@@ -64,11 +64,10 @@ class AmadeusRequestValidator
     private function doValidation(array $requestData) : ValidationResult
     {
         $validator = new Validator();
-        $allowedAgents       = $this->config->allowed_agents;
         $allowedTypes        = $this->config->allowed_types;
         $allowedCabinClasses = $this->config->allowed_cabin_class;
 
-        $validator->required('agent')->string()->inArray($allowedAgents);
+        $validator->optional('agent')->string();
         $validator->required('adults')->integer(true);
         $validator->required('children')->integer(true);
         $validator->required('infants')->integer(true);
@@ -126,7 +125,7 @@ class AmadeusRequestValidator
                 $validator->required('options.is-overnight')->bool();
                 $validator->required('options.is-area-search')->bool();
                 $validator->required('options.is-benchmark')->bool();
-                $validator->optional('options.result-limit')->allowEmpty(false)->integer(true)->greaterThan(0);
+                $validator->optional('options.result-limit')->integer(true)->greaterThan(0);
                 $validator->required('authentication');
                 $validator->required('authentication.office-id')->string();
                 $validator->required('authentication.user-id')->string();
