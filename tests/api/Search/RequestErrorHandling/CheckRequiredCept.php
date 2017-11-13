@@ -15,15 +15,6 @@ $I->seeHttpHeader('content-type', 'application/hal+json');
 $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
 
 $I->canSeeResponseContainsJson(
-    ['agent' => [
-        [
-            'code'    => ValidationException::INTERNAL_ERROR_CODE,
-            'message' => 'INVALID OR MISSING REQUEST PARAM - agent must be provided, but does not exist',
-            'status'  => 400
-        ]
-    ]]
-);
-$I->canSeeResponseContainsJson(
     ['adults' => [
         [
             'code'    => ValidationException::INTERNAL_ERROR_CODE,

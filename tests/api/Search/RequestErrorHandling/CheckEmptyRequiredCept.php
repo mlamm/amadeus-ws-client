@@ -15,15 +15,6 @@ $I->seeHttpHeader('content-type', 'application/hal+json');
 $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
 
 $I->canSeeResponseContainsJson(
-    ['agent' => [
-        [
-            'code'    => ValidationException::INTERNAL_ERROR_CODE,
-            'message' => 'INVALID OR MISSING REQUEST PARAM - agent must not be empty',
-            'status'  => 400
-        ]
-    ]]
-);
-$I->canSeeResponseContainsJson(
     ['adults' => [
         [
             'code'    => ValidationException::INTERNAL_ERROR_CODE,
@@ -164,16 +155,6 @@ $I->canSeeResponseContainsJson(
         [
             'code'    => ValidationException::INTERNAL_ERROR_CODE,
             'message' => 'INVALID OR MISSING REQUEST PARAM - options.is-benchmark must not be empty',
-            'status'  => 400
-        ]
-    ]]
-);
-
-$I->canSeeResponseContainsJson(
-    ['business-cases.0.0.options.result-limit' => [
-        [
-            'code'    => ValidationException::INTERNAL_ERROR_CODE,
-            'message' => 'INVALID OR MISSING REQUEST PARAM - options.result-limit must not be empty',
             'status'  => 400
         ]
     ]]

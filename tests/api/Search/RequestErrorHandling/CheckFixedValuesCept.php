@@ -15,16 +15,6 @@ $I->seeHttpHeader('content-type', 'application/hal+json');
 $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
 
 $I->canSeeResponseContainsJson(
-    ['agent' => [
-        [
-            'code'    => ValidationException::INTERNAL_ERROR_CODE,
-            'message' => 'INVALID OR MISSING REQUEST PARAM - agent must be in the defined set of values',
-            'status'  => 400
-        ]
-    ]]
-);
-
-$I->canSeeResponseContainsJson(
     ['business-cases.0.0.content-provider' => [
         [
             'code'    => ValidationException::INTERNAL_ERROR_CODE,
