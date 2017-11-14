@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "properties": {
+    "_links": { "$ref": "#/definitions/links" },
+    "_embedded": { "$ref": "#/definitions/embedded" }
+  },
+  "definitions": {
+    "links": {
+      "title": "HAL links",
+      "description": "Object of links with the rels as the keys",
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          { "$ref": "#/definitions/linkObject" },
+          { "$ref": "#/definitions/linkArray" }
+        ]
+      }
+    },
+    "linkArray": {
+      "title": "HAL link array",
+      "description": "An array of linkObjects of the same link relation",
+      "type": "array",
+      "items": { "$ref": "#/definitions/linkObject" }
+    },
+    "linkObject": {
+      "title": "HAL link object",
+      "description": "An object with link information",
+      "type": "object",
+      "properties": {
+        "name": { "$ref": "./hal/name.json" },
+        "href": {
+          "anyOf": [
+            { "$ref": "./hal/href.json" },
+            { "$ref": "./hal/hrefTemplated.json" }
+          ]
+        },
+        "templated": { "$ref": "./hal/isTemplated.json" },
+        "type": { "$ref": "./hal/mediaType.json" },
+        "deprecation": { "$ref": "./hal/isDeprecated.json" }
+      },
+      "required": [ "href" ]
+    },
+    "embedded": {
+      "title": "HAL Embedded resource",
+      "description": "An embedded HAL resource",
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          { "$ref": "#" },
+          { "$ref": "#/definitions/embeddedArray" }
+        ]
+      }
+    },
+    "embeddedArray": {
+      "title": "HAL embedded array",
+      "description": "An array of embedded resources with the same link relation",
+      "type": "array",
+      "items": { "$ref": "#" }
+    }
+  }
+}

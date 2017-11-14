@@ -4,7 +4,7 @@ $I = new ApiTester($scenario);
 $I->wantTo('see a 404 error if a resource does not exist');
 $I->sendGET('/does-not-exist/');
 $I->seeResponseCodeIs(404);
-$I->seeHttpHeader('content-type', 'application/json');
+$I->seeHttpHeader('content-type', 'application/hal+json');
 
 $I->canSeeResponseContainsJson(
     [

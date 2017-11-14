@@ -15,7 +15,7 @@ class HealthCheck extends BusinessCase
      */
     public function respond() : Response
     {
-       $checkText = 'I am alive.';
+        $checkText = 'I am alive.';
 
         return new Response($checkText, 200, ['content-type' => 'text/plain']);
     }
