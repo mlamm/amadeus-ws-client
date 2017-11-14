@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Search\Provider;
 
-use Flight\Service\Amadeus\Search\Response\AmadeusHalResponse;
+use Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse;
 use Flight\Service\Amadeus\Search\Response\Error;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -51,11 +51,11 @@ class ErrorProvider implements ServiceProviderInterface
         );
 
         $app->error(function (NotFoundHttpException $e, Request $request, $code) {
-            return AmadeusHalResponse::notFound($this->renderErrors([Error::resourceNotFound($e)]));
+            return AmadeusErrorResponse::notFound($this->renderErrors([Error::resourceNotFound($e)]));
         });
 
         $app->error(function (\Throwable $e, Request $request, $code) {
-            return AmadeusHalResponse::serverError($this->renderErrors([Error::serverError()]));
+            return AmadeusErrorResponse::serverError($this->renderErrors([Error::serverError()]));
         });
     }
 
@@ -66,7 +66,7 @@ class ErrorProvider implements ServiceProviderInterface
     public function registerHandlers()
     {
         set_exception_handler(function (\Throwable $throwable) {
-            AmadeusHalResponse::serverError($this->renderErrors([Error::serverError()]))->send();
+            AmadeusErrorResponse::serverError($this->renderErrors([Error::serverError()]))->send();
         });
 
         \Symfony\Component\Debug\ErrorHandler::register();
@@ -78,7 +78,7 @@ class ErrorProvider implements ServiceProviderInterface
      * @param array $errors
      * @return array
      */
-    public function renderErrors(array $errors) : array
+    private function renderErrors(array $errors) : array
     {
         $errorStorage = [];
 

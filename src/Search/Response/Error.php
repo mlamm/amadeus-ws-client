@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 class Error
 {
     const RESOURCE_NOT_FOUND = 'ARS0404';
-    const SEVER_ERROR        = 'ARS0500';
+    const SERVER_ERROR       = 'ARS0500';
 
     /**
      * @var string
@@ -62,7 +62,7 @@ class Error
 
     public static function serverError() : self
     {
-        return new static('_', self::SEVER_ERROR, 500, Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR]);
+        return new static('_', self::SERVER_ERROR, 500, Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR]);
     }
 
     /**

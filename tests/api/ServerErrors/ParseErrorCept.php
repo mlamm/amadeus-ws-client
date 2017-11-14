@@ -11,4 +11,3 @@ $I->sendGET('/throwup/parse-error');
 $I->seeResponseCodeIs(HttpCode::INTERNAL_SERVER_ERROR);
 $I->seeResponseIsHal();
 $I->seeResponseIsValidErrorResponse();
-

@@ -35,7 +35,7 @@ class ApiTester extends \Codeception\Actor
         $this->seeResponseIsValidOn('file://' . codecept_data_dir('/schema/hal.json'));
     }
 
-    public function seeResponseIsvalidErrorResponse()
+    public function seeResponseIsValidErrorResponse()
     {
         $this->seeHttpHeader('content-type', 'application/hal+json');
         $this->seeResponseIsJson();
