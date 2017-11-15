@@ -16,8 +16,8 @@ source $(dirname $0)/base.sh
 #
 
 # Mandatory and optional variables
-: ${APP_NAME:="Variable APP_NAME is mandatory"}
-: ${K8S_NAMESPACE:="Variable K8S_NAMESPACE is mandatory"}
+: ${APP_NAME?"Variable APP_NAME is mandatory"}
+: ${K8S_NAMESPACE?"Variable K8S_NAMESPACE is mandatory"}
 
 # Deployment timeout, if the deployment is not successful after
 # this time, a rolling back action is triggered
@@ -41,7 +41,8 @@ then
 fi
 
 export APP_CONFIG=$(base64 < "${config_file}" | tr -d '\r\n')
-echo $config_file
+
+info "Using config file ${config_file}"
 echo $APP_CONFIG
 
 
