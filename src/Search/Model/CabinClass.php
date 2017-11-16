@@ -18,8 +18,8 @@ class CabinClass
      * @var string[]
      */
     private static $map = [
-        'C' => 'Business Class', // Business
-        'F' => 'First Class', // First, supersonic
+        'C' => 'Business', // Business
+        'F' => 'First', // First, supersonic
         'M' => 'Economy', // Economic Standard
         'W' => 'Economy', // Economic Premium
         'Y' => 'Economy', // Economic

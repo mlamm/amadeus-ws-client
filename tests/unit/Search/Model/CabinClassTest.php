@@ -57,12 +57,12 @@ class CabinClassTest extends \Codeception\Test\Unit
             [
                 'cabin' => 'C',
                 'expectedCode' => 'C',
-                'expectedName' => 'Business Class',
+                'expectedName' => 'Business',
             ],
             [
                 'cabin' => 'F',
                 'expectedCode' => 'F',
-                'expectedName' => 'First Class',
+                'expectedName' => 'First',
             ],
             [
                 'cabin' => 'M',
