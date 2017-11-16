@@ -1,0 +1,50 @@
+{
+  "definitions": {
+    "href": {
+      "title": "HREF",
+      "description": "A hyperlink URL",
+      "type": "string"
+    },
+    "hrefTemplated": {
+      "title": "templated HREF",
+      "description": "A hyperlink that is a URI template (RFC 6570)",
+      "type": "string"
+    },
+    "isTemplated": {
+      "title": "Is URI templated",
+      "description": "Specifies whether or not a link is using URI templates",
+      "type": "boolean"
+    },
+    "isDeprecated": {
+      "title": "Is URI deprecated",
+      "description": "Specifies whether or not a link is deprecated",
+      "type": "boolean"
+    },
+    "queryStringURITemplate": {
+      "title": "Query string URI template",
+      "description": "Specifies a query string URI template (RFC 6570)",
+      "type": "string"
+    },
+    "rel": {
+      "title": "Link Relation",
+      "description": "A link relation",
+      "type": "string"
+    },
+    "rels": {
+      "title": "Link relation array",
+      "description": "An array of link relations",
+      "type": "array",
+      "items": { "$ref": "#/definitions/rel" }
+    },
+    "label": {
+      "title": "Label",
+      "description": "Human-readable label for link",
+      "type": "string"
+    },
+    "transclude": {
+      "title": "should transclude?",
+      "description": "Specify whether or not a link should be transcluded",
+      "type": "boolean"
+    }
+  }
+}

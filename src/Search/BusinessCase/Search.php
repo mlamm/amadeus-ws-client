@@ -69,7 +69,6 @@ class Search extends BusinessCase
 
             return $errorResponse;
         } catch (ServiceException $ex) {
-
             // search exception handling
             $this->logger->critical($ex);
             $ex->setResponseCode(Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -80,7 +79,6 @@ class Search extends BusinessCase
 
             return $errorResponse;
         } catch (\Throwable $ex) {
-
             // general exception handling
             $this->logger->critical($ex);
             $errorException = new GeneralServerErrorException($ex->getMessage());

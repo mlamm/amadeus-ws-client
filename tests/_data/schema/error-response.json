@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "$type": "object",
+  "required": ["errors"],
+  "properties": {
+    "errors": {
+      "type": "object",
+      "patternProperties": {
+        ".+": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code":  {
+                "type": "string",
+                "pattern": "ARS[0-9]{4}"
+              },
+              "status": {
+                "enum": [400, 404, 406, 500]
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

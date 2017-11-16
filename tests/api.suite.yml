@@ -1,9 +1,11 @@
 actor: ApiTester
 modules:
     enabled:
+        - \Helper\Api
         - REST:
             url: http://amadeus-nginx:80
             depends: PhpBrowser
+        - Asserts
     config:
         PhpBrowser:
             url: ''

@@ -30,7 +30,7 @@ class IndexProvider extends BusinessCaseProvider
         $collection->match(
             '/docs',
             function () {
-                return new Response(file_get_contents('./var/docs/index.html'));
+                return new Response(file_get_contents(__DIR__ . '/../../var/docs/index.html'));
             }
         );
     }

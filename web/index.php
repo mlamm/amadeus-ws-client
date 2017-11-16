@@ -3,65 +3,24 @@
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use \Flight\Service\Amadeus\Search\Provider\ErrorProvider;
+use Silex\Application;
 
 set_time_limit(0);
 ini_set('display_errors', 0);
 ini_set('html_errors', 0);
+error_reporting(E_ALL);
 
 chdir(__DIR__ . '/..');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$app = new Silex\Application();
+$app = new Application();
 
-// general service provider
-$app->register(
-    new Silex\Provider\MonologServiceProvider(),
-    [
-        'monolog.logfile' => getcwd() . '/var/logs/app.log',
-        'monolog.formatter' => function () {
-            return new \Monolog\Formatter\JsonFormatter();
-        }
-    ]
-);
+$errorProvider = new ErrorProvider();
+$errorProvider->registerHandlers();
 
+$app->register($errorProvider);
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
-
-$app->error(function (NotFoundHttpException $ex, Request $request, $code) {
-    return new JsonResponse(
-        [
-            'errors' => [
-                '_' => [
-                    [
-                        'code'    => 'ARS0404',
-                        'message' => $ex->getMessage(),
-                        'status'  => $code
-                    ]
-                ]
-            ],
-        ],
-        $code
-    );
-});
-
-$app->error(
-    function (\Exception $ex, Request $request, $code) {
-        return new JsonResponse(
-            [
-                'errors' => [
-                    '_' => [
-                        [
-                            'code' => 'ARS000X',
-                            'message' => 'SERVER ERROR - ' . $ex->getMessage(),
-                            'status' => $code
-                        ]
-                    ]
-                ]
-            ],
-            $code
-        );
-    }
-);
 
 // set json ecoding options from config
 $app->after(function (Request $request, Response $response) use ($app) {
@@ -77,8 +36,8 @@ $app->after(function (Request $request, Response $response) use ($app) {
 });
 
 // register config
-$app['config'] = $config= \Symfony\Component\Yaml\Yaml::parse(
-    file_get_contents(getcwd() . '/config/app.yml'),
+$app['config'] = $config = \Symfony\Component\Yaml\Yaml::parse(
+    file_get_contents(__DIR__ . '/../config/app.yml'),
     \Symfony\Component\Yaml\Yaml::PARSE_OBJECT_FOR_MAP
 );
 
@@ -96,7 +55,8 @@ $app['service.search'] = function () use ($app) {
 
     \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
     $serializerBuilder = \JMS\Serializer\SerializerBuilder::create();
-    $serializerBuilder->setCacheDir('var/cache/serializer');
+
+    $serializerBuilder->setCacheDir(__DIR__ . '/../var/cache/serializer');
 
     return new \Flight\Service\Amadeus\Search\Service\Search(
         $validator,
@@ -130,6 +90,10 @@ if ($config->debug->pimpledump->enabled) {
     $app->register(new \Sorien\Provider\PimpleDumpProvider(), [
         'pimpledump.output_dir' => __DIR__ . '/../var/logs',
     ]);
+}
+
+if ($config->debug->throwup->enabled) {
+    $app->mount('/throwup', new \Flight\ThrowUp\SilexProvider());
 }
 
 $app->run();

@@ -31,7 +31,8 @@
         "symfony/yaml": "~3.3",
         "jms/serializer": "^1.8",
         "flight/library-search-request-response-mapping": "^3.1",
-        "particle/validator": "^2.2"
+        "particle/validator": "^2.2",
+        "flight/throwup-errors": "^0.1"
     },
     "require-dev": {
         "codeception/codeception": "~2.3",
