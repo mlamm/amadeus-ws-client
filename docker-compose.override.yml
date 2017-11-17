@@ -1,0 +1,6 @@
+version: "2"
+
+services:
+  amadeus-nginx:
+    ports:
+      - "80:80"
