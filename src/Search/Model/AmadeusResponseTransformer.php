@@ -47,7 +47,6 @@ class AmadeusResponseTransformer
             $result = new SearchResponse\Result();
 
             $fareProducts = new NodeList($recommendation->paxFareProduct);
-            $monetaryDetails = MonetaryDetails::fromRecommendation($recommendation);
 
             $this->setupItinerary(
                 $result,
@@ -61,8 +60,7 @@ class AmadeusResponseTransformer
             $this->setupCalculation(
                 $result,
                 $conversionRateDetail,
-                $fareProducts,
-                $monetaryDetails
+                $fareProducts
             );
 
             $searchResponse->getResult()->add($result);
@@ -115,13 +113,11 @@ class AmadeusResponseTransformer
      * @param SearchResponse\Result $result
      * @param Collection            $conversionRateDetail
      * @param Collection            $fareProducts
-     * @param MonetaryDetails       $monetaryDetails
      */
     private function setupCalculation(
         SearchResponse\Result $result,
         Collection $conversionRateDetail,
-        Collection $fareProducts,
-        MonetaryDetails $monetaryDetails
+        Collection $fareProducts
     ) : void {
 
         $result->setCalculation(new SearchResponse\CalculationResult());
