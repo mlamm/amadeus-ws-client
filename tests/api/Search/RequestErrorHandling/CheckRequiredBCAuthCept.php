@@ -15,6 +15,7 @@ $I->sendPOST(
 );
 $I->seeHttpHeader('content-type', 'application/hal+json');
 $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
+$I->seeResponseIsValidErrorResponse();
 
 $I->canSeeResponseContainsJson(
     ['business-cases.0.0.authentication' => [

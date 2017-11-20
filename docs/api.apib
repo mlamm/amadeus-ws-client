@@ -69,64 +69,72 @@ format.
     This response resembles a default response of mapped itineraries as search result.
 
     + Attributes
-        + `result` (array, fixed-type)
+        + `result` (array, fixed-type, required)
             + (object)
-                + `_itinerary` (object)
-                    + `type`: `one-way`, `round-trip`, `open-jaw` (enum) - requested type of offers
-                    + `legs` (array, fixed-type)
-                        + (array, fixed-type)
+                + `_itinerary` (object, required)
+                    + `type`: `one-way`, `round-trip`, `open-jaw` (enum, required) - requested type of offers
+                    + `legs` (array, fixed-type, required)
+                        + (array, fixed-type, required)
                             + (object)
-                                + `provider`: amadeus (enum) - requested gds
-                                + `classification`: scheduled, lowcost, charter (enum) - classification of leg information
+                                + `provider`: amadeus (enum, required) - requested gds
+                                + `classification`: scheduled, lowcost, charter (enum, required) - classification of leg information
                                 + `carriers` - carrier information
                                     + `main`
-                                        + `iata`: AB (string) - IATA code of the main provider
-                                + `duration`: 7200 (number) - flight duration of leg in seconds
-                                + `nights`: 1 (number) - amount of nights
+                                        + `iata`: AB (string, required) - IATA code of the main provider
+                                + `duration`: 7200 (number, required) - flight duration of leg in seconds
+                                + `nights`: 1 (number, required) - amount of nights
                                 + `segments` (array, fixed-type)
                                     + (object)
-                                        + `aircraft-type`: 747 (string) - type of aircraft providing the flight
+                                        + `aircraft-type`: 747 (string, required) - type of aircraft providing the flight
                                         + `airports`
                                             + `arrival`
-                                                + `iata`: STN (string) - IATA code of arrival airport
+                                                + `iata`: STN (string, required) - IATA code of arrival airport
                                             + `departure`
-                                                + `iata`: SXF (string) - IATA code of departure airport
-                                        + `arrive-at`: 1503831600 (number) - arrival timestamp in local time
-                                        + `depart-at`: 1503828000 (number) - departure timestamp in local time
-                                        + `duration`: 3600 (number) - flight duration in seconds
+                                                + `iata`: SXF (string, required) - IATA code of departure airport
+                                        + `arrive-at`: 1503831600 (number, required) - arrival timestamp in local time
+                                        + `depart-at`: 1503828000 (number, required) - departure timestamp in local time
                                         + `cabin-class`
-                                            + `code`: Y, F, C (enum) - code for offered cabin class
-                                            + `name`: Economy (string) - name of offered cabin class
-                                        + `flight-number`: 8543 (number) - number of the offered flight
+                                            + `code`: C, F, M, W, Y (enum, required) - code for offered cabin class
+                                            + `name`: Economy (string, required) - name of offered cabin class
+                                        + `flight-number`: 8543 (number, required) - number of the offered flight
                                         + `carriers`
                                             + `marketing`
-                                                + `iata`: AB (string) - IATA code of the marketing carrier
+                                                + `iata`: AB (string, required) - IATA code of the marketing carrier
                                             + `operating`
-                                                + `iata`: AB (string) - IATA code of the operating carrier
-                                        + `remaining-seats`: 9 (number) - number of seats remaining for that flight
+                                                + `iata`: AB (string, required) - IATA code of the operating carrier
+                                        + `remaining-seats`: 9 (number, optional) - number of seats remaining for that flight
                                         + `baggage-rules`
-                                            + `pieces`: 1 (number) - number of baggage pieces included
-                                            + `weight`: 20 (number) - value of baggage weight
-                                            + `unit`: KG  (string) - unit of baggage weight
+                                            + `pieces`: 1 (number, optional) - number of baggage pieces included
+                                            + `weight`: 20 (number, optional) - value of baggage weight
+                                            + `unit`: KG  (string, optional) - unit of baggage weight
                                         + `gds-information`
-                                            + `provider`: amadeus (string)
-                                            + `res-book-desig-code`: Y (string) - the "reservation booking designator" code
+                                            + `provider`: amadeus (string, optional)
+                                            + `res-book-desig-code`: Y (string, required) - the "reservation booking designator" code
                 + `_calculation`
                     + `flight`
-                        + `total`: 1479.96 (number) - total price including fare and tax for all requested passengers
+                        + `total`: 1479.96 (number, required) - total price including fare and tax for all requested passengers
                         + `fare`
-                            + `total`: 1319.46 (number) - total fare for all requested passengers
+                            + `total`: 1319.46 (number, required) - total fare for all requested passengers
                             + `passenger-types`
-                                + `adult`: 659.73 (number) - fare price for each adult passenger
-                                + `child`: 659.73 (number) - fare price for each child passenger
-                                + `infant`: 659.73 (number) - fare price for each infant passenger
+                                + `adult`: 659.73 (number, required) - fare price for each adult passenger
+                                + `child`: 659.73 (number, required) - fare price for each child passenger
+                                + `infant`: 659.73 (number, required) - fare price for each infant passenger
                         + `tax`
-                            + `total`: 160.50 (number) - total fare for all requested passengers
+                            + `total`: 160.50 (number, required) - total fare for all requested passengers
                             + `passenger-types`
-                                + `adult`: 80.25 (number) - tax for each adult passenger
-                                + `child`: 80.25 (number) - tax for each child passenger
-                                + `infant`: 80.25 (number) - tax for each infant passenger
-                    + `currency`: EUR - currency of the fare and tax values
+                                + `adult`: 80.25 (number, required) - tax for each adult passenger
+                                + `child`: 80.25 (number, required) - tax for each child passenger
+                                + `infant`: 80.25 (number, required) - tax for each infant passenger
+                    + `payment-methods` (array, fixed-type, required)
+                        + (object)
+                            + `payment-fee` (required)
+                                + `passenger-types` (required)
+                                    + `adult`: 3.79 (number, required)
+                                    + `child`: 0 (number, required)
+                                    + `infant`: 0 (number, required)
+                                + `total`: 7.58 (number, required)
+                            + `name`: _default (enum, required)
+                    + `currency`: EUR (required) - currency of the fare and tax values
         + Include SelfLink
 
 + Response 400 (application/hal+json)

@@ -7,6 +7,7 @@ $I->sendPOST(
 );
 $I->seeResponseCodeIs(400);
 $I->seeHttpHeader('content-type', 'application/hal+json');
+$I->seeResponseIsValidErrorResponse();
 $I->canSeeResponseContainsJson(
     [
         'code' => 'ARS0001',

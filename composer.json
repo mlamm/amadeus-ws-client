@@ -45,7 +45,8 @@
         "justinrainbow/json-schema": "^5.2",
         "sorien/silex-pimple-dumper": "^2.0",
         "flow/jsonpath": "^0.3.4",
-        "gamez/psr-testlogger": "^2.0"
+        "gamez/psr-testlogger": "^2.0",
+        "digitaladapt/codeception-json-schema": "^0.1.2"
     },
     "repositories": [
         {

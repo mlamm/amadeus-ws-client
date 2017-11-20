@@ -75,6 +75,19 @@
             }
           }
         },
+        "payment-methods": [
+          {
+            "payment-fee": {
+              "total": 0,
+              "passenger-types": {
+                "adult": 0,
+                "child": 0,
+                "infant": 0
+              }
+            },
+            "name": "_default"
+          }
+        ],
         "currency": "EUR"
       }
     }

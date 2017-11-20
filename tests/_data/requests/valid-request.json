@@ -48,7 +48,7 @@
   "legs": [
     {
       "departure": "BER",
-      "arrival": "LON",
+      "arrival": "MUC",
       "depart-at": 1514725420,
       "is-flexible-date": false,
       "filter": [
