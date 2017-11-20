@@ -10,7 +10,7 @@ use Flight\Service\Amadeus\Search\Model\ValidatingCarrier;
 /**
  * ValidatingCarrierTest.php
  *
- * @covers AmadeusService\Search\Model\ValidatingCarrier
+ * @covers Flight\Service\Amadeus\Search\Model\ValidatingCarrier
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

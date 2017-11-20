@@ -32,34 +32,13 @@ class ApiTester extends \Codeception\Actor
     {
         $this->seeHttpHeader('content-type', 'application/hal+json');
         $this->seeResponseIsJson();
-        $this->seeResponseIsValidOn('file://' . codecept_data_dir('/schema/hal.json'));
+        $this->canSeeResponseIsValidOnSchemaFile(codecept_data_dir('/schema/hal.json'));
     }
 
     public function seeResponseIsValidErrorResponse()
     {
         $this->seeHttpHeader('content-type', 'application/hal+json');
         $this->seeResponseIsJson();
-        $this->seeResponseIsValidOn('file://' . codecept_data_dir('/schema/error-response.json'));
-    }
-
-    public function seeResponseIsValidOn($schemaUrl)
-    {
-        if (strpos('file://', $schemaUrl) === 0) {
-            \PHPUnit_Framework_Assert::assertFileExists($schemaUrl, 'Schema not found at ' .  $schemaUrl);
-        }
-
-        $rawData = $this->getResponseContent();
-        \PHPUnit_Framework_Assert::assertJson($rawData);
-
-        $data = json_decode($this->getResponseContent());
-
-        $validator = new JsonSchema\Validator();
-        $validator->validate($data, ['$ref' => $schemaUrl]);
-
-        $errors = array_map(function ($error) {
-            return sprintf('Validation error: [%s] %s', $error['property'], $error['message']);
-        }, $validator->getErrors());
-
-        \PHPUnit_Framework_Assert::assertTrue($validator->isValid(), implode(PHP_EOL, $errors));
+        $this->canSeeResponseIsValidOnSchemaFile(codecept_data_dir('/schema/error-response.json'));
     }
 }

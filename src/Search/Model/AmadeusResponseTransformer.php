@@ -13,10 +13,6 @@ use Flight\SearchRequestMapping\Entity\BusinessCase;
  */
 class AmadeusResponseTransformer
 {
-    private const PTC_CHILD = 'CH';
-    private const PTC_ADULT = 'ADT';
-    private const PTC_INFANT = 'INF';
-
     private const CLASSIFICATION_SCHEDULED = 'scheduled';
 
     /**
@@ -147,58 +143,42 @@ class AmadeusResponseTransformer
             ->getTax()
             ->setPassengerTypes(new SearchResponse\PassengerTypes());
 
-        $adultFares = $fareProducts->filter(
-            function ($fareProduct) {
-                return $fareProduct->paxReference->ptc === self::PTC_ADULT;
-            }
-        )->first();
-        $childFares = $fareProducts->filter(
-            function ($fareProduct) {
-                return $fareProduct->paxReference->ptc === self::PTC_CHILD;
-            }
-        )->first();
-        $infantFares = $fareProducts->filter(
-            function ($fareProduct) {
-                return $fareProduct->paxReference->ptc === self::PTC_INFANT;
-            }
-        )->first();
+        $adultFares = PaxFareDetails::adultFromFareProducts($fareProducts);
+        $childFares = PaxFareDetails::childFromFareProducts($fareProducts);
+        $infantFares = PaxFareDetails::infantFromFareProducts($fareProducts);
 
-        $fares = $result
-            ->getCalculation()
-            ->getFlight()
-            ->getFare();
-
-        $fares->getPassengerTypes()
-            ->setAdult($adultFares->paxFareDetail->totalFareAmount ?? 0.0)
-            ->setChild($childFares->paxFareDetail->totalFareAmount ?? 0.0)
-            ->setInfant($infantFares->paxFareDetail->totalFareAmount ?? 0.0);
-
-        $fares->setTotal(
-            count($adultFares->paxReference->traveller ?? []) * $fares->getPassengerTypes()->getAdult()
-            + count($childFares->paxReference->traveller ?? []) * $fares->getPassengerTypes()->getChild()
-            + count($infantFares->paxReference->traveller ?? []) * $fares->getPassengerTypes()->getInfant()
+        $result->getCalculation()->getFlight()->getFare()->getPassengerTypes()->setAdult($adultFares->getFarePerPax());
+        $result->getCalculation()->getFlight()->getFare()->getPassengerTypes()->setChild($childFares->getFarePerPax());
+        $result->getCalculation()->getFlight()->getFare()->getPassengerTypes()->setInfant($infantFares->getFarePerPax());
+        $result->getCalculation()->getFlight()->getFare()->setTotal(
+            $adultFares->getTotalFareAmount() + $childFares->getTotalFareAmount() + $infantFares->getTotalFareAmount()
         );
 
-        $taxes = $result
-            ->getCalculation()
-            ->getFlight()
-            ->getTax();
-
-        $taxes->getPassengerTypes()
-            ->setAdult($adultFares->paxFareDetail->totalTaxAmount ?? 0.0)
-            ->setChild($childFares->paxFareDetail->totalTaxAmount ?? 0.0)
-            ->setInfant($infantFares->paxFareDetail->totalTaxAmount ?? 0.0);
-
-        $taxes->setTotal(
-            count($adultFares->paxReference->traveller ?? []) * $taxes->getPassengerTypes()->getAdult()
-            + count($childFares->paxReference->traveller ?? []) * $taxes->getPassengerTypes()->getChild()
-            + count($infantFares->paxReference->traveller ?? []) * $taxes->getPassengerTypes()->getInfant()
+        $result->getCalculation()->getFlight()->getTax()->getPassengerTypes()->setChild($childFares->getTaxPerPax());
+        $result->getCalculation()->getFlight()->getTax()->getPassengerTypes()->setAdult($adultFares->getTaxPerPax());
+        $result->getCalculation()->getFlight()->getTax()->getPassengerTypes()->setInfant($infantFares->getTaxPerPax());
+        $result->getCalculation()->getFlight()->getTax()->setTotal(
+            $adultFares->getTotalTaxAmount() + $childFares->getTotalTaxAmount() + $infantFares->getTotalTaxAmount()
         );
 
         $result->getCalculation()->getFlight()->setTotal(
             $result->getCalculation()->getFlight()->getFare()->getTotal()
             + $result->getCalculation()->getFlight()->getTax()->getTotal()
         );
+
+        $defaultPaymentMethod = new SearchResponse\PaymentMethod();
+        $defaultPaymentMethod->setPaymentFee(new SearchResponse\PriceBreakdown());
+        $defaultPaymentMethod->getPaymentFee()->setPassengerTypes(new SearchResponse\PassengerTypes());
+        $defaultPaymentMethod->setName('_default');
+
+        $defaultPaymentMethod->getPaymentFee()->getPassengerTypes()->setAdult($adultFares->getPaymentFeesPerPax());
+        $defaultPaymentMethod->getPaymentFee()->getPassengerTypes()->setChild($childFares->getPaymentFeesPerPax());
+        $defaultPaymentMethod->getPaymentFee()->getPassengerTypes()->setInfant($infantFares->getPaymentFeesPerPax());
+        $defaultPaymentMethod->getPaymentFee()->setTotal(
+            $adultFares->getTotalPaymentFees() + $childFares->getTotalPaymentFees() + $infantFares->getTotalPaymentFees()
+        );
+
+        $result->getCalculation()->setPaymentMethods(new ArrayCollection([$defaultPaymentMethod]));
     }
 
     /**

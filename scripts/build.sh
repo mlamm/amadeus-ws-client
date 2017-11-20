@@ -100,7 +100,7 @@ function createBinaries(){
   info "Creating binaries..."
 
   # Build helper scripts
-  echo -e '#!/bin/sh\n\ndocker run --rm -v $(pwd):/var/www -w /var/www christianbladescb/aglio -i var/docs/api/api.apib -o web/docs/index.html --theme-variables flatly --theme-full-width' > scripts/create-docs
+  echo -e '#!/bin/sh\n\ndocker run --rm -v $(pwd):/var/www -w /var/www christianbladescb/aglio -i docs/api.apib -o var/docs/index.html --theme-variables flatly --theme-full-width' > scripts/create-docs
   echo -e '#!/bin/sh\n\ndocker run --rm -v ~/.composer:/root/.composer -v $(pwd):/var/www -w /var/www '$buildImage' php composer.phar "$@"' > scripts/composer
 
     if [ ! -f composer.phar ]; then

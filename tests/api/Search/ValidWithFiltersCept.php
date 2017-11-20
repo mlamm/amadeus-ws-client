@@ -8,17 +8,5 @@ $I->sendPOST(
 );
 $I->seeResponseCodeIs(200);
 $I->seeHttpHeader('content-type', 'application/hal+json');
-
-$response = $I->grabResponse();
-
-$validator = new \JsonSchema\Validator();
-$validator->validate(
-    $response,
-    (object)[
-        '$ref' => 'file://' . codecept_data_dir('schema/response-schema.json')
-    ]
-);
-
-$I->expect($validator->isValid());
-
+$I->canSeeResponseIsValidOnSchemaFile(codecept_data_dir('schema/response-schema.json'));
 $I->seeResponseHasLinkToSelf('/flight-search/');

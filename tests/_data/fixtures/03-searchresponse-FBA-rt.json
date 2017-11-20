@@ -112,13 +112,13 @@
       },
       "_calculation": {
         "flight": {
-          "total": 1387.84,
+          "total": 1330.84,
           "fare": {
-            "total": 889.42,
+            "total": 832.42,
             "passenger-types": {
-              "adult": 218.34,
-              "child": 196.34,
-              "infant": 30.03
+              "adult": 208.84,
+              "child": 186.84,
+              "infant": 20.53
             }
           },
           "tax": {
@@ -130,6 +130,19 @@
             }
           }
         },
+        "payment-methods": [
+          {
+            "payment-fee": {
+              "total": 57,
+              "passenger-types": {
+                "adult": 9.5,
+                "child": 9.5,
+                "infant": 9.5
+              }
+            },
+            "name": "_default"
+          }
+        ],
         "currency": "EUR"
       }
     }

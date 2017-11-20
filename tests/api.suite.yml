@@ -6,6 +6,7 @@ modules:
             url: http://amadeus-nginx:80
             depends: PhpBrowser
         - Asserts
+        - JsonSchema
     config:
         PhpBrowser:
             url: ''
