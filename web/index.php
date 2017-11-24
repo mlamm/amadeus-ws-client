@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../vendor/perftools/xhgui-collector/external/header.php';
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

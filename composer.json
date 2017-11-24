@@ -46,7 +46,9 @@
         "sorien/silex-pimple-dumper": "^2.0",
         "flow/jsonpath": "^0.3.4",
         "gamez/psr-testlogger": "^2.0",
-        "digitaladapt/codeception-json-schema": "^0.1.2"
+        "digitaladapt/codeception-json-schema": "^0.1.2",
+        "perftools/xhgui-collector": "^1.0",
+        "alcaeus/mongo-php-adapter": "^1.0"
     },
     "repositories": [
         {
