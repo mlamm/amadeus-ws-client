@@ -7,7 +7,7 @@ services:
 
   amadeus-php:
     environment:
-      XHGUI_PROFILING: enabled
+#      XHGUI_PROFILING: enabled
       XHGUI_MONGO_URI: mongo:27017
       XHGUI_MONGO_DB: amadeus-profiling
 
