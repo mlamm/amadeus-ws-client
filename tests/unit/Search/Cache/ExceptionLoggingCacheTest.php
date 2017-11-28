@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Tests\Search\Cache;
 
+use Doctrine\Common\Cache\ArrayCache;
 use Flight\Service\Amadeus\Search\Cache\DoctrineFlightCache;
 use Flight\Service\Amadeus\Search\Cache\ExceptionLoggingCache;
 use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
-use Doctrine\Common\Cache\ArrayCache;
 use Gamez\Psr\Log\TestLogger;
 use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
