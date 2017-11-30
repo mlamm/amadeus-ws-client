@@ -3,17 +3,17 @@ FROM php:7.1-fpm-alpine
 ENV XDEBUG_VERSION=2.5.5
 
 # Install packages we want to keep
-RUN apk --no-cache add fcgi git openssh libxml2-dev libxslt-dev zlib-dev libbz2 openssl-dev
+RUN apk --no-cache add fcgi git openssh libxml2 libxslt zlib libbz2 openssl-dev
 
 # Install dependencies that are only used during installation of other packages. Afterwards it will be cleaned up.
 RUN set -xe \
     && apk add --no-cache --virtual .build-deps \
        $PHPIZE_DEPS \
        coreutils \
-       bzip2-dev \
-    && docker-php-ext-install -j"$(/usr/bin/nproc)" mbstring zip soap pdo pdo_mysql mysqli xsl bz2 \
+       bzip2-dev libxml2-dev libxslt-dev zlib-dev \
+    && docker-php-ext-install -j"$(/usr/bin/nproc)" opcache mbstring zip soap pdo pdo_mysql mysqli xsl bz2 \
     && pecl install xdebug-$XDEBUG_VERSION mongodb \
-    && docker-php-ext-enable xdebug mbstring zip soap pdo pdo_mysql mysqli xsl mongodb \
+    && docker-php-ext-enable opcache xdebug mbstring zip soap pdo pdo_mysql mysqli xsl mongodb \
     && apk del .build-deps
 
 # install tideways extension
