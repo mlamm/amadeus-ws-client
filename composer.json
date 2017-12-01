@@ -13,7 +13,10 @@
     "autoload": {
         "psr-4": {
             "Flight\\Service\\Amadeus\\": "./src"
-        }
+        },
+        "files": [
+            "vendor/perftools/xhgui-collector/external/header.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -32,7 +35,9 @@
         "jms/serializer": "^1.8",
         "flight/library-search-request-response-mapping": "^3.2",
         "particle/validator": "^2.2",
-        "flight/throwup-errors": "^0.1"
+        "flight/throwup-errors": "^0.1",
+        "perftools/xhgui-collector": "^1.0",
+        "alcaeus/mongo-php-adapter": "^1.0"
     },
     "require-dev": {
         "codeception/codeception": "~2.3",
@@ -46,9 +51,7 @@
         "sorien/silex-pimple-dumper": "^2.0",
         "flow/jsonpath": "^0.3.4",
         "gamez/psr-testlogger": "^2.0",
-        "digitaladapt/codeception-json-schema": "^0.1.2",
-        "perftools/xhgui-collector": "^1.0",
-        "alcaeus/mongo-php-adapter": "^1.0"
+        "digitaladapt/codeception-json-schema": "^0.1.2"
     },
     "repositories": [
         {
