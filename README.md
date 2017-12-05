@@ -53,6 +53,11 @@ The healthcheck is supposed to give an idea how the application works, it is als
 If you add a new endpoint or a new database system please consider adding it in the `_links`
 section in `./src/Index/BusinessCase/HealthCheck`.
 
+## Profiling
+Profiling is integrated for local development with docker-composer. If you want to collect data you have comment in the `XHGUI_PROFILING=enabled` env var in `docker-compose.override.yml`.
+
+Navigate to `localhost:8000` to browser through your profiled data with XHGUI.
+
 ## Docs
 
 Docs are written in API Blueprint. See [docs](https://apiblueprint.org/) for more information about
