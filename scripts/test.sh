@@ -31,7 +31,7 @@ function prepare {
 
 function run_tests {
   info "Running tests"
-  ./scripts/codecept.sh run
+  ./scripts/codecept.sh run --no-colors -v --steps --no-interaction
 }
 
 function cleanup {
