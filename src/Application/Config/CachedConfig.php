@@ -14,7 +14,15 @@ namespace Flight\Service\Amadeus\Application\Config;
  */
 class CachedConfig
 {
-    public static function load(bool $cachingEnabled, string $cacheFile, callable $createCallback)
+    /**
+     * Load from cache or create via callback
+     *
+     * @param bool     $cachingEnabled
+     * @param string   $cacheFile
+     * @param callable $createCallback
+     * @return mixed|\stdClass
+     */
+    public static function load(bool $cachingEnabled, string $cacheFile, callable $createCallback): \stdClass
     {
         if (file_exists($cacheFile)) {
             $config = unserialize(file_get_contents($cacheFile));
@@ -24,20 +32,9 @@ class CachedConfig
             }
         }
 
-        $config = self::buildConfig($createCallback);
+        $config = $createCallback();
         file_put_contents($cacheFile, serialize($config));
 
         return $config;
-    }
-
-    /**
-     * Verify the return type of the callback
-     *
-     * @param callable $createCallback
-     * @return \stdClass
-     */
-    private static function buildConfig(callable $createCallback): \stdClass
-    {
-        return $createCallback();
     }
 }
