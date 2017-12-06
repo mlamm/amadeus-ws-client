@@ -2,8 +2,8 @@
 
 use Flight\Service\Amadeus\Application\Config\CachedConfig;
 use Flight\Service\Amadeus\Application\Middleware\JsonEncodingOptions;
+use Flight\Service\Amadeus\Application\Provider\ErrorProvider;
 use Flight\Service\Amadeus\Search\Cache\CacheProvider;
-use Flight\Service\Amadeus\Search\Provider\ErrorProvider;
 use Flight\Service\Amadeus\Search\Provider\SearchServiceProvider;
 use Silex\Application;
 use Symfony\Component\Yaml\Yaml;
@@ -26,7 +26,12 @@ $app = new Application();
 $app->register(new ErrorProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->register(new CacheProvider());
-$app->register(new SearchServiceProvider());
+
+// switch to mock service responses for api tests
+$useMockAmaResponses = env('MOCK_AMA_RESPONSE_IN_TEST', 'disabled') === 'enabled'
+    && isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] === 'Symfony BrowserKit';
+
+$app->register(new SearchServiceProvider($useMockAmaResponses));
 
 // register config
 $app['config'] = function () {

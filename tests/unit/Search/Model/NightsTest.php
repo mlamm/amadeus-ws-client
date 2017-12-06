@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Tests\Search\Model;
 
-use Flight\Service\Amadeus\Search\Model\Nights;
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\Segment;
+use Flight\Service\Amadeus\Search\Model\Nights;
 
 /**
  * NightsTest.php

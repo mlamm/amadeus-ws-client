@@ -8,7 +8,6 @@ use Amadeus\Client\RequestOptions\FareMasterPricerTbSearch;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Leg;
 use Flight\SearchRequestMapping\Entity\Request;
-use Psr\Log\LoggerInterface;
 
 /**
  * AmadeusRequestTransformer.php
@@ -27,49 +26,12 @@ class AmadeusRequestTransformer
     protected $config;
 
     /**
-     * AmadeusRequestTransformer constructor.
-     *
      * @param \stdClass $config
      */
     public function __construct(\stdClass $config)
     {
         $this->config = $config;
     }
-
-    /**
-     * builds the client
-     *
-     * @param BusinessCase $businessCase
-     *
-     * @return AmadeusClient
-     */
-    public function buildClientParams(BusinessCase $businessCase, LoggerInterface $logger) : Client\Params
-    {
-        $authentication = $businessCase->getAuthentication();
-
-        return new Client\Params(
-            [
-                'authParams' => [
-                    'officeId' => $authentication->getOfficeId(),
-                    'userId' => $authentication->getUserId(),
-                    'passwordData' => $authentication->getPasswordData(),
-                    'passwordLength' => $authentication->getPasswordLength(),
-                    'dutyCode' => $authentication->getDutyCode(),
-                    'organizationId' => $authentication->getOrganizationId()
-                ],
-                'sessionHandlerParams' => [
-                    'soapHeaderVersion' => Client::HEADER_V4,
-                    'stateful' => false,
-                    'wsdl' => "./wsdl/{$this->config->search->wsdl}",
-                    'logger' => $logger
-                ],
-                'requestCreatorParams' => [
-                    'receivedFrom' => 'service.search'
-                ]
-            ]
-        );
-    }
-
 
     /**
      * transforms the request option object out of given request and adds excluded airline information if needed
@@ -269,6 +231,4 @@ class AmadeusRequestTransformer
 
         return $pricingOptions;
     }
-
-
 }

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Tests\Search\Request\Validator;
 
+use Codeception\Test\Unit;
 use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator;
-use Codeception\Test\Unit;
 
 /**
  * AmadeusRequestValidatorTest.php

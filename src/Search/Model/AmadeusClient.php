@@ -2,12 +2,11 @@
 namespace Flight\Service\Amadeus\Search\Model;
 
 use Amadeus\Client;
-use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
-use Flight\Service\Amadeus\Search\Exception\ServiceRequestAuthenticationFailedException;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Request;
-use Psr\Log\LoggerInterface;
+use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Search\Exception\ServiceRequestAuthenticationFailedException;
 
 /**
  * Class AmadeusClient
@@ -16,14 +15,9 @@ use Psr\Log\LoggerInterface;
 class AmadeusClient
 {
     /**
-     * @var \stdClass
+     * @var ClientParamsFactory
      */
-    protected $config;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
+    protected $clientParamsFactory;
 
     /**
      * @var AmadeusRequestTransformer
@@ -44,21 +38,18 @@ class AmadeusClient
     protected $clientBuilder;
 
     /**
-     * @param \stdClass                  $config
-     * @param LoggerInterface            $logger
+     * @param ClientParamsFactory        $clientParamsFactory
      * @param AmadeusRequestTransformer  $requestTransformer
      * @param AmadeusResponseTransformer $responseTransformer
      * @param \Closure                   $clientBuilder
      */
     public function __construct(
-        \stdClass $config,
-        LoggerInterface $logger,
+        ClientParamsFactory $clientParamsFactory,
         AmadeusRequestTransformer $requestTransformer,
         AmadeusResponseTransformer $responseTransformer,
         \Closure $clientBuilder
     ) {
-        $this->config = $config;
-        $this->logger = $logger;
+        $this->clientParamsFactory = $clientParamsFactory;
         $this->requestTransformer = $requestTransformer;
         $this->responseTransformer = $responseTransformer;
         $this->clientBuilder = $clientBuilder;
@@ -77,7 +68,8 @@ class AmadeusClient
     public function search(Request $request, BusinessCase $businessCase) : SearchResponse
     {
         /** @var Client $client */
-        $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($businessCase, $this->logger));
+        $clientParams = $this->clientParamsFactory->buildFromBusinessCase($businessCase);
+        $client = ($this->clientBuilder)($clientParams);
 
         $requestOptions = $this->requestTransformer->buildFareMasterRequestOptions($request);
 

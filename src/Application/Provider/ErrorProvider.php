@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Flight\Service\Amadeus\Search\Provider;
+namespace Flight\Service\Amadeus\Application\Provider;
 
 use Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse;
 use Flight\Service\Amadeus\Search\Response\Error;
@@ -37,7 +37,7 @@ class ErrorProvider implements ServiceProviderInterface
             new MonologServiceProvider(),
             [
                 'monolog.logfile' => __DIR__ . '/../../../var/logs/app.log',
-                'monolog.exception.logger.filter'  => $app->protect(function (\Throwable $e) {
+                'monolog.exception.sessionLogger.filter'  => $app->protect(function (\Throwable $e) {
                     if ($e instanceof NotFoundHttpException) {
                         //log 404 exception at lowest priority
                         return LogLevel::DEBUG;

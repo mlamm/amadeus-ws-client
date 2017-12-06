@@ -2,16 +2,14 @@
 namespace Flight\Service\Amadeus\Tests\Search;
 
 use Amadeus\Client;
+use Codeception\Test\Unit;
+use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
-use Flight\Service\Amadeus\Search\Exception\ServiceRequestAuthenticationFailedException;
 use Flight\Service\Amadeus\Search\Model\AmadeusClient;
 use Flight\Service\Amadeus\Search\Model\AmadeusRequestTransformer;
 use Flight\Service\Amadeus\Search\Model\AmadeusResponseTransformer;
+use Flight\Service\Amadeus\Search\Model\ClientParamsFactory;
 use Flight\Service\Amadeus\Tests\Helper\RequestFaker;
-use Codeception\Test\Unit;
-use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * AmadeusClientTest.php
@@ -37,14 +35,9 @@ class AmadeusClientTest extends Unit
     private $object;
 
     /**
-     * @var \stdClass|\PHPUnit_Framework_MockObject_MockObject
+     * @var ClientParamsFactory|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $config;
-
-    /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $logger;
+    private $clientParamsFactory;
 
     /**
      * @var AmadeusRequestTransformer|\PHPUnit_Framework_MockObject_MockObject
@@ -63,8 +56,8 @@ class AmadeusClientTest extends Unit
 
     protected function _before()
     {
-        $this->config = new \stdClass();
-        $this->logger = new NullLogger();
+        $this->clientParamsFactory = $this->getMockBuilder(ClientParamsFactory::class)
+            ->disableOriginalConstructor()->getMock();
         $this->requestTransformer = $this->getMockBuilder(AmadeusRequestTransformer::class)
             ->disableOriginalConstructor()->getMock();
         $this->responseTransformer = $this->getMockBuilder(AmadeusResponseTransformer::class)
@@ -76,8 +69,7 @@ class AmadeusClientTest extends Unit
         };
 
         $this->object = new AmadeusClient(
-            $this->config,
-            $this->logger,
+            $this->clientParamsFactory,
             $this->requestTransformer,
             $this->responseTransformer,
             $clientBuilder
@@ -97,9 +89,9 @@ class AmadeusClientTest extends Unit
         $amaResult->status = Client\Result::STATUS_OK;
         $expecedSearchResponse = new SearchResponse();
 
-        $this->requestTransformer
+        $this->clientParamsFactory
             ->expects($this->once())
-            ->method('buildClientParams')
+            ->method('buildFromBusinessCase')
             ->with($businessCase)
             ->willReturn($clientParams);
 
@@ -141,9 +133,9 @@ class AmadeusClientTest extends Unit
             new Client\Result\NotOk()
         ];
 
-        $this->requestTransformer
+        $this->clientParamsFactory
             ->expects($this->any())
-            ->method('buildClientParams')
+            ->method('buildFromBusinessCase')
             ->willReturn($clientParams);
 
         $this->requestTransformer

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flight\Service\Amadeus\Tests\Search\Provider;
+namespace Flight\Service\Amadeus\Tests\Application\Provider;
 
 use Codeception\Test\Unit;
-use Flight\Service\Amadeus\Search\Provider\ErrorProvider;
+use Flight\Service\Amadeus\Application\Provider\ErrorProvider;
 use Silex\Application;
 
 /**
@@ -21,7 +21,7 @@ use Silex\Application;
 class ErrorProviderTest extends Unit
 {
     /**
-     * test logger registration in a container
+     * test sessionLogger registration in a container
      *
      * @covers ::register
      */
@@ -33,6 +33,6 @@ class ErrorProviderTest extends Unit
         $errorProvider->register($app);
 
         $this->assertArrayHasKey('monolog.logfile', $app);
-        $this->assertArrayHasKey('monolog.exception.logger.filter', $app);
+        $this->assertArrayHasKey('monolog.exception.sessionLogger.filter', $app);
     }
 }

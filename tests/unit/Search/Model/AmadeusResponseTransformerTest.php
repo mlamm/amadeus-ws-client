@@ -5,9 +5,9 @@ namespace Flight\Service\Amadeus\Tests\Search\Model;
 
 use Amadeus\Client\Result;
 use Amadeus\Client\Session\Handler\SendResult;
-use Flight\Service\Amadeus\Search\Model\AmadeusResponseTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
+use Flight\Service\Amadeus\Search\Model\AmadeusResponseTransformer;
 
 /**
  * AmadeusResponseTransformerTest.php

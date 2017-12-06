@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Tests\Search\Cache;
 
-use Flight\Service\Amadeus\Search\Cache\CacheKey;
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\BusinessCaseAuthentication;
 use Flight\SearchRequestMapping\Entity\BusinessCaseOptions;
 use Flight\SearchRequestMapping\Entity\Leg;
 use Flight\SearchRequestMapping\Entity\Request;
+use Flight\Service\Amadeus\Search\Cache\CacheKey;
 
 /**
  * CacheKeyTest.php

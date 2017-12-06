@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Search\Service;
 
+use Flight\SearchRequestMapping\Entity\BusinessCase;
+use Flight\SearchRequestMapping\Entity\Request;
 use Flight\Service\Amadeus\Search\Cache\CacheKey;
 use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
 use Flight\Service\Amadeus\Search\Model\AmadeusClient;
 use Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator;
-use Flight\SearchRequestMapping\Entity\BusinessCase;
-use Flight\SearchRequestMapping\Entity\Request;
 use JMS\Serializer\Serializer;
 
 /**
