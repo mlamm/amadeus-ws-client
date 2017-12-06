@@ -15,7 +15,8 @@
             "Flight\\Service\\Amadeus\\": "./src"
         },
         "files": [
-            "vendor/perftools/xhgui-collector/external/header.php"
+            "vendor/perftools/xhgui-collector/external/header.php",
+            "src/helpers.php"
         ]
     },
     "autoload-dev": {

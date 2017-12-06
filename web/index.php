@@ -1,44 +1,51 @@
 <?php
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use \Flight\Service\Amadeus\Search\Provider\ErrorProvider;
-use Silex\Application;
 
-set_time_limit(0);
-ini_set('display_errors', 0);
-ini_set('html_errors', 0);
+use Flight\Service\Amadeus\Application\Config\CachedConfig;
+use Flight\Service\Amadeus\Application\Middleware\JsonEncodingOptions;
+use Flight\Service\Amadeus\Search\Cache\CacheProvider;
+use Flight\Service\Amadeus\Search\Provider\ErrorProvider;
+use Flight\Service\Amadeus\Search\Provider\SearchServiceProvider;
+use Silex\Application;
+use Symfony\Component\Yaml\Yaml;
+
+// send all errors to the error handler
 error_reporting(E_ALL);
+
+// allow no plain text messages in the service response
+ini_set('display_errors', 0);
+
+// use php builtin error logging until our own error handler has been registered
+ini_set('log_errors', 1);
+ini_set('error_log', 'php://stdout');
 
 chdir(__DIR__ . '/..');
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $app = new Application();
 
-$errorProvider = new ErrorProvider();
-$errorProvider->registerHandlers();
-
-$app->register($errorProvider);
+$app->register(new ErrorProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
-
-// set json ecoding options from config
-$app->after(function (Request $request, Response $response) use ($app) {
-    if ($response instanceof JsonResponse) {
-        if (isset($app['config']->response->json_encoding_options)) {
-            $value = 0;
-            foreach ($app['config']->response->json_encoding_options as $option) {
-                $value |= constant($option);
-            }
-            $response->setEncodingOptions($value);
-        }
-    }
-});
+$app->register(new CacheProvider());
+$app->register(new SearchServiceProvider());
 
 // register config
-$app['config'] = $config = \Symfony\Component\Yaml\Yaml::parse(
-    file_get_contents(__DIR__ . '/../config/app.yml'),
-    \Symfony\Component\Yaml\Yaml::PARSE_OBJECT_FOR_MAP
-);
+$app['config'] = function () {
+    return CachedConfig::load(
+        env('CONFIG_CACHING', 'enabled') !== 'disabled',
+        __DIR__ . '/../var/cache/config',
+        function () {
+            return Yaml::parse(
+                file_get_contents(__DIR__ . '/../config/app.yml'),
+                Yaml::PARSE_OBJECT_FOR_MAP
+            );
+        }
+    );
+};
+
+$config = $app['config'];
+
+// set json ecoding options from config
+$app->after(new JsonEncodingOptions($config));
 
 $app['businesscase.search'] = function () use ($app) {
     return new Flight\Service\Amadeus\Search\BusinessCase\Search(
@@ -46,40 +53,6 @@ $app['businesscase.search'] = function () use ($app) {
         $app['monolog']
     );
 };
-
-$app['service.search'] = function () use ($app) {
-    $validator = new Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator(
-        $app['config']->search
-    );
-
-    \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
-    $serializerBuilder = \JMS\Serializer\SerializerBuilder::create();
-
-    $serializerBuilder->setCacheDir(__DIR__ . '/../var/cache/serializer');
-
-    return new \Flight\Service\Amadeus\Search\Service\Search(
-        $validator,
-        $serializerBuilder->build(),
-        $app['cache.flights'],
-        $app['amadeus.client'],
-        $app['config']->search,
-        $app['monolog']
-    );
-};
-
-$app['amadeus.client'] = function () use ($app) {
-    return new \Flight\Service\Amadeus\Search\Model\AmadeusClient(
-        $app['config'],
-        $app['monolog'],
-        new \Flight\Service\Amadeus\Search\Model\AmadeusRequestTransformer($app['config']),
-        new \Flight\Service\Amadeus\Search\Model\AmadeusResponseTransformer(),
-        function (Amadeus\Client\Params $clientParams) {
-            return new Amadeus\Client($clientParams);
-        }
-    );
-};
-
-$app->register(new \Flight\Service\Amadeus\Search\Cache\CacheProvider());
 
 // application provider
 $app->mount('/', new \Flight\Service\Amadeus\Index\IndexProvider());

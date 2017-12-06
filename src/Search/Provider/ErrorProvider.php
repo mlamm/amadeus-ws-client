@@ -57,16 +57,19 @@ class ErrorProvider implements ServiceProviderInterface
         $app->error(function (\Throwable $e, Request $request, $code) {
             return AmadeusErrorResponse::serverError($this->renderErrors([Error::serverError()]));
         });
+
+        $this->registerHandlers($app);
     }
 
     /**
      * Make sure that uncaught exceptions are creating the expected type of response (hal).
      * Unfortunately necessary in Silex to handle \Throwable
      */
-    public function registerHandlers()
+    public function registerHandlers(Container $app)
     {
-        set_exception_handler(function (\Throwable $throwable) {
+        set_exception_handler(function (\Throwable $throwable) use ($app) {
             AmadeusErrorResponse::serverError($this->renderErrors([Error::serverError()]))->send();
+            $app['logger']->error($throwable);
         });
 
         \Symfony\Component\Debug\ErrorHandler::register();

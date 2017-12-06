@@ -10,6 +10,7 @@ services:
 #      XHGUI_PROFILING: enabled
       XHGUI_MONGO_URI: mongo:27017
       XHGUI_MONGO_DB: amadeus-profiling
+      CONFIG_CACHING: disabled
 
   mongo:
     container_name: amadeus-mongo
