@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Tests\Search\Response;
 
-use Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse;
 use Codeception\Test\Unit;
+use Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse;
 use Particle\Validator\Failure;
 
 /**

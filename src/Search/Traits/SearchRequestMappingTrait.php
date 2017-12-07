@@ -1,9 +1,9 @@
 <?php
 namespace Flight\Service\Amadeus\Search\Traits;
 
-use Flight\Service\Amadeus\Search\Exception\InvalidRequestException;
 use Flight\SearchRequestMapping\Entity\Request as FlightRequest;
 use Flight\SearchRequestMapping\Mapper;
+use Flight\Service\Amadeus\Search\Exception\InvalidRequestException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

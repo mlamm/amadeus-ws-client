@@ -1,8 +1,8 @@
 <?php
 namespace Flight\Service\Amadeus\Application\Response;
 
-use Flight\Service\Amadeus\Application\Exception\ServiceException;
 use Doctrine\Common\Collections\ArrayCollection;
+use Flight\Service\Amadeus\Application\Exception\ServiceException;
 
 class ErrorResponse extends HalResponse
 {

@@ -24,8 +24,6 @@ class CacheProvider implements ServiceProviderInterface
      */
     public function register(Container $app) : void
     {
-        $config = $app['config'];
-
         // register cache which does not store anything
         $app['cache.flights.void'] = function () {
             return new DoctrineFlightCache(
@@ -35,7 +33,9 @@ class CacheProvider implements ServiceProviderInterface
         };
 
         // register cache which stores in apcu (local memory)
-        $app['cache.flights.apcu'] = function () use ($app, $config) {
+        $app['cache.flights.apcu'] = function ($app) {
+            $config = $app['config'];
+
             return new ExceptionLoggingCache(
                 new CompressingFlightCache(
                     new DoctrineFlightCache(
@@ -48,7 +48,8 @@ class CacheProvider implements ServiceProviderInterface
         };
 
         // register cache which stores on disk
-        $app['cache.flights.file'] = function () use ($app, $config) {
+        $app['cache.flights.file'] = function ($app) {
+            $config = $app['config'];
             return new ExceptionLoggingCache(
                 new CompressingFlightCache(
                     new DoctrineFlightCache(
@@ -61,7 +62,8 @@ class CacheProvider implements ServiceProviderInterface
         };
 
         // register cache which stores in memcache
-        $app['cache.flights.memcache'] = function () use ($app, $config) {
+        $app['cache.flights.memcache'] = function ($app) {
+            $config = $app['config'];
             $memcachedCache = new MemcachedCache();
             $memcachedCache->setMemcached(new \Memcached('ama-flights'));
             $memcachedCache->getMemcached()->addServer(
@@ -82,7 +84,8 @@ class CacheProvider implements ServiceProviderInterface
         };
 
         // register cache which stores in redis
-        $app['cache.flights.redis'] = function () use ($app, $config) {
+        $app['cache.flights.redis'] = function ($app) {
+            $config = $app['config'];
             $redis = new \Redis();
             $redis->connect(
                 $config->search->flight_cache->redis->host,
@@ -104,7 +107,8 @@ class CacheProvider implements ServiceProviderInterface
         };
 
         // builds the cache from the adapter set in the config
-        $app['cache.flights'] = function () use ($app, $config) {
+        $app['cache.flights'] = function ($app) {
+            $config = $app['config'];
             $cacheName = "cache.flights.{$config->search->flight_cache->adapter}";
             return $app[$cacheName];
         };

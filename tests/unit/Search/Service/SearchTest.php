@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Tests\Search\Service;
 
+use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
+use Flight\SearchRequestMapping\Entity\BusinessCase;
+use Flight\SearchRequestMapping\Entity\BusinessCaseAuthentication;
 use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
 use Flight\Service\Amadeus\Search\Model\AmadeusClient;
 use Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator;
 use Flight\Service\Amadeus\Search\Service\Search;
 use Flight\Service\Amadeus\Tests\Helper\RequestFaker;
-use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
-use Flight\SearchRequestMapping\Entity\BusinessCase;
-use Flight\SearchRequestMapping\Entity\BusinessCaseAuthentication;
 use JMS\Serializer\Serializer;
 use Psr\Log\NullLogger;
 
