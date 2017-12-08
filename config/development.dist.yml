@@ -140,6 +140,7 @@ response:
         - JSON_UNESCAPED_SLASHES
 
 debug:
+    log_ama_traffic: true
     pimpledump:
         enabled: true
     throwup:

@@ -13,6 +13,7 @@ use Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator;
 use Flight\Service\Amadeus\Search\Service\Search;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Psr\Log\NullLogger;
 
 /**
  * SearchServiceProvider.php
@@ -43,7 +44,9 @@ class SearchServiceProvider implements ServiceProviderInterface
         $app['amadeus.client.search'] = function ($app) {
 
             $sessionHandlerClass = $this->useMockSearchResponse ? MockSessionHandler::class : null;
-            $clientParamFactory = new ClientParamsFactory($app['config'], $app['logger'], $sessionHandlerClass);
+            $sessionLogger = $app['config']->debug->log_ama_traffic ? $app['logger'] : new NullLogger();
+
+            $clientParamFactory = new ClientParamsFactory($app['config'], $sessionLogger, $sessionHandlerClass);
 
             return new AmadeusClient(
                 $clientParamFactory,

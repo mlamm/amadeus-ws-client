@@ -67,7 +67,7 @@ class ClientParamsFactory
                     'soapHeaderVersion' => Client::HEADER_V4,
                     'stateful' => false,
                     'wsdl' => "./wsdl/{$this->config->search->wsdl}",
-                    'sessionLogger' => $this->sessionLogger,
+                    'logger' => $this->sessionLogger,
                 ],
                 'requestCreatorParams' => [
                     'receivedFrom' => 'service.search'

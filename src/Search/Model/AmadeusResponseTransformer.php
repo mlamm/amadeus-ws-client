@@ -16,6 +16,16 @@ class AmadeusResponseTransformer
     private const CLASSIFICATION_SCHEDULED = 'scheduled';
 
     /**
+     * Build a response with an empty result
+     *
+     * @return SearchResponse
+     */
+    public function createEmptyResponse() : SearchResponse
+    {
+        return (new SearchResponse())->setResult(new ArrayCollection());
+    }
+
+    /**
      * @param BusinessCase $businessCase
      * @param Result       $amadeusResult
      * @return SearchResponse
