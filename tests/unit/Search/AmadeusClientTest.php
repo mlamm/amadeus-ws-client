@@ -152,4 +152,43 @@ class AmadeusClientTest extends Unit
         $this->expectException(AmadeusRequestException::class);
         $this->object->search($request, $businessCase);
     }
+
+    /**
+     * Does it return an empty result for some types of errors?
+     */
+    public function testItTreatsSomeErrorsAsEmptyResults()
+    {
+        $request = RequestFaker::buildDefaultRequest();
+        $businessCase = $request->getBusinessCases()->first()->first();
+        $clientParams = new Client\Params();
+        $requestOptions = new Client\RequestOptions\FareMasterPricerTbSearch();
+
+        $errorMessage = new Client\Result\NotOk;
+        $errorMessage->code = 931;
+
+        $amaResult = new Client\Result(new Client\Session\Handler\SendResult());
+        $amaResult->status = Client\Result::STATUS_ERROR;
+        $amaResult->messages = [$errorMessage];
+
+        $this->clientParamsFactory
+            ->expects($this->any())
+            ->method('buildFromBusinessCase')
+            ->willReturn($clientParams);
+
+        $this->requestTransformer
+            ->expects($this->any())
+            ->method('buildFareMasterRequestOptions')
+            ->willReturn($requestOptions);
+
+        $this->client
+            ->expects($this->once())
+            ->method('fareMasterPricerTravelBoardSearch')
+            ->with($requestOptions)
+            ->willReturn($amaResult);
+
+        $response = $this->object->search($request, $businessCase);
+
+        $this->assertNotNull($response->getResult());
+        $this->assertCount(0, $response->getResult());
+    }
 }

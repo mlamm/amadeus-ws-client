@@ -14,6 +14,13 @@ use Flight\Service\Amadeus\Search\Exception\ServiceRequestAuthenticationFailedEx
  */
 class AmadeusClient
 {
+    private const EMPTY_RESULT_ERRORS = [
+        830, // No recommendation found with lower or equal price
+        866, // No fare found for requested itinerary
+        931, // No itinerary found for Requested Segment n
+        977, // No available flight found for requested segment nn
+    ];
+
     /**
      * @var ClientParamsFactory
      */
@@ -75,10 +82,38 @@ class AmadeusClient
 
         $result = $client->fareMasterPricerTravelBoardSearch($requestOptions);
 
-        if ($result->status !== Client\Result::STATUS_OK) {
+        if ($this->isEmptyResultError($result)) {
+            return $this->responseTransformer->createEmptyResponse();
+        }
+
+        if ($this->isErrorResponse($result)) {
             throw new AmadeusRequestException($result->messages);
         }
 
         return $this->responseTransformer->mapResultToDefinedStructure($businessCase, $result);
+    }
+
+    /**
+     * Does the response indicate an error?
+     *
+     * @param Client\Result $result
+     * @return bool
+     */
+    private function isErrorResponse(Client\Result $result)
+    {
+        return $result->status !== Client\Result::STATUS_OK;
+    }
+
+    /**
+     * Does the response error indicate that no flights were found?
+     *
+     * @param Client\Result $result
+     * @return bool
+     */
+    private function isEmptyResultError(Client\Result $result)
+    {
+        return $this->isErrorResponse($result)
+            && isset($result->messages[0])
+            && in_array($result->messages[0]->code, self::EMPTY_RESULT_ERRORS);
     }
 }
