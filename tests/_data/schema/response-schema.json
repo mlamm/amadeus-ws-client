@@ -56,6 +56,18 @@
                             "required": [
                               "iata"
                             ]
+                          },
+                          "validating": {
+                            "type": "object",
+                            "properties": {
+                              "iata": {
+                                "type": "string",
+                                "description": "IATA code of the validating carrier"
+                              }
+                            },
+                            "required": [
+                              "iata"
+                            ]
                           }
                         },
                         "description": "carrier information"
@@ -206,6 +218,39 @@
                               "required": [
                                 "res-book-desig-code"
                               ]
+                            },
+                            "technical-stops": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "arrive-at": {
+                                    "type": "number",
+                                    "description": "arrival timestamp in local time"
+                                  },
+                                  "depart-at": {
+                                    "type": "number",
+                                    "description": "departure timestamp in local time"
+                                  },
+                                  "airport": {
+                                    "type": "object",
+                                    "properties": {
+                                      "iata": {
+                                        "type": "string",
+                                        "description": "IATA code of the stopover airport"
+                                      }
+                                    },
+                                    "required": [
+                                      "iata"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "arrive-at",
+                                  "depart-at",
+                                  "airport"
+                                ]
+                              }
                             }
                           },
                           "required": [
@@ -221,7 +266,8 @@
                       "provider",
                       "classification",
                       "duration",
-                      "nights"
+                      "nights",
+                      "segments"
                     ]
                   }
                 }
