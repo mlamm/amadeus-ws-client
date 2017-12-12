@@ -85,7 +85,7 @@ format.
                                         + `iata`: AB (string, required) - IATA code of the validating carrier
                                 + `duration`: 7200 (number, required) - flight duration of leg in seconds
                                 + `nights`: 1 (number, required) - amount of nights
-                                + `segments` (array, fixed-type)
+                                + `segments` (array, fixed-type, required)
                                     + (object)
                                         + `aircraft-type`: 747 (string, required) - type of aircraft providing the flight
                                         + `airports`
@@ -112,6 +112,12 @@ format.
                                         + `gds-information`
                                             + `provider`: amadeus (string, optional)
                                             + `res-book-desig-code`: Y (string, required) - the "reservation booking designator" code
+                                        + `technical-stops` (array, fixed-type, optional)
+                                            + (object)
+                                                + `arrive-at`: 1503831600 (number, required) - arrival timestamp in local time
+                                                + `depart-at`: 1503832600 (number, required) - departure timestamp in local time
+                                                + `airport` (required)
+                                                    + `iata`: YQB (string, required) - IATA code of the stopover airport
                 + `_calculation`
                     + `flight`
                         + `total`: 1479.96 (number, required) - total price including fare and tax for all requested passengers

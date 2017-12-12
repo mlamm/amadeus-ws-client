@@ -241,8 +241,8 @@ class AmadeusResponseTransformer
             // set arrival and departure
             $legSegment->setAirports(new SearchResponse\Airports());
 
-            $departure = @$segment->flightInformation->location[0]->locationId;
-            $arrival = @$segment->flightInformation->location[1]->locationId;
+            $departure = $segment->flightInformation->location[0]->locationId ?? null;
+            $arrival = $segment->flightInformation->location[1]->locationId ?? null;
 
             if ($departure !== null) {
                 $legSegment
@@ -261,21 +261,21 @@ class AmadeusResponseTransformer
             }
 
             // set arrive-at and depart-at
-            $departAtDate = @$segment->flightInformation->productDateTime->dateOfDeparture;
-            $departAtTime = @$segment->flightInformation->productDateTime->timeOfDeparture;
+            $departAtDate = $segment->flightInformation->productDateTime->dateOfDeparture ?? null;
+            $departAtTime = $segment->flightInformation->productDateTime->timeOfDeparture ?? null;
 
-            $arriveAtDate = @$segment->flightInformation->productDateTime->dateOfArrival;
-            $arriveAtTime = @$segment->flightInformation->productDateTime->timeOfArrival;
+            $arriveAtDate = $segment->flightInformation->productDateTime->dateOfArrival ?? null;
+            $arriveAtTime = $segment->flightInformation->productDateTime->timeOfArrival ?? null;
 
             if ($departAtDate !== null && $departAtTime !== null) {
                 $legSegment->setDepartAt(
-                    \DateTime::createFromFormat('dmyHi', "$departAtDate$departAtTime")
+                    DateTime::fromDateAndTime($departAtDate, $departAtTime)
                 );
             }
 
             if ($arriveAtDate !== null && $arriveAtTime !== null) {
                 $legSegment->setArriveAt(
-                    \DateTime::createFromFormat('dmyHi', "$arriveAtDate$arriveAtTime")
+                    DateTime::fromDateAndTime($arriveAtDate, $arriveAtTime)
                 );
             }
 
@@ -312,7 +312,7 @@ class AmadeusResponseTransformer
             }
 
             // set aircraft type
-            $aircraft = @$segment->flightInformation->productDetail->equipmentType;
+            $aircraft = $segment->flightInformation->productDetail->equipmentType ?? null;
 
             if ($aircraft !== null) {
                 $legSegment
@@ -333,6 +333,8 @@ class AmadeusResponseTransformer
                         ->setPieces($baggageDetails->freeAllowance);
                 }
             }
+
+            TechnicalStops::writeToSegment($legSegment, $segment);
 
             $itineraryLeg->getSegments()->add($legSegment);
         }

@@ -46,6 +46,9 @@ class AmadeusResponseTransformerTest extends \Codeception\Test\Unit
         $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
         $serializedResponse = $serializer->serialize($response, 'json');
 
+        // Deactivated for now, as the serialization library does not produce correct output atm.
+        //$this->tester->canSeeJsonStringIsValidOnSchema($serializedResponse, codecept_data_dir('schema/response-schema.json'));
+
         $this->assertEquals(
             json_decode(file_get_contents(codecept_data_dir($expectedSearchResponseFile)), true),
             json_decode($serializedResponse, true)
@@ -77,6 +80,13 @@ class AmadeusResponseTransformerTest extends \Codeception\Test\Unit
                 'type'                    => 'round-trip',
                 'limit'                   => 1,
                 'expected-searchresponse' => 'fixtures/03-searchresponse-FBA-rt.json',
+            ],
+
+            'technical stops' => [
+                'ama-response'            => 'fixtures/04-Fare_MasterPricerTravelBoardSearch_TechnicalStop.xml',
+                'type'                    => 'round-trip',
+                'limit'                   => 1,
+                'expected-searchresponse' => 'fixtures/04-searchresponse-technical-stops.json',
             ],
         ];
     }
