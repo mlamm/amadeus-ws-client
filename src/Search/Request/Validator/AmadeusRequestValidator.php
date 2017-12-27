@@ -119,7 +119,6 @@ class AmadeusRequestValidator
             function (Validator $validator) use ($allowedTypes) {
                 $validator->required('content-provider')->string()->equals('amadeus');
                 $validator->required('type')->string()->inArray($allowedTypes);
-                $validator->required('fare-type')->string();
                 $validator->required('options');
                 $validator->required('options.is-one-way-combination')->bool();
                 $validator->required('options.is-overnight')->bool();

@@ -34,16 +34,6 @@ $I->canSeeResponseContainsJson(
         ]
     ]]
 );
-
-$I->canSeeResponseContainsJson(
-    ['business-cases.0.0.fare-type' => [
-        [
-            'code'    => ValidationException::INTERNAL_ERROR_CODE,
-            'message' => 'INVALID OR MISSING REQUEST PARAM - fare-type must be provided, but does not exist',
-            'status'  => 400
-        ]
-    ]]
-);
 $I->canSeeResponseContainsJson(
     ['business-cases.0.0.options' => [
         [
