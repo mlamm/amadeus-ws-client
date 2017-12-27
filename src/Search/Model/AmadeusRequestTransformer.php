@@ -105,7 +105,7 @@ class AmadeusRequestTransformer
     private function buildItineraries(Request $request, BusinessCase $businessCase) : array
     {
         $itineraries = [];
-        $areaSearchEnabled = $businessCase->getOptions()->IsAreaSearch();
+        $areaSearchEnabled = $businessCase->getOptions()->isAreaSearch();
 
         /** @var Leg $leg */
         foreach ($request->getLegs() as $leg) {

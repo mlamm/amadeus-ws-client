@@ -11,7 +11,7 @@ source $(dirname $0)/base.sh
 GIT_PRIVATE_KEY=${GIT_PRIVATE_KEY:-"~/.ssh/id_rsa"}
 
 docker_image=$(awk '/FROM/{print $2}' scripts/docker/php/Dockerfile)
-buildImage=php-base-build
+buildImage=amadeus-php-base-build
 COMPOSER_VERSION=1.5.2
 
 function build() {
