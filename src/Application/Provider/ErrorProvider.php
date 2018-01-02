@@ -5,6 +5,9 @@ namespace Flight\Service\Amadeus\Application\Provider;
 
 use Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse;
 use Flight\Service\Amadeus\Search\Response\Error;
+use Monolog\Formatter\JsonFormatter;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Psr\Log\LogLevel;
@@ -36,19 +39,21 @@ class ErrorProvider implements ServiceProviderInterface
         $app->register(
             new MonologServiceProvider(),
             [
-                'monolog.logfile' => __DIR__ . '/../../../var/logs/app.log',
-                'monolog.exception.sessionLogger.filter'  => $app->protect(function (\Throwable $e) {
-                    if ($e instanceof NotFoundHttpException) {
-                        //log 404 exception at lowest priority
-                        return LogLevel::DEBUG;
-                    } elseif ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
-                        return LogLevel::ERROR;
-                    }
-
-                    return LogLevel::CRITICAL;
-                })
+                'monolog.logfile' => 'php://stderr',
+                'monolog.level' => Logger::NOTICE,
+                'monolog.formatter' => function () {
+                    return new JsonFormatter();
+                }
             ]
         );
+
+        $handler = new StreamHandler(
+            __DIR__ . '/../../../var/logs/app.log',
+            Logger::NOTICE, $app['monolog.bubble'],
+            $app['monolog.permission']
+        );
+        $handler->setFormatter($app['monolog.formatter']);
+        $app['monolog']->pushHandler($handler);
 
         $app->error(function (NotFoundHttpException $e, Request $request, $code) {
             return AmadeusErrorResponse::notFound($this->renderErrors([Error::resourceNotFound($e)]));
