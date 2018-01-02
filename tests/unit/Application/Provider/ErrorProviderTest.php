@@ -33,6 +33,5 @@ class ErrorProviderTest extends Unit
         $errorProvider->register($app);
 
         $this->assertArrayHasKey('monolog.logfile', $app);
-        $this->assertArrayHasKey('monolog.exception.sessionLogger.filter', $app);
     }
 }
