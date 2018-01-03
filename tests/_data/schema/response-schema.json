@@ -70,6 +70,10 @@
                             ]
                           }
                         },
+                        "required": [
+                          "main",
+                          "validating"
+                        ],
                         "description": "carrier information"
                       },
                       "duration": {
@@ -116,7 +120,11 @@
                                     "iata"
                                   ]
                                 }
-                              }
+                              },
+                              "required": [
+                                "arrival",
+                                "departure"
+                              ]
                             },
                             "arrive-at": {
                               "type": "number",
@@ -170,7 +178,10 @@
                                   ]
                                 },
                                 "operating": {
-                                  "type": "object",
+                                  "type": [
+                                    "object",
+                                    "null"
+                                  ],
                                   "properties": {
                                     "iata": {
                                       "type": "string",
@@ -181,25 +192,43 @@
                                     "iata"
                                   ]
                                 }
-                              }
+                              },
+                              "required": [
+                                "marketing"
+                              ]
                             },
                             "remaining-seats": {
-                              "type": "number",
+                              "type": [
+                                "number",
+                                "null"
+                              ],
                               "description": "number of seats remaining for that flight"
                             },
                             "baggage-rules": {
-                              "type": "object",
+                              "type": [
+                                "object",
+                                "null"
+                              ],
                               "properties": {
                                 "pieces": {
-                                  "type": "number",
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ],
                                   "description": "number of baggage pieces included"
                                 },
                                 "weight": {
-                                  "type": "number",
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ],
                                   "description": "value of baggage weight"
                                 },
                                 "unit": {
-                                  "type": "string",
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ],
                                   "description": "unit of baggage weight"
                                 }
                               }
@@ -207,9 +236,6 @@
                             "gds-information": {
                               "type": "object",
                               "properties": {
-                                "provider": {
-                                  "type": "string"
-                                },
                                 "res-book-desig-code": {
                                   "type": "string",
                                   "description": "the \"reservation booking designator\" code"
@@ -220,7 +246,10 @@
                               ]
                             },
                             "technical-stops": {
-                              "type": "array",
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "type": "object",
                                 "properties": {
@@ -255,9 +284,13 @@
                           },
                           "required": [
                             "aircraft-type",
+                            "airports",
                             "arrive-at",
                             "depart-at",
-                            "flight-number"
+                            "cabin-class",
+                            "flight-number",
+                            "carriers",
+                            "gds-information"
                           ]
                         }
                       }
@@ -265,6 +298,7 @@
                     "required": [
                       "provider",
                       "classification",
+                      "carriers",
                       "duration",
                       "nights",
                       "segments"

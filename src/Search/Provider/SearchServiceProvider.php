@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Flight\Service\Amadeus\Search\Provider;
 
 use Amadeus;
+use Flight\Library\SearchRequest\ResponseMapping\Mapper;
 use Flight\Service\Amadeus\Amadeus\Client\MockSessionHandler;
 use Flight\Service\Amadeus\Search\Model\AmadeusClient;
 use Flight\Service\Amadeus\Search\Model\AmadeusRequestTransformer;
@@ -71,6 +72,7 @@ class SearchServiceProvider implements ServiceProviderInterface
             return new Search(
                 $validator,
                 $serializerBuilder->build(),
+                new Mapper(),
                 $app['cache.flights'],
                 $app['amadeus.client.search'],
                 $app['config']->search
