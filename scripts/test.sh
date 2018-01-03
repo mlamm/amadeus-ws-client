@@ -21,17 +21,19 @@ function prepare {
       exitCode=$?
       timeout=$[$timeout-1]
       if [ "$timeout" = 0 ]; then
-        echo "App seems to be broken as it don't come up. Aborting..."
+        error "App seems to be broken as it don't come up. Aborting..."
+        cleanup
         exit 1;
       fi
 
+      info "App is not yet ready. Retrying in 1 second."
       sleep 1
   done
 }
 
 function run_tests {
   info "Running tests"
-  ./scripts/codecept.sh run --no-colors -v --steps --no-interaction
+  ./scripts/codecept.sh run -v --steps --no-interaction
 }
 
 function cleanup {

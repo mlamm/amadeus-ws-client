@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Tests\Search\Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
+use Flight\Library\SearchRequest\ResponseMapping\Mapper;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\BusinessCaseAuthentication;
 use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
@@ -12,12 +14,11 @@ use Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator;
 use Flight\Service\Amadeus\Search\Service\Search;
 use Flight\Service\Amadeus\Tests\Helper\RequestFaker;
 use JMS\Serializer\Serializer;
-use Psr\Log\NullLogger;
 
 /**
  * SearchTest.php
  *
- * @covers Flight\Service\Amadeus\Search\Service\Search
+ * @covers \Flight\Service\Amadeus\Search\Service\Search
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -51,6 +52,11 @@ class SearchTest extends \Codeception\Test\Unit
     private $amadeusClient;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|Mapper
+     */
+    private $mapper;
+
+    /**
      * @var \stdClass
      */
     private $config;
@@ -59,23 +65,32 @@ class SearchTest extends \Codeception\Test\Unit
     {
         $this->requestValidator = $this->getMockBuilder(AmadeusRequestValidator::class)
             ->disableOriginalConstructor()->getMock();
-        $this->serializer = $this->getMockBuilder(Serializer::class)
+        $this->serializer       = $this->getMockBuilder(Serializer::class)
             ->disableOriginalConstructor()->getMock();
-        $this->cache = $this->createMock(FlightCacheInterface::class);
-        $this->amadeusClient = $this->getMockBuilder(AmadeusClient::class)
+        $this->cache            = $this->getMockBuilder(FlightCacheInterface::class)->getMock();
+        $this->amadeusClient    = $this->getMockBuilder(AmadeusClient::class)
             ->disableOriginalConstructor()->getMock();
-        $this->config = new \stdClass();
+        $this->config           = new \stdClass();
+
+        $this->mapper = $this->getMockBuilder(Mapper::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->object = new Search(
             $this->requestValidator,
             $this->serializer,
+            $this->mapper,
             $this->cache,
             $this->amadeusClient,
-            $this->config,
-            new NullLogger()
+            $this->config
         );
     }
 
+    /**
+     * @throws \Flight\Service\Amadeus\Search\Exception\AmadeusRequestException
+     * @throws \Flight\Service\Amadeus\Search\Exception\InvalidRequestException
+     * @throws \Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException
+     */
     public function testItCallsAllTheThings()
     {
         $requestJson = '';
@@ -88,7 +103,8 @@ class SearchTest extends \Codeception\Test\Unit
         $businessCase->getAuthentication()->setOfficeId('office-id');
 
         $searchResponse = new SearchResponse();
-        $expectedResponseJson = '';
+        $searchResponse->setResult(new ArrayCollection());
+        $expectedResponseJson = json_encode(['result' => []]);
 
         $this->requestValidator
             ->expects($this->once())
@@ -111,19 +127,20 @@ class SearchTest extends \Codeception\Test\Unit
             ->with($searchRequest, $searchRequest->getBusinessCases()->first()->first())
             ->willReturn($searchResponse);
 
-        $this->serializer
-            ->expects($this->once())
-            ->method('serialize')
-            ->with($searchResponse)
-            ->willReturn($expectedResponseJson);
-
         $this->cache
             ->expects($this->once())
             ->method('save')
             ->with($this->anyThing(), $expectedResponseJson);
 
+        $this->mapper
+            ->expects($this->once())
+            ->method('createJson')
+            ->willReturnCallback(function ($a) {
+                return json_encode($a);
+            });
+
         $this->config->excluded_airlines = [];
-        $this->config->request_options = [];
+        $this->config->request_options   = [];
 
         $response = $this->object->search($requestJson);
         $this->assertEquals($expectedResponseJson, $response);

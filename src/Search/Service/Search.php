@@ -8,6 +8,9 @@ use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Request;
 use Flight\Service\Amadeus\Search\Cache\CacheKey;
 use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
+use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Search\Exception\InvalidRequestException;
+use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Search\Model\AmadeusClient;
 use Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator;
 use JMS\Serializer\Serializer;
@@ -58,6 +61,7 @@ class Search
     /**
      * @param AmadeusRequestValidator $requestValidator
      * @param Serializer              $serializer
+     * @param Mapper                  $responseMapper
      * @param FlightCacheInterface    $cache
      * @param AmadeusClient           $amadeusClient
      * @param \stdClass               $config
@@ -82,8 +86,11 @@ class Search
      * Perform the search.
      *
      * @param string $requestJson
+     *
      * @return string
-     * @throws \Flight\Service\Amadeus\Search\Exception\AmadeusRequestException
+     * @throws InvalidRequestException
+     * @throws InvalidRequestParameterException
+     * @throws AmadeusRequestException
      */
     public function search(string $requestJson) : string
     {
