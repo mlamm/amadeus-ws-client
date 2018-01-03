@@ -1,2 +1,144 @@
 search:
     wsdl: 1ASIWUFITBD_PRD_20140515_133352.wsdl
+
+    allowed_types:
+        - round-trip
+        - one-way
+        - open-jaw
+    allowed_cabin_class:
+        - Y
+        - F
+        - C
+
+    flight_cache:
+        adapter: redis   # options are: void, apcu, file, memcache, redis (@see CacheProvider)
+        life_time: 3600
+        redis:
+            host: redis01-a.sgafxu.ng.0001.euc1.cache.amazonaws.com
+            port: 6379
+
+    request_options:
+        - "RW" # only if coopCodes are given
+        - "RP"
+        - "RU"
+        - "ET"
+        - "RDI" # include cross-border airports (e.g. EAP (MLH, BSL))
+        - "PSB" # return best applicable fare, which does not need to split the pnr
+        - "TAC"
+        - "XLC" # To avoid ATLA (Amadeus Ticketless Access) carriers
+
+    overnight_options: #copied from IbeConfig
+        - "OVN"
+        - "NVS"
+
+    coop_codes:      #copied from IbeConfigAbstract
+        - "000867" # AER
+        - "374186" # BA-NOBAG
+        - "513058" # SN-NOBAG
+        - "HBO01"  # AY-NOBAG
+
+    area_search_distance: 100
+
+    flexible_date_range: 1
+
+    excluded_airlines:
+        - "GA"
+        - "O4"
+        - "KD"
+        - "QW"
+        - "D9"
+        - "JQ"
+        - "X3"
+        - "FL"
+        - "DY"
+        - "3K"
+        - "MX"
+        - "OB"
+        - "0B"
+        - "7B"
+        - "NK"
+        - "GL"
+        - "U5"
+        - "AP"
+        - "IR"
+        - "VF"
+        - "W5"
+        - "DT"
+        - "XW"
+        - "VQ"
+        - "LV"
+        - "RB"
+        - "QS"
+        - "VC"
+        - "9F"
+        - "WN"
+        - "A6"
+        - "WP"
+        - "B8"
+        - "JZ"
+        - "JQ"
+        - "5L"
+        - "YQ"
+        - "EQ"
+        - "O2"
+        - "VK"
+        - "PU"
+        - "IZ"
+        - "VK"
+        - "SE"
+        - "PD"
+        - "9M"
+        - "IF"
+        - "UO"
+        - "GW"
+        - "V7"
+        - "2U"
+        - "I5"
+        - "VV"
+        - "DJ"
+        - "Z6"
+        - "OL"
+        - "U8"
+        - "LN"
+        - "ML"
+        - "BL"
+        - "MW"
+        - "2P"
+        - "T3"
+        - "ZK"
+        - "OG"
+        - "3S"
+        - "5W"
+        - "GE"
+        - "EB"
+        - "K5"
+        - "MJ"
+        - "MN"
+        - "BB"
+        - "NN"
+        - "JY"
+        - "RG"
+        - "IY"
+        - "F9"
+        - "LT"
+        - "JA"
+        - "GK"
+        - "UN"
+        - "3L"
+        - "PK"
+        - "4Q"
+        - "VG"
+        - "W3"
+        - "8U"
+
+response:
+    json_encoding_options:
+        - JSON_PRETTY_PRINT
+        - JSON_UNESCAPED_SLASHES
+
+debug:
+    log_ama_traffic: false
+    pimpledump:
+        enabled: true
+    throwup:
+        enabled: true
