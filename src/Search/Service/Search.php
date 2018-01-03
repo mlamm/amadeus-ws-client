@@ -83,6 +83,7 @@ class Search
      *
      * @param string $requestJson
      * @return string
+     * @throws \Flight\Service\Amadeus\Search\Exception\AmadeusRequestException
      */
     public function search(string $requestJson) : string
     {

@@ -54,7 +54,7 @@ pipeline {
       environment {
         ENVIRONMENT   = 'staging'
         K8S_HOST      = 'https://api.dev.invia.io'
-        K8S_NAMESPACE = 'staging'
+        K8S_NAMESPACE = 'search'
       }
 
       steps {

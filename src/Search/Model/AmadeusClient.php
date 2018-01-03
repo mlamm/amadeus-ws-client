@@ -70,7 +70,6 @@ class AmadeusClient
      *
      * @return SearchResponse
      * @throws AmadeusRequestException
-     * @throws ServiceRequestAuthenticationFailedException
      */
     public function search(Request $request, BusinessCase $businessCase) : SearchResponse
     {

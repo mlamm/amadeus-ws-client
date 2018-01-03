@@ -6,7 +6,7 @@ command -v cgi-fcgi >/dev/null 2>&1 || { echo >&2 "I require cgi-fcgi (from pack
 
 # make a GET to /
 expected="I am alive."
-output=$(SCRIPT_NAME=/index.php \
+output=$(env -i SCRIPT_NAME=/index.php \
 SCRIPT_FILENAME=/var/www/web/index.php \
 DOCUMENT_ROOT=/var/www/web/ \
 REQUEST_METHOD=GET \
