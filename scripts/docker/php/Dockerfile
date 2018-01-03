@@ -40,8 +40,8 @@ RUN addgroup -S nginx \
   && adduser -S -D -G nginx nginx
 
 # Change group and allow write to the log directory
-RUN mkdir -p /var/www/var/log /var/www/var/cache \
-    && chmod -R 774 /var/www/var/log \
+RUN mkdir -p /var/www/var/logs /var/www/var/cache \
+    && chmod -R 774 /var/www/var/logs \
     && chmod -R 774 /var/www/var/cache \
     && chgrp -R www-data /var/www
 
