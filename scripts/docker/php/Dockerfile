@@ -26,6 +26,8 @@ RUN wget -Otideways-php.tar.gz "https://s3-eu-west-1.amazonaws.com/tideways/exte
     && echo "tideways.auto_prepend_library=0" >> $PHP_INI_DIR/conf.d/tideways.ini \
     && rm -rf /tmp/tideways-php*
 
+COPY . /var/www
+
 # Use our own xdebug configuration.
 # Just extend the existing xdebug config as the path to xdebug.so is already existent.
 COPY ./scripts/docker/php/20-xdebug.ini /tmp/xdebug.ini
@@ -38,7 +40,8 @@ RUN addgroup -S nginx \
   && adduser -S -D -G nginx nginx
 
 # Change group and allow write to the log directory
-RUN chgrp -R www-data /var/www
+RUN chmod -R 774 /var/www/log \
+    && chmod -R 774 /var/www/cache \
+    && chgrp -R www-data /var/www
 
-COPY . /var/www
 WORKDIR /var/www
