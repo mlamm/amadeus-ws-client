@@ -31,5 +31,14 @@ RUN wget -Otideways-php.tar.gz "https://s3-eu-west-1.amazonaws.com/tideways/exte
 COPY ./scripts/docker/php/20-xdebug.ini /tmp/xdebug.ini
 RUN cat /tmp/xdebug.ini >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
 
+COPY ./scripts/docker/php/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+
+# Add nginx user for unix socket permission
+RUN addgroup -S nginx \
+  && adduser -S -D -G nginx nginx
+
+# Change group and allow write to the log directory
+RUN chgrp -R www-data /var/www
+
 COPY . /var/www
 WORKDIR /var/www
