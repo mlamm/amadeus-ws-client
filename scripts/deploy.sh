@@ -29,24 +29,10 @@ AUTO_ROLLBACK=${AUTO_ROLLBACK:-"true"}
 # Export variables that are used in Kubernetes
 export TAG
 export REGISTRY
+export VERSION=${BUILD_TAG:-$TAG}
 
 # Convert all secrets that are used as environment variable to base64
 
-config_file="./config/${ENVIRONMENT}.dist.yml"
-
-if [ ! -f $config_file ]
-then
-  error "Application configuration file ${config_file} does not exist"
-  exit 1
-fi
-
-export APP_CONFIG=$(base64 < "${config_file}" | tr -d '\r\n')
-
-info "Using config file ${config_file}"
-echo $APP_CONFIG
-
-
-#
 # Switch context and deploy
 #
 
@@ -91,7 +77,6 @@ function undo_deployments() {
   do
     info "Logs from ${deployment}:"
     kubectl logs $deployment
-
     info "Rolling back ${deployment}"
     kubectl rollout undo $deployment
   done
