@@ -1,3 +1,5 @@
+// vi: set ft=groovy :
+
 pipeline {
   agent any
 
@@ -6,6 +8,7 @@ pipeline {
     TEAM_NAME = 'search-and-compare'
 
     REGISTRY = '630542070554.dkr.ecr.eu-central-1.amazonaws.com'
+    KUBETOKEN_HOST = 'https://kube-signin.invia.lan'
   }
 
   stages {
@@ -53,14 +56,27 @@ pipeline {
     stage('Deploy staging') {
       environment {
         ENVIRONMENT   = 'staging'
-        K8S_HOST      = 'https://api.dev.invia.io'
         K8S_NAMESPACE = 'search'
       }
 
       steps {
         withCredentials([
-          file(credentialsId: 'K8S_STAGING_CA', variable: 'K8S_CA_PATH'),
-          usernamePassword(credentialsId: 'K8S_STAGING', usernameVariable: 'K8S_USERNAME', passwordVariable: 'K8S_PASSWORD')
+          usernamePassword(credentialsId: 'KUBETOKEN_STAGING', usernameVariable: 'KUBETOKEN_USERNAME', passwordVariable: 'KUBETOKEN_PASSWORD')
+        ]) {
+          sh './scripts/deploy.sh'
+        }
+      }
+    }
+
+    stage('Deploy production') {
+      environment {
+        ENVIRONMENT   = 'production'
+        K8S_NAMESPACE = 'search'
+      }
+
+      steps {
+        withCredentials([
+          usernamePassword(credentialsId: 'KUBETOKEN_PRODUCTION', usernameVariable: 'KUBETOKEN_USERNAME', passwordVariable: 'KUBETOKEN_PASSWORD')
         ]) {
           sh './scripts/deploy.sh'
         }
