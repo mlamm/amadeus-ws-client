@@ -96,26 +96,6 @@ $I->canSeeResponseContainsJson(
 );
 
 $I->canSeeResponseContainsJson(
-    ['business-cases.0.0.fare-type' => [
-        [
-            'code'    => ValidationException::INTERNAL_ERROR_CODE,
-            'message' => 'INVALID OR MISSING REQUEST PARAM - fare-type must be a string',
-            'status'  => 400
-        ]
-    ]]
-);
-
-$I->canSeeResponseContainsJson(
-    ['business-cases.0.0.fare-type' => [
-        [
-            'code'    => ValidationException::INTERNAL_ERROR_CODE,
-            'message' => 'INVALID OR MISSING REQUEST PARAM - fare-type must be a string',
-            'status'  => 400
-        ]
-    ]]
-);
-
-$I->canSeeResponseContainsJson(
     ['business-cases.0.0.options.is-one-way-combination' => [
         [
             'code'    => ValidationException::INTERNAL_ERROR_CODE,
