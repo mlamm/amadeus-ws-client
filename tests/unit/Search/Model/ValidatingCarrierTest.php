@@ -107,8 +107,7 @@ class ValidatingCarrierTest extends \Codeception\Test\Unit
         $object = new ValidatingCarrier(new NodeList($fareProductsNode));
         $carriers = $object->addToCarriers(new Carriers());
 
-        $this->expectException('TypeError');
-        $carriers->getValidating();
+        $this->assertNull($carriers->getValidating());
     }
 
     public function provideTestCasesMissingCarriers()
@@ -131,5 +130,4 @@ class ValidatingCarrierTest extends \Codeception\Test\Unit
             ],
         ];
     }
-
 }

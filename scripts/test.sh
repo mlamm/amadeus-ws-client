@@ -1,61 +1,57 @@
 #!/bin/bash
-# TODO: Investigate the following error message:
-#       oci runtime error: exec failed: container_linux.go:265: starting container process caused "exec: \"vendor/bin/codecept\": stat vendor/bin/codecept: no such file or directory"
-#       Got it when running ./scripts/codecept right after bringing docker-compose up.
-#       Maybe something related to the container/service not yet being ready for consumption?
+#
+# Test application
+
+set -e
 
 source $(dirname $0)/base.sh
 
-function prepare {
-  info "Bringing services up with docker compose"
-  docker-compose up -d
-  # Docker Compose comes up rather too fast. When we run the tests, the services are not
-  # completely up just yet, so we are getting false positives.
+service_endpoint="http://localhost:80/health"
 
-  # check readiness before running tests
-  timeout="30"
-  exitCode="1"
-  while [ "$exitCode" != 0 ]
-  do
-      docker-compose exec -T amadeus-php ash /var/www/scripts/health/readiness.sh
-      exitCode=$?
-      timeout=$[$timeout-1]
-      if [ "$timeout" = 0 ]; then
-        echo "App seems to be broken as it don't come up. Aborting..."
-        exit 1;
-      fi
+info "Bringing services up with docker compose"
+docker-compose up -d
 
-      sleep 1
-  done
-}
+# Graceful shutdown of the tests, it stops docker-compose
+# in case of error or at the end of the execution
+function gracefull_shutdown() {
+  exit_code=$?
 
-function run_tests {
-  info "Running tests"
-  ./scripts/codecept.sh run --no-colors -v --steps --no-interaction
-}
+  trap '' EXIT
 
-function cleanup {
   info "Stopping and removing containers"
   docker-compose down
+
+  if [ "$exit_code" -ne "0" ]
+  then
+    error "Tests failed"
+    exit 1
+  fi
+
+  success "Done"
 }
 
-prepare
+# On error or when finished, shutdown containers
+trap 'gracefull_shutdown' ERR EXIT
 
-if [ "$?" -ne "0" ]
-then
-  error "Failed bringing docker compose up"
-  exit $?
-fi
+# check readiness before running tests
+timeout="300"
+status_code="500"
+while [ "$status_code" -lt 200 -o "$status_code" -ge 400 ]
+do
+    info "Waiting for the application to be ready"
+    status_code=$(curl -s -o /dev/null -w "%{http_code}" $service_endpoint)
 
-run_tests
+    timeout=$[$timeout-1]
+    if [ "$timeout" = 0 ]
+    then
+      echo "App seems to be broken as it don't come up. Aborting..."
+      exit 1
+    fi
 
-testResult=$?
-if [ "$testResult" -ne "0" ]
-then
-  error "Failed while trying to run tests"
-else
-  success "Done"
-fi
+    sleep 1
+done
 
-cleanup
-exit "$testResult"
+info "Running tests"
+docker-compose exec -T \
+  amadeus-php \
+  /var/www/vendor/bin/codecept run -v --steps --no-interaction

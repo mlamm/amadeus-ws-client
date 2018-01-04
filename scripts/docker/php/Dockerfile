@@ -12,8 +12,8 @@ RUN set -xe \
        coreutils \
        bzip2-dev libxml2-dev libxslt-dev zlib-dev \
     && docker-php-ext-install -j"$(/usr/bin/nproc)" opcache mbstring zip soap pdo pdo_mysql mysqli xsl bz2 \
-    && pecl install xdebug-$XDEBUG_VERSION mongodb \
-    && docker-php-ext-enable opcache xdebug mbstring zip soap pdo pdo_mysql mysqli xsl mongodb \
+    && pecl install xdebug-$XDEBUG_VERSION mongodb redis \
+    && docker-php-ext-enable opcache xdebug mbstring zip soap pdo pdo_mysql mysqli xsl mongodb redis \
     && apk del .build-deps
 
 # install tideways extension
@@ -26,10 +26,23 @@ RUN wget -Otideways-php.tar.gz "https://s3-eu-west-1.amazonaws.com/tideways/exte
     && echo "tideways.auto_prepend_library=0" >> $PHP_INI_DIR/conf.d/tideways.ini \
     && rm -rf /tmp/tideways-php*
 
+COPY . /var/www
+
 # Use our own xdebug configuration.
 # Just extend the existing xdebug config as the path to xdebug.so is already existent.
 COPY ./scripts/docker/php/20-xdebug.ini /tmp/xdebug.ini
 RUN cat /tmp/xdebug.ini >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
 
-COPY . /var/www
+COPY ./scripts/docker/php/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+
+# Add nginx user for unix socket permission
+RUN addgroup -S nginx \
+  && adduser -S -D -G nginx nginx
+
+# Change group and allow write to the log directory
+RUN mkdir -p /var/www/var/logs /var/www/var/cache \
+    && chmod -R 774 /var/www/var/logs \
+    && chmod -R 774 /var/www/var/cache \
+    && chgrp -R www-data /var/www
+
 WORKDIR /var/www

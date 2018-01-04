@@ -5,6 +5,7 @@ namespace Flight\Service\Amadeus\Search\Cache;
 
 use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\Common\Cache\MemcachedCache;
+use Flight\Service\Amadeus\Search\Exception\SystemRequirementException;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -34,6 +35,9 @@ class CacheProvider implements ServiceProviderInterface
 
         // register cache which stores in apcu (local memory)
         $app['cache.flights.apcu'] = function ($app) {
+            if (!extension_loaded('apcu')) {
+                throw new SystemRequirementException('apuc php extension is missing on your system!');
+            }
             $config = $app['config'];
 
             return new ExceptionLoggingCache(
@@ -62,13 +66,16 @@ class CacheProvider implements ServiceProviderInterface
         };
 
         // register cache which stores in memcache
-        $app['cache.flights.memcache'] = function ($app) {
+        $app['cache.flights.memcached'] = function ($app) {
+            if (!extension_loaded('memcached')) {
+                throw new SystemRequirementException('memcached php extension is missing on your system!');
+            }
             $config = $app['config'];
             $memcachedCache = new MemcachedCache();
             $memcachedCache->setMemcached(new \Memcached('ama-flights'));
             $memcachedCache->getMemcached()->addServer(
-                $config->search->flight_cache->memcache->host,
-                $config->search->flight_cache->memcache->port
+                $config->search->flight_cache->memcached->host,
+                $config->search->flight_cache->memcached->port
             );
 
             // use builtin compression which is quite fast
@@ -85,6 +92,9 @@ class CacheProvider implements ServiceProviderInterface
 
         // register cache which stores in redis
         $app['cache.flights.redis'] = function ($app) {
+            if (!extension_loaded('redis')) {
+                throw new SystemRequirementException('redis php extension is missing on your system!');
+            }
             $config = $app['config'];
             $redis = new \Redis();
             $redis->connect(

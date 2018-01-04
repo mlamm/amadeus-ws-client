@@ -19,8 +19,8 @@ function build() {
   cleanup
   configure
   createBinaries
-  #createDocs
   prepareDirectories
+  createDocs
   buildImages
 
   success "done!"

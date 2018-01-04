@@ -9,7 +9,6 @@ metadata:
   labels:
     app: ${APP_NAME}
     team: ${TEAM_NAME}
-    component: nginx
 spec:
   ports:
   - name: http
@@ -18,26 +17,6 @@ spec:
     protocol: TCP
   selector:
     app: ${APP_NAME}
-    component: nginx
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ${APP_NAME}-php
-  namespace: ${K8S_NAMESPACE}
-  labels:
-    app: ${APP_NAME}
-    team: ${TEAM_NAME}
-    component: php
-spec:
-  ports:
-  - name: php
-    port: 9000
-    targetPort: php
-    protocol: TCP
-  selector:
-    app: ${APP_NAME}
-    component: php
 ---
 
 #
@@ -46,33 +25,15 @@ spec:
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: ${APP_NAME}-nginx
+  name: ${APP_NAME}
   namespace: ${K8S_NAMESPACE}
   labels:
     app: ${APP_NAME}
-    component: nginx
     team: ${TEAM_NAME}
 spec:
   selector:
     matchLabels:
       app: ${APP_NAME}
-      component: nginx
-  maxUnavailable: 1
----
-apiVersion: policy/v1beta1
-kind: PodDisruptionBudget
-metadata:
-  name: ${APP_NAME}-php
-  namespace: ${K8S_NAMESPACE}
-  labels:
-    app: ${APP_NAME}
-    component: php
-    team: ${TEAM_NAME}
-spec:
-  selector:
-    matchLabels:
-      app: ${APP_NAME}
-      component: php
   maxUnavailable: 1
 ---
 
@@ -82,33 +43,15 @@ spec:
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: ${APP_NAME}-nginx
+  name: ${APP_NAME}
   namespace: ${K8S_NAMESPACE}
   labels:
     app: ${APP_NAME}
-    component: nginx
     team: ${TEAM_NAME}
 spec:
   scaleTargetRef:
     kind: Deployment
-    name: ${APP_NAME}-nginx
-  minReplicas: 2
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 80
----
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: ${APP_NAME}-php
-  namespace: ${K8S_NAMESPACE}
-  labels:
-    app: ${APP_NAME}
-    component: php
-    team: ${TEAM_NAME}
-spec:
-  scaleTargetRef:
-    kind: Deployment
-    name: ${APP_NAME}-php
+    name: ${APP_NAME}
   minReplicas: 2
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
@@ -136,11 +79,10 @@ data:
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: ${APP_NAME}-nginx
+  name: ${APP_NAME}
   namespace: ${K8S_NAMESPACE}
   labels:
     app: ${APP_NAME}
-    component: nginx
     team: ${TEAM_NAME}
 spec:
   strategy:
@@ -152,12 +94,10 @@ spec:
   selector:
     matchLabels:
       app: ${APP_NAME}
-      component: nginx
   template:
     metadata:
       labels:
         app: ${APP_NAME}
-        component: nginx
         team: ${TEAM_NAME}
         version: ${TAG}
     spec:
@@ -178,51 +118,19 @@ spec:
               memory: 24Mi
           livenessProbe:
             httpGet:
-              path: /-/liveness
+              path: /health
               port: http
             initialDelaySeconds: 15
           readinessProbe:
             httpGet:
-              path: /-/readiness
+              path: /health
               port: http
             initialDelaySeconds: 15
----
-apiVersion: apps/v1beta1
-kind: Deployment
-metadata:
-  name: ${APP_NAME}-php
-  namespace: ${K8S_NAMESPACE}
-  labels:
-    app: ${APP_NAME}
-    component: php
-    team: ${TEAM_NAME}
-spec:
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 15%
-      maxUnavailable: 0
-  revisionHistoryLimit: 5
-  selector:
-    matchLabels:
-      app: ${APP_NAME}
-      component: php
-  template:
-    metadata:
-      labels:
-        app: ${APP_NAME}
-        component: php
-        team: ${TEAM_NAME}
-        version: ${TAG}
-    spec:
-      imagePullSecrets:
-        - name: ecr
-      containers:
+          volumeMounts:
+            - name: php-socket
+              mountPath: /sock
         - name: ${APP_NAME}-php
           image: ${REGISTRY}/flight/invia/service/amadeus/app:${TAG}
-          ports:
-            - name: php
-              containerPort: 9000
           resources:
             limits:
               cpu: 200m
@@ -230,19 +138,14 @@ spec:
             requests:
               cpu: 100m
               memory: 192Mi
-          livenessProbe:
-            tcpSocket:
-              port: 9000
-            initialDelaySeconds: 15
-          readinessProbe:
-            exec:
-              command:
-              - /var/www/scripts/health/readiness.sh
-            initialDelaySeconds: 15
           volumeMounts:
-            - mountPath: /var/www/config
-              name: app-config
+            - name: app-config
+              mountPath: /var/www/config
+            - name: php-socket
+              mountPath: /sock
       volumes:
         - name: app-config
           secret:
             secretName: ${APP_NAME}
+        - name: php-socket
+          emptyDir: {}
