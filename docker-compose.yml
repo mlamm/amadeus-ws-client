@@ -6,7 +6,7 @@ services:
     container_name: amadeus-nginx
     volumes:
       - ./web:/var/www/web
-      - php-sock:/sock
+      - amadeus-php-sock:/sock
 
   amadeus-php:
     image: 630542070554.dkr.ecr.eu-central-1.amazonaws.com/flight/invia/service/amadeus/app:latest
@@ -15,7 +15,7 @@ services:
       COMPOSE_HTTP_TIMEOUT: 120
     volumes:
       - ./:/var/www
-      - php-sock:/sock
+      - amadeus-php-sock:/sock
 
 volumes:
-  php-sock:
+  amadeus-php-sock:
