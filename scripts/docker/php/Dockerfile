@@ -12,8 +12,8 @@ RUN set -xe \
        coreutils \
        bzip2-dev libxml2-dev libxslt-dev zlib-dev \
     && docker-php-ext-install -j"$(/usr/bin/nproc)" opcache mbstring zip soap pdo pdo_mysql mysqli xsl bz2 \
-    && pecl install xdebug-$XDEBUG_VERSION mongodb \
-    && docker-php-ext-enable opcache xdebug mbstring zip soap pdo pdo_mysql mysqli xsl mongodb \
+    && pecl install xdebug-$XDEBUG_VERSION mongodb redis \
+    && docker-php-ext-enable opcache xdebug mbstring zip soap pdo pdo_mysql mysqli xsl mongodb redis \
     && apk del .build-deps
 
 # install tideways extension

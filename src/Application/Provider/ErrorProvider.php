@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Application\Provider;
 
+use Flight\Service\Amadeus\Application\Response\ErrorResponse;
+use Flight\Service\Amadeus\Search\Exception\SystemRequirementException;
 use Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse;
 use Flight\Service\Amadeus\Search\Response\Error;
 use Monolog\Formatter\JsonFormatter;
@@ -10,11 +12,9 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Psr\Log\LogLevel;
 use Silex\Application;
 use Silex\Provider\MonologServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -57,6 +57,16 @@ class ErrorProvider implements ServiceProviderInterface
 
         $app->error(function (NotFoundHttpException $e, Request $request, $code) {
             return AmadeusErrorResponse::notFound($this->renderErrors([Error::resourceNotFound($e)]));
+        });
+
+        $app->error(function (SystemRequirementException $e) {
+            $error = new Error(
+                '_',
+                $e->getInternalErrorCode(),
+                ErrorResponse::HTTP_INTERNAL_SERVER_ERROR,
+                $e->getInternalErrorMessage()
+            );
+            return new ErrorResponse($this->renderErrors([$error]));
         });
 
         $app->error(function (\Throwable $e, Request $request, $code) {

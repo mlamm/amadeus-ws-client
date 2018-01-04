@@ -17,5 +17,9 @@ services:
       - ./:/var/www
       - amadeus-php-sock:/sock
 
+  redis:
+    image: redis:3.2.10
+    container_name: amadeus-redis
+
 volumes:
   amadeus-php-sock:

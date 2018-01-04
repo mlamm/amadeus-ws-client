@@ -11,7 +11,7 @@ search:
         - C
 
     flight_cache:
-        adapter: redis   # options are: void, apcu, file, memcache, redis (@see CacheProvider)
+        adapter: redis   # options are: void, apcu, file, memcached, redis (@see CacheProvider)
         life_time: 3600
         redis:
             host: invia-dev-redis.sgafxu.ng.0001.euc1.cache.amazonaws.com

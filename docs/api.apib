@@ -15,6 +15,7 @@ Possible error codes:
 | ARS0002 | INVALID OR MISSING REQUEST PARAM                                             | given field(s) of the request has an invalid value/format            |
 | ARS0003 | The `Amadeus\Client::securityAuthenticate` method didn't return state OK     | the credentials sent with request are invalid                        |
 | ARS0004 | AMADEUS RESPONSE ERROR [{errNo., message}]                                   | the request was technical valid, Amadeus returns failure             |
+| ARS0005 | A message that describes the missing system requirement                      | something like a missing php extension                               |
 
 
 #### Search [POST /flight-search/]
@@ -25,9 +26,9 @@ format.
 
 + Request
     + Headers
-    
+
             content-type: application/json
-    
+
     + Attributes
         + `agent`: fluege.de (string, optional) - a string representation of the requesting client
         + `adults`: 2 (number, required) - number of adults
@@ -35,9 +36,9 @@ format.
         + `infants`: 0 (number, required) - number of infants
         + `filter-cabin-class` (array, optional)
             + Y, F, C (enum) - request with this cabin class(es)
-        + `filter-airline`: AB (array, optional) - list of airline IATA codes 
+        + `filter-airline`: AB (array, optional) - list of airline IATA codes
         + `filter-stops`: 0 (number, optional) - if set to zero, will only return non-stop flights
-        + `legs` (array, fixed-type, required) 
+        + `legs` (array, fixed-type, required)
             + (object)
                 + `departure`: BER (string, required) - name of departure IATA airport code
                 + `arrival`: LON (string, required) - name of arrival IATA airport code
@@ -62,7 +63,7 @@ format.
                         + `password-data`: NAJAJKDGHK44jhHkjad278478 (string, required) - password for GDS request
                         + `password-length`: 14 (number, required) - length of password
                         + `organization`: `NMC-GERMAN` (string, required) - organization info
-        
+
 
 + Response 200 (application/hal+json)
 
@@ -147,21 +148,21 @@ format.
 + Response 400 (application/hal+json)
 
     request contains invalid parameters or is malformed
-    
+
     + Attributes
         + errors - list of errors associated with each property of the request
             + adults (array, fixed-type)
                 + (object)
                      + code: ARS0002 (string) - internal error code
                      + message: `INVALID OR MISSING REQUEST PARAM - adults must be an integer` (string) - error message
-                     + status: 400 (number) - http response code          
+                     + status: 400 (number) - http response code
         + Include SelfLink
 
 
 + Response 404 (application/hal+json)
 
     requested route not found
-    
+
     + Attributes
         + errors
             + `_` (array, fixed-type)
@@ -177,7 +178,7 @@ format.
     This response represents an internal server error response.
 
      internal server error
-        
+
     + Attributes
         + errors
             + `_` (array, fixed-type)
@@ -186,7 +187,7 @@ format.
                     + message: SERVER ERROR (string) - error message
                     + status: 500 (number) - http response code
         + Include SelfLink
-        
+
 ## Healthcheck [/health/]
 
 This endpoint will report main state of the service
@@ -195,28 +196,28 @@ This endpoint will report main state of the service
 
 + Request
     + Headers
-        
+
             Accept: text/plain
-    
+
 + Response 200 (text/plain)
-    
+
             I am alive.
 
 ### Healthcheck [GET]
 
 + Request
     + Headers
-        
+
             Accept: text/plain
-    
+
 + Response 200 (text/plain)
-    
+
             I am alive.
 
 # Data Structures
 
-## SelfLink (object) 
-        
+## SelfLink (object)
+
    + _links
        + self
            + href: `/flight-search`
