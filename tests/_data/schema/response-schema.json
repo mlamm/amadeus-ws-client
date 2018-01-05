@@ -178,14 +178,15 @@
                                   ]
                                 },
                                 "operating": {
-                                  "type": [
-                                    "object",
-                                    "null"
-                                  ],
+                                  "type": "object",
                                   "properties": {
                                     "iata": {
                                       "type": "string",
                                       "description": "IATA code of the operating carrier"
+                                    },
+                                    "name": {
+                                      "type": "string",
+                                      "description": "Name of the operating carrier.\nOnly given in some cases. The iata code will be an empty string in those cases."
                                     }
                                   },
                                   "required": [
@@ -194,7 +195,8 @@
                                 }
                               },
                               "required": [
-                                "marketing"
+                                "marketing",
+                                "operating"
                               ]
                             },
                             "remaining-seats": {

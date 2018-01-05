@@ -38,7 +38,7 @@ class AmadeusResponseTransformer
         $legIndex = new LegIndex($amadeusResult);
         $freeBaggageIndex = new FreeBaggageIndex($amadeusResult);
         $conversionRateDetail = new NodeList($amadeusResult->response->conversionRate->conversionRateDetail);
-
+        $companyTextIndex = CompanyTextIndex::fromSearchResult($amadeusResult);
 
         // A single <recommendation> can contain multiple flights.
         // Returns a flat list of all flights from the recommendations and their segmentFlightRefs
@@ -64,7 +64,8 @@ class AmadeusResponseTransformer
                 $segmentFlightRefs,
                 $legIndex,
                 $freeBaggageIndex,
-                $fareProducts
+                $fareProducts,
+                $companyTextIndex
             );
 
             $this->setupCalculation(
@@ -86,6 +87,7 @@ class AmadeusResponseTransformer
      * @param LegIndex              $legIndex
      * @param FreeBaggageIndex      $freeBaggageIndex
      * @param Collection            $fareProducts
+     * @param \ArrayAccess          $companyTextIndex
      */
     private function setupItinerary(
         SearchResponse\Result $result,
@@ -93,7 +95,8 @@ class AmadeusResponseTransformer
         SegmentFlightref $segmentFlightRefs,
         LegIndex $legIndex,
         FreeBaggageIndex $freeBaggageIndex,
-        Collection $fareProducts
+        Collection $fareProducts,
+        \ArrayAccess $companyTextIndex
     ) : void {
 
         $result
@@ -112,7 +115,8 @@ class AmadeusResponseTransformer
                 $legOffset,
                 $refToGroupOfFlights,
                 $fareDetails,
-                $validatingCarrier
+                $validatingCarrier,
+                $companyTextIndex
             );
 
             $result->getItinerary()->getLegs()->add(new ArrayCollection([$leg]));
@@ -200,6 +204,7 @@ class AmadeusResponseTransformer
      * @param string            $refToGroupOfFlights
      * @param Collection        $fareDetails
      * @param ValidatingCarrier $validatingCarrier
+     * @param \ArrayAccess      $companyTextIndex
      * @return SearchResponse\Leg
      */
     private function mapLeg(
@@ -208,7 +213,8 @@ class AmadeusResponseTransformer
         string $legOffset,
         string $refToGroupOfFlights,
         Collection $fareDetails,
-        ValidatingCarrier $validatingCarrier
+        ValidatingCarrier $validatingCarrier,
+        \ArrayAccess $companyTextIndex
     ) : SearchResponse\Leg {
 
         $itineraryLeg = new SearchResponse\Leg();
@@ -280,26 +286,7 @@ class AmadeusResponseTransformer
             }
 
             // set carriers
-            $marketingCarrier = $segment->flightInformation->companyId->marketingCarrier ?? null;
-            $operatingCarrier = $segment->flightInformation->companyId->operatingCarrier ?? null;
-
-            $legSegment->setCarriers(new SearchResponse\Carriers());
-
-            if ($marketingCarrier !== null) {
-                $legSegment
-                    ->getCarriers()
-                        ->setMarketing(new SearchResponse\Carrier())
-                        ->getMarketing()
-                            ->setIata($marketingCarrier);
-            }
-
-            if ($operatingCarrier !== null) {
-                $legSegment
-                    ->getCarriers()
-                        ->setOperating(new SearchResponse\Carrier())
-                        ->getOperating()
-                            ->setIata($operatingCarrier);
-            }
+            Carriers::writeToSegment($legSegment, $segment, $companyTextIndex);
 
             // set flight number
             $flightNumber = $segment->flightInformation->flightNumber
