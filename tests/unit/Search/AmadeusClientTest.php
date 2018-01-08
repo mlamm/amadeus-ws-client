@@ -16,7 +16,7 @@ use Flight\Service\Amadeus\Tests\Helper\RequestFaker;
  *
  * test functionality of the class
  *
- * @covers Flight\Service\Amadeus\Search\Model\AmadeusClient
+ * @covers \Flight\Service\Amadeus\Search\Model\AmadeusClient
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -78,6 +78,8 @@ class AmadeusClientTest extends Unit
 
     /**
      * Verify that the client is called with parameters from the request tranformer
+     *
+     * @throws AmadeusRequestException
      */
     public function testItCallsTheClient()
     {
@@ -110,7 +112,7 @@ class AmadeusClientTest extends Unit
         $this->responseTransformer
             ->expects($this->once())
             ->method('mapResultToDefinedStructure')
-            ->with($businessCase, $amaResult)
+            ->with($businessCase, $request, $amaResult)
             ->willReturn($expecedSearchResponse);
 
         $searchResponse = $this->object->search($request, $businessCase);
@@ -119,6 +121,8 @@ class AmadeusClientTest extends Unit
 
     /**
      * Verify that it throws an exception if the return status of the ama call is not OK
+     *
+     * @throws AmadeusRequestException
      */
     public function testItThrowsOnServiceError()
     {
@@ -155,6 +159,8 @@ class AmadeusClientTest extends Unit
 
     /**
      * Does it return an empty result for some types of errors?
+     *
+     * @throws AmadeusRequestException
      */
     public function testItTreatsSomeErrorsAsEmptyResults()
     {
