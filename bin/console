@@ -1,2 +1,2 @@
 #!/bin/sh
-docker exec -it service-amadeus-php php ./bin/php-console $
+docker exec -it -u $(id -u):$(id -g) amadeus-php php ./bin/php-console "$@"

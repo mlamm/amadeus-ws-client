@@ -9,5 +9,5 @@ class SearchProvider extends BusinessCaseProvider
     public function routing(ControllerCollection $collection)
     {
         $collection->match('/', 'businesscase.search');
-    }    
+    }
 }
