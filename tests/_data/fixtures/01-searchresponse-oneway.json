@@ -18,6 +18,8 @@
               },
               "duration": 7500,
               "nights": 0,
+              "hash": null,
+              "gds-information": null,
               "segments": [
                 {
                   "aircraft-type": "319",
@@ -46,9 +48,11 @@
                   },
                   "remaining-seats": 9,
                   "gds-information": {
-                    "res-book-desig-code": "L",
-                    "provider": "amadeus"
-                  }
+                    "res-book-desig-code": "L"
+                  },
+                  "duration": null,
+                  "technical-stops": null,
+                  "baggage-rules": null
                 }
               ]
             }
@@ -62,16 +66,16 @@
             "total": 174.98,
             "passenger-types": {
               "adult": 87.49,
-              "child": 0,
-              "infant": 0
+              "child": null,
+              "infant": null
             }
           },
           "tax": {
             "total": 0,
             "passenger-types": {
               "adult": 0,
-              "child": 0,
-              "infant": 0
+              "child": null,
+              "infant": null
             }
           }
         },
@@ -81,15 +85,18 @@
               "total": 0,
               "passenger-types": {
                 "adult": 0,
-                "child": 0,
-                "infant": 0
+                "child": null,
+                "infant": null
               }
             },
+            "service-fee": null,
             "name": "_default"
           }
         ],
+        "reductions": null,
         "currency": "EUR"
-      }
+      },
+      "_gds-information": null
     }
   ]
 }

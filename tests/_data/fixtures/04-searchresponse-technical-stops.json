@@ -18,6 +18,8 @@
               },
               "duration": 124080,
               "nights": 1,
+              "hash": null,
+              "gds-information": null,
               "segments": [
                 {
                   "aircraft-type": "321",
@@ -43,9 +45,11 @@
                   },
                   "remaining-seats": 4,
                   "gds-information": {
-                    "res-book-desig-code": "S",
-                    "provider": "amadeus"
-                  }
+                    "res-book-desig-code": "S"
+                  },
+                  "duration": null,
+                  "technical-stops": null,
+                  "baggage-rules": null
                 },
                 {
                   "aircraft-type": "333",
@@ -74,9 +78,11 @@
                   },
                   "remaining-seats": 9,
                   "gds-information": {
-                    "res-book-desig-code": "S",
-                    "provider": "amadeus"
-                  }
+                    "res-book-desig-code": "S"
+                  },
+                  "duration": null,
+                  "technical-stops": null,
+                  "baggage-rules": null
                 },
                 {
                   "aircraft-type": "DH1",
@@ -118,9 +124,10 @@
                     }
                   ],
                   "gds-information": {
-                    "res-book-desig-code": "S",
-                    "provider": "amadeus"
-                  }
+                    "res-book-desig-code": "S"
+                  },
+                  "duration": null,
+                  "baggage-rules": null
                 }
               ]
             }
@@ -139,6 +146,8 @@
               },
               "duration": 134400,
               "nights": 2,
+              "hash": null,
+              "gds-information": null,
               "segments": [
                 {
                   "aircraft-type": "DH1",
@@ -180,9 +189,10 @@
                     }
                   ],
                   "gds-information": {
-                    "res-book-desig-code": "T",
-                    "provider": "amadeus"
-                  }
+                    "res-book-desig-code": "T"
+                  },
+                  "duration": null,
+                  "baggage-rules": null
                 },
                 {
                   "aircraft-type": "333",
@@ -211,9 +221,11 @@
                   },
                   "remaining-seats": 9,
                   "gds-information": {
-                    "res-book-desig-code": "T",
-                    "provider": "amadeus"
-                  }
+                    "res-book-desig-code": "T"
+                  },
+                  "duration": null,
+                  "technical-stops": null,
+                  "baggage-rules": null
                 },
                 {
                   "aircraft-type": "321",
@@ -239,9 +251,11 @@
                   },
                   "remaining-seats": 4,
                   "gds-information": {
-                    "res-book-desig-code": "T",
-                    "provider": "amadeus"
-                  }
+                    "res-book-desig-code": "T"
+                  },
+                  "duration": null,
+                  "technical-stops": null,
+                  "baggage-rules": null
                 }
               ]
             }
@@ -256,7 +270,7 @@
             "passenger-types": {
               "adult": 1125.11,
               "child": 980.11,
-              "infant": 0
+              "infant": null
             }
           },
           "tax": {
@@ -264,25 +278,28 @@
             "passenger-types": {
               "adult": 545.11,
               "child": 545.11,
-              "infant": 0
+              "infant": null
             }
           }
         },
         "currency": "EUR",
-        "payment-methods": {
-          "0": {
+        "payment-methods": [
+          {
             "payment-fee": {
               "total": 0,
               "passenger-types": {
                 "adult": 0,
                 "child": 0,
-                "infant": 0
+                "infant": null
               }
             },
+            "service-fee": null,
             "name": "_default"
           }
-        }
-      }
+        ],
+        "reductions": null
+      },
+      "_gds-information": null
     }
   ]
 }

@@ -124,21 +124,21 @@ format.
                             + `total`: 1319.46 (number, required) - total fare for all requested passengers
                             + `passenger-types`
                                 + `adult`: 659.73 (number, required) - fare price for each adult passenger
-                                + `child`: 659.73 (number, required) - fare price for each child passenger
-                                + `infant`: 659.73 (number, required) - fare price for each infant passenger
+                                + `child`: 659.73 (number, nullable, required) - fare price for each child passenger
+                                + `infant`: 659.73 (number, nullable, required) - fare price for each infant passenger
                         + `tax`
                             + `total`: 160.50 (number, required) - total fare for all requested passengers
                             + `passenger-types`
                                 + `adult`: 80.25 (number, required) - tax for each adult passenger
-                                + `child`: 80.25 (number, required) - tax for each child passenger
-                                + `infant`: 80.25 (number, required) - tax for each infant passenger
+                                + `child`: 80.25 (number, nullable, required) - tax for each child passenger
+                                + `infant`: 80.25 (number, nullable, required) - tax for each infant passenger
                     + `payment-methods` (array, fixed-type, required)
                         + (object)
                             + `payment-fee` (required)
                                 + `passenger-types` (required)
                                     + `adult`: 3.79 (number, required)
-                                    + `child`: 0 (number, required)
-                                    + `infant`: 0 (number, required)
+                                    + `child`: 0 (number, nullable, required)
+                                    + `infant`: 0 (number, nullable, required)
                                 + `total`: 7.58 (number, required)
                             + `name`: _default (enum, required)
                     + `currency`: EUR (required) - currency of the fare and tax values
