@@ -30,6 +30,8 @@ class ErrorProvider implements ServiceProviderInterface
 {
     /**
      * @param Container $app
+     *
+     * @throws \Exception
      */
     public function register(Container $app) : void
     {
@@ -79,6 +81,8 @@ class ErrorProvider implements ServiceProviderInterface
     /**
      * Make sure that uncaught exceptions are creating the expected type of response (hal).
      * Unfortunately necessary in Silex to handle \Throwable
+     *
+     * @param Container $app
      */
     public function registerHandlers(Container $app)
     {

@@ -22,7 +22,7 @@ class Carriers
         \ArrayAccess $companyTextIndex
     ): SearchResponse\Segment {
 
-        $carriers = new SearchResponse\Carriers();
+        $carriers = new SearchResponse\SegmentCarriers();
         $carriers->setMarketing(self::fetchMarketing($flightDetail));
         $carriers->setOperating(
             self::fetchOperatingFromFlightDetail($flightDetail)

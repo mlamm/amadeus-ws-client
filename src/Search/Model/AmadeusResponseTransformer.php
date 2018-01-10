@@ -206,17 +206,18 @@ class AmadeusResponseTransformer
      *
      * @param LegIndex          $legIndex
      * @param FreeBaggageIndex  $freeBaggageIndex
-     * @param string            $legOffset
+     * @param int               $legOffset
      * @param string            $refToGroupOfFlights
      * @param Collection        $fareDetails
      * @param ValidatingCarrier $validatingCarrier
      * @param \ArrayAccess      $companyTextIndex
+     *
      * @return SearchResponse\Leg
      */
     private function mapLeg(
         LegIndex $legIndex,
         FreeBaggageIndex $freeBaggageIndex,
-        string $legOffset,
+        int $legOffset,
         string $refToGroupOfFlights,
         Collection $fareDetails,
         ValidatingCarrier $validatingCarrier,
@@ -236,7 +237,7 @@ class AmadeusResponseTransformer
             $itineraryLeg->setDuration($proposals->getElapsedFlyingTime());
         }
 
-        $itineraryLeg->setCarriers(new SearchResponse\Carriers());
+        $itineraryLeg->setCarriers(new SearchResponse\LegCarriers());
 
         if ($proposals->hasMajorityCarrier()) {
             $itineraryLeg->getCarriers()

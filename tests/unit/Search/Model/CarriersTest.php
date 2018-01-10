@@ -10,7 +10,7 @@ use Flight\Service\Amadeus\Search\Model\Carriers;
 /**
  * CarriersTest.php
  *
- * @covers Flight\Service\Amadeus\Search\Model\Carriers
+ * @covers \Flight\Service\Amadeus\Search\Model\Carriers
  *
  * @copyright Copyright (c) 2018 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -33,7 +33,7 @@ class CarriersTest extends \Codeception\Test\Unit
 
         $segment = Carriers::writeToSegment(new SearchResponse\Segment(), $flightDetail, $companyTextIndex);
 
-        $this->assertInstanceOf(SearchResponse\Carriers::class, $segment->getCarriers());
+        $this->assertInstanceOf(SearchResponse\SegmentCarriers::class, $segment->getCarriers());
 
         $this->assertInstanceOf(SearchResponse\Carrier::class, $segment->getCarriers()->getOperating());
         $this->assertEquals('AA', $segment->getCarriers()->getOperating()->getIata());
@@ -63,7 +63,7 @@ class CarriersTest extends \Codeception\Test\Unit
 
         $segment = Carriers::writeToSegment(new SearchResponse\Segment(), $flightDetail, $companyTextIndex);
 
-        $this->assertInstanceOf(SearchResponse\Carriers::class, $segment->getCarriers());
+        $this->assertInstanceOf(SearchResponse\SegmentCarriers::class, $segment->getCarriers());
 
         $this->assertInstanceOf(SearchResponse\Carrier::class, $segment->getCarriers()->getOperating());
         $this->assertEquals('', $segment->getCarriers()->getOperating()->getIata());

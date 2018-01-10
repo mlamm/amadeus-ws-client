@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "11cd3d0766d4ed01dbeceae88ccbc244",
+    "content-hash": "8786fd5e21759a5038ab79f980e32f72",
     "packages": [
         {
             "name": "alcaeus/mongo-php-adapter",
@@ -455,17 +455,17 @@
         },
         {
             "name": "flight/library-search-request-response-mapping",
-            "version": "5.0.0",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "ssh://git@stash.unister.lan:2200/flight/library.search-request-response-mapping.git",
-                "reference": "4a80cd5dc3a04309115d24847e152c42f351dcc6"
+                "reference": "7d7ed73acc7b6916be5091ab0c08625854502abe"
             },
             "dist": {
                 "type": "tar",
-                "url": "https://packages.unister.lan/dist/flight-library-search-request-response-mapping-5.0.0-6889b0.tar.bz2",
-                "reference": "4a80cd5dc3a04309115d24847e152c42f351dcc6",
-                "shasum": "26bf7bf5baacd428b52023449de98d517e2b3a77"
+                "url": "https://packages.unister.lan/dist/flight-library-search-request-response-mapping-6.0.0-ccebfe.tar.bz2",
+                "reference": "7d7ed73acc7b6916be5091ab0c08625854502abe",
+                "shasum": "b071ab57f79d37265e99d5507c11d9f8c3665ce0"
             },
             "archive": {
                 "exclude": [
@@ -502,7 +502,7 @@
                     "verify_peer": false
                 }
             },
-            "time": "2018-01-08T08:24:52+00:00"
+            "time": "2018-01-09T15:17:54+00:00"
         },
         {
             "name": "flight/search-request-mapping",
@@ -982,7 +982,7 @@
                 {
                     "name": "Berry Langerak",
                     "email": "berry@berryllium.nl",
-                    "role": "Developer"
+                    "role": "developer"
                 },
                 {
                     "name": "Rick van der Staaij",
