@@ -339,11 +339,11 @@
                             "description": "fare price for each adult passenger"
                           },
                           "child": {
-                            "type": "number",
+                            "type": ["number", "null"],
                             "description": "fare price for each child passenger"
                           },
                           "infant": {
-                            "type": "number",
+                            "type": ["number", "null"],
                             "description": "fare price for each infant passenger"
                           }
                         },
@@ -373,11 +373,11 @@
                             "description": "tax for each adult passenger"
                           },
                           "child": {
-                            "type": "number",
+                            "type": ["number", "null"],
                             "description": "tax for each child passenger"
                           },
                           "infant": {
-                            "type": "number",
+                            "type": ["number", "null"],
                             "description": "tax for each infant passenger"
                           }
                         },
@@ -409,13 +409,16 @@
                           "type": "object",
                           "properties": {
                             "adult": {
-                              "type": "number"
+                              "type": "number",
+                              "description": "payment fee for each adult passenger"
                             },
                             "child": {
-                              "type": "number"
+                              "type": ["number", "null"],
+                              "description": "payment fee for each child passenger"
                             },
                             "infant": {
-                              "type": "number"
+                              "type": ["number", "null"],
+                              "description": "payment fee for each infant passenger"
                             }
                           },
                           "required": [

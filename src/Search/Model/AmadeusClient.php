@@ -6,7 +6,6 @@ use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Request;
 use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
-use Flight\Service\Amadeus\Search\Exception\ServiceRequestAuthenticationFailedException;
 
 /**
  * Class AmadeusClient
@@ -89,7 +88,7 @@ class AmadeusClient
             throw new AmadeusRequestException($result->messages);
         }
 
-        return $this->responseTransformer->mapResultToDefinedStructure($businessCase, $result);
+        return $this->responseTransformer->mapResultToDefinedStructure($businessCase, $request, $result);
     }
 
     /**

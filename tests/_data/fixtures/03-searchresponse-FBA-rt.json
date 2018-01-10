@@ -18,6 +18,8 @@
               },
               "duration": 8700,
               "nights": 0,
+              "hash": null,
+              "gds-information": null,
               "segments": [
                 {
                   "aircraft-type": "738",
@@ -46,12 +48,15 @@
                   },
                   "remaining-seats": 9,
                   "baggage-rules": {
-                    "pieces": 1
+                    "pieces": 1,
+                    "weight": null,
+                    "unit": null
                   },
                   "gds-information": {
-                    "res-book-desig-code": "O",
-                    "provider": "amadeus"
-                  }
+                    "res-book-desig-code": "O"
+                  },
+                  "duration": null,
+                  "technical-stops": null
                 }
               ]
             }
@@ -70,6 +75,8 @@
               },
               "duration": 9000,
               "nights": 0,
+              "hash": null,
+              "gds-information": null,
               "segments": [
                 {
                   "aircraft-type": "320",
@@ -98,12 +105,15 @@
                   },
                   "remaining-seats": 9,
                   "baggage-rules": {
-                    "pieces": 1
+                    "pieces": 1,
+                    "weight": null,
+                    "unit": null
                   },
                   "gds-information": {
-                    "res-book-desig-code": "P",
-                    "provider": "amadeus"
-                  }
+                    "res-book-desig-code": "P"
+                  },
+                  "duration": null,
+                  "technical-stops": null
                 }
               ]
             }
@@ -140,11 +150,14 @@
                 "infant": 9.5
               }
             },
+            "service-fee": null,
             "name": "_default"
           }
         ],
+        "reductions": null,
         "currency": "EUR"
-      }
+      },
+      "_gds-information": null
     }
   ]
 }
