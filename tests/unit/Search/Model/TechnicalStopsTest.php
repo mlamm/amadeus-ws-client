@@ -10,7 +10,7 @@ use Flight\Service\Amadeus\Search\Model\TechnicalStops;
 /**
  * TechnicalStopsTest.php
  *
- * @covers Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\TechnicalStop
+ * @covers Flight\Service\Amadeus\Search\Model\TechnicalStops
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

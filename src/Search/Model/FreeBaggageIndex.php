@@ -19,7 +19,7 @@ class FreeBaggageIndex
     /**
      * This index contains the reference number for the <freeBagAllowanceGrp>
      *
-     * @var array
+     * @var array[][]
      */
     private $serviceCoverageInfoGrpIndex;
 

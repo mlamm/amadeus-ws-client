@@ -8,7 +8,7 @@ use Flight\Service\Amadeus\Application\Config\CachedConfig;
 /**
  * CachedConfigTest.php
  *
- * @covers Flight\Service\Ypsilon\Application\Config\CachedConfig
+ * @covers Flight\Service\Amadeus\Application\Config\CachedConfig
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

@@ -38,6 +38,14 @@ class MockSessionHandler implements HandlerInterface
         $this->params = $params;
     }
 
+    /**
+     * @param               $messageName
+     * @param BaseWsMessage $messageBody
+     * @param               $messageOptions
+     *
+     * @return SendResult
+     * @throws \Exception
+     */
     public function sendMessage($messageName, BaseWsMessage $messageBody, $messageOptions)
     {
         switch ($messageName) {
@@ -91,21 +99,45 @@ class MockSessionHandler implements HandlerInterface
         return false;
     }
 
+    /**
+     * @param string $msgName
+     *
+     * @return null|string|void
+     * @throws \Exception
+     */
     public function getLastRequest($msgName)
     {
         throw new \Exception('not implemented for mock session handler');
     }
 
+    /**
+     * @param string $msgName
+     *
+     * @return null|string|void
+     * @throws \Exception
+     */
     public function getLastResponse($msgName)
     {
         throw new \Exception('not implemented for mock session handler');
     }
 
+    /**
+     * @param string $msgName
+     *
+     * @return null|string|void
+     * @throws \Exception
+     */
     public function getLastRequestHeaders($msgName)
     {
         throw new \Exception('not implemented for mock session handler');
     }
 
+    /**
+     * @param string $msgName
+     *
+     * @return null|string|void
+     * @throws \Exception
+     */
     public function getLastResponseHeaders($msgName)
     {
         throw new \Exception('not implemented for mock session handler');

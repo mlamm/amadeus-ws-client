@@ -102,8 +102,13 @@ format.
                                         + `carriers` (required)
                                             + `marketing` (required)
                                                 + `iata`: AB (string, required) - IATA code of the marketing carrier
-                                            + `operating` (nullable)
-                                                + `iata`: AB (string, required) - IATA code of the operating carrier
+                                            + `operating` (required, nullable)
+                                                + `iata`: LH (string, required) - IATA code of the operating carrier
+                                                + `name`: LUFTHANSA OR LH CITYLINE (string, optional)
+
+                                                    Name of the operating carrier.
+                                                    Only given in some cases. The iata code will be an empty string in those cases.
+
                                         + `remaining-seats`: 9 (number, nullable) - number of seats remaining for that flight
                                         + `baggage-rules` (nullable)
                                             + `pieces`: 1 (number, nullable) - number of baggage pieces included

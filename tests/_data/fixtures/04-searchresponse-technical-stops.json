@@ -41,6 +41,10 @@
                   "carriers": {
                     "marketing": {
                       "iata": "AC"
+                    },
+                    "operating": {
+                      "iata": "",
+                      "name": "LUFTHANSA OR LH CITYLINE"
                     }
                   },
                   "remaining-seats": 4,
@@ -104,6 +108,10 @@
                   "carriers": {
                     "marketing": {
                       "iata": "AC"
+                    },
+                    "operating": {
+                      "iata": "",
+                      "name": "AIR CANADA EXPRESS - JAZZ"
                     }
                   },
                   "remaining-seats": 9,
@@ -169,6 +177,10 @@
                   "carriers": {
                     "marketing": {
                       "iata": "AC"
+                    },
+                    "operating": {
+                      "iata": "",
+                      "name": "AIR CANADA EXPRESS - JAZZ"
                     }
                   },
                   "remaining-seats": 3,
@@ -247,6 +259,10 @@
                   "carriers": {
                     "marketing": {
                       "iata": "AC"
+                    },
+                    "operating": {
+                      "iata": "",
+                      "name": "LUFTHANSA OR LH CITYLINE"
                     }
                   },
                   "remaining-seats": 4,

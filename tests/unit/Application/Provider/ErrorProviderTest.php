@@ -12,7 +12,7 @@ use Silex\Application;
  *
  * testing ErrorProvider
  *
- * @coversDefaultClass Flight\Service\Amadeus\Search\Provider\ErrorProvider
+ * @coversDefaultClass Flight\Service\Amadeus\Application\Provider\ErrorProvider
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
