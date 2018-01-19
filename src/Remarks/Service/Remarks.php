@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Remarks\Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Flight\Service\Amadeus\Remarks\Model\Remark;
 use Flight\Service\Amadeus\Remarks\Request\Entity\Authenticate;
 use Flight\Service\Amadeus\Remarks\Request\Validator\RemarksRead;
 use Flight\Service\Amadeus\Remarks\Cache\CacheKey;
@@ -113,16 +115,24 @@ class Remarks
             ->setPasswordData($authHeader->{'password-data'})
             ->setPasswordLength($authHeader->{'password-length'})
             ->setUserId($authHeader->{'user-id'});
+
         $response = $this->amadeusClient->remarksRead(
             (new \Flight\Service\Amadeus\Remarks\Request\Entity\RemarksRead())->setRecordlocator($recordlocator),
             $authenticate
         );
-        return $response;
+
+        return $this->serializer->serialize($response, 'json');
     }
 
-    public function remarksAdd($authHeader, $recordlocator)
+    public function remarksAdd($authHeader, $recordlocator, $body)
     {
         $authHeader = \GuzzleHttp\json_decode($authHeader);
+        $body = \GuzzleHttp\json_decode($body);
+
+        $remarks = new ArrayCollection();
+        foreach ($body as $remarkName => $remarkValue) {
+            $remarks->add((new Remark())->setName($remarkName)->setValue($remarkValue));
+        }
 
         $authenticate = (new Authenticate())
             ->setDutyCode($authHeader->{'duty-code'})
@@ -132,16 +142,21 @@ class Remarks
             ->setPasswordLength($authHeader->{'password-length'})
             ->setUserId($authHeader->{'user-id'});
         $response = $this->amadeusClient->remarksAdd(
-            (new \Flight\Service\Amadeus\Remarks\Request\Entity\RemarksAdd())->setRecordlocator($recordlocator),
+            (new \Flight\Service\Amadeus\Remarks\Request\Entity\RemarksAdd())
+                ->setRecordlocator($recordlocator)->setRemarks($remarks),
             $authenticate
         );
-        return $response;
+
+        return $this->serializer->serialize($response, 'json');
     }
 
-    public function remarksDelete($authHeader, $recordlocator)
+    public function remarksDelete($authHeader, $recordlocator, $body)
     {
+        // json data
         $authHeader = \GuzzleHttp\json_decode($authHeader);
+        $body = \GuzzleHttp\json_decode($body);
 
+        // authenticate
         $authenticate = (new Authenticate())
             ->setDutyCode($authHeader->{'duty-code'})
             ->setOfficeId($authHeader->{'office-id'})
@@ -149,10 +164,42 @@ class Remarks
             ->setPasswordData($authHeader->{'password-data'})
             ->setPasswordLength($authHeader->{'password-length'})
             ->setUserId($authHeader->{'user-id'});
-        $response = $this->amadeusClient->remarksDelete(
-            (new \Flight\Service\Amadeus\Remarks\Request\Entity\RemarksDelete())->setRecordlocator($recordlocator),
+
+        // get remarks for line number
+        $response = $this->amadeusClient->remarksRead(
+            (new \Flight\Service\Amadeus\Remarks\Request\Entity\RemarksRead())->setRecordlocator($recordlocator),
             $authenticate
         );
-        return $response;
+
+        // filter remarks tp delete
+        /** @var ArrayCollection $remarksReadCollection */
+        $remarksReadCollection = $response->getResult()->get(0);
+        $remarksDeleteCollection = new ArrayCollection();
+        /** @var Remark $remark */
+        foreach ($remarksReadCollection as $remark) {
+            foreach ($body as $remarkName => $remarkValue) {
+                if ($remarkName == $remark->getName() && $remarkValue == $remark->getValue()) {
+                    $remarksDeleteCollection->add($remark);
+                }
+            }
+        }
+
+        // be clean remove garbage
+        unset($remarksReadCollection);
+
+        $response = $this->amadeusClient->remarksDelete(
+            (new \Flight\Service\Amadeus\Remarks\Request\Entity\RemarksDelete())
+                ->setRecordlocator($recordlocator)->setRemarks($remarksDeleteCollection),
+            $authenticate
+        );
+
+        return $this->serializer->serialize($response, 'json');
+    }
+
+    public function remarksModify($authHeader, $recordlocator, $body)
+    {
+        $this->remarksDelete($authHeader, $recordlocator, $body);
+
+        return $this->remarksAdd($authHeader, $recordlocator, $body);
     }
 }

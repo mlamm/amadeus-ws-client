@@ -5,6 +5,7 @@ namespace Flight\Service\Amadeus\Remarks\Model;
 
 use Amadeus\Client;
 use Amadeus\Client\RequestOptions\FareMasterPricerTbRemarks;
+use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Service\Amadeus\Remarks\Request\Entity\Authenticate;
 use Psr\Log\LoggerInterface;
 
@@ -72,13 +73,13 @@ class AmadeusRequestTransformer
         return new Client\RequestOptions\PnrRetrieveOptions(['recordLocator' => $recordlocator]);
     }
 
-    public function buildOptionsRemarksAdd($recordlocator, array $remarks)
+    public function buildOptionsRemarksAdd($recordlocator, ArrayCollection $remarks)
     {
         $elements = [];
         /** @var Remark $remark */
         foreach ($remarks as $remark) {
             $elements[] = (new \Amadeus\Client\RequestOptions\Pnr\Element\MiscellaneousRemark([
-                'type'     => $remark->getType(),
+                'type'     => $remark->getType() ? $remark->getType() : 'RM',
                 'text'     => $remark->getName() . '-' . $remark->getValue(),
                 'category' => '*'
             ]));
@@ -177,7 +178,7 @@ class AmadeusRequestTransformer
 //        public $elements = [];
     }
 
-    public function buildOptionsRemarksDelete($recordlocator, array $remarks)
+    public function buildOptionsRemarksDelete($recordlocator, ArrayCollection $remarks)
     {
         $elements = [];
         /** @var Remark $remark */

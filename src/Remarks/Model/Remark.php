@@ -131,4 +131,25 @@ class Remark
         return $this;
     }
 
+    /**
+     * @param $crsText
+     * @return $this
+     */
+    public function convertFromCrs($crsText)
+    {
+        list($name, $value) = array_pad(explode('-', (string) $crsText, 2), 2, null);
+        $this->setValue($value);
+        $this->setName($name);
+        return $this;
+    }
+
+    /**
+     * returns value and name for crs useage
+     *
+     * @return string
+     */
+    public function convertToCrs()
+    {
+        return $this->getName() . '-' . $this->getValue();
+    }
 }

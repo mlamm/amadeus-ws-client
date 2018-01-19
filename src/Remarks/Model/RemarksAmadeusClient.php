@@ -6,6 +6,7 @@ use Flight\Service\Amadeus\Remarks\Exception\AmadeusRequestException;
 use Flight\Service\Amadeus\Remarks\Request\Entity\Authenticate;
 use Flight\Service\Amadeus\Remarks\Request\Entity\RemarksAdd;
 use Flight\Service\Amadeus\Remarks\Request\Entity\RemarksDelete;
+use Flight\Service\Amadeus\Remarks\Request\Entity\RemarksModify;
 use Flight\Service\Amadeus\Remarks\Request\Entity\RemarksRead;
 use Psr\Log\LoggerInterface;
 
@@ -86,10 +87,13 @@ class RemarksAmadeusClient
         /** @var Client $client */
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
 
-        $requestOptions = $this->requestTransformer->buildOptionsRemarksAdd($requestEntity->getRecordlocator());
+        $requestOptions = $this->requestTransformer->buildOptionsRemarksAdd(
+            $requestEntity->getRecordlocator(),
+            $requestEntity->getRemarks()
+        );
 
 
-        $result = $client->pnrRetrieve($requestOptions);
+        $result = $client->pnrAddMultiElements($requestOptions);
 
         if ($result->status !== Client\Result::STATUS_OK) {
             throw new AmadeusRequestException($result->messages);
@@ -103,10 +107,27 @@ class RemarksAmadeusClient
         /** @var Client $client */
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
 
-        $requestOptions = $this->requestTransformer->buildOptionsRemarksDelete($requestEntity->getRecordlocator());
+        $requestOptions = $this->requestTransformer->buildOptionsRemarksDelete($requestEntity->getRecordlocator(), $requestEntity->getRemarks());
 
 
-        $result = $client->pnrRetrieve($requestOptions);
+        $result = $client->pnrCancel($requestOptions);
+
+        if ($result->status !== Client\Result::STATUS_OK) {
+            throw new AmadeusRequestException($result->messages);
+        }
+
+        return $this->responseTransformer->mapResultRemarksDelete($result);
+    }
+
+    public function remarksModify(RemarksModify $requestEntity, Authenticate $authenticate)
+    {
+        /** @var Client $client */
+        $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
+
+        $requestOptions = $this->requestTransformer->buildOptionsRemarksDelete($requestEntity->getRecordlocator(), $requestEntity->getRemarks());
+
+
+        $result = $client->pnrCancel($requestOptions);
 
         if ($result->status !== Client\Result::STATUS_OK) {
             throw new AmadeusRequestException($result->messages);

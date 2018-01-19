@@ -44,10 +44,12 @@ class RemarksDelete extends BusinessCase
     public function respond() : HalResponse
     {
         try {
-            $response = $this->remarksService->remarksDelete(
+            $response = ResultResponse::fromJsonString($this->remarksService->remarksDelete(
                 $this->getRequest()->headers->get('Authenticate'),
-                $this->getRequest()->query->get('recordlocator')
-            );
+                $this->getRequest()->query->get('recordlocator'),
+                $this->getRequest()->getContent()
+            ));
+
             $this->addLinkToSelf($response);
             return $response;
         } catch (InvalidRequestException $ex) {

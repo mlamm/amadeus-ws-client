@@ -103,6 +103,13 @@ $app['businesscase.remarks-delete'] = function () use ($app) {
     );
 };
 
+$app['businesscase.remarks-modify'] = function () use ($app) {
+    return new Flight\Service\Amadeus\Remarks\BusinessCase\RemarksModify(
+        $app['service.remarks'],
+        $app['monolog']
+    );
+};
+
 $app['service.remarks'] = function () use ($app) {
     $validator = new Flight\Service\Amadeus\Remarks\Request\Validator\RemarksRead(
         $app['config']->remarks

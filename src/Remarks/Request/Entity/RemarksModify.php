@@ -5,11 +5,11 @@ namespace Flight\Service\Amadeus\Remarks\Request\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * entity for remarksRead request
+ * entity for remarksModify request
  *
  * @package Flight\Service\Amadeus\Remarks\Request\Entity
  */
-class RemarksDelete
+class RemarksModify
 {
     /**
      * @var string identification of pnr
@@ -35,15 +35,15 @@ class RemarksDelete
      * setter for recordlocator
      *
      * @param string $recordlocator
-     * @return RemarksDelete
+     * @return RemarksModify
      */
-    public function setRecordlocator($recordlocator) : RemarksDelete
+    public function setRecordlocator($recordlocator) : RemarksModify
     {
         $this->recordlocator = $recordlocator;
         return $this;
     }
 
-    public function setRemarks(ArrayCollection $remarks) : RemarksDelete
+    public function setRemarks(ArrayCollection $remarks) : RemarksModify
     {
         $this->remarks = $remarks;
         return $this;

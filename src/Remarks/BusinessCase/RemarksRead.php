@@ -44,10 +44,10 @@ class RemarksRead extends BusinessCase
     public function respond() : HalResponse
     {
         try {
-            $response = $this->remarksService->remarksRead(
+            $response = ResultResponse::fromJsonString($this->remarksService->remarksRead(
                 $this->getRequest()->headers->get('Authenticate'),
                 $this->getRequest()->query->get('recordlocator')
-            );
+            ));
             $this->addLinkToSelf($response);
             return $response;
         } catch (InvalidRequestException $ex) {

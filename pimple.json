@@ -215,6 +215,11 @@
         "value": "Flight\Service\Amadeus\\Remarks\\BusinessCase\\RemarksDelete"
     },
     {
+        "name": "businesscase.remarks-modify",
+        "type": "class",
+        "value": "Flight\Service\Amadeus\\Remarks\\BusinessCase\\RemarksModify"
+    },
+    {
         "name": "amadeus.client",
         "type": "class",
         "value": "Flight\Service\Amadeus\\Search\\Model\\AmadeusClient"

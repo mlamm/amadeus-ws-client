@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Class Remarks
  * @package Flight\Service\Amadeus\Remarks\BusinessCase
  */
-class RemarksAdd extends BusinessCase
+class RemarksModify extends BusinessCase
 {
     /**
      * @var \Flight\Service\Amadeus\Remarks\Service\Remarks
@@ -44,7 +44,7 @@ class RemarksAdd extends BusinessCase
     public function respond() : HalResponse
     {
         try {
-            $response = ResultResponse::fromJsonString($this->remarksService->remarksAdd(
+            $response = ResultResponse::fromJsonString($this->remarksService->remarksModify(
                 $this->getRequest()->headers->get('Authenticate'),
                 $this->getRequest()->query->get('recordlocator'),
                 $this->getRequest()->getContent()
