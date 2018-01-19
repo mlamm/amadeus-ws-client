@@ -2,12 +2,10 @@
 namespace Flight\Service\Amadeus\Search\Model;
 
 use Amadeus\Client;
-use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
-use Flight\Service\Amadeus\Search\Exception\ServiceRequestAuthenticationFailedException;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Request;
-use Psr\Log\LoggerInterface;
+use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
 
 /**
  * Class AmadeusClient
@@ -15,15 +13,17 @@ use Psr\Log\LoggerInterface;
  */
 class AmadeusClient
 {
-    /**
-     * @var \stdClass
-     */
-    protected $config;
+    private const EMPTY_RESULT_ERRORS = [
+        830, // No recommendation found with lower or equal price
+        866, // No fare found for requested itinerary
+        931, // No itinerary found for Requested Segment n
+        977, // No available flight found for requested segment nn
+    ];
 
     /**
-     * @var LoggerInterface
+     * @var ClientParamsFactory
      */
-    protected $logger;
+    protected $clientParamsFactory;
 
     /**
      * @var AmadeusRequestTransformer
@@ -44,21 +44,18 @@ class AmadeusClient
     protected $clientBuilder;
 
     /**
-     * @param \stdClass                  $config
-     * @param LoggerInterface            $logger
+     * @param ClientParamsFactory        $clientParamsFactory
      * @param AmadeusRequestTransformer  $requestTransformer
      * @param AmadeusResponseTransformer $responseTransformer
      * @param \Closure                   $clientBuilder
      */
     public function __construct(
-        \stdClass $config,
-        LoggerInterface $logger,
+        ClientParamsFactory $clientParamsFactory,
         AmadeusRequestTransformer $requestTransformer,
         AmadeusResponseTransformer $responseTransformer,
         \Closure $clientBuilder
     ) {
-        $this->config = $config;
-        $this->logger = $logger;
+        $this->clientParamsFactory = $clientParamsFactory;
         $this->requestTransformer = $requestTransformer;
         $this->responseTransformer = $responseTransformer;
         $this->clientBuilder = $clientBuilder;
@@ -72,21 +69,49 @@ class AmadeusClient
      *
      * @return SearchResponse
      * @throws AmadeusRequestException
-     * @throws ServiceRequestAuthenticationFailedException
      */
     public function search(Request $request, BusinessCase $businessCase) : SearchResponse
     {
         /** @var Client $client */
-        $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($businessCase, $this->logger));
+        $clientParams = $this->clientParamsFactory->buildFromBusinessCase($businessCase);
+        $client = ($this->clientBuilder)($clientParams);
 
         $requestOptions = $this->requestTransformer->buildFareMasterRequestOptions($request);
 
         $result = $client->fareMasterPricerTravelBoardSearch($requestOptions);
 
-        if ($result->status !== Client\Result::STATUS_OK) {
+        if ($this->isEmptyResultError($result)) {
+            return $this->responseTransformer->createEmptyResponse();
+        }
+
+        if ($this->isErrorResponse($result)) {
             throw new AmadeusRequestException($result->messages);
         }
 
-        return $this->responseTransformer->mapResultToDefinedStructure($businessCase, $result);
+        return $this->responseTransformer->mapResultToDefinedStructure($businessCase, $request, $result);
+    }
+
+    /**
+     * Does the response indicate an error?
+     *
+     * @param Client\Result $result
+     * @return bool
+     */
+    private function isErrorResponse(Client\Result $result)
+    {
+        return $result->status !== Client\Result::STATUS_OK;
+    }
+
+    /**
+     * Does the response error indicate that no flights were found?
+     *
+     * @param Client\Result $result
+     * @return bool
+     */
+    private function isEmptyResultError(Client\Result $result)
+    {
+        return $this->isErrorResponse($result)
+            && isset($result->messages[0])
+            && in_array($result->messages[0]->code, self::EMPTY_RESULT_ERRORS);
     }
 }

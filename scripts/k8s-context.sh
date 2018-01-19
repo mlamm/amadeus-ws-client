@@ -12,29 +12,21 @@ source $(dirname $0)/base.sh
 # Mandatory and optional variables
 if [ -z "$K8S_CONTEXT" ]
 then
-: ${K8S_CA_PATH:="Variable K8S_CA_PATH is mandatory"}
-: ${K8S_HOST:="Variable K8S_HOST is mandatory"}
-: ${K8S_PASSWORD:="Variable K8S_PASSWORD is mandatory"}
-: ${K8S_USERNAME:="Variable K8S_USERNAME is mandatory"}
+: ${KUBETOKEN_HOST?"Variable KUBETOKEN_HOST is mandatory"}
+: ${KUBETOKEN_USERNAME?"Variable KUBETOKEN_USERNAME is mandatory"}
+: ${KUBETOKEN_PASSWORD?"Variable KUBETOKEN_PASSWORD is mandatory"}
 fi
 
 info "Setting Kubernetes cluster context..."
 
 if [ -z "${K8S_CONTEXT}" ]
 then
-  K8S_CONTEXT="context"
-  kubectl config set-credentials jenkins \
-    --username=${K8S_USERNAME} \
-    --password=${K8S_PASSWORD}
-  kubectl config set-cluster cluster \
-    --server=${K8S_HOST} \
-    --certificate-authority=${K8S_CA_PATH}
-  kubectl config set-context context \
-    --cluster=cluster \
-    --user=jenkins
+  info "Using kubetoken to authenticate..."
+  kubetoken -k -u $KUBETOKEN_USERNAME -P $KUBETOKEN_PASSWORD -h $KUBETOKEN_HOST
+  K8S_CONTEXT=$(kubectl config current-context)
 fi
 
-# switch to correct namespace
+info "Setting correct namespace..."
 kubectl config set-context ${K8S_CONTEXT} --namespace=${K8S_NAMESPACE}
 kubectl config use-context ${K8S_CONTEXT}
 

@@ -11,7 +11,7 @@ source $(dirname $0)/base.sh
 GIT_PRIVATE_KEY=${GIT_PRIVATE_KEY:-"~/.ssh/id_rsa"}
 
 docker_image=$(awk '/FROM/{print $2}' scripts/docker/php/Dockerfile)
-buildImage=php-base-build
+buildImage=amadeus-php-base-build
 COMPOSER_VERSION=1.5.2
 
 function build() {
@@ -19,8 +19,8 @@ function build() {
   cleanup
   configure
   createBinaries
-  #createDocs
   prepareDirectories
+  createDocs
   buildImages
 
   success "done!"
@@ -52,9 +52,9 @@ function buildImages(){
   # it to S3. Default, install all dependencies on build time.
   app_image="$REGISTRY/flight/invia/service/amadeus/app"
 
-  if [[ -n $AWS_ACCESS_KEY_ID && -n $AWS_SECRET_ACCESS_KEY && -n $AWS_COMPOSER_CACHE_S3_BUCKET && -e "composer.json" ]]
+  if [[ -n $AWS_ACCESS_KEY_ID && -n $AWS_SECRET_ACCESS_KEY && -n $AWS_COMPOSER_CACHE_S3_BUCKET && -e "composer.lock" ]]
   then
-    archive_name=`md5sum composer.json | awk '{print $1}'`.tar.gz
+    archive_name=`md5sum composer.lock | awk '{print $1}'`.tar.gz
 
     info "File archive hash is ${archive_name}"
 
@@ -83,7 +83,7 @@ function buildImages(){
     # Remove composer install command
     sed -i '/RUN composer install/d' scripts/docker/php/Dockerfile
   else
-    info "Not using cached dependencies. Can't find \$AWS_ACCESS_KEY_ID, \$AWS_SECRET_ACCESS_KEY, \$AWS_COMPOSER_CACHE_S3_BUCKET or composer.json file."
+    info "Not using cached dependencies. Can't find \$AWS_ACCESS_KEY_ID, \$AWS_SECRET_ACCESS_KEY, \$AWS_COMPOSER_CACHE_S3_BUCKET or composer.lock file."
     bash ./scripts/composer install
   fi
 

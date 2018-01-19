@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Tests\Search\Model;
 
-use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\Carriers;
+use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\LegCarriers;
 use Flight\Service\Amadeus\Search\Model\NodeList;
 use Flight\Service\Amadeus\Search\Model\ValidatingCarrier;
 
 /**
  * ValidatingCarrierTest.php
  *
- * @covers Flight\Service\Amadeus\Search\Model\ValidatingCarrier
+ * @covers \Flight\Service\Amadeus\Search\Model\ValidatingCarrier
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -22,13 +22,16 @@ class ValidatingCarrierTest extends \Codeception\Test\Unit
      * Verify that it extracts the carrier if available and writes it to the carriers structure
      *
      * @dataProvider provideTestCasesWithCarriers
+     *
+     * @param string $fareProducts
+     * @param string $expectedCarrier
      */
     public function testItSetsCarrier(string $fareProducts, string $expectedCarrier)
     {
         $fareProductsNode = new \SimpleXMLElement($fareProducts);
 
         $object = new ValidatingCarrier(new NodeList($fareProductsNode));
-        $carriers = $object->addToCarriers(new Carriers());
+        $carriers = $object->addToCarriers(new LegCarriers());
 
         $this->assertEquals($expectedCarrier, $carriers->getValidating()->getIata());
     }
@@ -105,10 +108,9 @@ class ValidatingCarrierTest extends \Codeception\Test\Unit
         $fareProductsNode = new \SimpleXMLElement($fareProducts);
 
         $object = new ValidatingCarrier(new NodeList($fareProductsNode));
-        $carriers = $object->addToCarriers(new Carriers());
+        $carriers = $object->addToCarriers(new LegCarriers());
 
-        $this->expectException('TypeError');
-        $carriers->getValidating();
+        $this->assertNull($carriers->getValidating());
     }
 
     public function provideTestCasesMissingCarriers()
@@ -131,5 +133,4 @@ class ValidatingCarrierTest extends \Codeception\Test\Unit
             ],
         ];
     }
-
 }

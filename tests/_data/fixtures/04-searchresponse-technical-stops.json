@@ -1,0 +1,321 @@
+{
+  "result": [
+    {
+      "_itinerary": {
+        "type": "round-trip",
+        "legs": [
+          [
+            {
+              "provider": "amadeus",
+              "classification": "scheduled",
+              "carriers": {
+                "main": {
+                  "iata": "AC"
+                },
+                "validating": {
+                  "iata": "AC"
+                }
+              },
+              "duration": 124080,
+              "nights": 1,
+              "hash": null,
+              "gds-information": null,
+              "segments": [
+                {
+                  "aircraft-type": "321",
+                  "airports": {
+                    "arrival": {
+                      "iata": "FRA"
+                    },
+                    "departure": {
+                      "iata": "TXL"
+                    }
+                  },
+                  "arrive-at": 1334742300,
+                  "depart-at": 1334737800,
+                  "cabin-class": {
+                    "code": "M",
+                    "name": "Economy"
+                  },
+                  "flight-number": 9244,
+                  "carriers": {
+                    "marketing": {
+                      "iata": "AC"
+                    },
+                    "operating": {
+                      "iata": "",
+                      "name": "LUFTHANSA OR LH CITYLINE"
+                    }
+                  },
+                  "remaining-seats": 4,
+                  "gds-information": {
+                    "res-book-desig-code": "S"
+                  },
+                  "duration": null,
+                  "technical-stops": null,
+                  "baggage-rules": null
+                },
+                {
+                  "aircraft-type": "333",
+                  "airports": {
+                    "arrival": {
+                      "iata": "YUL"
+                    },
+                    "departure": {
+                      "iata": "FRA"
+                    }
+                  },
+                  "arrive-at": 1334752200,
+                  "depart-at": 1334745000,
+                  "cabin-class": {
+                    "code": "M",
+                    "name": "Economy"
+                  },
+                  "flight-number": 875,
+                  "carriers": {
+                    "marketing": {
+                      "iata": "AC"
+                    },
+                    "operating": {
+                      "iata": "AC"
+                    }
+                  },
+                  "remaining-seats": 9,
+                  "gds-information": {
+                    "res-book-desig-code": "S"
+                  },
+                  "duration": null,
+                  "technical-stops": null,
+                  "baggage-rules": null
+                },
+                {
+                  "aircraft-type": "DH1",
+                  "airports": {
+                    "arrival": {
+                      "iata": "YGR"
+                    },
+                    "departure": {
+                      "iata": "YUL"
+                    }
+                  },
+                  "arrive-at": 1334843880,
+                  "depart-at": 1334826000,
+                  "cabin-class": {
+                    "code": "M",
+                    "name": "Economy"
+                  },
+                  "flight-number": 8706,
+                  "carriers": {
+                    "marketing": {
+                      "iata": "AC"
+                    },
+                    "operating": {
+                      "iata": "",
+                      "name": "AIR CANADA EXPRESS - JAZZ"
+                    }
+                  },
+                  "remaining-seats": 9,
+                  "technical-stops": [
+                    {
+                      "airport": {
+                        "iata": "YQB"
+                      },
+                      "arrive-at": 1334829120,
+                      "depart-at": 1334830800
+                    },
+                    {
+                      "airport": {
+                        "iata": "YGP"
+                      },
+                      "arrive-at": 1334836200,
+                      "depart-at": 1334837400
+                    }
+                  ],
+                  "gds-information": {
+                    "res-book-desig-code": "S"
+                  },
+                  "duration": null,
+                  "baggage-rules": null
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "provider": "amadeus",
+              "classification": "scheduled",
+              "carriers": {
+                "main": {
+                  "iata": "AC"
+                },
+                "validating": {
+                  "iata": "AC"
+                }
+              },
+              "duration": 134400,
+              "nights": 2,
+              "hash": null,
+              "gds-information": null,
+              "segments": [
+                {
+                  "aircraft-type": "DH1",
+                  "airports": {
+                    "arrival": {
+                      "iata": "YUL"
+                    },
+                    "departure": {
+                      "iata": "YGR"
+                    }
+                  },
+                  "arrive-at": 1335375180,
+                  "depart-at": 1335363900,
+                  "cabin-class": {
+                    "code": "M",
+                    "name": "Economy"
+                  },
+                  "flight-number": 8721,
+                  "carriers": {
+                    "marketing": {
+                      "iata": "AC"
+                    },
+                    "operating": {
+                      "iata": "",
+                      "name": "AIR CANADA EXPRESS - JAZZ"
+                    }
+                  },
+                  "remaining-seats": 3,
+                  "technical-stops": [
+                    {
+                      "airport": {
+                        "iata": "YGP"
+                      },
+                      "arrive-at": 1335363360,
+                      "depart-at": 1335364500
+                    },
+                    {
+                      "airport": {
+                        "iata": "YQB"
+                      },
+                      "arrive-at": 1335370380,
+                      "depart-at": 1335372000
+                    }
+                  ],
+                  "gds-information": {
+                    "res-book-desig-code": "T"
+                  },
+                  "duration": null,
+                  "baggage-rules": null
+                },
+                {
+                  "aircraft-type": "333",
+                  "airports": {
+                    "arrival": {
+                      "iata": "FRA"
+                    },
+                    "departure": {
+                      "iata": "YUL"
+                    }
+                  },
+                  "arrive-at": 1335508200,
+                  "depart-at": 1335459900,
+                  "cabin-class": {
+                    "code": "M",
+                    "name": "Economy"
+                  },
+                  "flight-number": 874,
+                  "carriers": {
+                    "marketing": {
+                      "iata": "AC"
+                    },
+                    "operating": {
+                      "iata": "AC"
+                    }
+                  },
+                  "remaining-seats": 9,
+                  "gds-information": {
+                    "res-book-desig-code": "T"
+                  },
+                  "duration": null,
+                  "technical-stops": null,
+                  "baggage-rules": null
+                },
+                {
+                  "aircraft-type": "321",
+                  "airports": {
+                    "arrival": {
+                      "iata": "TXL"
+                    },
+                    "departure": {
+                      "iata": "FRA"
+                    }
+                  },
+                  "arrive-at": 1335516300,
+                  "depart-at": 1335512100,
+                  "cabin-class": {
+                    "code": "M",
+                    "name": "Economy"
+                  },
+                  "flight-number": 9247,
+                  "carriers": {
+                    "marketing": {
+                      "iata": "AC"
+                    },
+                    "operating": {
+                      "iata": "",
+                      "name": "LUFTHANSA OR LH CITYLINE"
+                    }
+                  },
+                  "remaining-seats": 4,
+                  "gds-information": {
+                    "res-book-desig-code": "T"
+                  },
+                  "duration": null,
+                  "technical-stops": null,
+                  "baggage-rules": null
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      "_calculation": {
+        "flight": {
+          "total": 4720.66,
+          "fare": {
+            "total": 3085.33,
+            "passenger-types": {
+              "adult": 1125.11,
+              "child": 980.11,
+              "infant": null
+            }
+          },
+          "tax": {
+            "total": 1635.33,
+            "passenger-types": {
+              "adult": 545.11,
+              "child": 545.11,
+              "infant": null
+            }
+          }
+        },
+        "currency": "EUR",
+        "payment-methods": [
+          {
+            "payment-fee": {
+              "total": 0,
+              "passenger-types": {
+                "adult": 0,
+                "child": 0,
+                "infant": null
+              }
+            },
+            "service-fee": null,
+            "name": "_default"
+          }
+        ],
+        "reductions": null
+      },
+      "_gds-information": null
+    }
+  ]
+}

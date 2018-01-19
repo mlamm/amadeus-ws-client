@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Tests\FlightSearch\Exception;
 
-use Flight\Service\Amadeus\Search\Exception\ServiceRequestAuthenticationFailedException;
 use Codeception\Test\Unit;
+use Flight\Service\Amadeus\Search\Exception\ServiceRequestAuthenticationFailedException;
 
 /**
  * ServiceRequestAuthenticationFailedExceptionTest.php

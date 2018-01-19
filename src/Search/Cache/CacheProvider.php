@@ -5,6 +5,7 @@ namespace Flight\Service\Amadeus\Search\Cache;
 
 use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\Common\Cache\MemcachedCache;
+use Flight\Service\Amadeus\Search\Exception\SystemRequirementException;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -24,8 +25,6 @@ class CacheProvider implements ServiceProviderInterface
      */
     public function register(Container $app) : void
     {
-        $config = $app['config'];
-
         // register cache which does not store anything
         $app['cache.flights.void'] = function () {
             return new DoctrineFlightCache(
@@ -35,7 +34,12 @@ class CacheProvider implements ServiceProviderInterface
         };
 
         // register cache which stores in apcu (local memory)
-        $app['cache.flights.apcu'] = function () use ($app, $config) {
+        $app['cache.flights.apcu'] = function ($app) {
+            if (!extension_loaded('apcu')) {
+                throw new SystemRequirementException('apuc php extension is missing on your system!');
+            }
+            $config = $app['config'];
+
             return new ExceptionLoggingCache(
                 new CompressingFlightCache(
                     new DoctrineFlightCache(
@@ -48,7 +52,8 @@ class CacheProvider implements ServiceProviderInterface
         };
 
         // register cache which stores on disk
-        $app['cache.flights.file'] = function () use ($app, $config) {
+        $app['cache.flights.file'] = function ($app) {
+            $config = $app['config'];
             return new ExceptionLoggingCache(
                 new CompressingFlightCache(
                     new DoctrineFlightCache(
@@ -61,12 +66,16 @@ class CacheProvider implements ServiceProviderInterface
         };
 
         // register cache which stores in memcache
-        $app['cache.flights.memcache'] = function () use ($app, $config) {
+        $app['cache.flights.memcached'] = function ($app) {
+            if (!extension_loaded('memcached')) {
+                throw new SystemRequirementException('memcached php extension is missing on your system!');
+            }
+            $config = $app['config'];
             $memcachedCache = new MemcachedCache();
             $memcachedCache->setMemcached(new \Memcached('ama-flights'));
             $memcachedCache->getMemcached()->addServer(
-                $config->search->flight_cache->memcache->host,
-                $config->search->flight_cache->memcache->port
+                $config->search->flight_cache->memcached->host,
+                $config->search->flight_cache->memcached->port
             );
 
             // use builtin compression which is quite fast
@@ -82,7 +91,11 @@ class CacheProvider implements ServiceProviderInterface
         };
 
         // register cache which stores in redis
-        $app['cache.flights.redis'] = function () use ($app, $config) {
+        $app['cache.flights.redis'] = function ($app) {
+            if (!extension_loaded('redis')) {
+                throw new SystemRequirementException('redis php extension is missing on your system!');
+            }
+            $config = $app['config'];
             $redis = new \Redis();
             $redis->connect(
                 $config->search->flight_cache->redis->host,
@@ -104,7 +117,8 @@ class CacheProvider implements ServiceProviderInterface
         };
 
         // builds the cache from the adapter set in the config
-        $app['cache.flights'] = function () use ($app, $config) {
+        $app['cache.flights'] = function ($app) {
+            $config = $app['config'];
             $cacheName = "cache.flights.{$config->search->flight_cache->adapter}";
             return $app[$cacheName];
         };

@@ -20,7 +20,29 @@ class UnitTester extends \Codeception\Actor
 {
     use _generated\UnitTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    /**
+     * Validate the json string against the schema
+     *
+     * @param $data
+     * @param $schema
+     */
+    public function canSeeJsonStringIsValidOnSchema($data, $schema)
+    {
+        $schemaRef = (object)['$ref' => 'file://' . realpath($schema)];
+
+        $validator = new \JsonSchema\Validator();
+        $decodedResponse = json_decode($data);
+        $validator->validate($decodedResponse, $schemaRef);
+
+        $message = '';
+        $isValid = $validator->isValid();
+        if (!$isValid) {
+            $message = 'JSON does not validate. Violations:' . PHP_EOL;
+            foreach ($validator->getErrors() as $error) {
+                $message .= $error['property'] . ' ' . $error['message'] . PHP_EOL;
+            }
+        }
+
+        $this->assertTrue($isValid, $message);
+    }
 }

@@ -8,5 +8,5 @@ var/docs
 node_modules
 config/app.yml
 composer.phar
+.ssh_config
 .idea
-composer.lock

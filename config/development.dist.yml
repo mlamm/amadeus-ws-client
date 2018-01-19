@@ -11,9 +11,9 @@ search:
         - C
 
     flight_cache:
-        adapter: void   # options are: void, apcu, file, memcache, redis (@see CacheProvider)
+        adapter: void   # options are: void, apcu, file, memcached, redis (@see CacheProvider)
         life_time: 3600
-        memcache:
+        memcached:
             host: amadeus-memcache
             port: 11211
         redis:
@@ -276,6 +276,7 @@ response:
         - JSON_UNESCAPED_SLASHES
 
 debug:
+    log_ama_traffic: true
     pimpledump:
         enabled: true
     throwup:

@@ -1,45 +1,56 @@
 <?php
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use \Flight\Service\Amadeus\Search\Provider\ErrorProvider;
+use Flight\Service\Amadeus\Application\Config\CachedConfig;
+use Flight\Service\Amadeus\Application\Middleware\JsonEncodingOptions;
+use Flight\Service\Amadeus\Application\Provider\ErrorProvider;
+use Flight\Service\Amadeus\Search\Cache\CacheProvider;
+use Flight\Service\Amadeus\Search\Provider\SearchServiceProvider;
 use Silex\Application;
+use Symfony\Component\Yaml\Yaml;
 
-set_time_limit(0);
-ini_set('display_errors', 0);
-ini_set('html_errors', 0);
+// send all errors to the error handler
 error_reporting(E_ALL);
+
+// allow no plain text messages in the service response
+ini_set('display_errors', 0);
+
+// use php builtin error logging until our own error handler has been registered
+ini_set('log_errors', 1);
+ini_set('error_log', 'php://stdout');
 
 chdir(__DIR__ . '/..');
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $app = new Application();
 
-$errorProvider = new ErrorProvider();
-$errorProvider->registerHandlers();
-
-$app->register($errorProvider);
+$app->register(new ErrorProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
+$app->register(new CacheProvider());
 
-// set json ecoding options from config
-$app->after(function (Request $request, Response $response) use ($app) {
-    if ($response instanceof JsonResponse) {
-        if (isset($app['config']->response->json_encoding_options)) {
-            $value = 0;
-            foreach ($app['config']->response->json_encoding_options as $option) {
-                $value |= constant($option);
-            }
-            $response->setEncodingOptions($value);
-        }
-    }
-});
+// switch to mock service responses for api tests
+$useMockAmaResponses = env('MOCK_AMA_RESPONSE_IN_TEST', 'disabled') === 'enabled'
+    && isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] === 'Symfony BrowserKit';
+
+$app->register(new SearchServiceProvider($useMockAmaResponses));
 
 // register config
-$app['config'] = $config = \Symfony\Component\Yaml\Yaml::parse(
-    file_get_contents(__DIR__ . '/../config/app.yml'),
-    \Symfony\Component\Yaml\Yaml::PARSE_OBJECT_FOR_MAP
-);
+$app['config'] = function () {
+    return CachedConfig::load(
+        env('CONFIG_CACHING', 'enabled') !== 'disabled',
+        __DIR__ . '/../var/cache/config',
+        function () {
+            return Yaml::parse(
+                file_get_contents(__DIR__ . '/../config/app.yml'),
+                Yaml::PARSE_OBJECT_FOR_MAP
+            );
+        }
+    );
+};
+
+$config = $app['config'];
+
+// set json ecoding options from config
+$app->after(new JsonEncodingOptions($config));
 
 // search
 $app['businesscase.search'] = function () use ($app) {
@@ -146,7 +157,6 @@ $app->register(new \Flight\Service\Amadeus\Search\Cache\CacheProvider());
 // application provider
 $app->mount('/', new \Flight\Service\Amadeus\Index\IndexProvider());
 $app->mount('/flight-search', new Flight\Service\Amadeus\Search\SearchProvider());
-$app->mount('/remarks', new Flight\Service\Amadeus\Remarks\RemarksProvider());
 
 if ($config->debug->pimpledump->enabled) {
     $app->register(new \Sorien\Provider\PimpleDumpProvider(), [

@@ -1,6 +1,13 @@
 version: "2"
 
 services:
+  amadeus-nginx:
+    image: 630542070554.dkr.ecr.eu-central-1.amazonaws.com/flight/invia/service/amadeus/nginx:latest
+    container_name: amadeus-nginx
+    volumes:
+      - ./web:/var/www/web
+      - amadeus-php-sock:/sock
+
   amadeus-php:
     image: 630542070554.dkr.ecr.eu-central-1.amazonaws.com/flight/invia/service/amadeus/app:latest
     container_name: amadeus-php
@@ -8,9 +15,11 @@ services:
       COMPOSE_HTTP_TIMEOUT: 120
     volumes:
       - ./:/var/www
+      - amadeus-php-sock:/sock
 
-  amadeus-nginx:
-    image: 630542070554.dkr.ecr.eu-central-1.amazonaws.com/flight/invia/service/amadeus/nginx:latest
-    container_name: amadeus-nginx
-    volumes:
-      - ./:/var/www
+  redis:
+    image: redis:3.2.10
+    container_name: amadeus-redis
+
+volumes:
+  amadeus-php-sock:

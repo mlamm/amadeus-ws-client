@@ -15,6 +15,7 @@ Possible error codes:
 | ARS0002 | INVALID OR MISSING REQUEST PARAM                                             | given field(s) of the request has an invalid value/format            |
 | ARS0003 | The `Amadeus\Client::securityAuthenticate` method didn't return state OK     | the credentials sent with request are invalid                        |
 | ARS0004 | AMADEUS RESPONSE ERROR [{errNo., message}]                                   | the request was technical valid, Amadeus returns failure             |
+| ARS0005 | A message that describes the missing system requirement                      | something like a missing php extension                               |
 
 
 #### Search [POST /flight-search/]
@@ -25,9 +26,9 @@ format.
 
 + Request
     + Headers
-    
+
             content-type: application/json
-    
+
     + Attributes
         + `agent`: fluege.de (string, optional) - a string representation of the requesting client
         + `adults`: 2 (number, required) - number of adults
@@ -35,9 +36,9 @@ format.
         + `infants`: 0 (number, required) - number of infants
         + `filter-cabin-class` (array, optional)
             + Y, F, C (enum) - request with this cabin class(es)
-        + `filter-airline`: AB (array, optional) - list of airline IATA codes 
+        + `filter-airline`: AB (array, optional) - list of airline IATA codes
         + `filter-stops`: 0 (number, optional) - if set to zero, will only return non-stop flights
-        + `legs` (array, fixed-type, required) 
+        + `legs` (array, fixed-type, required)
             + (object)
                 + `departure`: BER (string, required) - name of departure IATA airport code
                 + `arrival`: LON (string, required) - name of arrival IATA airport code
@@ -48,7 +49,6 @@ format.
                 + (object)
                     + `content-provider`: amadeus (string, required) - requested content provider
                     + `type` : `one-way`, `round-trip`, `open-jaw` (enum, required) - requested type of offers
-                    + `fare-type`: net (string, required) - flag how fare should be returned
                     + `options`
                         + `result-limit`: 10 (number, optional) - limit of requested offers
                         + `is-one-way-combination`: true (boolean, required) - flag if a combination of one way flights is requested
@@ -62,7 +62,7 @@ format.
                         + `password-data`: NAJAJKDGHK44jhHkjad278478 (string, required) - password for GDS request
                         + `password-length`: 14 (number, required) - length of password
                         + `organization`: `NMC-GERMAN` (string, required) - organization info
-        
+
 
 + Response 200 (application/hal+json)
 
@@ -78,38 +78,50 @@ format.
                             + (object)
                                 + `provider`: amadeus (enum, required) - requested gds
                                 + `classification`: scheduled, lowcost, charter (enum, required) - classification of leg information
-                                + `carriers` - carrier information
-                                    + `main`
+                                + `carriers` (required) - carrier information
+                                    + `main` (required)
                                         + `iata`: AB (string, required) - IATA code of the main provider
+                                    + `validating` (required)
+                                        + `iata`: AB (string, required) - IATA code of the validating carrier
                                 + `duration`: 7200 (number, required) - flight duration of leg in seconds
                                 + `nights`: 1 (number, required) - amount of nights
-                                + `segments` (array, fixed-type)
+                                + `segments` (array, fixed-type, required)
                                     + (object)
                                         + `aircraft-type`: 747 (string, required) - type of aircraft providing the flight
-                                        + `airports`
-                                            + `arrival`
+                                        + `airports` (required)
+                                            + `arrival` (required)
                                                 + `iata`: STN (string, required) - IATA code of arrival airport
-                                            + `departure`
+                                            + `departure` (required)
                                                 + `iata`: SXF (string, required) - IATA code of departure airport
                                         + `arrive-at`: 1503831600 (number, required) - arrival timestamp in local time
                                         + `depart-at`: 1503828000 (number, required) - departure timestamp in local time
-                                        + `cabin-class`
+                                        + `cabin-class` (required)
                                             + `code`: C, F, M, W, Y (enum, required) - code for offered cabin class
                                             + `name`: Economy (string, required) - name of offered cabin class
                                         + `flight-number`: 8543 (number, required) - number of the offered flight
-                                        + `carriers`
-                                            + `marketing`
+                                        + `carriers` (required)
+                                            + `marketing` (required)
                                                 + `iata`: AB (string, required) - IATA code of the marketing carrier
-                                            + `operating`
-                                                + `iata`: AB (string, required) - IATA code of the operating carrier
-                                        + `remaining-seats`: 9 (number, optional) - number of seats remaining for that flight
-                                        + `baggage-rules`
-                                            + `pieces`: 1 (number, optional) - number of baggage pieces included
-                                            + `weight`: 20 (number, optional) - value of baggage weight
-                                            + `unit`: KG  (string, optional) - unit of baggage weight
-                                        + `gds-information`
-                                            + `provider`: amadeus (string, optional)
+                                            + `operating` (required, nullable)
+                                                + `iata`: LH (string, required) - IATA code of the operating carrier
+                                                + `name`: LUFTHANSA OR LH CITYLINE (string, optional)
+
+                                                    Name of the operating carrier.
+                                                    Only given in some cases. The iata code will be an empty string in those cases.
+
+                                        + `remaining-seats`: 9 (number, nullable) - number of seats remaining for that flight
+                                        + `baggage-rules` (nullable)
+                                            + `pieces`: 1 (number, nullable) - number of baggage pieces included
+                                            + `weight`: 20 (number, nullable) - value of baggage weight
+                                            + `unit`: KG  (string, nullable) - unit of baggage weight
+                                        + `gds-information` (required)
                                             + `res-book-desig-code`: Y (string, required) - the "reservation booking designator" code
+                                        + `technical-stops` (array, fixed-type, nullable)
+                                            + (object)
+                                                + `arrive-at`: 1503831600 (number, required) - arrival timestamp in local time
+                                                + `depart-at`: 1503832600 (number, required) - departure timestamp in local time
+                                                + `airport` (required)
+                                                    + `iata`: YQB (string, required) - IATA code of the stopover airport
                 + `_calculation`
                     + `flight`
                         + `total`: 1479.96 (number, required) - total price including fare and tax for all requested passengers
@@ -117,21 +129,21 @@ format.
                             + `total`: 1319.46 (number, required) - total fare for all requested passengers
                             + `passenger-types`
                                 + `adult`: 659.73 (number, required) - fare price for each adult passenger
-                                + `child`: 659.73 (number, required) - fare price for each child passenger
-                                + `infant`: 659.73 (number, required) - fare price for each infant passenger
+                                + `child`: 659.73 (number, nullable, required) - fare price for each child passenger
+                                + `infant`: 659.73 (number, nullable, required) - fare price for each infant passenger
                         + `tax`
                             + `total`: 160.50 (number, required) - total fare for all requested passengers
                             + `passenger-types`
                                 + `adult`: 80.25 (number, required) - tax for each adult passenger
-                                + `child`: 80.25 (number, required) - tax for each child passenger
-                                + `infant`: 80.25 (number, required) - tax for each infant passenger
+                                + `child`: 80.25 (number, nullable, required) - tax for each child passenger
+                                + `infant`: 80.25 (number, nullable, required) - tax for each infant passenger
                     + `payment-methods` (array, fixed-type, required)
                         + (object)
                             + `payment-fee` (required)
                                 + `passenger-types` (required)
                                     + `adult`: 3.79 (number, required)
-                                    + `child`: 0 (number, required)
-                                    + `infant`: 0 (number, required)
+                                    + `child`: 0 (number, nullable, required)
+                                    + `infant`: 0 (number, nullable, required)
                                 + `total`: 7.58 (number, required)
                             + `name`: _default (enum, required)
                     + `currency`: EUR (required) - currency of the fare and tax values
@@ -140,21 +152,21 @@ format.
 + Response 400 (application/hal+json)
 
     request contains invalid parameters or is malformed
-    
+
     + Attributes
         + errors - list of errors associated with each property of the request
             + adults (array, fixed-type)
                 + (object)
                      + code: ARS0002 (string) - internal error code
                      + message: `INVALID OR MISSING REQUEST PARAM - adults must be an integer` (string) - error message
-                     + status: 400 (number) - http response code          
+                     + status: 400 (number) - http response code
         + Include SelfLink
 
 
 + Response 404 (application/hal+json)
 
     requested route not found
-    
+
     + Attributes
         + errors
             + `_` (array, fixed-type)
@@ -170,7 +182,7 @@ format.
     This response represents an internal server error response.
 
      internal server error
-        
+
     + Attributes
         + errors
             + `_` (array, fixed-type)
@@ -179,7 +191,7 @@ format.
                     + message: SERVER ERROR (string) - error message
                     + status: 500 (number) - http response code
         + Include SelfLink
-        
+
 ## Healthcheck [/health/]
 
 This endpoint will report main state of the service
@@ -188,27 +200,28 @@ This endpoint will report main state of the service
 
 + Request
     + Headers
-        
+
             Accept: text/plain
-    
+
 + Response 200 (text/plain)
-    
+
             I am alive.
+
 ### Healthcheck [GET]
 
 + Request
     + Headers
-        
+
             Accept: text/plain
-    
+
 + Response 200 (text/plain)
-    
+
             I am alive.
 
 # Data Structures
 
-## SelfLink (object) 
-        
+## SelfLink (object)
+
    + _links
        + self
            + href: `/flight-search`

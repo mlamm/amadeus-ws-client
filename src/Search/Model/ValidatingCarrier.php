@@ -5,7 +5,7 @@ namespace Flight\Service\Amadeus\Search\Model;
 
 use Doctrine\Common\Collections\Collection;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\Carrier;
-use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\Carriers;
+use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\LegCarriers;
 
 /**
  * ValidatingCarrier.php
@@ -33,7 +33,7 @@ class ValidatingCarrier
         }
     }
 
-    public function addToCarriers(Carriers $carriers) : Carriers
+    public function addToCarriers(LegCarriers $carriers) : LegCarriers
     {
         if ($this->validatingCarrier !== null) {
             $carriers->setValidating(new Carrier());

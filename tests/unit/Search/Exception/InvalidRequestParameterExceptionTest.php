@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Tests\Search\Exception;
 
-use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
 use Codeception\Test\Unit;
+use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
 use Particle\Validator\Failure;
 
 /**

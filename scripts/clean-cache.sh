@@ -6,3 +6,7 @@ info "clean up profiler cache..."
 docker run --rm -v $(pwd):/app -w /app busybox rm var/cache/profiler/* -rf
 info "clean up twig cache..."
 docker run --rm -v $(pwd):/app -w /app busybox rm var/cache/twig/* -rf
+info "clean up config cache..."
+docker run --rm -v $(pwd):/app -w /app busybox rm var/cache/config -rf
+info "clean up temp files..."
+docker run --rm -v $(pwd):/app -w /app busybox rm var/docs/* -rf

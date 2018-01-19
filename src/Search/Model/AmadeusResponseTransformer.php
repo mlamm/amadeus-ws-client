@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
+use Flight\SearchRequestMapping\Entity\Request as SearchRequest;
 
 /**
  * Class AmadeusResponseTransformer
@@ -16,11 +17,23 @@ class AmadeusResponseTransformer
     private const CLASSIFICATION_SCHEDULED = 'scheduled';
 
     /**
-     * @param BusinessCase $businessCase
-     * @param Result       $amadeusResult
+     * Build a response with an empty result
+     *
      * @return SearchResponse
      */
-    public function mapResultToDefinedStructure(BusinessCase $businessCase, Result $amadeusResult) : SearchResponse
+    public function createEmptyResponse() : SearchResponse
+    {
+        return (new SearchResponse())->setResult(new ArrayCollection());
+    }
+
+    /**
+     * @param BusinessCase  $businessCase
+     * @param SearchRequest $request
+     * @param Result        $amadeusResult
+     *
+     * @return SearchResponse
+     */
+    public function mapResultToDefinedStructure(BusinessCase $businessCase, SearchRequest $request, Result $amadeusResult) : SearchResponse
     {
         $searchResponse = new SearchResponse();
         $searchResponse->setResult(new ArrayCollection());
@@ -28,7 +41,7 @@ class AmadeusResponseTransformer
         $legIndex = new LegIndex($amadeusResult);
         $freeBaggageIndex = new FreeBaggageIndex($amadeusResult);
         $conversionRateDetail = new NodeList($amadeusResult->response->conversionRate->conversionRateDetail);
-
+        $companyTextIndex = CompanyTextIndex::fromSearchResult($amadeusResult);
 
         // A single <recommendation> can contain multiple flights.
         // Returns a flat list of all flights from the recommendations and their segmentFlightRefs
@@ -54,11 +67,13 @@ class AmadeusResponseTransformer
                 $segmentFlightRefs,
                 $legIndex,
                 $freeBaggageIndex,
-                $fareProducts
+                $fareProducts,
+                $companyTextIndex
             );
 
             $this->setupCalculation(
                 $result,
+                $request,
                 $conversionRateDetail,
                 $fareProducts
             );
@@ -76,6 +91,7 @@ class AmadeusResponseTransformer
      * @param LegIndex              $legIndex
      * @param FreeBaggageIndex      $freeBaggageIndex
      * @param Collection            $fareProducts
+     * @param \ArrayAccess          $companyTextIndex
      */
     private function setupItinerary(
         SearchResponse\Result $result,
@@ -83,7 +99,8 @@ class AmadeusResponseTransformer
         SegmentFlightref $segmentFlightRefs,
         LegIndex $legIndex,
         FreeBaggageIndex $freeBaggageIndex,
-        Collection $fareProducts
+        Collection $fareProducts,
+        \ArrayAccess $companyTextIndex
     ) : void {
 
         $result
@@ -102,7 +119,8 @@ class AmadeusResponseTransformer
                 $legOffset,
                 $refToGroupOfFlights,
                 $fareDetails,
-                $validatingCarrier
+                $validatingCarrier,
+                $companyTextIndex
             );
 
             $result->getItinerary()->getLegs()->add(new ArrayCollection([$leg]));
@@ -111,11 +129,13 @@ class AmadeusResponseTransformer
 
     /**
      * @param SearchResponse\Result $result
+     * @param SearchRequest         $request
      * @param Collection            $conversionRateDetail
      * @param Collection            $fareProducts
      */
     private function setupCalculation(
         SearchResponse\Result $result,
+        SearchRequest $request,
         Collection $conversionRateDetail,
         Collection $fareProducts
     ) : void {
@@ -147,16 +167,16 @@ class AmadeusResponseTransformer
         $childFares = PaxFareDetails::childFromFareProducts($fareProducts);
         $infantFares = PaxFareDetails::infantFromFareProducts($fareProducts);
 
-        $result->getCalculation()->getFlight()->getFare()->getPassengerTypes()->setAdult($adultFares->getFarePerPax());
-        $result->getCalculation()->getFlight()->getFare()->getPassengerTypes()->setChild($childFares->getFarePerPax());
-        $result->getCalculation()->getFlight()->getFare()->getPassengerTypes()->setInfant($infantFares->getFarePerPax());
+        $result->getCalculation()->getFlight()->getFare()->getPassengerTypes()->setAdult($adultFares->getFarePerPax() );
+        $result->getCalculation()->getFlight()->getFare()->getPassengerTypes()->setChild($request->getChildren() ? $childFares->getFarePerPax() : null);
+        $result->getCalculation()->getFlight()->getFare()->getPassengerTypes()->setInfant($request->getInfants() ? $infantFares->getFarePerPax() : null);
         $result->getCalculation()->getFlight()->getFare()->setTotal(
             $adultFares->getTotalFareAmount() + $childFares->getTotalFareAmount() + $infantFares->getTotalFareAmount()
         );
 
-        $result->getCalculation()->getFlight()->getTax()->getPassengerTypes()->setChild($childFares->getTaxPerPax());
         $result->getCalculation()->getFlight()->getTax()->getPassengerTypes()->setAdult($adultFares->getTaxPerPax());
-        $result->getCalculation()->getFlight()->getTax()->getPassengerTypes()->setInfant($infantFares->getTaxPerPax());
+        $result->getCalculation()->getFlight()->getTax()->getPassengerTypes()->setChild($request->getChildren() ? $childFares->getTaxPerPax() : null);
+        $result->getCalculation()->getFlight()->getTax()->getPassengerTypes()->setInfant($request->getInfants() ? $infantFares->getTaxPerPax(): null);
         $result->getCalculation()->getFlight()->getTax()->setTotal(
             $adultFares->getTotalTaxAmount() + $childFares->getTotalTaxAmount() + $infantFares->getTotalTaxAmount()
         );
@@ -172,8 +192,8 @@ class AmadeusResponseTransformer
         $defaultPaymentMethod->setName('_default');
 
         $defaultPaymentMethod->getPaymentFee()->getPassengerTypes()->setAdult($adultFares->getPaymentFeesPerPax());
-        $defaultPaymentMethod->getPaymentFee()->getPassengerTypes()->setChild($childFares->getPaymentFeesPerPax());
-        $defaultPaymentMethod->getPaymentFee()->getPassengerTypes()->setInfant($infantFares->getPaymentFeesPerPax());
+        $defaultPaymentMethod->getPaymentFee()->getPassengerTypes()->setChild($request->getChildren() ? $childFares->getPaymentFeesPerPax() : null);
+        $defaultPaymentMethod->getPaymentFee()->getPassengerTypes()->setInfant($request->getInfants() ? $infantFares->getPaymentFeesPerPax() : null);
         $defaultPaymentMethod->getPaymentFee()->setTotal(
             $adultFares->getTotalPaymentFees() + $childFares->getTotalPaymentFees() + $infantFares->getTotalPaymentFees()
         );
@@ -186,19 +206,22 @@ class AmadeusResponseTransformer
      *
      * @param LegIndex          $legIndex
      * @param FreeBaggageIndex  $freeBaggageIndex
-     * @param string            $legOffset
+     * @param int               $legOffset
      * @param string            $refToGroupOfFlights
      * @param Collection        $fareDetails
      * @param ValidatingCarrier $validatingCarrier
+     * @param \ArrayAccess      $companyTextIndex
+     *
      * @return SearchResponse\Leg
      */
     private function mapLeg(
         LegIndex $legIndex,
         FreeBaggageIndex $freeBaggageIndex,
-        string $legOffset,
+        int $legOffset,
         string $refToGroupOfFlights,
         Collection $fareDetails,
-        ValidatingCarrier $validatingCarrier
+        ValidatingCarrier $validatingCarrier,
+        \ArrayAccess $companyTextIndex
     ) : SearchResponse\Leg {
 
         $itineraryLeg = new SearchResponse\Leg();
@@ -214,7 +237,7 @@ class AmadeusResponseTransformer
             $itineraryLeg->setDuration($proposals->getElapsedFlyingTime());
         }
 
-        $itineraryLeg->setCarriers(new SearchResponse\Carriers());
+        $itineraryLeg->setCarriers(new SearchResponse\LegCarriers());
 
         if ($proposals->hasMajorityCarrier()) {
             $itineraryLeg->getCarriers()
@@ -231,8 +254,8 @@ class AmadeusResponseTransformer
             // set arrival and departure
             $legSegment->setAirports(new SearchResponse\Airports());
 
-            $departure = @$segment->flightInformation->location[0]->locationId;
-            $arrival = @$segment->flightInformation->location[1]->locationId;
+            $departure = $segment->flightInformation->location[0]->locationId ?? null;
+            $arrival = $segment->flightInformation->location[1]->locationId ?? null;
 
             if ($departure !== null) {
                 $legSegment
@@ -251,45 +274,26 @@ class AmadeusResponseTransformer
             }
 
             // set arrive-at and depart-at
-            $departAtDate = @$segment->flightInformation->productDateTime->dateOfDeparture;
-            $departAtTime = @$segment->flightInformation->productDateTime->timeOfDeparture;
+            $departAtDate = $segment->flightInformation->productDateTime->dateOfDeparture ?? null;
+            $departAtTime = $segment->flightInformation->productDateTime->timeOfDeparture ?? null;
 
-            $arriveAtDate = @$segment->flightInformation->productDateTime->dateOfArrival;
-            $arriveAtTime = @$segment->flightInformation->productDateTime->timeOfArrival;
+            $arriveAtDate = $segment->flightInformation->productDateTime->dateOfArrival ?? null;
+            $arriveAtTime = $segment->flightInformation->productDateTime->timeOfArrival ?? null;
 
             if ($departAtDate !== null && $departAtTime !== null) {
                 $legSegment->setDepartAt(
-                    \DateTime::createFromFormat('dmyHi', "$departAtDate$departAtTime")
+                    DateTime::fromDateAndTime($departAtDate, $departAtTime)
                 );
             }
 
             if ($arriveAtDate !== null && $arriveAtTime !== null) {
                 $legSegment->setArriveAt(
-                    \DateTime::createFromFormat('dmyHi', "$arriveAtDate$arriveAtTime")
+                    DateTime::fromDateAndTime($arriveAtDate, $arriveAtTime)
                 );
             }
 
             // set carriers
-            $marketingCarrier = $segment->flightInformation->companyId->marketingCarrier ?? null;
-            $operatingCarrier = $segment->flightInformation->companyId->operatingCarrier ?? null;
-
-            $legSegment->setCarriers(new SearchResponse\Carriers());
-
-            if ($marketingCarrier !== null) {
-                $legSegment
-                    ->getCarriers()
-                        ->setMarketing(new SearchResponse\Carrier())
-                        ->getMarketing()
-                            ->setIata($marketingCarrier);
-            }
-
-            if ($operatingCarrier !== null) {
-                $legSegment
-                    ->getCarriers()
-                        ->setOperating(new SearchResponse\Carrier())
-                        ->getOperating()
-                            ->setIata($operatingCarrier);
-            }
+            Carriers::writeToSegment($legSegment, $segment, $companyTextIndex);
 
             // set flight number
             $flightNumber = $segment->flightInformation->flightNumber
@@ -302,7 +306,7 @@ class AmadeusResponseTransformer
             }
 
             // set aircraft type
-            $aircraft = @$segment->flightInformation->productDetail->equipmentType;
+            $aircraft = $segment->flightInformation->productDetail->equipmentType ?? null;
 
             if ($aircraft !== null) {
                 $legSegment
@@ -323,6 +327,8 @@ class AmadeusResponseTransformer
                         ->setPieces($baggageDetails->freeAllowance);
                 }
             }
+
+            TechnicalStops::writeToSegment($legSegment, $segment);
 
             $itineraryLeg->getSegments()->add($legSegment);
         }

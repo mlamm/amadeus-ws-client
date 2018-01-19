@@ -2,23 +2,21 @@
 namespace Flight\Service\Amadeus\Tests\Search;
 
 use Amadeus\Client;
+use Codeception\Test\Unit;
+use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
-use Flight\Service\Amadeus\Search\Exception\ServiceRequestAuthenticationFailedException;
 use Flight\Service\Amadeus\Search\Model\AmadeusClient;
 use Flight\Service\Amadeus\Search\Model\AmadeusRequestTransformer;
 use Flight\Service\Amadeus\Search\Model\AmadeusResponseTransformer;
+use Flight\Service\Amadeus\Search\Model\ClientParamsFactory;
 use Flight\Service\Amadeus\Tests\Helper\RequestFaker;
-use Codeception\Test\Unit;
-use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * AmadeusClientTest.php
  *
  * test functionality of the class
  *
- * @covers Flight\Service\Amadeus\Search\Model\AmadeusClient
+ * @covers \Flight\Service\Amadeus\Search\Model\AmadeusClient
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -37,14 +35,9 @@ class AmadeusClientTest extends Unit
     private $object;
 
     /**
-     * @var \stdClass|\PHPUnit_Framework_MockObject_MockObject
+     * @var ClientParamsFactory|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $config;
-
-    /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $logger;
+    private $clientParamsFactory;
 
     /**
      * @var AmadeusRequestTransformer|\PHPUnit_Framework_MockObject_MockObject
@@ -63,8 +56,8 @@ class AmadeusClientTest extends Unit
 
     protected function _before()
     {
-        $this->config = new \stdClass();
-        $this->logger = new NullLogger();
+        $this->clientParamsFactory = $this->getMockBuilder(ClientParamsFactory::class)
+            ->disableOriginalConstructor()->getMock();
         $this->requestTransformer = $this->getMockBuilder(AmadeusRequestTransformer::class)
             ->disableOriginalConstructor()->getMock();
         $this->responseTransformer = $this->getMockBuilder(AmadeusResponseTransformer::class)
@@ -76,8 +69,7 @@ class AmadeusClientTest extends Unit
         };
 
         $this->object = new AmadeusClient(
-            $this->config,
-            $this->logger,
+            $this->clientParamsFactory,
             $this->requestTransformer,
             $this->responseTransformer,
             $clientBuilder
@@ -86,6 +78,8 @@ class AmadeusClientTest extends Unit
 
     /**
      * Verify that the client is called with parameters from the request tranformer
+     *
+     * @throws AmadeusRequestException
      */
     public function testItCallsTheClient()
     {
@@ -97,9 +91,9 @@ class AmadeusClientTest extends Unit
         $amaResult->status = Client\Result::STATUS_OK;
         $expecedSearchResponse = new SearchResponse();
 
-        $this->requestTransformer
+        $this->clientParamsFactory
             ->expects($this->once())
-            ->method('buildClientParams')
+            ->method('buildFromBusinessCase')
             ->with($businessCase)
             ->willReturn($clientParams);
 
@@ -118,7 +112,7 @@ class AmadeusClientTest extends Unit
         $this->responseTransformer
             ->expects($this->once())
             ->method('mapResultToDefinedStructure')
-            ->with($businessCase, $amaResult)
+            ->with($businessCase, $request, $amaResult)
             ->willReturn($expecedSearchResponse);
 
         $searchResponse = $this->object->search($request, $businessCase);
@@ -127,6 +121,8 @@ class AmadeusClientTest extends Unit
 
     /**
      * Verify that it throws an exception if the return status of the ama call is not OK
+     *
+     * @throws AmadeusRequestException
      */
     public function testItThrowsOnServiceError()
     {
@@ -141,9 +137,9 @@ class AmadeusClientTest extends Unit
             new Client\Result\NotOk()
         ];
 
-        $this->requestTransformer
+        $this->clientParamsFactory
             ->expects($this->any())
-            ->method('buildClientParams')
+            ->method('buildFromBusinessCase')
             ->willReturn($clientParams);
 
         $this->requestTransformer
@@ -159,5 +155,46 @@ class AmadeusClientTest extends Unit
 
         $this->expectException(AmadeusRequestException::class);
         $this->object->search($request, $businessCase);
+    }
+
+    /**
+     * Does it return an empty result for some types of errors?
+     *
+     * @throws AmadeusRequestException
+     */
+    public function testItTreatsSomeErrorsAsEmptyResults()
+    {
+        $request = RequestFaker::buildDefaultRequest();
+        $businessCase = $request->getBusinessCases()->first()->first();
+        $clientParams = new Client\Params();
+        $requestOptions = new Client\RequestOptions\FareMasterPricerTbSearch();
+
+        $errorMessage = new Client\Result\NotOk;
+        $errorMessage->code = 931;
+
+        $amaResult = new Client\Result(new Client\Session\Handler\SendResult());
+        $amaResult->status = Client\Result::STATUS_ERROR;
+        $amaResult->messages = [$errorMessage];
+
+        $this->clientParamsFactory
+            ->expects($this->any())
+            ->method('buildFromBusinessCase')
+            ->willReturn($clientParams);
+
+        $this->requestTransformer
+            ->expects($this->any())
+            ->method('buildFareMasterRequestOptions')
+            ->willReturn($requestOptions);
+
+        $this->client
+            ->expects($this->once())
+            ->method('fareMasterPricerTravelBoardSearch')
+            ->with($requestOptions)
+            ->willReturn($amaResult);
+
+        $response = $this->object->search($request, $businessCase);
+
+        $this->assertNotNull($response->getResult());
+        $this->assertCount(0, $response->getResult());
     }
 }

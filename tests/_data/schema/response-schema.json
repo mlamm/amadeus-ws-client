@@ -56,8 +56,24 @@
                             "required": [
                               "iata"
                             ]
+                          },
+                          "validating": {
+                            "type": "object",
+                            "properties": {
+                              "iata": {
+                                "type": "string",
+                                "description": "IATA code of the validating carrier"
+                              }
+                            },
+                            "required": [
+                              "iata"
+                            ]
                           }
                         },
+                        "required": [
+                          "main",
+                          "validating"
+                        ],
                         "description": "carrier information"
                       },
                       "duration": {
@@ -104,7 +120,11 @@
                                     "iata"
                                   ]
                                 }
-                              }
+                              },
+                              "required": [
+                                "arrival",
+                                "departure"
+                              ]
                             },
                             "arrive-at": {
                               "type": "number",
@@ -158,36 +178,62 @@
                                   ]
                                 },
                                 "operating": {
-                                  "type": "object",
+                                  "type": [
+                                    "object",
+                                    "null"
+                                  ],
                                   "properties": {
                                     "iata": {
                                       "type": "string",
                                       "description": "IATA code of the operating carrier"
+                                    },
+                                    "name": {
+                                      "type": "string",
+                                      "description": "Name of the operating carrier.\nOnly given in some cases. The iata code will be an empty string in those cases."
                                     }
                                   },
                                   "required": [
                                     "iata"
                                   ]
                                 }
-                              }
+                              },
+                              "required": [
+                                "marketing",
+                                "operating"
+                              ]
                             },
                             "remaining-seats": {
-                              "type": "number",
+                              "type": [
+                                "number",
+                                "null"
+                              ],
                               "description": "number of seats remaining for that flight"
                             },
                             "baggage-rules": {
-                              "type": "object",
+                              "type": [
+                                "object",
+                                "null"
+                              ],
                               "properties": {
                                 "pieces": {
-                                  "type": "number",
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ],
                                   "description": "number of baggage pieces included"
                                 },
                                 "weight": {
-                                  "type": "number",
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ],
                                   "description": "value of baggage weight"
                                 },
                                 "unit": {
-                                  "type": "string",
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ],
                                   "description": "unit of baggage weight"
                                 }
                               }
@@ -195,9 +241,6 @@
                             "gds-information": {
                               "type": "object",
                               "properties": {
-                                "provider": {
-                                  "type": "string"
-                                },
                                 "res-book-desig-code": {
                                   "type": "string",
                                   "description": "the \"reservation booking designator\" code"
@@ -206,13 +249,53 @@
                               "required": [
                                 "res-book-desig-code"
                               ]
+                            },
+                            "technical-stops": {
+                              "type": [
+                                "array",
+                                "null"
+                              ],
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "arrive-at": {
+                                    "type": "number",
+                                    "description": "arrival timestamp in local time"
+                                  },
+                                  "depart-at": {
+                                    "type": "number",
+                                    "description": "departure timestamp in local time"
+                                  },
+                                  "airport": {
+                                    "type": "object",
+                                    "properties": {
+                                      "iata": {
+                                        "type": "string",
+                                        "description": "IATA code of the stopover airport"
+                                      }
+                                    },
+                                    "required": [
+                                      "iata"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "arrive-at",
+                                  "depart-at",
+                                  "airport"
+                                ]
+                              }
                             }
                           },
                           "required": [
                             "aircraft-type",
+                            "airports",
                             "arrive-at",
                             "depart-at",
-                            "flight-number"
+                            "cabin-class",
+                            "flight-number",
+                            "carriers",
+                            "gds-information"
                           ]
                         }
                       }
@@ -220,8 +303,10 @@
                     "required": [
                       "provider",
                       "classification",
+                      "carriers",
                       "duration",
-                      "nights"
+                      "nights",
+                      "segments"
                     ]
                   }
                 }
@@ -257,11 +342,11 @@
                             "description": "fare price for each adult passenger"
                           },
                           "child": {
-                            "type": "number",
+                            "type": ["number", "null"],
                             "description": "fare price for each child passenger"
                           },
                           "infant": {
-                            "type": "number",
+                            "type": ["number", "null"],
                             "description": "fare price for each infant passenger"
                           }
                         },
@@ -291,11 +376,11 @@
                             "description": "tax for each adult passenger"
                           },
                           "child": {
-                            "type": "number",
+                            "type": ["number", "null"],
                             "description": "tax for each child passenger"
                           },
                           "infant": {
-                            "type": "number",
+                            "type": ["number", "null"],
                             "description": "tax for each infant passenger"
                           }
                         },
@@ -327,13 +412,16 @@
                           "type": "object",
                           "properties": {
                             "adult": {
-                              "type": "number"
+                              "type": "number",
+                              "description": "payment fee for each adult passenger"
                             },
                             "child": {
-                              "type": "number"
+                              "type": ["number", "null"],
+                              "description": "payment fee for each child passenger"
                             },
                             "infant": {
-                              "type": "number"
+                              "type": ["number", "null"],
+                              "description": "payment fee for each infant passenger"
                             }
                           },
                           "required": [
