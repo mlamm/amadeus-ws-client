@@ -45,20 +45,17 @@ class RemarksAmadeusClient
     protected $clientBuilder;
 
     /**
-     * @param \stdClass                  $config
      * @param LoggerInterface            $logger
      * @param AmadeusRequestTransformer  $requestTransformer
      * @param AmadeusResponseTransformer $responseTransformer
      * @param \Closure                   $clientBuilder
      */
     public function __construct(
-        \stdClass $config,
         LoggerInterface $logger,
         AmadeusRequestTransformer $requestTransformer,
         AmadeusResponseTransformer $responseTransformer,
         \Closure $clientBuilder
     ) {
-        $this->config = $config;
         $this->logger = $logger;
         $this->requestTransformer = $requestTransformer;
         $this->responseTransformer = $responseTransformer;

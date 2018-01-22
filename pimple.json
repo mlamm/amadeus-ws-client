@@ -225,7 +225,7 @@
         "value": "Flight\Service\Amadeus\\Search\\Model\\AmadeusClient"
     },
     {
-        "name": "remarksamadeus.client",
+        "name": "amadeus.client.remarks",
         "type": "class",
         "value": "Flight\Service\Amadeus\\Remarks\\Model\\RemarksAmadeusClient"
     }

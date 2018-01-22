@@ -25,14 +25,18 @@ class AmadeusRequestTransformer
      */
     protected $config;
 
+    protected $customSessionHandlerClass;
+
     /**
      * AmadeusRequestTransformer constructor.
      *
      * @param \stdClass $config
+     * @param null|string     $customSessionHandlerClass
      */
-    public function __construct(\stdClass $config)
+    public function __construct(\stdClass $config, $customSessionHandlerClass = null)
     {
         $this->config = $config;
+        $this->customSessionHandlerClass = $customSessionHandlerClass;
     }
 
     /**
@@ -44,8 +48,7 @@ class AmadeusRequestTransformer
      */
     public function buildClientParams(Authenticate $authentication, LoggerInterface $logger) : Client\Params
     {
-
-        return new Client\Params(
+        $clientParams = new Client\Params(
             [
                 'authParams' => [
                     'officeId' => $authentication->getOfficeId(),
@@ -66,6 +69,12 @@ class AmadeusRequestTransformer
                 ]
             ]
         );
+
+        if ($this->customSessionHandlerClass) {
+            $clientParams->sessionHandler = new $this->customSessionHandlerClass($clientParams->sessionHandlerParams);
+        }
+
+        return $clientParams;
     }
 
     public function buildOptionsRemarksRead($recordlocator)

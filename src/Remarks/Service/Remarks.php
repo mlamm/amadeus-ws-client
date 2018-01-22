@@ -5,11 +5,9 @@ namespace Flight\Service\Amadeus\Remarks\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Service\Amadeus\Remarks\Model\Remark;
-use Flight\Service\Amadeus\Remarks\Request\Entity\Authenticate;
-use Flight\Service\Amadeus\Remarks\Request\Validator\RemarksRead;
-use Flight\Service\Amadeus\Remarks\Cache\CacheKey;
 use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
 use Flight\Service\Amadeus\Remarks\Model\RemarksAmadeusClient;
+use Flight\Service\Amadeus\Remarks\Request;
 use JMS\Serializer\Serializer;
 
 /**
@@ -26,7 +24,7 @@ use JMS\Serializer\Serializer;
 class Remarks
 {
     /**
-     * @var AmadeusRequestValidator
+     * @var Request\Validator\RemarksRead
      */
     private $requestValidator;
 
@@ -51,64 +49,28 @@ class Remarks
     private $config;
 
     /**
-     * @param RemarksRead $requestValidator
+     * @param Request\Validator\RemarksRead $requestValidator
      * @param Serializer              $serializer
-     * @param FlightCacheInterface    $cache
      * @param RemarksAmadeusClient    $amadeusClient
      * @param \stdClass               $config
      */
     public function __construct(
-        RemarksRead $requestValidator,
+        Request\Validator\RemarksRead $requestValidator,
         Serializer $serializer,
-        FlightCacheInterface $cache,
         RemarksAmadeusClient $amadeusClient,
         \stdClass $config
     ) {
         $this->requestValidator = $requestValidator;
         $this->serializer = $serializer;
-        $this->cache = $cache;
         $this->amadeusClient = $amadeusClient;
         $this->config = $config;
-    }
-
-    /**
-     * Perform the remarks.
-     *
-     * @param string $requestJson
-     * @return string
-     */
-    public function remarks(string $requestJson) : string
-    {
-        // will throw on validation errors
-        $this->requestValidator->validateRequest($requestJson);
-
-        /** @var Request $remarksRequest */
-        $remarksRequest = $this->serializer->deserialize($requestJson, Request::class, 'json');
-
-        /** @var BusinessCase $businessCase */
-        $businessCase = $remarksRequest->getBusinessCases()->first()->first();
-
-        $cacheKey = new CacheKey($remarksRequest, $businessCase, $this->config);
-        $cachedResponse = $this->cache->fetch((string) $cacheKey);
-
-        if ($cachedResponse !== false) {
-            return $cachedResponse;
-        }
-
-        $remarksResponse = $this->amadeusClient->remarks($remarksRequest, $businessCase);
-
-        $serializedResponse =  $this->serializer->serialize($remarksResponse, 'json');
-
-        $this->cache->save((string) $cacheKey, $serializedResponse);
-
-        return $serializedResponse;
     }
 
     public function remarksRead($authHeader, $recordlocator)
     {
         $authHeader = \GuzzleHttp\json_decode($authHeader);
 
-        $authenticate = (new Authenticate())
+        $authenticate = (new Request\Entity\Authenticate())
             ->setDutyCode($authHeader->{'duty-code'})
             ->setOfficeId($authHeader->{'office-id'})
             ->setOrganizationId($authHeader->{'organization'})
@@ -117,7 +79,7 @@ class Remarks
             ->setUserId($authHeader->{'user-id'});
 
         $response = $this->amadeusClient->remarksRead(
-            (new \Flight\Service\Amadeus\Remarks\Request\Entity\RemarksRead())->setRecordlocator($recordlocator),
+            (new Request\Entity\RemarksRead())->setRecordlocator($recordlocator),
             $authenticate
         );
 
@@ -134,7 +96,7 @@ class Remarks
             $remarks->add((new Remark())->setName($remarkName)->setValue($remarkValue));
         }
 
-        $authenticate = (new Authenticate())
+        $authenticate = (new Request\Entity\Authenticate())
             ->setDutyCode($authHeader->{'duty-code'})
             ->setOfficeId($authHeader->{'office-id'})
             ->setOrganizationId($authHeader->{'organization'})
@@ -142,7 +104,7 @@ class Remarks
             ->setPasswordLength($authHeader->{'password-length'})
             ->setUserId($authHeader->{'user-id'});
         $response = $this->amadeusClient->remarksAdd(
-            (new \Flight\Service\Amadeus\Remarks\Request\Entity\RemarksAdd())
+            (new Request\Entity\RemarksAdd())
                 ->setRecordlocator($recordlocator)->setRemarks($remarks),
             $authenticate
         );
@@ -157,7 +119,7 @@ class Remarks
         $body = \GuzzleHttp\json_decode($body);
 
         // authenticate
-        $authenticate = (new Authenticate())
+        $authenticate = (new Request\Entity\Authenticate())
             ->setDutyCode($authHeader->{'duty-code'})
             ->setOfficeId($authHeader->{'office-id'})
             ->setOrganizationId($authHeader->{'organization'})
@@ -167,7 +129,7 @@ class Remarks
 
         // get remarks for line number
         $response = $this->amadeusClient->remarksRead(
-            (new \Flight\Service\Amadeus\Remarks\Request\Entity\RemarksRead())->setRecordlocator($recordlocator),
+            (new Request\Entity\RemarksRead())->setRecordlocator($recordlocator),
             $authenticate
         );
 
@@ -188,7 +150,7 @@ class Remarks
         unset($remarksReadCollection);
 
         $response = $this->amadeusClient->remarksDelete(
-            (new \Flight\Service\Amadeus\Remarks\Request\Entity\RemarksDelete())
+            (new Request\Entity\RemarksDelete())
                 ->setRecordlocator($recordlocator)->setRemarks($remarksDeleteCollection),
             $authenticate
         );
