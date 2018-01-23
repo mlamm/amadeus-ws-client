@@ -62,7 +62,6 @@ class Carriers
         }
 
         $carrier = new SearchResponse\Carrier();
-        $carrier->setIata('');
         $carrier->setName($companyIndex[$textRefNumber]);
 
         return $carrier;

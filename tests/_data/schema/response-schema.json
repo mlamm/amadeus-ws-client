@@ -184,7 +184,7 @@
                                   ],
                                   "properties": {
                                     "iata": {
-                                      "type": "string",
+                                      "type": ["string", "null"],
                                       "description": "IATA code of the operating carrier"
                                     },
                                     "name": {
