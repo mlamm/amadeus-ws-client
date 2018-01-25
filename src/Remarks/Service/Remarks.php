@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Flight\Service\Amadeus\Remarks\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Flight\Service\Amadeus\Remarks\Model\Itinerary;
 use Flight\Service\Amadeus\Remarks\Model\Remark;
 use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
 use Flight\Service\Amadeus\Remarks\Model\RemarksAmadeusClient;
@@ -24,7 +25,7 @@ use JMS\Serializer\Serializer;
 class Remarks
 {
     /**
-     * @var Request\Validator\RemarksRead
+     * @var Request\Validator\Remarks
      */
     private $requestValidator;
 
@@ -32,11 +33,6 @@ class Remarks
      * @var Serializer
      */
     private $serializer;
-
-    /**
-     * @var FlightCacheInterface
-     */
-    private $cache;
 
     /**
      * @var RemarksAmadeusClient
@@ -49,13 +45,13 @@ class Remarks
     private $config;
 
     /**
-     * @param Request\Validator\RemarksRead $requestValidator
+     * @param Request\Validator\Remarks $requestValidator
      * @param Serializer              $serializer
      * @param RemarksAmadeusClient    $amadeusClient
      * @param \stdClass               $config
      */
     public function __construct(
-        Request\Validator\RemarksRead $requestValidator,
+        Request\Validator\Remarks $requestValidator,
         Serializer $serializer,
         RemarksAmadeusClient $amadeusClient,
         \stdClass $config
@@ -69,6 +65,10 @@ class Remarks
     public function remarksRead($authHeader, $recordlocator)
     {
         $authHeader = \GuzzleHttp\json_decode($authHeader);
+
+        // validate
+        $this->requestValidator->validateAuthentication($authHeader);
+        $this->requestValidator->validateRecordlocator($recordlocator);
 
         $authenticate = (new Request\Entity\Authenticate())
             ->setDutyCode($authHeader->{'duty-code'})
@@ -90,6 +90,10 @@ class Remarks
     {
         $authHeader = \GuzzleHttp\json_decode($authHeader);
         $body = \GuzzleHttp\json_decode($body);
+
+        // validate
+        $this->requestValidator->validateAuthentication($authHeader);
+        $this->requestValidator->validateRecordlocator($recordlocator);
 
         $remarks = new ArrayCollection();
         foreach ($body as $remarkName => $remarkValue) {
@@ -118,6 +122,10 @@ class Remarks
         $authHeader = \GuzzleHttp\json_decode($authHeader);
         $body = \GuzzleHttp\json_decode($body);
 
+        // validate
+        $this->requestValidator->validateAuthentication($authHeader);
+        $this->requestValidator->validateRecordlocator($recordlocator);
+
         // authenticate
         $authenticate = (new Request\Entity\Authenticate())
             ->setDutyCode($authHeader->{'duty-code'})
@@ -134,19 +142,18 @@ class Remarks
         );
 
         // filter remarks tp delete
-        /** @var ArrayCollection $remarksReadCollection */
+        /** @var Itinerary $remarksReadCollection */
         $remarksReadCollection = $response->getResult()->get(0);
         $remarksDeleteCollection = new ArrayCollection();
         /** @var Remark $remark */
-        foreach ($remarksReadCollection as $remark) {
+        foreach ($remarksReadCollection->getRemarks() as $remark) {
             foreach ($body as $remarkName => $remarkValue) {
-                if ($remarkName == $remark->getName() && $remarkValue == $remark->getValue()) {
+                if ($remarkName == $remark->getName()) {
                     $remarksDeleteCollection->add($remark);
                 }
             }
         }
-
-        // be clean remove garbage
+        // be clean, remove garbage
         unset($remarksReadCollection);
 
         $response = $this->amadeusClient->remarksDelete(

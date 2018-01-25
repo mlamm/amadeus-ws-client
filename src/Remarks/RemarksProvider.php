@@ -19,6 +19,6 @@ class RemarksProvider extends \Flight\Service\Amadeus\Application\BusinessCasePr
         $collection->get('/', 'businesscase.remarks-read');
         $collection->post('/', 'businesscase.remarks-add');
         $collection->delete('/', 'businesscase.remarks-delete');
-        $collection->put('/', 'businesscase.remarks-Modify');
+        $collection->put('/', 'businesscase.remarks-modify');
     }
 }

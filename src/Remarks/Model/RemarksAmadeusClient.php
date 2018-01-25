@@ -9,6 +9,7 @@ use Flight\Service\Amadeus\Remarks\Request\Entity\RemarksDelete;
 use Flight\Service\Amadeus\Remarks\Request\Entity\RemarksModify;
 use Flight\Service\Amadeus\Remarks\Request\Entity\RemarksRead;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Class AmadeusClient
@@ -105,24 +106,6 @@ class RemarksAmadeusClient
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
 
         $requestOptions = $this->requestTransformer->buildOptionsRemarksDelete($requestEntity->getRecordlocator(), $requestEntity->getRemarks());
-
-
-        $result = $client->pnrCancel($requestOptions);
-
-        if ($result->status !== Client\Result::STATUS_OK) {
-            throw new AmadeusRequestException($result->messages);
-        }
-
-        return $this->responseTransformer->mapResultRemarksDelete($result);
-    }
-
-    public function remarksModify(RemarksModify $requestEntity, Authenticate $authenticate)
-    {
-        /** @var Client $client */
-        $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
-
-        $requestOptions = $this->requestTransformer->buildOptionsRemarksDelete($requestEntity->getRecordlocator(), $requestEntity->getRemarks());
-
 
         $result = $client->pnrCancel($requestOptions);
 

@@ -40,12 +40,12 @@ class AmadeusResponseTransformer
 
     public function mapResultRemarksAdd(Result $result)
     {
-        return '';
+        return $this->mapResultRemarksRead($result);
     }
 
     public function mapResultRemarksDelete(Result $result)
     {
-        return '';
+        return $this->mapResultRemarksRead($result);
     }
 
 }

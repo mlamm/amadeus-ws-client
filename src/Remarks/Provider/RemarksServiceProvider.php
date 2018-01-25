@@ -37,7 +37,7 @@ class RemarksServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['service.remarks'] = function () use ($app) {
-            $validator = new Remarks\Request\Validator\RemarksRead(
+            $validator = new Remarks\Request\Validator\Remarks(
                 $app['config']->remarks
             );
 
@@ -49,12 +49,11 @@ class RemarksServiceProvider implements ServiceProviderInterface
             return new Remarks\Service\Remarks(
                 $validator,
                 $serializerBuilder->build(),
-                $app['cache.flights'],
                 $app['amadeus.client.remarks'],
                 $app['config']->remarks
             );
         };
-
+        $app['monolog.logfile'] = '/../var/logs/app.log';
         $app['amadeus.client.remarks'] = function () use ($app) {
             $sessionHandlerClass = $this->useMockSearchResponse ? MockSessionHandler::class : null;
             return new Remarks\Model\RemarksAmadeusClient(

@@ -140,6 +140,7 @@ class Remark
         list($name, $value) = array_pad(explode('-', (string) $crsText, 2), 2, null);
         $this->setValue($value);
         $this->setName($name);
+
         return $this;
     }
 

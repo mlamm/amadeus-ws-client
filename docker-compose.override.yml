@@ -3,7 +3,7 @@ version: "2"
 services:
   amadeus-nginx:
     ports:
-      - "80:80"
+      - "8024:80"
 
   amadeus-php:
     environment:
@@ -21,7 +21,7 @@ services:
     image: tsari/docker-xhgui
     container_name: amadeus-xhgui
     ports:
-      - "8000:80"
+      - "8025:80"
     environment:
       XHGUI_MONGO_URI: mongo:27017
       XHGUI_MONGO_DB: amadeus-profiling

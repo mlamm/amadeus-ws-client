@@ -195,11 +195,6 @@
         "value": "Flight\Service\Amadeus\\Search\\BusinessCase\\Search"
     },
     {
-        "name": "businesscase.remarks",
-        "type": "class",
-        "value": "Flight\Service\Amadeus\\Remarks\\BusinessCase\\Remarks"
-    },
-    {
         "name": "businesscase.remarks-read",
         "type": "class",
         "value": "Flight\Service\Amadeus\\Remarks\\BusinessCase\\RemarksRead"
