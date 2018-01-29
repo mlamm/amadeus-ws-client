@@ -9,7 +9,7 @@ RED="\033[0;31m"
 RESET="\033[0;0m"
 YELLOW="\033[2;33m"
 
-tag=$(git log -1 --pretty=%H)
+tag=$(git describe --tag --abbrev=0 | tr + _)
 export TAG=${TAG:-$tag}
 export REGISTRY=${REGISTRY:-"630542070554.dkr.ecr.eu-central-1.amazonaws.com"}
 
