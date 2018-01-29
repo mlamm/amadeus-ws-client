@@ -11,7 +11,6 @@ source $(dirname $0)/base.sh
 GIT_PRIVATE_KEY=${GIT_PRIVATE_KEY:-"~/.ssh/id_rsa"}
 
 docker_image=$(awk '/FROM/{print $2}' scripts/docker/php/Dockerfile)
-buildImage=amadeus-php-base-build
 COMPOSER_VERSION=1.5.2
 
 function build() {
@@ -79,9 +78,6 @@ function buildImages(){
 
     # Remove archive
     rm $archive_name
-
-    # Remove composer install command
-    sed -i '/RUN composer install/d' scripts/docker/php/Dockerfile
   else
     info "Not using cached dependencies. Can't find \$AWS_ACCESS_KEY_ID, \$AWS_SECRET_ACCESS_KEY, \$AWS_COMPOSER_CACHE_S3_BUCKET or composer.lock file."
     bash ./scripts/composer install
@@ -95,19 +91,17 @@ function buildImages(){
 }
 
 function createBinaries(){
-  echo -e "Host stash.unister.lan\n\tStrictHostKeyChecking no\n" >> ./.ssh_config
+    info "Creating binaries..."
 
-  info "Creating binaries..."
-
-  # Build helper scripts
-  echo -e '#!/bin/sh\n\ndocker run --rm -v $(pwd):/var/www -w /var/www christianbladescb/aglio -i docs/api.apib -o var/docs/index.html --theme-variables flatly --theme-full-width' > scripts/create-docs
-  echo -e '#!/bin/sh\n\ndocker run --rm -v ~/.composer:/root/.composer -v $(pwd):/var/www -w /var/www '$buildImage' php composer.phar "$@"' > scripts/composer
+    # Build helper scripts
+    cp scripts/stubs/create-docs.stub scripts/create-docs
+    cp scripts/stubs/composer.stub scripts/composer
 
     if [ ! -f composer.phar ]; then
         wget -O composer.phar https://getcomposer.org/download/$COMPOSER_VERSION/composer.phar
     fi
 
-  chmod +x ./scripts/*
+    chmod +x ./scripts/*
 }
 
 function createDocs(){

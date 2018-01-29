@@ -12,7 +12,7 @@ YELLOW="\033[2;33m"
 tag=$(git describe --tag --abbrev=0 | tr + _)
 export TAG=${TAG:-$tag}
 export REGISTRY=${REGISTRY:-"630542070554.dkr.ecr.eu-central-1.amazonaws.com"}
-
+buildImage=amadeus-php-base-build
 
 #
 # Functions
@@ -44,4 +44,18 @@ function retry() {
     sleep $sleep_time
   done
   set -e
+}
+
+function getMountPath(){
+  # If build docker imags using Docker from Minikube, we mount files from the
+  # /hosthome directory instead of /home directory.
+  # See: https://kubernetes.io/docs/getting-started-guides/minikube/#mounted-host-folders
+  mount_path=${1:-$PWD}
+  if [[ "${DOCKER_CERT_PATH}" =~ ^.*minikube.*$ ]] && [[ `uname -s` == "Linux" ]]
+  then
+    info "Building from Linux using Docker Minikube"
+    info "Setting mounting path to /hosthome/ directory instead of /home/"
+    mount_path="${mount_path/\/home\///hosthome/}"
+    info "new current working dir: $mount_path"
+  fi
 }

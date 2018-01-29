@@ -59,7 +59,7 @@ class AmadeusRequestTransformer
 
         $options = [
             'nrOfRequestedResults' => $businessCase->getOptions()->getResultLimit(),
-            'nrOfRequestedPassengers' => $request->getPassengerCount(),
+            'nrOfRequestedPassengers' => $request->getAdults() + $request->getChildren(),
             'passengers' => $this->setupPassengers($request),
             'itinerary' => $itineraries,
             'flightOptions' => $this->buildFlightOptions($businessCase, $coopCodes)
