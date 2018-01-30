@@ -5,7 +5,7 @@ namespace Flight\Service\Amadeus\Remarks\Request\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * entity for remarksRead request
+ * entity for remarksAdd request
  *
  * @package Flight\Service\Amadeus\Remarks\Request\Entity
  */
@@ -43,12 +43,24 @@ class RemarksAdd
         return $this;
     }
 
+    /**
+     * setter for remarks
+     *
+     * @param ArrayCollection $remarks
+     *
+     * @return RemarksAdd
+     */
     public function setRemarks(ArrayCollection $remarks) : RemarksAdd
     {
         $this->remarks = $remarks;
         return $this;
     }
 
+    /**
+     * getter for remarks
+     *
+     * @return ArrayCollection
+     */
     public function getRemarks() : ArrayCollection
     {
         return $this->remarks;

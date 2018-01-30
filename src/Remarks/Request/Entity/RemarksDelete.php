@@ -5,7 +5,7 @@ namespace Flight\Service\Amadeus\Remarks\Request\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * entity for remarksRead request
+ * entity for remarksDelete request
  *
  * @package Flight\Service\Amadeus\Remarks\Request\Entity
  */
@@ -42,13 +42,24 @@ class RemarksDelete
         $this->recordlocator = $recordlocator;
         return $this;
     }
-
+    /**
+     * setter for remarks
+     *
+     * @param ArrayCollection $remarks
+     *
+     * @return RemarksDelete
+     */
     public function setRemarks(ArrayCollection $remarks) : RemarksDelete
     {
         $this->remarks = $remarks;
         return $this;
     }
 
+    /**
+     * getter for remarks
+     *
+     * @return ArrayCollection
+     */
     public function getRemarks() : ArrayCollection
     {
         return $this->remarks;

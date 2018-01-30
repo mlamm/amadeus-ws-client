@@ -16,7 +16,14 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class Error
 {
+    /**
+     *
+     */
     const RESOURCE_NOT_FOUND = 'ARS0404';
+
+    /**
+     *
+     */
     const SERVER_ERROR       = 'ARS0500';
 
     /**
@@ -55,11 +62,18 @@ class Error
         $this->message  = $message;
     }
 
+    /**
+     * @param \Throwable $exception
+     * @return Error
+     */
     public static function resourceNotFound(\Throwable $exception) : self
     {
         return new static('_', self::RESOURCE_NOT_FOUND, 404, $exception->getMessage());
     }
 
+    /**
+     * @return Error
+     */
     public static function serverError() : self
     {
         return new static('_', self::SERVER_ERROR, 500, Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR]);

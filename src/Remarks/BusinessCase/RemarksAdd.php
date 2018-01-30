@@ -13,7 +13,8 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class Remarks
+ * business case for adding remarks
+ *
  * @package Flight\Service\Amadeus\Remarks\BusinessCase
  */
 class RemarksAdd extends BusinessCase

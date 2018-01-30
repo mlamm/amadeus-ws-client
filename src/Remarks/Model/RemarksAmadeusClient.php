@@ -63,6 +63,16 @@ class RemarksAmadeusClient
         $this->clientBuilder = $clientBuilder;
     }
 
+    /**
+     * call for remarks read
+     *
+     * @param RemarksRead $requestEntity
+     * @param Authenticate $authenticate
+     *
+     * @return \Flight\Service\Amadeus\Remarks\Response\ResultResponse
+     *
+     * @throws AmadeusRequestException
+     */
     public function remarksRead(RemarksRead $requestEntity, Authenticate $authenticate)
     {
         /** @var Client $client */
@@ -80,6 +90,16 @@ class RemarksAmadeusClient
         return $this->responseTransformer->mapResultRemarksRead($result);
     }
 
+    /**
+     * call for remarks add
+     *
+     * @param RemarksAdd $requestEntity
+     * @param Authenticate $authenticate
+     *
+     * @return \Flight\Service\Amadeus\Remarks\Response\ResultResponse
+     *
+     * @throws AmadeusRequestException
+     */
     public function remarksAdd(RemarksAdd $requestEntity, Authenticate $authenticate)
     {
         /** @var Client $client */
@@ -100,6 +120,16 @@ class RemarksAmadeusClient
         return $this->responseTransformer->mapResultRemarksAdd($result);
     }
 
+    /**
+     * call for remarks delete
+     *
+     * @param RemarksDelete $requestEntity
+     * @param Authenticate $authenticate
+     *
+     * @return \Flight\Service\Amadeus\Remarks\Response\ResultResponse
+     *
+     * @throws AmadeusRequestException
+     */
     public function remarksDelete(RemarksDelete $requestEntity, Authenticate $authenticate)
     {
         /** @var Client $client */

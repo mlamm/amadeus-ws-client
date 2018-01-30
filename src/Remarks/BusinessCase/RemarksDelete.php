@@ -13,7 +13,8 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class Remarks
+ * businesscase for remarks delete
+ *
  * @package Flight\Service\Amadeus\Remarks\BusinessCase
  */
 class RemarksDelete extends BusinessCase

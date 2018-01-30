@@ -37,11 +37,19 @@ class AmadeusErrorResponse extends ErrorResponse
         return $this;
     }
 
+    /**
+     * @param $data
+     * @return AmadeusErrorResponse
+     */
     public static function notFound($data) : self
     {
         return new static($data, Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @param $data
+     * @return AmadeusErrorResponse
+     */
     public static function serverError($data) : self
     {
         return new static($data, Response::HTTP_INTERNAL_SERVER_ERROR);

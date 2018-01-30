@@ -43,12 +43,24 @@ class RemarksModify
         return $this;
     }
 
+    /**
+     * setter for remarks
+     *
+     * @param ArrayCollection $remarks
+     *
+     * @return RemarksModify
+     */
     public function setRemarks(ArrayCollection $remarks) : RemarksModify
     {
         $this->remarks = $remarks;
         return $this;
     }
 
+    /**
+     * getter for remarks
+     *
+     * @return ArrayCollection
+     */
     public function getRemarks() : ArrayCollection
     {
         return $this->remarks;

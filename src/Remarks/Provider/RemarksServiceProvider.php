@@ -11,9 +11,8 @@ use Pimple\ServiceProviderInterface;
 use Psr\Log\NullLogger;
 
 /**
- * SearchServiceProvider.php
  *
- * Register the search service and some of its dependencies in the app container
+ * Register the remarks service and some of its dependencies in the app container
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -34,6 +33,11 @@ class RemarksServiceProvider implements ServiceProviderInterface
         $this->useMockSearchResponse = $useMockSearchResponse;
     }
 
+    /**
+     * register all that important stuff for the app
+     *
+     * @param Container $app
+     */
     public function register(Container $app)
     {
         $app['service.remarks'] = function () use ($app) {

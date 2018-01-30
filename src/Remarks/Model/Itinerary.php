@@ -6,9 +6,8 @@ namespace Flight\Service\Amadeus\Remarks\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * CabinClass.php
  *
- * Convert the cabin class info
+ * model for itinerary
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>

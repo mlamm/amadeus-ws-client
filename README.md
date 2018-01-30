@@ -78,6 +78,7 @@ $ bin/aglio
 
 For testing use the setup `codeception`. For endpoint tests (**mandatory**) use api for unit tests (optional)
 use unit testing suite.
+Best use it in the docker container itself. `docker exec -it {docker_container_id} /bin/sh`.
 
 ### Create an endpoint test
 

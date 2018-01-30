@@ -3,7 +3,7 @@
 namespace Flight\Service\Amadeus\Remarks\Request\Entity;
 
 /**
- * entity for remarksRead request
+ * entity for authentication request
  *
  * @package Flight\Service\Amadeus\Remarks\Request\Entity
  */

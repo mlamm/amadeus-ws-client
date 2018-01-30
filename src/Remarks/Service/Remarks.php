@@ -6,7 +6,6 @@ namespace Flight\Service\Amadeus\Remarks\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Service\Amadeus\Remarks\Model\Itinerary;
 use Flight\Service\Amadeus\Remarks\Model\Remark;
-use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
 use Flight\Service\Amadeus\Remarks\Model\RemarksAmadeusClient;
 use Flight\Service\Amadeus\Remarks\Request;
 use JMS\Serializer\Serializer;
@@ -16,7 +15,6 @@ use JMS\Serializer\Serializer;
  *
  * Service which remarkses the Amadeus Gds for flights.
  *
- * This class should not handle any aspects of the incoming http request (should stay in controller).
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -62,6 +60,14 @@ class Remarks
         $this->config = $config;
     }
 
+    /**
+     * handling remarks read requests
+     *
+     * @param $authHeader
+     * @param $recordlocator
+     *
+     * @return mixed|string
+     */
     public function remarksRead($authHeader, $recordlocator)
     {
         $authHeader = \GuzzleHttp\json_decode($authHeader);
@@ -86,6 +92,15 @@ class Remarks
         return $this->serializer->serialize($response, 'json');
     }
 
+    /**
+     * handling remakrs add request
+     *
+     * @param $authHeader
+     * @param $recordlocator
+     * @param $body
+     *
+     * @return mixed|string
+     */
     public function remarksAdd($authHeader, $recordlocator, $body)
     {
         $authHeader = \GuzzleHttp\json_decode($authHeader);
@@ -116,6 +131,15 @@ class Remarks
         return $this->serializer->serialize($response, 'json');
     }
 
+    /**
+     * handling remarks delete requests
+     *
+     * @param $authHeader
+     * @param $recordlocator
+     * @param $body
+     *
+     * @return mixed|string
+     */
     public function remarksDelete($authHeader, $recordlocator, $body)
     {
         // json data
@@ -165,6 +189,15 @@ class Remarks
         return $this->serializer->serialize($response, 'json');
     }
 
+    /**
+     * handling remarks modify request by using delete and add
+     *
+     * @param $authHeader
+     * @param $recordlocator
+     * @param $body
+     *
+     * @return mixed|string
+     */
     public function remarksModify($authHeader, $recordlocator, $body)
     {
         $this->remarksDelete($authHeader, $recordlocator, $body);

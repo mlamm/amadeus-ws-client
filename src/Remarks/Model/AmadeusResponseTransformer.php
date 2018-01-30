@@ -7,10 +7,18 @@ use Flight\Service\Amadeus\Remarks\Response\ResultResponse;
 
 /**
  * Class AmadeusResponseTransformer
+ *
  * @package Flight\Service\Amadeus\Remarks\Model
  */
 class AmadeusResponseTransformer
 {
+    /**
+     * maps the result to an itinerary which can be sent back to the client
+     *
+     * @param Result $result
+     *
+     * @return ResultResponse
+     */
     public function mapResultRemarksRead(Result $result)
     {
         $remarksResponse = new ResultResponse();
@@ -38,11 +46,23 @@ class AmadeusResponseTransformer
         return $remarksResponse;
     }
 
+    /**
+     * @see $this->mapResultRemarksRead
+     *
+     * @param Result $result
+     * @return ResultResponse
+     */
     public function mapResultRemarksAdd(Result $result)
     {
         return $this->mapResultRemarksRead($result);
     }
 
+    /**
+     * @see $this->mapResultRemarksRead
+     *
+     * @param Result $result
+     * @return ResultResponse
+     */
     public function mapResultRemarksDelete(Result $result)
     {
         return $this->mapResultRemarksRead($result);

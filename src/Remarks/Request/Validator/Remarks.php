@@ -9,7 +9,7 @@ use Particle\Validator\Validator;
 /**
  * AmadeusRequestValidator.php
  *
- * handles validation for client requests before requesting the Y API
+ * handles validation for client requests before requesting the Amadeus API
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
@@ -27,6 +27,13 @@ class Remarks
         $this->config  = $config;
     }
 
+    /**
+     * validate authentication
+     *
+     * @param $authentication
+     *
+     * @throws InvalidRequestParameterException
+     */
     public function validateAuthentication($authentication)
     {
         $validator = new Validator();
@@ -44,6 +51,13 @@ class Remarks
         }
     }
 
+    /**
+     * validate recordlocator
+     *
+     * @param string $recordlocator
+     *
+     * @throws InvalidRequestParameterException
+     */
     public function validateRecordlocator(string $recordlocator)
     {
         $validator = new Validator();

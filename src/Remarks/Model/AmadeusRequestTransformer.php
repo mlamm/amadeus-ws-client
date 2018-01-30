@@ -77,11 +77,26 @@ class AmadeusRequestTransformer
         return $clientParams;
     }
 
+    /**
+     * build options for remarksread
+     *
+     * @param $recordlocator
+     *
+     * @return Client\RequestOptions\PnrRetrieveOptions
+     */
     public function buildOptionsRemarksRead($recordlocator)
     {
         return new Client\RequestOptions\PnrRetrieveOptions(['recordLocator' => $recordlocator]);
     }
 
+    /**
+     * build options for remarks add
+     *
+     * @param $recordlocator
+     * @param ArrayCollection $remarks
+     *
+     * @return Client\RequestOptions\PnrAddMultiElementsOptions
+     */
     public function buildOptionsRemarksAdd($recordlocator, ArrayCollection $remarks)
     {
         $elements = [];
@@ -101,6 +116,14 @@ class AmadeusRequestTransformer
         ]);
     }
 
+    /**
+     * build options for remarks delete
+     *
+     * @param $recordlocator
+     * @param ArrayCollection $remarks
+     *
+     * @return Client\RequestOptions\PnrCancelOptions
+     */
     public function buildOptionsRemarksDelete($recordlocator, ArrayCollection $remarks)
     {
         $elements = [];

@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace Flight\Service\Amadeus\Remarks\Model;
 
 /**
- * CabinClass.php
  *
- * Convert the cabin class info
+ * model for remark data
  *
  * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
