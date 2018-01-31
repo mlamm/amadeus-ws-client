@@ -30,7 +30,7 @@
         "silex/silex": "~2.0",
         "amabnl/amadeus-ws-client": "~1.4",
         "monolog/monolog": "~1.23",
-        "flight/search-request-mapping": "^4.0",
+        "flight/search-request-mapping": "^5.0",
         "doctrine/cache": "~1.7",
         "symfony/yaml": "~3.3",
         "jms/serializer": "^1.8",

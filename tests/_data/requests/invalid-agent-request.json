@@ -61,7 +61,7 @@
       {
         "content-provider": "ypsilon",
         "type": "round-trip",
-        "fare-type": "low",
+        "fare-types": ["low"],
         "options": {
           "is-one-way-combination": true,
           "is-overnight": false,

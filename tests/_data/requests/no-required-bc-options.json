@@ -61,7 +61,7 @@
       {
         "content-provider": "amadeus",
         "type": "round-trip",
-        "fare-type": "net",
+        "fare-types": ["net"],
         "options": {
         },
         "authentication": {
