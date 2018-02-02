@@ -12,6 +12,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Psr\Log\LogLevel;
 use Silex\Application;
 use Silex\Provider\MonologServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,16 +34,16 @@ class ErrorProvider implements ServiceProviderInterface
      *
      * @throws \Exception
      */
-    public function register(Container $app) : void
+    public function register(Container $app): void
     {
         // general service provider
 
-         /* @var $app Application  */
+        /* @var $app Application */
         $app->register(
             new MonologServiceProvider(),
             [
-                'monolog.logfile' => 'php://stderr',
-                'monolog.level' => Logger::NOTICE,
+                'monolog.logfile'   => 'php://stdout',
+                'monolog.level'     => Logger::NOTICE,
                 'monolog.formatter' => function () {
                     return new JsonFormatter();
                 }
@@ -57,21 +58,29 @@ class ErrorProvider implements ServiceProviderInterface
         $handler->setFormatter($app['monolog.formatter']);
         $app['monolog']->pushHandler($handler);
 
-        $app->error(function (NotFoundHttpException $e, Request $request, $code) {
+        $app->register(new ErrorLoggerProvider());
+
+        $app->error(function (NotFoundHttpException $e, Request $request, $code) use ($app) {
+            $app['error-logger']->logException($e, $request, $code, LogLevel::NOTICE);
+
             return AmadeusErrorResponse::notFound($this->renderErrors([Error::resourceNotFound($e)]));
         });
 
-        $app->error(function (SystemRequirementException $e) {
+        $app->error(function (SystemRequirementException $e, Request $request, $code) use ($app) {
             $error = new Error(
                 '_',
                 $e->getInternalErrorCode(),
                 ErrorResponse::HTTP_INTERNAL_SERVER_ERROR,
                 $e->getInternalErrorMessage()
             );
+            $app['error-logger']->logException($e, $request, $code, LogLevel::ERROR);
+
             return new ErrorResponse($this->renderErrors([$error]));
         });
 
-        $app->error(function (\Throwable $e, Request $request, $code) {
+        $app->error(function (\Throwable $e, Request $request, $code) use ($app) {
+            $app['error-logger']->logException($e, $request, $code, LogLevel::CRITICAL);
+
             return AmadeusErrorResponse::serverError($this->renderErrors([Error::serverError()]));
         });
 
@@ -84,7 +93,7 @@ class ErrorProvider implements ServiceProviderInterface
      *
      * @param Container $app
      */
-    public function registerHandlers(Container $app)
+    private function registerHandlers(Container $app)
     {
         set_exception_handler(function (\Throwable $throwable) use ($app) {
             AmadeusErrorResponse::serverError($this->renderErrors([Error::serverError()]))->send();
@@ -98,9 +107,10 @@ class ErrorProvider implements ServiceProviderInterface
      * Turn a list of Error instances into a HAL compatible structure
      *
      * @param array $errors
+     *
      * @return array
      */
-    private function renderErrors(array $errors) : array
+    private function renderErrors(array $errors): array
     {
         $errorStorage = [];
 
