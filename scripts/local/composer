@@ -1,0 +1,3 @@
+#!/bin/sh
+
+docker run --rm -v ~/.composer:/root/.composer -v $(pwd):/var/www -w /var/www php-base-build php composer.phar "$@"

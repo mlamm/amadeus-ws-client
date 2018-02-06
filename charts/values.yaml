@@ -1,0 +1,22 @@
+## PHP charts override
+php:
+  team: search-compare
+
+  ## NGINX
+  nginx:
+    image:
+      repository: flight/invia/service/amadeus/nginx
+
+  ## Application
+  app:
+    image:
+      repository: flight/invia/service/amadeus/app
+
+    readinessProbe:
+      httpGet:
+        path: /health
+
+## Redis
+redis:
+  enabled: false
+  usePassword: false

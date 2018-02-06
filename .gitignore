@@ -10,3 +10,4 @@ config/app.yml
 composer.phar
 .ssh_config
 .idea
+scripts/common
