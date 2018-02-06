@@ -25,7 +25,7 @@ function check_common_repo() {
 
 source $(dirname $0)/common/base.sh
 
-build_image=php-base-build
+build_image=amadeus-php-base-build
 nginx_image=${REGISTRY}/flight/invia/service/amadeus/nginx
 app_image=${REGISTRY}/flight/invia/service/amadeus/app
 composer_version=1.5.2
