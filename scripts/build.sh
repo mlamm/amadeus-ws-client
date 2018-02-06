@@ -11,7 +11,7 @@ info "Downloading composer if not present..."
 download_composer $composer_version
 
 info "Cleaning old caches and logs..."
-docker run --rm -v $(pwd):/app -w /app busybox rm -rf var/logs
+./scripts/local/clean-logs.sh
 
 info "Generating documentation..."
 generate_docs_aglio "-i docs/api.apib -o var/docs/index.html --theme-variables flatly --theme-full-width"
