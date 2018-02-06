@@ -8,6 +8,9 @@ source $(dirname $0)/base.sh
 
 service_endpoint="http://localhost:80/health"
 
+info "Setting configuration"
+cp config/{development.dist,app}.yml
+
 info "Bringing services up with docker compose"
 docker-compose up -d
 
