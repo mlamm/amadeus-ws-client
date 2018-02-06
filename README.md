@@ -175,7 +175,7 @@ $ curl $(minikube service amadeus --url)/health
 
 ## Cleaning up
 
-Delete Sabre service and associated dependencies:
+Delete Amadeus service and associated dependencies:
 
 ```
 $ helm del --purge amadeus
