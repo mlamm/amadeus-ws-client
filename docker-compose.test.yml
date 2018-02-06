@@ -6,16 +6,13 @@ services:
     container_name: amadeus-nginx
     ports:
       - "80:80"
-
     volumes:
-      - ./web:/var/www/web
       - amadeus-php-sock:/sock
 
   amadeus-php:
     image: 630542070554.dkr.ecr.eu-central-1.amazonaws.com/flight/invia/service/amadeus/app:latest
     container_name: amadeus-php
     volumes:
-      - ./:/var/www
       - amadeus-php-sock:/sock
 
   redis:
