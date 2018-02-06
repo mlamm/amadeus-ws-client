@@ -5,6 +5,7 @@ vendor
 *.sublime-*
 var/cache
 var/docs
+var/logs
 node_modules
 config/app.yml
 composer.phar
