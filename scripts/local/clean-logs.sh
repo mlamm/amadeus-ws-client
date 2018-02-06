@@ -2,7 +2,7 @@
 
 set -e
 
-source $(dirname $0)/base.sh
+source $(dirname $0)/../base.sh
 
 info "clean up nginx logs..."
 docker run --rm -v $(pwd):/app -w /app busybox rm var/logs/nginx/*.log -rf
