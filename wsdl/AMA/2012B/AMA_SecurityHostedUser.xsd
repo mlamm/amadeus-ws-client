@@ -3,7 +3,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ota="http://www.opentravel.org/OTA/2003/05/OTA2010B" xmlns:iata="http://www.iata.org/IATA/2007/00/IATA2010.1" xmlns:ama_ct="http://xml.amadeus.com/2010/06/Types_v1" xmlns="http://xml.amadeus.com/2010/06/Security_v1" xmlns:ama_appmdw_v3="http://xml.amadeus.com/2010/06/AppMdw_CommonTypes_v3" targetNamespace="http://xml.amadeus.com/2010/06/Security_v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.000" id="AMA2012B">
 	<xs:import namespace="http://xml.amadeus.com/2010/06/Types_v1" schemaLocation="../2011Y/AMA_CommonTypes_Proxy.xsd"/>
 	<xs:import namespace="http://xml.amadeus.com/2010/06/AppMdw_CommonTypes_v3" schemaLocation="AMA_AppMdw_CommonTypes_Proxy.xsd"/>
-	<xs:import namespace="http://www.opentravel.org/OTA/2003/05/OTA2010B" schemaLocation="../../OTA/2010B/OTA_SimpleTypes_Proxy.xsd"/>
+	<xs:import namespace="http://www.opentravel.org/OTA/2003/05/OTA2010B" schemaLocation="../../OTA/2010B/OTA_Proxy.xsd"/>
 	<xs:element name="AMA_SecurityHostedUser">
 		<xs:annotation>
 			<xs:documentation>Header entry to identify a user hosted in Amadeus security server</xs:documentation>

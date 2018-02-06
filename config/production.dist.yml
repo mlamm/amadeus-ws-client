@@ -1,5 +1,5 @@
 search:
-    wsdl: 1ASIWUFITBD_PRD_20180201_153818.wsdl
+    wsdl: 1ASIWUFITBD_PRD_20180206_095645.wsdl
 
     allowed_types:
         - round-trip
