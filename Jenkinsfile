@@ -4,14 +4,11 @@ pipeline {
   agent any
 
   environment {
-    APP_NAME = 'amadeus-v1'
-    TEAM_NAME = 'search-and-compare'
-
-    K8S_NAMESPACE = 'search'
-
+    AWS_COMPOSER_CACHE_S3_BUCKET = 's3://invia-composer-cache'
     AWS_REGION = 'eu-central-1'
-    REGISTRY = '630542070554.dkr.ecr.eu-central-1.amazonaws.com'
+    K8S_NAMESPACE = 'search'
     KUBETOKEN_HOST = 'https://kube-signin.invia.lan'
+    REGISTRY = '630542070554.dkr.ecr.eu-central-1.amazonaws.com'
   }
 
   options {
@@ -26,10 +23,6 @@ pipeline {
     }
 
     stage('Build') {
-      environment {
-        AWS_COMPOSER_CACHE_S3_BUCKET = 's3://invia-composer-cache'
-      }
-
       steps {
         withCredentials([
           usernamePassword(credentialsId: 'AWS', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY'),
