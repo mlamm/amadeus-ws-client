@@ -1,5 +1,7 @@
 ## PHP charts override
 php:
+  serviceName: amadeus
+  
   team: search-compare
 
   ## NGINX

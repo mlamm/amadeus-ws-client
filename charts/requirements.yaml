@@ -1,6 +1,6 @@
 dependencies:
   - name: php
-    version: 0.2.2
+    version: 0.3.0
     repository: file://../scripts/common/charts/php
   - name: redis
     version: 0.10.2
