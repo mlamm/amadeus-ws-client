@@ -18,6 +18,7 @@ class AmadeusClient
         866, // No fare found for requested itinerary
         931, // No itinerary found for Requested Segment n
         977, // No available flight found for requested segment nn
+        996, // NO JOURNEY FOUND FOR REQUESTED ITINERARY
     ];
 
     /**
@@ -81,6 +82,7 @@ class AmadeusClient
         $result = $client->fareMasterPricerTravelBoardSearch($requestOptions);
 
         if ($this->isEmptyResultError($result)) {
+            // @TODO [ts] - MID - create a metric do track these behavior
             return $this->responseTransformer->createEmptyResponse();
         }
 
