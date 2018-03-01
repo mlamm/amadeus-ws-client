@@ -16,6 +16,9 @@ info "Cleaning old logs..."
 info "Cleaning old caches..."
 ./scripts/local/clean-cache.sh
 
+info "Preparing directories..."
+chmod -R 777 var/
+
 info "Generating documentation..."
 generate_docs_aglio "-i docs/api.apib -o var/docs/index.html --theme-variables flatly --theme-full-width"
 
