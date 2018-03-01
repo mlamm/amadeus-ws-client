@@ -216,7 +216,10 @@
                               ],
                               "properties": {
                                 "pieces": {
-                                  "type": "number",
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ],
                                   "description": "Number of allowed baggage pieces."
                                 },
                                 "unit": {
