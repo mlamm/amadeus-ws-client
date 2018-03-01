@@ -116,6 +116,13 @@ class AmadeusResponseTransformerTest extends \Codeception\Test\Unit
                 'limit'                   => 1,
                 'expected-searchresponse' => 'fixtures/04-searchresponse-technical-stops.json',
             ],
+
+            'baggage fees' => [
+                'ama-response'            => 'fixtures/05-Fare_MasterPricerTravelBoardSearch_BaggageFee.xml',
+                'type'                    => 'round-trip',
+                'limit'                   => 1,
+                'expected-searchresponse' => 'fixtures/05-searchresponse-baggagefee.json'
+            ]
         ];
     }
 }

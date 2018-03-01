@@ -40,6 +40,8 @@ class AmadeusResponseTransformer
 
         $legIndex = new LegIndex($amadeusResult);
         $freeBaggageIndex = new FreeBaggageIndex($amadeusResult);
+        $baggageFeeIndex = new BaggageFeeIndex($amadeusResult);
+
         $conversionRateDetail = new NodeList($amadeusResult->response->conversionRate->conversionRateDetail);
         $companyTextIndex = CompanyTextIndex::fromSearchResult($amadeusResult);
 
@@ -67,6 +69,7 @@ class AmadeusResponseTransformer
                 $segmentFlightRefs,
                 $legIndex,
                 $freeBaggageIndex,
+                $baggageFeeIndex,
                 $fareProducts,
                 $companyTextIndex
             );
@@ -90,6 +93,7 @@ class AmadeusResponseTransformer
      * @param SegmentFlightref      $segmentFlightRefs
      * @param LegIndex              $legIndex
      * @param FreeBaggageIndex      $freeBaggageIndex
+     * @param BaggageFeeIndex       $baggageFeeIndex
      * @param Collection            $fareProducts
      * @param \ArrayAccess          $companyTextIndex
      */
@@ -99,6 +103,7 @@ class AmadeusResponseTransformer
         SegmentFlightref $segmentFlightRefs,
         LegIndex $legIndex,
         FreeBaggageIndex $freeBaggageIndex,
+        BaggageFeeIndex $baggageFeeIndex,
         Collection $fareProducts,
         \ArrayAccess $companyTextIndex
     ) : void {
@@ -116,11 +121,13 @@ class AmadeusResponseTransformer
             $leg = $this->mapLeg(
                 $legIndex,
                 $freeBaggageIndex,
+                $baggageFeeIndex,
                 $legOffset,
                 $refToGroupOfFlights,
                 $fareDetails,
                 $validatingCarrier,
-                $companyTextIndex
+                $companyTextIndex,
+                $segmentFlightRefs
             );
 
             $result->getItinerary()->getLegs()->add(new ArrayCollection([$leg]));
@@ -206,22 +213,26 @@ class AmadeusResponseTransformer
      *
      * @param LegIndex          $legIndex
      * @param FreeBaggageIndex  $freeBaggageIndex
+     * @param BaggageFeeIndex   $baggageFeeIndex
      * @param int               $legOffset
      * @param string            $refToGroupOfFlights
      * @param Collection        $fareDetails
      * @param ValidatingCarrier $validatingCarrier
      * @param \ArrayAccess      $companyTextIndex
+     * @param SegmentFlightRef  $segmentFlightRefs
      *
      * @return SearchResponse\Leg
      */
     private function mapLeg(
         LegIndex $legIndex,
         FreeBaggageIndex $freeBaggageIndex,
+        BaggageFeeIndex $baggageFeeIndex,
         int $legOffset,
         string $refToGroupOfFlights,
         Collection $fareDetails,
         ValidatingCarrier $validatingCarrier,
-        \ArrayAccess $companyTextIndex
+        \ArrayAccess $companyTextIndex,
+        SegmentFlightRef $segmentFlightRefs
     ) : SearchResponse\Leg {
 
         $itineraryLeg = new SearchResponse\Leg();
@@ -313,18 +324,36 @@ class AmadeusResponseTransformer
                     ->setAircraftType($aircraft);
             }
 
-            $baggageDetails = $freeBaggageIndex->getFreeBagAllowanceInfo($refToGroupOfFlights, $legOffset + 1, $segmentOffset + 1);
+            $freeBaggageReference = $segmentFlightRefs->getFreeBaggageAllowanceRefNumber();
+            if ($freeBaggageReference) {
+                $baggageDetails = $freeBaggageIndex->getFreeBagAllowanceInfo($freeBaggageReference, $legOffset + 1, $segmentOffset + 1);
+                if ($baggageDetails) {
+                    $baggageRules = new SearchResponse\BaggageRules();
+                    if ($baggageDetails->quantityCode === 'W') {
+                        $baggageRules
+                            ->setWeight($baggageDetails->freeAllowance)
+                            ->setUnit('kg');
+                    } elseif ($baggageDetails->quantityCode === 'N') {
+                        $baggageRules
+                            ->setPieces($baggageDetails->freeAllowance);
+                    }
 
-            if ($baggageDetails) {
-                if ($baggageDetails->quantityCode === 'W') {
-                    $legSegment->setBaggageRules(new SearchResponse\BaggageRules());
-                    $legSegment->getBaggageRules()
-                        ->setWeight($baggageDetails->freeAllowance)
-                        ->setUnit('kg');
-                } elseif ($baggageDetails->quantityCode === 'N') {
-                    $legSegment->setBaggageRules(new SearchResponse\BaggageRules());
-                    $legSegment->getBaggageRules()
-                        ->setPieces($baggageDetails->freeAllowance);
+                    $baggageRefNumber = $segmentFlightRefs->getBaggageRefNumber();
+                    if ($baggageRefNumber && 0 === $baggageRules->getPieces()) {
+                        $baggageFee = $baggageFeeIndex->getBaggageFeeInfo(
+                            $baggageRefNumber,
+                            $legOffset + 1,
+                            $segmentOffset + 1
+                        );
+                        if ($baggageFee) {
+                            $baggageRules->setAdditionalBaggageFee($baggageFee['fee']);
+                            if ($baggageFee['weight']) {
+                                $baggageRules->setUnit('kg')
+                                    ->setWeight($baggageFee['weight']);
+                            }
+                        }
+                    }
+                    $legSegment->setBaggageRules($baggageRules);
                 }
             }
 
