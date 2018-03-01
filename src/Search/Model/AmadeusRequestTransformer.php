@@ -229,6 +229,10 @@ class AmadeusRequestTransformer
             $pricingOptions = array_merge($pricingOptions, $overnightOptions);
         }
 
+        if ($businessCase->getOptions()->isBaggageInformationRequest()) {
+            $pricingOptions = array_merge($pricingOptions, $this->config->search->bag_option);
+        }
+
         return $pricingOptions;
     }
 }

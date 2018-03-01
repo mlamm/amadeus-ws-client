@@ -16,6 +16,9 @@ use Amadeus\Client\Result;
  */
 class FreeBaggageIndex
 {
+
+    const QUALIFIER_FREE_BAGGAGE = 'FBA';
+
     /**
      * This index contains the reference number for the <freeBagAllowanceGrp>
      *
@@ -41,16 +44,16 @@ class FreeBaggageIndex
     /**
      * Query the index for baggage details
      *
-     * @param string $refToGroupOfFlights
-     * @param string $refToFlightIndex
-     * @param string $refToFlightDetails
+     * @param int $refToGroupOfFlights
+     * @param int $refToFlightIndex
+     * @param int $refToFlightDetails
      *
      * @return null|\stdClass               The content of a <baggageDetail> node
      */
     public function getFreeBagAllowanceInfo(
-        string $refToGroupOfFlights,
-        string $refToFlightIndex,
-        string $refToFlightDetails
+        int $refToGroupOfFlights,
+        int $refToFlightIndex,
+        int $refToFlightDetails
     ): ?\stdClass {
 
         if (!isset($this->serviceCoverageInfoGrpIndex[$refToGroupOfFlights][$refToFlightIndex][$refToFlightDetails])) {
@@ -71,13 +74,13 @@ class FreeBaggageIndex
      *
      * @param \stdClass $response
      */
-    private function build(\stdClass $response) : void
+    private function build(\stdClass $response): void
     {
         if (isset($response->serviceFeesGrp)) {
             foreach (new NodeList($response->serviceFeesGrp) as $serviceFeesGrp) {
-                if (($serviceFeesGrp->serviceTypeInfo->carrierFeeDetails->type ?? null) === 'FBA') {
+                if (($serviceFeesGrp->serviceTypeInfo->carrierFeeDetails->type ?? null) === self::QUALIFIER_FREE_BAGGAGE) {
                     $this->serviceCoverageInfoGrpIndex = $this->buildServiceCoverageInfoGrp($serviceFeesGrp);
-                    $this->freeBagAllowanceGrpIndex = $this->buildFreeBaggageAllowanceGrp($serviceFeesGrp);
+                    $this->freeBagAllowanceGrpIndex    = $this->buildFreeBaggageAllowanceGrp($serviceFeesGrp);
                     break;
                 }
             }
@@ -88,9 +91,10 @@ class FreeBaggageIndex
      * Build the index which points to a specific <freeBagAllowance> node
      *
      * @param \stdClass $serviceFeesGrp
+     *
      * @return array
      */
-    private function buildServiceCoverageInfoGrp(\stdClass $serviceFeesGrp) : array
+    private function buildServiceCoverageInfoGrp(\stdClass $serviceFeesGrp): array
     {
         $index = [];
 
@@ -126,9 +130,10 @@ class FreeBaggageIndex
      * Build the index which contains the baggageDetails
      *
      * @param \stdClass $serviceFeesGrp
+     *
      * @return array
      */
-    private function buildFreeBaggageAllowanceGrp(\stdClass $serviceFeesGrp) : array
+    private function buildFreeBaggageAllowanceGrp(\stdClass $serviceFeesGrp): array
     {
         $freeBagAllowanceGrpByRef = [];
 

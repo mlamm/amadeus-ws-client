@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d7687ead9bdeb7e160ecb38488f6788",
+    "content-hash": "0d5d1a3c0ec02fd1e9bf536a998bac5c",
     "packages": [
         {
             "name": "alcaeus/mongo-php-adapter",
@@ -456,17 +456,17 @@
         },
         {
             "name": "flight/library-search-request-response-mapping",
-            "version": "6.0.0",
+            "version": "6.1.0",
             "source": {
                 "type": "git",
                 "url": "ssh://git@stash.unister.lan:2200/flight/library.search-request-response-mapping.git",
-                "reference": "7d7ed73acc7b6916be5091ab0c08625854502abe"
+                "reference": "c701f42ff7eb8fc8e394a35ae2d1881f76664eb6"
             },
             "dist": {
                 "type": "tar",
-                "url": "https://packages.unister.lan/dist/flight-library-search-request-response-mapping-6.0.0-ccebfe.tar.bz2",
-                "reference": "7d7ed73acc7b6916be5091ab0c08625854502abe",
-                "shasum": "b071ab57f79d37265e99d5507c11d9f8c3665ce0"
+                "url": "https://packages.unister.lan/dist/flight-library-search-request-response-mapping-6.1.0-44ac9e.tar.bz2",
+                "reference": "c701f42ff7eb8fc8e394a35ae2d1881f76664eb6",
+                "shasum": "8f5a305f583f178bc5a64a5e159db234d6e6a7dc"
             },
             "archive": {
                 "exclude": [
@@ -503,21 +503,21 @@
                     "verify_peer": false
                 }
             },
-            "time": "2018-01-09T15:17:54+00:00"
+            "time": "2018-03-01T08:00:02+00:00"
         },
         {
             "name": "flight/search-request-mapping",
-            "version": "5.0.0",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "ssh://git@stash.unister.lan:2200/flight/library.search-request-mapping.git",
-                "reference": "85ede52e221d0b3f8107f2ae60bb32e43458cb5e"
+                "reference": "831da040d2b44c15974a3430ac9e1dc943a71ba9"
             },
             "dist": {
                 "type": "tar",
-                "url": "https://packages.unister.lan/dist/flight-search-request-mapping-5.0.0-ad4520.tar.bz2",
-                "reference": "85ede52e221d0b3f8107f2ae60bb32e43458cb5e",
-                "shasum": "5c692887b03efd0cfabb79a097ca53408ae034be"
+                "url": "https://packages.unister.lan/dist/flight-search-request-mapping-5.1.0-661002.tar.bz2",
+                "reference": "831da040d2b44c15974a3430ac9e1dc943a71ba9",
+                "shasum": "47ad478816458d236a76c31970671a55c63d50d0"
             },
             "require": {
                 "doctrine/collections": "~1.5",
@@ -547,7 +547,7 @@
                     "verify_peer": false
                 }
             },
-            "time": "2018-01-30T12:41:50+00:00"
+            "time": "2018-03-01T08:20:29+00:00"
         },
         {
             "name": "flight/throwup-errors",

@@ -31,6 +31,9 @@ search:
         - "OVN"
         - "NVS"
 
+    bag_option:
+        - "BAG"
+
     coop_codes:      #copied from IbeConfigAbstract
         - "000867" # AER
         - "374186" # BA-NOBAG

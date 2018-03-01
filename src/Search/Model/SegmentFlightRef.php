@@ -20,6 +20,16 @@ class SegmentFlightRef
     const SEGMENT_REF_QUALIFIER = 'S';
 
     /**
+     * Baggage fee reference number
+     */
+    const FREE_BAGGAGE_ALLOWANCE_REF_QUALIFIER = 'B';
+
+    /**
+     * Baggage fee reference number
+     */
+    const BAGGAGE_REF_QUALIFIER = 'OC';
+
+    /**
      * @var array
      */
     private $referencingDetails;
@@ -44,7 +54,7 @@ class SegmentFlightRef
      *
      * @return array
      */
-    public function getSegmentRefNumbers() : array
+    public function getSegmentRefNumbers(): array
     {
         if (!isset($this->referencingDetails[self::SEGMENT_REF_QUALIFIER])) {
             return [];
@@ -56,5 +66,39 @@ class SegmentFlightRef
         }
 
         return $refNumbers;
+    }
+
+    /**
+     * Returns the free baggage allowance <refNumber> value
+     *
+     * @return int|null
+     */
+    public function getFreeBaggageAllowanceRefNumber():?int
+    {
+        $refNumber = null;
+        if (true === isset($this->referencingDetails[self::FREE_BAGGAGE_ALLOWANCE_REF_QUALIFIER])) {
+            $refNumber = (int)(new NodeList($this->referencingDetails[self::FREE_BAGGAGE_ALLOWANCE_REF_QUALIFIER]))
+                ->first()->refNumber;
+        }
+
+        return $refNumber;
+    }
+
+
+
+    /**
+     * Returns the baggage <refNumber> value
+     *
+     * @return int|null
+     */
+    public function getBaggageRefNumber(): ?int
+    {
+        $refNumber = null;
+        if (true === isset($this->referencingDetails[self::BAGGAGE_REF_QUALIFIER])) {
+            $refNumber = (int)(new NodeList($this->referencingDetails[self::BAGGAGE_REF_QUALIFIER]))
+                ->first()->refNumber;
+        }
+
+        return $refNumber;
     }
 }
