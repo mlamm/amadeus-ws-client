@@ -159,6 +159,8 @@ $ helm upgrade -i amadeus \
     --set php.app.config.'app\.yml'=$(cat config/development.dist.yml | openssl base64 -A) \
     --set php.ingress.enabled=false \
     --set php.service.type=NodePort \
+    --wait \
+    --debug \
     ./charts
 ```
 

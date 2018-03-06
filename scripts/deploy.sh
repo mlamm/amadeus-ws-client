@@ -34,6 +34,8 @@ helm upgrade -i amadeus-v${major_version} \
   --set=php.ingress.routes[1].host=amadeus-v${major_version}.search.prod.invia.io \
   --namespace=${K8S_NAMESPACE} \
   --tiller-namespace=${K8S_NAMESPACE} \
+  --force \
+  --debug \
   --wait \
   ./charts
 

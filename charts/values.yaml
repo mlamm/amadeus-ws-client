@@ -1,7 +1,7 @@
 ## PHP charts override
 php:
   serviceName: amadeus
-  
+
   team: search-compare
 
   ## NGINX
@@ -13,6 +13,11 @@ php:
   app:
     image:
       repository: flight/invia/service/amadeus/app
+
+    ## kubernetes.yml - spec.template.metadata.annotations
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9101"
 
     ## php application resource usage
     resources:
