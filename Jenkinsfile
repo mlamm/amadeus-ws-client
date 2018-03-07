@@ -9,6 +9,8 @@ pipeline {
     K8S_NAMESPACE = 'search'
     KUBETOKEN_HOST = 'https://kube-signin.invia.lan'
     REGISTRY = '630542070554.dkr.ecr.eu-central-1.amazonaws.com'
+
+    TRAFFIC_TYPE = 'private'
   }
 
   options {
