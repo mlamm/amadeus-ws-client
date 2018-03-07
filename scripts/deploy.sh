@@ -31,7 +31,7 @@ helm upgrade -i amadeus-v${major_version} \
   --set=php.app.config.'app\.yml'=$(cat $config_file | openssl base64 -A) \
   --set=php.nginx.image.tag=${TAG} \
   --set=php.ingress.routes[0].host=amadeus-v${major_version}.search.dev.invia.io \
-  --set=php.ingress.routes[1].host=amadeus-v${major_version}.search.prod.invia.io \
+  --set=php.ingress.trafficType=${TRAFFIC_TYPE} \
   --namespace=${K8S_NAMESPACE} \
   --tiller-namespace=${K8S_NAMESPACE} \
   --force \
