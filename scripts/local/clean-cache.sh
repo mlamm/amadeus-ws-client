@@ -1,5 +1,8 @@
 #!/bin/bash
-source $(dirname $0)/base.sh
+set -e
+
+source $(dirname $0)/../base.sh
+
 info "clean up jms serializer cache..."
 docker run --rm -v $(pwd):/app -w /app busybox rm var/cache/serializer/* -rf
 info "clean up profiler cache..."

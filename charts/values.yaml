@@ -1,0 +1,38 @@
+## PHP charts override
+php:
+  serviceName: amadeus
+
+  team: search-compare
+
+  ## NGINX
+  nginx:
+    image:
+      repository: flight/invia/service/amadeus/nginx
+
+  ## Application
+  app:
+    image:
+      repository: flight/invia/service/amadeus/app
+
+    ## kubernetes.yml - spec.template.metadata.annotations
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9101"
+
+    ## php application resource usage
+    resources:
+      limits:
+        cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 192Mi
+
+    readinessProbe:
+      httpGet:
+        path: /health
+
+## Redis
+redis:
+  enabled: false
+  usePassword: false

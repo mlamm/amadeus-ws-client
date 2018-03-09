@@ -61,7 +61,7 @@
       {
         "content-provider": "",
         "type": "",
-        "fare-type": "",
+        "fare-types": [],
         "options": {
           "is-one-way-combination": "",
           "is-overnight": "",

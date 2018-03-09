@@ -1,19 +1,24 @@
 <?php
+
 namespace Flight\Service\Amadeus\Search\BusinessCase;
 
 use Flight\Service\Amadeus\Application\BusinessCase;
 use Flight\Service\Amadeus\Application\Exception\GeneralServerErrorException;
 use Flight\Service\Amadeus\Application\Exception\ServiceException;
+use Flight\Service\Amadeus\Application\Logger\ErrorLogger;
 use Flight\Service\Amadeus\Application\Response\HalResponse;
 use Flight\Service\Amadeus\Search\Exception\InvalidRequestException;
 use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse;
 use Flight\Service\Amadeus\Search\Response\SearchResultResponse;
+use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class Search
+ *
  * @package Flight\Service\Amadeus\Search\BusinessCase
  */
 class Search extends BusinessCase
@@ -24,80 +29,67 @@ class Search extends BusinessCase
     protected $searchService;
 
     /**
-     * @var LoggerInterface
+     * @var ErrorLogger
      */
-    protected $logger;
+    protected $errorLogger;
 
     /**
      * @param \Flight\Service\Amadeus\Search\Service\Search $searchService
-     * @param LoggerInterface                       $logger
+     * @param ErrorLogger                                   $errorLogger
      */
-    public function __construct(\Flight\Service\Amadeus\Search\Service\Search $searchService, LoggerInterface $logger)
+    public function __construct(\Flight\Service\Amadeus\Search\Service\Search $searchService, ErrorLogger $errorLogger)
     {
         $this->searchService = $searchService;
-        $this->logger = $logger;
+        $this->errorLogger   = $errorLogger;
     }
 
     /**
      * @return HalResponse
      */
-    public function respond() : HalResponse
+    public function respond(): HalResponse
     {
         try {
             $response = SearchResultResponse::fromJsonString(
                 $this->searchService->search($this->getRequest()->getContent())
             );
-            $this->addLinkToSelf($response);
-            return $response;
         } catch (InvalidRequestException $ex) {
-            $this->logger->critical($ex);
+            $this->errorLogger->logException($ex, $this->getRequest(), Response::HTTP_BAD_REQUEST);
             $ex->setResponseCode(Response::HTTP_BAD_REQUEST);
 
-            $errorResponse = new AmadeusErrorResponse();
-            $errorResponse->addViolation('search', $ex);
-            $errorResponse->setStatusCode(Response::HTTP_BAD_REQUEST);
-            $this->addLinkToSelf($errorResponse);
-
-            return $errorResponse;
+            $response = new AmadeusErrorResponse();
+            $response->addViolation('search', $ex);
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
         } catch (InvalidRequestParameterException $ex) {
-            $this->logger->debug($ex);
+            $this->errorLogger->logException($ex, $this->getRequest(), Response::HTTP_BAD_REQUEST);
 
-            $errorResponse = new AmadeusErrorResponse();
-            $errorResponse->addViolationFromValidationFailures($ex->getFailures());
-            $errorResponse->setStatusCode(Response::HTTP_BAD_REQUEST);
-            $this->addLinkToSelf($errorResponse);
-
-            return $errorResponse;
+            $response = new AmadeusErrorResponse();
+            $response->addViolationFromValidationFailures($ex->getFailures());
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
         } catch (ServiceException $ex) {
-            // search exception handling
-            $this->logger->critical($ex);
+            $this->errorLogger->logException($ex, $this->getRequest(), Response::HTTP_BAD_REQUEST, LogLevel::ERROR);
             $ex->setResponseCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 
-            $errorResponse = new AmadeusErrorResponse();
-            $errorResponse->addViolation('search', $ex);
-            $this->addLinkToSelf($errorResponse);
-
-            return $errorResponse;
+            $response = new AmadeusErrorResponse();
+            $response->addViolation('search', $ex);
         } catch (\Throwable $ex) {
-            // general exception handling
-            $this->logger->critical($ex);
+            $this->errorLogger->logException($ex, $this->getRequest(), Response::HTTP_BAD_REQUEST, LogLevel::CRITICAL);
             $errorException = new GeneralServerErrorException($ex->getMessage());
 
-            $errorResponse = new AmadeusErrorResponse();
-            $errorResponse->addViolation('_', $errorException);
-            $this->addLinkToSelf($errorResponse);
-
-            return $errorResponse;
+            $response = new AmadeusErrorResponse();
+            $response->addViolation('_', $errorException);
         }
+
+        return $this->addLinkToSelf($response);
     }
 
     /**
      * Add the required self-link to the hal response
      *
      * @param HalResponse $response
+     *
      * @return HalResponse
      */
-    private function addLinkToSelf(HalResponse $response) : HalResponse
+    private function addLinkToSelf(HalResponse $response): HalResponse
     {
         return $response->addMetaData([
             '_links' => [

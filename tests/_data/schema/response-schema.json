@@ -184,7 +184,7 @@
                                   ],
                                   "properties": {
                                     "iata": {
-                                      "type": "string",
+                                      "type": ["string", "null"],
                                       "description": "IATA code of the operating carrier"
                                     },
                                     "name": {
@@ -220,21 +220,28 @@
                                     "number",
                                     "null"
                                   ],
-                                  "description": "number of baggage pieces included"
-                                },
-                                "weight": {
-                                  "type": [
-                                    "number",
-                                    "null"
-                                  ],
-                                  "description": "value of baggage weight"
+                                  "description": "Number of allowed baggage pieces."
                                 },
                                 "unit": {
                                   "type": [
                                     "string",
                                     "null"
                                   ],
-                                  "description": "unit of baggage weight"
+                                  "description": "Unit of allowed or additional (when there is no allowed) baggage."
+                                },
+                                "weight": {
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ],
+                                  "description": "Weight of allowed or additional (when there is no allowed) baggage pieces."
+                                },
+                                "additional-baggage-fee": {
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ],
+                                  "description": "Fee of additional baggage when there is no free baggage allowance (pieces). Will also make use of 'unit' and 'wight' nodes."
                                 }
                               }
                             },

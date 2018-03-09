@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "authentication": {
+      "type": "object",
+      "description": "Credentials for calling sabre interface.",
+      "properties": {
+        "office-id": {
+          "type": "string",
+          "description": "Identification code."
+        },
+        "password-data": {
+          "type": "string",
+          "description": "Password of user id"
+        },
+        "user-id": {
+          "type": "string",
+          "description": "User id"
+        }
+      }
+    }
+  }
+}
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "recordlocator": {
+      "type": "string",
+      "description": "identification fpr the itinerary",
+      "remarks": {
+        "type": "array",
+        "description": "array of remarks to add",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "name of the remark to add"
+          },
+          "value": {
+            "type": "string",
+            "description": "value of the remark to add"
+          }
+        }
+      }
+    }
+  }
+}

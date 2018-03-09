@@ -4,44 +4,46 @@
 # Common variables
 #
 
-GREEN="\033[2;32m"
-RED="\033[0;31m"
-RESET="\033[0;0m"
-YELLOW="\033[2;33m"
+# install common scripts if doesn't exist and always pull latest
+function check_common_repo() {
+  local scriptsDirectory=${1:-$(dirname $0)}
 
-tag=$(git log -1 --pretty=%H)
-export TAG=${TAG:-$tag}
-export REGISTRY=${REGISTRY:-"630542070554.dkr.ecr.eu-central-1.amazonaws.com"}
-
-
-#
-# Functions
-#
-
-function error() {
-  echo -e "[ERROR] ${RED}${1}${RESET}"
+  if [[ -n $GIT_PRIVATE_KEY_PATH ]]
+  then
+    export GIT_SSH_COMMAND="ssh -i ${GIT_PRIVATE_KEY_PATH}"
+  fi
+  if [[ ! -d "$scriptsDirectory/common" ]]
+  then
+    git clone ssh://git@stash.unister.lan:2200/flight/infrastructure.deployment-scripts.git "$scriptsDirectory/common"
+  else
+    pushd "$scriptsDirectory/common"
+    git pull
+    popd
+  fi
 }
 
-function info() {
-  echo -e "[INFO] ${YELLOW}${1}${RESET}"
+# find the base scripts directory and use the common dir of this dir instead of cloning it into each subdir where the base.sh is sourced
+function find_base_scripts_directory() {
+    local current=$0
+    while [ true ]
+    do
+        current=$(dirname $current)
+        if [[ -f "$current/base.sh" ]]
+        then
+            echo "$current"
+            exit 0
+        fi
+    done
 }
 
-function success() {
-  echo -e "[SUCCESS] ${GREEN}${1}${RESET}"
-}
+scriptsDirectory=$(find_base_scripts_directory)
 
-# Exponentially retry 5 times a given command
-function retry() {
-  NEXT_WAIT_TIME=0
-  set +e
-  until $1 || [ $NEXT_WAIT_TIME -eq 4 ]; do
-    ((NEXT_WAIT_TIME++))
-    sleep_time=$((NEXT_WAIT_TIME**NEXT_WAIT_TIME))
+# Execute when file is sourced
+[[ $_ != $0 ]] && check_common_repo "$scriptsDirectory"
 
-    error "Failed executing command, ${NEXT_WAIT_TIME} attempt(s):"
-    error "  > ${1}"
-    error "Retrying in ${sleep_time} seconds"
-    sleep $sleep_time
-  done
-  set -e
-}
+source "$scriptsDirectory/common/base.sh"
+
+build_image=amadeus-php-base-build
+nginx_image=${REGISTRY}/flight/invia/service/amadeus/nginx
+app_image=${REGISTRY}/flight/invia/service/amadeus/app
+composer_version=1.5.2

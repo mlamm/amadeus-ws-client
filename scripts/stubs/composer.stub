@@ -1,0 +1,16 @@
+#!/bin/bash
+source $(dirname $0)/base.sh
+
+getMountPath $(pwd)
+
+package_name=hirak/prestissimo
+composer_command="docker run -u $(id -u) --rm -v $HOME/.composer:/.composer -v $mount_path:/var/www -w /var/www $buildImage php composer.phar"
+
+# install global package to speedup composer install
+$composer_command global show | grep "$package_name" &> /dev/null
+if [ "$?" -ne "0" ]; then
+    info "installing global composer package to speed up installation..."
+    $composer_command global require "$package_name"
+fi
+
+$composer_command "$@"

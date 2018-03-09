@@ -101,7 +101,7 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
 
         $this->assertInstanceOf(Client\RequestOptions\FareMasterPricerTbSearch::class, $options);
         $this->assertEquals(10, $options->nrOfRequestedResults);
-        $this->assertEquals(4, $options->nrOfRequestedPassengers);
+        $this->assertEquals(3, $options->nrOfRequestedPassengers);
         $this->assertArraySubset($expectedPax, $options->passengers);
         $this->assertArraySubset($expectedLegs, $options->itinerary);
     }

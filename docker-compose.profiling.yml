@@ -1,0 +1,21 @@
+version: "2"
+
+services:
+  amadeus-php:
+    environment:
+      XHGUI_PROFILING: enabled
+      XHGUI_MONGO_URI: mongo:27017
+      XHGUI_MONGO_DB: amadeus-profiling
+
+  mongo:
+    container_name: amadeus-mongo
+    image: mongo:latest
+
+  xhgui:
+    image: tsari/docker-xhgui
+    container_name: amadeus-xhgui
+    ports:
+      - "8000:80"
+    environment:
+      XHGUI_MONGO_URI: mongo:27017
+      XHGUI_MONGO_DB: amadeus-profiling

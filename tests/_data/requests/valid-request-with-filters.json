@@ -60,7 +60,7 @@
       {
         "content-provider": "amadeus",
         "type": "one-way",
-        "fare-type": "net",
+        "fare-types": ["net"],
         "options": {
           "is-one-way-combination": true,
           "is-overnight": false,

@@ -1,0 +1,6 @@
+#!/bin/bash
+source $(dirname $0)/base.sh
+
+getMountPath $(pwd)
+
+docker run --rm  -v $mount_path:/var/www -w /var/www christianbladescb/aglio -i docs/api.apib -o var/docs/index.html --theme-variables flatly --theme-full-width

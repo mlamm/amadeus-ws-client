@@ -37,22 +37,22 @@ class FreeBaggageIndexTest extends \Codeception\Test\Unit
         $index = new FreeBaggageIndex(new Result($sendResult));
 
         // paths which lead to group 1
-        $this->assertEquals($freeBaggageAllowanceGroups[1], $index->getFreeBagAllowanceInfo('1', '1', '1'));
-        $this->assertEquals($freeBaggageAllowanceGroups[1], $index->getFreeBagAllowanceInfo('1', '2', '1'));
+        $this->assertEquals($freeBaggageAllowanceGroups[1], $index->getFreeBagAllowanceInfo(1, 1, 1));
+        $this->assertEquals($freeBaggageAllowanceGroups[1], $index->getFreeBagAllowanceInfo(1, 2, 1));
 
-        $this->assertEquals($freeBaggageAllowanceGroups[1], $index->getFreeBagAllowanceInfo('2', '1', '1'));
-        $this->assertEquals($freeBaggageAllowanceGroups[1], $index->getFreeBagAllowanceInfo('2', '1', '2'));
+        $this->assertEquals($freeBaggageAllowanceGroups[1], $index->getFreeBagAllowanceInfo(2, 1, 1));
+        $this->assertEquals($freeBaggageAllowanceGroups[1], $index->getFreeBagAllowanceInfo(2, 1, 2));
 
         // paths which lead to group 3
-        $this->assertEquals($freeBaggageAllowanceGroups[2], $index->getFreeBagAllowanceInfo('3', '1', '1'));
-        $this->assertEquals($freeBaggageAllowanceGroups[2], $index->getFreeBagAllowanceInfo('3', '2', '1'));
+        $this->assertEquals($freeBaggageAllowanceGroups[2], $index->getFreeBagAllowanceInfo(3, 1, 1));
+        $this->assertEquals($freeBaggageAllowanceGroups[2], $index->getFreeBagAllowanceInfo(3, 2, 1));
 
         // paths which lead to group 4
-        $this->assertEquals($freeBaggageAllowanceGroups[3], $index->getFreeBagAllowanceInfo('4', '1', '1'));
+        $this->assertEquals($freeBaggageAllowanceGroups[3], $index->getFreeBagAllowanceInfo(4, 1, 1));
 
         // paths which lead to group 5
-        $this->assertEquals($freeBaggageAllowanceGroups[4], $index->getFreeBagAllowanceInfo('5', '1', '1'));
+        $this->assertEquals($freeBaggageAllowanceGroups[4], $index->getFreeBagAllowanceInfo(5, 1, 1));
 
-        $this->assertNull($index->getFreeBagAllowanceInfo('0', '0', '0'));
+        $this->assertNull($index->getFreeBagAllowanceInfo(0, 0, 0));
     }
 }

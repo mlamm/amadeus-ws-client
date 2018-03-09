@@ -59,7 +59,7 @@ class AmadeusRequestTransformer
 
         $options = [
             'nrOfRequestedResults' => $businessCase->getOptions()->getResultLimit(),
-            'nrOfRequestedPassengers' => $request->getPassengerCount(),
+            'nrOfRequestedPassengers' => $request->getAdults() + $request->getChildren(),
             'passengers' => $this->setupPassengers($request),
             'itinerary' => $itineraries,
             'flightOptions' => $this->buildFlightOptions($businessCase, $coopCodes)
@@ -227,6 +227,10 @@ class AmadeusRequestTransformer
 
         if ($businessCase->getOptions()->isOvernight()) {
             $pricingOptions = array_merge($pricingOptions, $overnightOptions);
+        }
+
+        if ($businessCase->getOptions()->isBaggageInformationRequest()) {
+            $pricingOptions = array_merge($pricingOptions, $this->config->search->bag_option);
         }
 
         return $pricingOptions;

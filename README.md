@@ -118,100 +118,68 @@ Following a list of internal response errors the application returns with status
 | ARS000X | *Every unspecific exception thrown by PHP will return such response if handled correctly, aswell as Amadeus response errors.* | |
 
 
-## Deploy to Minikube
+# Using Minikube for local development
 
-### Requirements
+## Requirements
 
 - [Minikube](https://github.com/kubernetes/minikube), local Kubernetes cluster
-- [DVM](https://howtowhale.github.io/dvm/), Docker version manager
+- [Helm](https://docs.helm.sh/), Kubernetes package manager
 
-
-### Start Minikube
+## Start Minikube
 
 First you need to start Minikube:
+
 ```
 $ minikube start \
-    --kubernetes-version=v1.7.5 \
     --memory=4096 \
-    --cpus=4
+    --cpus=2
 ```
 
+If not already done, install Helm:
 
-### Building containers for Minikube
+```
+$ helm init --upgrade
+```
+
+## Building containers for Minikube
+
+Switch you current Docker context to the one used in Minikube, then build:
 
 ```
 $ eval $(minikube docker-env)
 $ ./scripts/build.sh
 ```
 
-If you need to build Docker containers, you may endup having compatibility
-issues between version of the Docker client/server. If so you need to install
-[DVM](https://howtowhale.github.io/dvm/) which is a Docker version manager.
+## Deploying
+
+Deploy previously built container to Minikube.
 
 ```
-$ docker version
-Client:
- Version:      17.09.0-ce
- API version:  1.24 (downgraded from 1.23)
- Go version:   go1.8.3
- Git commit:   afdb6d4
- Built:        Tue Sep 26 22:40:09 2017
- OS/Arch:      darwin/amd64
-Error response from daemon: client is newer than server (client API version: 1.24, server API version: 1.23)
+$ helm upgrade -i amadeus \
+    --set redis.enabled=true \
+    --set php.app.config.'app\.yml'=$(cat config/development.dist.yml | openssl base64 -A) \
+    --set php.ingress.enabled=false \
+    --set php.service.type=NodePort \
+    --wait \
+    --debug \
+    ./charts
 ```
 
-Version used is different, we need to use the same version used by the server:
+Access the service from the browser:
 
 ```
-$ dvm detect
-1.11.1 is not installed. Installing now...
-Installing 1.11.1...
-Now using Docker 1.11.1
+$ minikube service amadeus
 ```
 
-Now you can build:
+Test:
 ```
-$ ./scripts/build.sh
-```
-
-
-### Deploying
-
-Deploy previously built container to Minikube. You can update environment
-variable in the `./scripts/minikube.sh` file:
-
-```
-$ ./scripts/minikube.sh up
+$ curl $(minikube service amadeus --url)/health
 ```
 
-You can monitor how the service is behaving in a different terminal:
-```
-$ watch kubectl get po
+## Cleaning up
 
-NAME                          READY     STATUS      RESTARTS   AGE
-amadeus-nginx-396418586-347m3   1/1       Running     0          1h
-amadeus-nginx-396418586-gqcj1   1/1       Running     0          1h
-```
+Delete Amadeus service and associated dependencies:
 
-Expose the service to Minikube:
 ```
-$ kubectl expose deploy/amadeus-nginx \
-    --name=app \
-    --port=80 \
-    --target-port=80 \
-    --type=NodePort
-```
-
-To access the service:
-```
-$ minikube service app
-```
-
-
-### Cleaning up
-
-The cleanup command tear-down all the resources that were created from the
-_kubernetes.yaml_ file:
-```
-$ ./scripts/minikube.sh down
+$ helm del --purge amadeus
 ```

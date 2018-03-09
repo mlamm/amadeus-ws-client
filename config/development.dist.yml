@@ -1,5 +1,5 @@
 search:
-    wsdl: 1ASIWUFITBD_PDT_20170215_083717.wsdl
+    wsdl: 1ASIWUFITBD_PDT_20180206_095616.wsdl
 
     allowed_types:
         - round-trip
@@ -33,6 +33,9 @@ search:
     overnight_options: #copied from IbeConfig
         - "OVN"
         - "NVS"
+
+    bag_option:
+        - "BAG"
 
     coop_codes:      #copied from IbeConfigAbstract
         - "000867" # AER

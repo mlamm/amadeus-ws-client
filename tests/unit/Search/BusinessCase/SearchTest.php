@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Tests\Search\BusinessCase;
 
+use Codeception\Test\Unit;
+use Flight\Service\Amadeus\Application\Logger\ErrorLogger;
 use Flight\Service\Amadeus\Search\BusinessCase\Search;
 use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse;
@@ -20,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
  * @author    Fluege-Dev <fluege-dev@invia.de>
  */
-class SearchTest extends \Codeception\Test\Unit
+class SearchTest extends Unit
 {
     /**
      * @var Search
@@ -42,7 +44,8 @@ class SearchTest extends \Codeception\Test\Unit
         $this->service = $this->getMockBuilder(\Flight\Service\Amadeus\Search\Service\Search::class)
             ->disableOriginalConstructor()->getMock();
         $this->logger = new TestLogger();
-        $this->object = new Search($this->service, $this->logger);
+
+        $this->object = new Search($this->service, new ErrorLogger($this->logger));
     }
 
     /**

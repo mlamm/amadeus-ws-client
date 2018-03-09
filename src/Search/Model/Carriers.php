@@ -62,21 +62,17 @@ class Carriers
         }
 
         $carrier = new SearchResponse\Carrier();
-        $carrier->setIata('');
         $carrier->setName($companyIndex[$textRefNumber]);
 
         return $carrier;
     }
 
     /**
-     * @return SearchResponse\Carrier
+     * @return null
      */
-    private static function createEmptyCarrier(): SearchResponse\Carrier
+    private static function createEmptyCarrier()
     {
-        $carrier = new SearchResponse\Carrier();
-        $carrier->setIata('');
-
-        return $carrier;
+        return null;
     }
 
     /**

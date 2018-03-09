@@ -1,0 +1,165 @@
+{
+  "result": [
+    {
+      "_itinerary": {
+        "type": "round-trip",
+        "legs": [
+          [
+            {
+              "hash": null,
+              "provider": "amadeus",
+              "classification": "scheduled",
+              "carriers": {
+                "main": {
+                  "iata": "UX"
+                },
+                "validating": {
+                  "iata": "UX"
+                }
+              },
+              "duration": 9900,
+              "nights": 0,
+              "segments": [
+                {
+                  "depart-at": 1523042100,
+                  "arrive-at": 1523052000,
+                  "aircraft-type": "E90",
+                  "airports": {
+                    "arrival": {
+                      "iata": "MAD"
+                    },
+                    "departure": {
+                      "iata": "FRA"
+                    }
+                  },
+                  "duration": null,
+                  "cabin-class": {
+                    "code": "M",
+                    "name": "Economy"
+                  },
+                  "flight-number": 1506,
+                  "carriers": {
+                    "marketing": {
+                      "iata": "UX"
+                    },
+                    "operating": {
+                      "iata": "UX"
+                    }
+                  },
+                  "remaining-seats": 9,
+                  "technical-stops": null,
+                  "baggage-rules": {
+                    "pieces": 0,
+                    "weight": null,
+                    "unit": null,
+                    "additional-baggage-fee": 30
+                  },
+                  "gds-information": {
+                    "res-book-desig-code": "Z"
+                  }
+                }
+              ],
+              "gds-information": null
+            }
+          ],
+          [
+            {
+              "hash": null,
+              "provider": "amadeus",
+              "classification": "scheduled",
+              "carriers": {
+                "main": {
+                  "iata": "UX"
+                },
+                "validating": {
+                  "iata": "UX"
+                }
+              },
+              "duration": 9600,
+              "nights": 0,
+              "segments": [
+                {
+                  "depart-at": 1523459400,
+                  "arrive-at": 1523469000,
+                  "aircraft-type": "E90",
+                  "airports": {
+                    "arrival": {
+                      "iata": "FRA"
+                    },
+                    "departure": {
+                      "iata": "MAD"
+                    }
+                  },
+                  "duration": null,
+                  "cabin-class": {
+                    "code": "M",
+                    "name": "Economy"
+                  },
+                  "flight-number": 1509,
+                  "carriers": {
+                    "marketing": {
+                      "iata": "UX"
+                    },
+                    "operating": {
+                      "iata": "UX"
+                    }
+                  },
+                  "remaining-seats": 9,
+                  "technical-stops": null,
+                  "baggage-rules": {
+                    "pieces": 0,
+                    "weight": null,
+                    "unit": null,
+                    "additional-baggage-fee": 30
+                  },
+                  "gds-information": {
+                    "res-book-desig-code": "Z"
+                  }
+                }
+              ],
+              "gds-information": null
+            }
+          ]
+        ]
+      },
+      "_calculation": {
+        "flight": {
+          "total": 301.64,
+          "fare": {
+            "total": 175.82,
+            "passenger-types": {
+              "adult": 87.91,
+              "child": null,
+              "infant": null
+            }
+          },
+          "tax": {
+            "total": 125.82,
+            "passenger-types": {
+              "adult": 62.91,
+              "child": null,
+              "infant": null
+            }
+          }
+        },
+        "currency": "EUR",
+        "payment-methods": [
+          {
+            "name": "_default",
+            "payment-fee": {
+              "total": 0,
+              "passenger-types": {
+                "adult": 0,
+                "child": null,
+                "infant": null
+              }
+            },
+            "service-fee": null
+          }
+        ],
+        "reductions": null
+      },
+      "_gds-information": null
+    }
+  ]
+}

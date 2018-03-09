@@ -55,6 +55,7 @@ format.
                         + `is-overnight`: false (boolean, required) - flag if request includes overnight flights
                         + `is-area-search`: false (boolean, required) - flag if area search should be activated
                         + `is-benchmark` : false (boolean, required) - flag if request is a benchmark request
+                        + `is-baggage-information-request` : false (boolean, required) - flag indicating if search response should be extended with information about additional baggage if available
                     + `authentication`
                         + `office-id`: abdh363js== (string, required) - office id for amadeus authentication
                         + `duty-code`: g423kdfas5321== (string, required) - duty code for amadeus authentication
@@ -103,7 +104,7 @@ format.
                                             + `marketing` (required)
                                                 + `iata`: AB (string, required) - IATA code of the marketing carrier
                                             + `operating` (required, nullable)
-                                                + `iata`: LH (string, required) - IATA code of the operating carrier
+                                                + `iata`: LH (string, nullable, required) - IATA code of the operating carrier
                                                 + `name`: LUFTHANSA OR LH CITYLINE (string, optional)
 
                                                     Name of the operating carrier.
@@ -114,6 +115,7 @@ format.
                                             + `pieces`: 1 (number, nullable) - number of baggage pieces included
                                             + `weight`: 20 (number, nullable) - value of baggage weight
                                             + `unit`: KG  (string, nullable) - unit of baggage weight
+                                            + `additional-baggage-fee`: 30 (number, nullable) - fee of additional baggage when there is no free baggage allowance
                                         + `gds-information` (required)
                                             + `res-book-desig-code`: Y (string, required) - the "reservation booking designator" code
                                         + `technical-stops` (array, fixed-type, nullable)

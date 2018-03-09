@@ -56,7 +56,7 @@ $app->after(new JsonEncodingOptions($app['config']));
 $app['businesscase.search'] = function () use ($app) {
     return new Flight\Service\Amadeus\Search\BusinessCase\Search(
         $app['service.search'],
-        $app['monolog']
+        $app['error-logger']
     );
 };
 
