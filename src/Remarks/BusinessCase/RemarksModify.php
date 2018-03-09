@@ -9,6 +9,7 @@ use Flight\Service\Amadeus\Remarks\Exception\InvalidRequestException;
 use Flight\Service\Amadeus\Remarks\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Remarks\Response\AmadeusErrorResponse;
 use Flight\Service\Amadeus\Remarks\Response\ResultResponse;
+use Flight\Service\Amadeus\Remarks\Service\Remarks;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -33,7 +34,7 @@ class RemarksModify extends BusinessCase
      * @param \Flight\Service\Amadeus\Remarks\Service\Remarks $remarksService
      * @param LoggerInterface                       $logger
      */
-    public function __construct(\Flight\Service\Amadeus\Remarks\Service\Remarks $remarksService, LoggerInterface $logger)
+    public function __construct(Remarks $remarksService, LoggerInterface $logger)
     {
         $this->remarksService = $remarksService;
         $this->logger = $logger;

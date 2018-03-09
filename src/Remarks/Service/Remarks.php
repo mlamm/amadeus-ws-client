@@ -55,9 +55,9 @@ class Remarks
         \stdClass $config
     ) {
         $this->requestValidator = $requestValidator;
-        $this->serializer = $serializer;
-        $this->amadeusClient = $amadeusClient;
-        $this->config = $config;
+        $this->serializer       = $serializer;
+        $this->amadeusClient    = $amadeusClient;
+        $this->config           = $config;
     }
 
     /**
@@ -67,6 +67,8 @@ class Remarks
      * @param $recordlocator
      *
      * @return mixed|string
+     * @throws \Flight\Service\Amadeus\Remarks\Exception\AmadeusRequestException
+     * @throws \Flight\Service\Amadeus\Remarks\Exception\InvalidRequestParameterException
      */
     public function remarksRead($authHeader, $recordlocator)
     {
@@ -93,18 +95,21 @@ class Remarks
     }
 
     /**
-     * handling remakrs add request
+     * handling remarks add request
      *
      * @param $authHeader
      * @param $recordlocator
      * @param $body
      *
      * @return mixed|string
+     * @return mixed|string
+     * @throws \Flight\Service\Amadeus\Remarks\Exception\AmadeusRequestException
+     * @throws \Flight\Service\Amadeus\Remarks\Exception\InvalidRequestParameterException
      */
     public function remarksAdd($authHeader, $recordlocator, $body)
     {
         $authHeader = \GuzzleHttp\json_decode($authHeader);
-        $body = \GuzzleHttp\json_decode($body);
+        $body       = \GuzzleHttp\json_decode($body);
 
         // validate
         $this->requestValidator->validateAuthentication($authHeader);
@@ -122,7 +127,7 @@ class Remarks
             ->setPasswordData($authHeader->{'password-data'})
             ->setPasswordLength($authHeader->{'password-length'})
             ->setUserId($authHeader->{'user-id'});
-        $response = $this->amadeusClient->remarksAdd(
+        $response     = $this->amadeusClient->remarksAdd(
             (new Request\Entity\RemarksAdd())
                 ->setRecordlocator($recordlocator)->setRemarks($remarks),
             $authenticate
@@ -139,12 +144,14 @@ class Remarks
      * @param $body
      *
      * @return mixed|string
+     * @throws \Flight\Service\Amadeus\Remarks\Exception\AmadeusRequestException
+     * @throws \Flight\Service\Amadeus\Remarks\Exception\InvalidRequestParameterException
      */
     public function remarksDelete($authHeader, $recordlocator, $body)
     {
         // json data
         $authHeader = \GuzzleHttp\json_decode($authHeader);
-        $body = \GuzzleHttp\json_decode($body);
+        $body       = \GuzzleHttp\json_decode($body);
 
         // validate
         $this->requestValidator->validateAuthentication($authHeader);
@@ -167,7 +174,7 @@ class Remarks
 
         // filter remarks tp delete
         /** @var Itinerary $remarksReadCollection */
-        $remarksReadCollection = $response->getResult()->get(0);
+        $remarksReadCollection   = $response->getResult()->get(0);
         $remarksDeleteCollection = new ArrayCollection();
         /** @var Remark $remark */
         foreach ($remarksReadCollection->getRemarks() as $remark) {
@@ -197,6 +204,8 @@ class Remarks
      * @param $body
      *
      * @return mixed|string
+     * @throws \Flight\Service\Amadeus\Remarks\Exception\AmadeusRequestException
+     * @throws \Flight\Service\Amadeus\Remarks\Exception\InvalidRequestParameterException
      */
     public function remarksModify($authHeader, $recordlocator, $body)
     {
