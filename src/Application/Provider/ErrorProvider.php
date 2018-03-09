@@ -42,7 +42,8 @@ class ErrorProvider implements ServiceProviderInterface
         $app->register(
             new MonologServiceProvider(),
             [
-                'monolog.logfile'   => 'php://stdout',
+                // @see scripts/docker/php/docker-entrypoint
+                'monolog.logfile'   => __DIR__ . '/../../../var/logs/logToStdOut_pipe',
                 'monolog.level'     => Logger::NOTICE,
                 'monolog.formatter' => function () {
                     return new JsonFormatter();

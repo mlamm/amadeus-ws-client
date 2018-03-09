@@ -46,3 +46,8 @@ RUN mkdir -p /var/www/var/logs /var/www/var/cache \
     && chgrp -R www-data /var/www
 
 WORKDIR /var/www
+
+COPY ./scripts/docker/php/docker-entrypoint /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint"]
+
+CMD ["php-fpm"]

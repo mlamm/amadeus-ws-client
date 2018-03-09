@@ -39,8 +39,7 @@ class ErrorLogger
      */
     public function logException(\Throwable $exception, Request $request, int $statusCode, $severity = LogLevel::WARNING)
     {
-        $data = ['message' => $exception->getMessage()];
-
+        $data = [];
         if (400 <= $statusCode) {
             $data['request']['method']  = $request->getMethod();
             $data['request']['uri']     = $request->getRequestUri();
@@ -51,6 +50,6 @@ class ErrorLogger
             $data['stacktrace'] = $exception->getTraceAsString();
         }
 
-        $this->logger->log($severity, json_encode($data));
+        $this->logger->log($severity, $exception->getMessage(), $data);
     }
 }
