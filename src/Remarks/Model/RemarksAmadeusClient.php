@@ -1,4 +1,5 @@
 <?php
+
 namespace Flight\Service\Amadeus\Remarks\Model;
 
 use Amadeus\Client;
@@ -6,13 +7,12 @@ use Flight\Service\Amadeus\Remarks\Exception\AmadeusRequestException;
 use Flight\Service\Amadeus\Remarks\Request\Entity\Authenticate;
 use Flight\Service\Amadeus\Remarks\Request\Entity\RemarksAdd;
 use Flight\Service\Amadeus\Remarks\Request\Entity\RemarksDelete;
-use Flight\Service\Amadeus\Remarks\Request\Entity\RemarksModify;
 use Flight\Service\Amadeus\Remarks\Request\Entity\RemarksRead;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
 /**
  * Class AmadeusClient
+ *
  * @package Flight\Service\Amadeus\Remarks\Model
  */
 class RemarksAmadeusClient
@@ -57,16 +57,16 @@ class RemarksAmadeusClient
         AmadeusResponseTransformer $responseTransformer,
         \Closure $clientBuilder
     ) {
-        $this->logger = $logger;
-        $this->requestTransformer = $requestTransformer;
+        $this->logger              = $logger;
+        $this->requestTransformer  = $requestTransformer;
         $this->responseTransformer = $responseTransformer;
-        $this->clientBuilder = $clientBuilder;
+        $this->clientBuilder       = $clientBuilder;
     }
 
     /**
      * call for remarks read
      *
-     * @param RemarksRead $requestEntity
+     * @param RemarksRead  $requestEntity
      * @param Authenticate $authenticate
      *
      * @return \Flight\Service\Amadeus\Remarks\Response\ResultResponse
@@ -93,7 +93,7 @@ class RemarksAmadeusClient
     /**
      * call for remarks add
      *
-     * @param RemarksAdd $requestEntity
+     * @param RemarksAdd   $requestEntity
      * @param Authenticate $authenticate
      *
      * @return \Flight\Service\Amadeus\Remarks\Response\ResultResponse
@@ -124,7 +124,7 @@ class RemarksAmadeusClient
      * call for remarks delete
      *
      * @param RemarksDelete $requestEntity
-     * @param Authenticate $authenticate
+     * @param Authenticate  $authenticate
      *
      * @return \Flight\Service\Amadeus\Remarks\Response\ResultResponse
      *

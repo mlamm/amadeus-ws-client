@@ -9,6 +9,7 @@ use Flight\Service\Amadeus\Remarks\Exception\InvalidRequestException;
 use Flight\Service\Amadeus\Remarks\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Remarks\Response\AmadeusErrorResponse;
 use Flight\Service\Amadeus\Remarks\Response\ResultResponse;
+use Flight\Service\Amadeus\Remarks\Service\Remarks;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -30,10 +31,10 @@ class RemarksAdd extends BusinessCase
     protected $logger;
 
     /**
-     * @param \Flight\Service\Amadeus\Remarks\Service\Remarks $remarksService
+     * @param Remarks $remarksService
      * @param LoggerInterface                       $logger
      */
-    public function __construct(\Flight\Service\Amadeus\Remarks\Service\Remarks $remarksService, LoggerInterface $logger)
+    public function __construct(Remarks $remarksService, LoggerInterface $logger)
     {
         $this->remarksService = $remarksService;
         $this->logger = $logger;
@@ -53,16 +54,6 @@ class RemarksAdd extends BusinessCase
 
             $this->addLinkToSelf($response);
             return $response;
-        } catch (InvalidRequestException $ex) {
-            $this->logger->critical($ex);
-            $ex->setResponseCode(Response::HTTP_BAD_REQUEST);
-
-            $errorResponse = new AmadeusErrorResponse();
-            $errorResponse->addViolation('remarks', $ex);
-            $errorResponse->setStatusCode(Response::HTTP_BAD_REQUEST);
-            $this->addLinkToSelf($errorResponse);
-
-            return $errorResponse;
         } catch (InvalidRequestParameterException $ex) {
             $this->logger->debug($ex);
 

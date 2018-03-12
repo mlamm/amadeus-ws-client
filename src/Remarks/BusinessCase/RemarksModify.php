@@ -54,16 +54,6 @@ class RemarksModify extends BusinessCase
 
             $this->addLinkToSelf($response);
             return $response;
-        } catch (InvalidRequestException $ex) {
-            $this->logger->critical($ex);
-            $ex->setResponseCode(Response::HTTP_BAD_REQUEST);
-
-            $errorResponse = new AmadeusErrorResponse();
-            $errorResponse->addViolation('remarks', $ex);
-            $errorResponse->setStatusCode(Response::HTTP_BAD_REQUEST);
-            $this->addLinkToSelf($errorResponse);
-
-            return $errorResponse;
         } catch (InvalidRequestParameterException $ex) {
             $this->logger->debug($ex);
 
