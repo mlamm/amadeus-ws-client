@@ -60,14 +60,25 @@ search:
         - "NK"
         - "BL"
 
+remarks:
+    wsdl: 1ASIWUFITBD_PRD_20180206_095645.wsdl
+
 response:
     json_encoding_options:
         - JSON_PRETTY_PRINT
         - JSON_UNESCAPED_SLASHES
 
 debug:
-    log_ama_traffic: false
+    search:
+      log_ama_traffic: false
     pimpledump:
         enabled: true
     throwup:
         enabled: true
+    remarks:
+      log_ama_traffic: false
+    pimpledump:
+        enabled: true
+    throwup:
+        enabled: true
+

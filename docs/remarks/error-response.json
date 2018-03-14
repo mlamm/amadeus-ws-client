@@ -1,0 +1,11 @@
+{
+  "errors": {
+    "_": [
+      {
+        "code": "SRS0001",
+        "message": "Sabre service error message",
+        "status": 500
+      }
+    ]
+  }
+}

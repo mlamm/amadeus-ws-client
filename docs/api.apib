@@ -220,6 +220,179 @@ This endpoint will report main state of the service
 
             I am alive.
 
+## Remarks [/remarks]
+
+### Remarks [GET /remarks/{recordlocator}]
+
+This request will return all remarks for given recordlocator and officeId
+
++ Parameters
+
+    + recordlocator: LTEXQF (required, string) - alphanumeric recordlocator
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+
+    + Schema
+
+            <!-- include(remarks/GET_request_schema.json) -->
+
++ Response 200 (application/hal+json)
+
+    + Body
+
+            <!-- include(remarks/response.json) -->
+
+    + Schema
+
+            <!-- include(remarks/response_schema.json) -->
+
++ Response 500 (application/hal+json)
+
+    |Code | Message |
+    |---|---|
+    | SRS000X | *Message of an unspecific error.* |
+
+    + Body
+
+            <!-- include(remarks/error-response.json) -->
+
+    + Schema
+
+            <!-- include(remarks/error-response_schema.json) -->
+
+### Remarks [POST /remarks]
+
+This request will add the given remarks, return all remarks for given recordlocator and officeId
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+
+    + Body
+
+            <!-- include(remarks/POST_request.json) -->
+
+    + Schema
+
+            <!-- include(remarks/POST_request_schema.json) -->
+            <!-- include(remarks/identification_schema.json) -->
+
++ Response 200 (application/hal+json)
+
+    + Body
+
+            <!-- include(remarks/response.json) -->
+
+    + Schema
+
+            <!-- include(remarks/response_schema.json) -->
+
++ Response 500 (application/hal+json)
+
+    |Code | Message |
+    |---|---|
+    | SRS000X | *Message of an unspecific error.* |
+
+    + Body
+
+            <!-- include(remarks/error-response.json) -->
+
+    + Schema
+
+            <!-- include(remarks/error-response_schema.json) -->
+
+### Remarks [PUT /remarks]
+
+This request will change the given remarks, return all remarks for given recordlocator and officeId
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+
+    + Body
+
+            <!-- include(remarks/PUT_request.json) -->
+
+    + Schema
+
+            <!-- include(remarks/PUT_request_schema.json) -->
+            <!-- include(remarks/identification_schema.json) -->
+
++ Response 200 (application/hal+json)
+
+    + Body
+
+            <!-- include(remarks/response.json) -->
+
+    + Schema
+
+            <!-- include(remarks/response_schema.json) -->
+
++ Response 500 (application/hal+json)
+
+    |Code | Message |
+    |---|---|
+    | SRS000X | *Message of an unspecific error.* |
+
+    + Body
+
+            <!-- include(remarks/error-response.json) -->
+
+    + Schema
+
+            <!-- include(remarks/error-response_schema.json) -->
+
+### Remarks [DELETE /remarks]
+
+This request will delete the given remarks, return all remarks for given recordlocator and officeId
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+
+    + Body
+
+            <!-- include(remarks/DELETE_request.json) -->
+
+    + Schema
+
+            <!-- include(remarks/DELETE_request_schema.json) -->
+            <!-- include(remarks/identification_schema.json) -->
+
++ Response 200 (application/hal+json)
+
+    + Body
+
+            <!-- include(remarks/response.json) -->
+
+    + Schema
+
+            <!-- include(remarks/response_schema.json) -->
+
++ Response 500 (application/hal+json)
+
+    |Code | Message |
+    |---|---|
+    | SRS000X | *Message of an unspecific error.* |
+
+    + Body
+
+            <!-- include(remarks/error-response.json) -->
+
+    + Schema
+
+            <!-- include(remarks/error-response_schema.json) -->
+
 # Data Structures
 
 ## SelfLink (object)

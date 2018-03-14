@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "authentication": {
+      "type": "object",
+      "description": "Credentials for calling amadeus interface.",
+      "properties": {
+        "office-id": {
+          "type": "string",
+          "description": "Identification code."
+        },
+        "password-data": {
+          "type": "string",
+          "description": "Password of user id"
+        },
+        "user-id": {
+          "type": "string",
+          "description": "User id"
+        }
+      }
+    }
+  }
+}

@@ -5,6 +5,7 @@ use Flight\Service\Amadeus\Application\Middleware\JsonEncodingOptions;
 use Flight\Service\Amadeus\Application\Provider\ErrorProvider;
 use Flight\Service\Amadeus\Search\Cache\CacheProvider;
 use Flight\Service\Amadeus\Search\Provider\SearchServiceProvider;
+use Flight\Service\Amadeus\Remarks;
 use Silex\Application;
 use Symfony\Component\Yaml\Yaml;
 
@@ -23,15 +24,16 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $app = new Application();
 
-$app->register(new ErrorProvider());
-$app->register(new Silex\Provider\ServiceControllerServiceProvider());
-$app->register(new CacheProvider());
-
 // switch to mock service responses for api tests
 $useMockAmaResponses = env('MOCK_AMA_RESPONSE_IN_TEST', 'disabled') === 'enabled'
     && isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] === 'Symfony BrowserKit';
 
+// register provider
+$app->register(new ErrorProvider());
+$app->register(new Silex\Provider\ServiceControllerServiceProvider());
+$app->register(new CacheProvider());
 $app->register(new SearchServiceProvider($useMockAmaResponses));
+$app->register(new Remarks\Provider\RemarksServiceProvider($useMockAmaResponses));
 
 // register config
 $app['config'] = function () {
@@ -47,11 +49,10 @@ $app['config'] = function () {
     );
 };
 
-$config = $app['config'];
-
 // set json ecoding options from config
-$app->after(new JsonEncodingOptions($config));
+$app->after(new JsonEncodingOptions($app['config']));
 
+// search cases
 $app['businesscase.search'] = function () use ($app) {
     return new Flight\Service\Amadeus\Search\BusinessCase\Search(
         $app['service.search'],
@@ -59,17 +60,49 @@ $app['businesscase.search'] = function () use ($app) {
     );
 };
 
+// remarks cases
+$app['businesscase.remarks-read'] = function () use ($app) {
+    return new Remarks\BusinessCase\RemarksRead(
+        $app['service.remarks'],
+        $app['monolog']
+    );
+};
+
+$app['businesscase.remarks-add'] = function () use ($app) {
+    return new Remarks\BusinessCase\RemarksAdd(
+        $app['service.remarks'],
+        $app['monolog']
+    );
+};
+
+$app['businesscase.remarks-delete'] = function () use ($app) {
+    return new Remarks\BusinessCase\RemarksDelete(
+        $app['service.remarks'],
+        $app['monolog']
+    );
+};
+
+$app['businesscase.remarks-modify'] = function () use ($app) {
+    return new Remarks\BusinessCase\RemarksModify(
+        $app['service.remarks'],
+        $app['monolog']
+    );
+};
+
+$app->register(new \Flight\Service\Amadeus\Search\Cache\CacheProvider());
+
 // application provider
 $app->mount('/', new \Flight\Service\Amadeus\Index\IndexProvider());
 $app->mount('/flight-search', new Flight\Service\Amadeus\Search\SearchProvider());
+$app->mount('/remarks', new Remarks\RemarksProvider());
 
-if ($config->debug->pimpledump->enabled) {
+if ($app['config']->debug->pimpledump->enabled) {
     $app->register(new \Sorien\Provider\PimpleDumpProvider(), [
         'pimpledump.output_dir' => __DIR__ . '/../var/logs',
     ]);
 }
 
-if ($config->debug->throwup->enabled) {
+if ($app['config']->debug->throwup->enabled) {
     $app->mount('/throwup', new \Flight\ThrowUp\SilexProvider());
 }
 

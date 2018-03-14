@@ -45,7 +45,7 @@ class SearchServiceProvider implements ServiceProviderInterface
         $app['amadeus.client.search'] = function ($app) {
 
             $sessionHandlerClass = $this->useMockSearchResponse ? MockSessionHandler::class : null;
-            $sessionLogger = $app['config']->debug->log_ama_traffic ? $app['logger'] : new NullLogger();
+            $sessionLogger = $app['config']->debug->search->log_ama_traffic ? $app['logger'] : new NullLogger();
 
             $clientParamFactory = new ClientParamsFactory($app['config'], $sessionLogger, $sessionHandlerClass);
 
