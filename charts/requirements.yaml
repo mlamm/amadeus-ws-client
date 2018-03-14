@@ -1,8 +1,0 @@
-dependencies:
-  - name: php
-    version: 0.5.0
-    repository: file://../scripts/common/charts/php
-  - name: redis
-    version: 0.10.2
-    repository: https://kubernetes-charts.storage.googleapis.com
-    condition: redis.enabled

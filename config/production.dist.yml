@@ -135,7 +135,7 @@ search:
         - "8U"
 
 remarks:
-    wsdl: 1ASIWUFITBD_PDT_20180206_095616.wsdl
+    wsdl: 1ASIWUFITBD_PRD_20180206_095645.wsdl
 
 response:
     json_encoding_options:

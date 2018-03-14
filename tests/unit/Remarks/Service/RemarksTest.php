@@ -32,7 +32,6 @@ class RemarksTest extends Unit
      */
     protected function _before()
     {
-//        $this->requestHelper = new RequestHelper();
         $this->config = json_decode(
             json_encode(
                 [

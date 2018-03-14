@@ -5,7 +5,6 @@ use Flight\Service\Amadeus\Application\BusinessCase;
 use Flight\Service\Amadeus\Application\Exception\GeneralServerErrorException;
 use Flight\Service\Amadeus\Application\Exception\ServiceException;
 use Flight\Service\Amadeus\Application\Response\HalResponse;
-use Flight\Service\Amadeus\Remarks\Exception\InvalidRequestException;
 use Flight\Service\Amadeus\Remarks\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Remarks\Response\AmadeusErrorResponse;
 use Flight\Service\Amadeus\Remarks\Response\ResultResponse;
