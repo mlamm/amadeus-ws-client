@@ -4,6 +4,12 @@ declare(strict_types=1);
 namespace Flight\Service\Amadeus\Search\Model;
 
 use Amadeus\Client;
+use Amadeus\Client\RequestOptions\Fare\MasterPricer\CarrierFeeDetails;
+use Amadeus\Client\RequestOptions\Fare\MasterPricer\DataTypeInformation;
+use Amadeus\Client\RequestOptions\Fare\MasterPricer\FeeDetails;
+use Amadeus\Client\RequestOptions\Fare\MasterPricer\FeeInfo;
+use Amadeus\Client\RequestOptions\Fare\MasterPricer\FeeTypeInfo;
+use Amadeus\Client\RequestOptions\Fare\MPFeeOption;
 use Amadeus\Client\RequestOptions\FareMasterPricerTbSearch;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Leg;
@@ -62,7 +68,8 @@ class AmadeusRequestTransformer
             'nrOfRequestedPassengers' => $request->getAdults() + $request->getChildren(),
             'passengers' => $this->setupPassengers($request),
             'itinerary' => $itineraries,
-            'flightOptions' => $this->buildFlightOptions($businessCase, $coopCodes)
+            'flightOptions' => $this->buildFlightOptions($businessCase, $coopCodes),
+            'feeOption' => $this->buildFeeOption()
         ];
 
         if (!empty($request->getFilterAirline())) {
@@ -234,5 +241,36 @@ class AmadeusRequestTransformer
         }
 
         return $pricingOptions;
+    }
+
+    /**
+     * builds feeOption request
+     *
+     * @return array
+     */
+    protected function buildFeeOption() :array
+    {
+        $feeOption = [
+            new MPFeeOption([
+                'feeTypeInfo' => new FeeTypeInfo([
+                        'carrierFeeDetails' => new CarrierFeeDetails([
+                            'type' => CarrierFeeDetails::TYPE_TICKETING_FEES
+                        ])
+                    ]
+                ),
+                'feeDetails'  => [
+                    new FeeDetails([
+                        'feeInfo' => new FeeInfo([
+                            'dataTypeInformation' => new DataTypeInformation([
+                                'subType' => DataTypeInformation::SUB_TYPE_FARE_COMPONENT_AMOUNT,
+                                'option'  => DataTypeInformation::OPTION_MANUALLY_INCLUDED
+                            ])
+                        ])
+                    ])
+                ]
+            ])
+        ];
+
+        return $feeOption;
     }
 }
