@@ -28,7 +28,7 @@
     "require": {
         "php": "~7.1",
         "silex/silex": "~2.0",
-        "amabnl/amadeus-ws-client": "~1.4",
+        "amabnl/amadeus-ws-client": "dev-master#2c35a014a04994670a243d71a686005451596dce",
         "monolog/monolog": "~1.23",
         "flight/search-request-mapping": "^5.1.0",
         "doctrine/cache": "~1.7",
@@ -63,6 +63,10 @@
                     "verify_peer": false
                 }
             }
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/zervel/amadeus-ws-client.git"
         }
     ]
 }
