@@ -106,15 +106,22 @@ class BaggageFeeIndex
         $baggageFeeGroup = [];
         foreach (new NodeList($serviceFeesGrp->serviceCoverageInfoGrp) as $serviceCoverageInfoGrp) {
             $coverageReference = (int)$serviceCoverageInfoGrp->itemNumberInfo->itemNumber->number;
-            $coverageSegments  = $this->calculateCoverageSegments(new NodeList($serviceCoverageInfoGrp->serviceCovInfoGrp->coveragePerFlightsInfo));
-            foreach (new NodeList($serviceCoverageInfoGrp->serviceCovInfoGrp->coveragePerFlightsInfo) as $coveragePerFlightsInfo) {
+
+            if (is_array($serviceCoverageInfoGrp->serviceCovInfoGrp)) {
+                $infoGroup = reset($serviceCoverageInfoGrp->serviceCovInfoGrp);
+            } else {
+                $infoGroup = $serviceCoverageInfoGrp->serviceCovInfoGrp;
+            }
+
+            $coverageSegments  = $this->calculateCoverageSegments(new NodeList($infoGroup->coveragePerFlightsInfo));
+            foreach (new NodeList($infoGroup->coveragePerFlightsInfo) as $coveragePerFlightsInfo) {
                 $segmentNumber = (int)$coveragePerFlightsInfo->numberOfItemsDetails->refNum;
                 foreach (new NodeList($coveragePerFlightsInfo->lastItemsDetails) as $lastItemsDetail) {
                     $legNumber = (int)$lastItemsDetail->refOfLeg;
 
                     $baggageFeeGroup[$coverageReference][$segmentNumber][$legNumber] = null;
                     if (isset($this->serviceFeeReferenceGroup[$coverageReference][self::QUALIFIER_AMOUNT], $this->amountReference[$this->serviceFeeReferenceGroup[$coverageReference][self::QUALIFIER_AMOUNT]])) {
-                        $descriptionReference                                            = (int)$serviceCoverageInfoGrp->serviceCovInfoGrp->refInfo->referencingDetail->refNumber;
+                        $descriptionReference                                            = (int)$infoGroup->refInfo->referencingDetail->refNumber;
                         $totalFee                                                        = $this->amountReference[$this->serviceFeeReferenceGroup[$coverageReference][self::QUALIFIER_AMOUNT]];
                         $baggageFeeGroup[$coverageReference][$segmentNumber][$legNumber] = [
                             'fee'    => ($totalFee / $coverageSegments),
