@@ -17,6 +17,11 @@ class AmadeusResponseTransformer
     private const CLASSIFICATION_SCHEDULED = 'scheduled';
 
     /**
+     *  Merchant constants
+     */
+    const MERCHANT_AERUNI = 'aeruni';
+
+    /**
      * Build a response with an empty result
      *
      * @return SearchResponse
@@ -363,6 +368,10 @@ class AmadeusResponseTransformer
         }
 
         $itineraryLeg->setNights(Nights::calc($itineraryLeg->getSegments()));
+        $itineraryLeg->setGdsInformation(
+            (new SearchResponse\AmadeusLegGdsInformation())
+                ->setMerchant(self::MERCHANT_AERUNI)
+        );
 
         $groupOfFares = new NodeList($fareDetails->get($legOffset)->groupOfFares);
 
@@ -382,7 +391,8 @@ class AmadeusResponseTransformer
             }
 
             $legSegment->setGdsInformation(new SearchResponse\AmadeusSegmentGdsInformation());
-            $legSegment->getGdsInformation()->setResBookDesigCode(CabinClass::rbd($segmentFare));
+            $legSegment->getGdsInformation()
+                ->setResBookDesigCode(CabinClass::rbd($segmentFare));
 
             // add remaining seats
             $legSegment->setRemainingSeats($segmentFare->productInformation->cabinProduct->avlStatus);

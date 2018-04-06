@@ -59,7 +59,9 @@
                   }
                 }
               ],
-              "gds-information": null
+              "gds-information": {
+                "merchant": "aeruni"
+              }
             }
           ],
           [
@@ -117,7 +119,9 @@
                   }
                 }
               ],
-              "gds-information": null
+              "gds-information": {
+                "merchant": "aeruni"
+              }
             }
           ]
         ]
