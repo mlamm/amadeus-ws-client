@@ -73,8 +73,6 @@ debug:
       log_ama_traffic: false
     pimpledump:
         enabled: true
-    throwup:
-        enabled: true
     remarks:
       log_ama_traffic: false
     pimpledump:

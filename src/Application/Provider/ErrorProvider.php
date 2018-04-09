@@ -47,7 +47,8 @@ class ErrorProvider implements ServiceProviderInterface
                 'monolog.level'     => Logger::NOTICE,
                 'monolog.formatter' => function () {
                     return new JsonFormatter();
-                }
+                },
+                'monolog.use_error_handler' => false
             ]
         );
 
