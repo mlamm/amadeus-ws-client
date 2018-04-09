@@ -70,6 +70,7 @@ class AmadeusClient
      *
      * @return SearchResponse
      * @throws AmadeusRequestException
+     * @throws \Exception
      */
     public function search(Request $request, BusinessCase $businessCase) : SearchResponse
     {
@@ -79,7 +80,14 @@ class AmadeusClient
 
         $requestOptions = $this->requestTransformer->buildFareMasterRequestOptions($request);
 
-        $result = $client->fareMasterPricerTravelBoardSearch($requestOptions);
+        try {
+            $result = $client->fareMasterPricerTravelBoardSearch($requestOptions);
+        } catch (\Exception $exception) {
+            if ($this->isEmptyResponseError($exception)) {
+                return $this->responseTransformer->createEmptyResponse();
+            }
+            throw $exception;
+        }
 
         if ($this->isEmptyResultError($result)) {
             // @TODO [ts] - MID - create a metric do track these behavior
@@ -115,5 +123,20 @@ class AmadeusClient
         return $this->isErrorResponse($result)
             && isset($result->messages[0])
             && in_array($result->messages[0]->code, self::EMPTY_RESULT_ERRORS);
+    }
+
+    /**
+     * Does the error indicate that the response was empty?
+     *
+     * @param \Exception $exception
+     * @return bool
+     */
+    private function isEmptyResponseError(\Exception $exception): bool
+    {
+        if ('Warning: DOMDocument::loadXML(): Empty string supplied as input' === $exception->getMessage()) {
+            return true;
+        }
+
+        return false;
     }
 }
