@@ -19,7 +19,9 @@
               "duration": 8700,
               "nights": 0,
               "hash": null,
-              "gds-information": null,
+              "gds-information": {
+                "merchant": "aeruni"
+              },
               "segments": [
                 {
                   "aircraft-type": "738",
@@ -77,7 +79,9 @@
               "duration": 9000,
               "nights": 0,
               "hash": null,
-              "gds-information": null,
+              "gds-information": {
+                "merchant": "aeruni"
+              },
               "segments": [
                 {
                   "aircraft-type": "320",
