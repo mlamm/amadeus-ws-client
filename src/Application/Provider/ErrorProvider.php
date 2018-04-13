@@ -52,6 +52,14 @@ class ErrorProvider implements ServiceProviderInterface
             ]
         );
 
+        $app->extend('monolog', function (Logger $monolog, Application $app) {
+                $monolog->pushProcessor(function ($record) use ($app) {
+                    return $app['tracing.header']->processLogRecord($record);
+                });
+
+                return $monolog;
+        });
+
         $handler = new StreamHandler(
             __DIR__ . '/../../../var/logs/app.log',
             Logger::NOTICE, $app['monolog.bubble'],
