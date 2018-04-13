@@ -3,6 +3,7 @@
 use Flight\Service\Amadeus\Application\Config\CachedConfig;
 use Flight\Service\Amadeus\Application\Middleware\JsonEncodingOptions;
 use Flight\Service\Amadeus\Application\Provider\ErrorProvider;
+use Flight\Service\Amadeus\Application\Provider\TracingHeaderProvider;
 use Flight\Service\Amadeus\Search\Cache\CacheProvider;
 use Flight\Service\Amadeus\Search\Provider\SearchServiceProvider;
 use Flight\Service\Amadeus\Remarks;
@@ -30,6 +31,7 @@ $useMockAmaResponses = env('MOCK_AMA_RESPONSE_IN_TEST', 'disabled') === 'enabled
 
 // register provider
 $app->register(new ErrorProvider());
+$app->register(new TracingHeaderProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->register(new CacheProvider());
 $app->register(new SearchServiceProvider($useMockAmaResponses));
