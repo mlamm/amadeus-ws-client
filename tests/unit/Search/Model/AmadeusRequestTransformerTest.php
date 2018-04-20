@@ -232,7 +232,7 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
     {
         $config = new \stdClass();
         $config->search = new \stdClass();
-        $config->search->flexible_date_range = 1;
+        $config->search->flexible_date_range = 2;
 
         $transformer = new AmadeusRequestTransformer($config);
 
@@ -279,8 +279,8 @@ class AmadeusRequestTransformerTest extends \Codeception\Test\Unit
                     'date'              => new Client\RequestOptions\Fare\MPDate(
                         [
                             'dateTime' => RequestFaker::getReturnDepartureDateTime(),
-                            'rangeMode' => 'C',
-                            'range' => 1
+                            'rangeMode' => 'P',
+                            'range' => 2
                         ]
                     )
                 ]
