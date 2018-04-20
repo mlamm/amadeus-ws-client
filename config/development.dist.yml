@@ -45,7 +45,7 @@ search:
 
     area_search_distance: 100
 
-    flexible_date_range: 1
+    flexible_date_range: 2
 
     excluded_airlines:
         - "GA"

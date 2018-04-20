@@ -200,8 +200,8 @@ class AmadeusRequestTransformer
         }
 
         if ($isFlexibleDate) {
-            $options['date']->rangeMode = Client\RequestOptions\Fare\MPDate::RANGEMODE_MINUS_PLUS;
-            $options['date']->range = $this->config->search->flexible_date_range;
+            $options['date']->rangeMode = Client\RequestOptions\Fare\MPDate::RANGEMODE_PLUS;
+            $options['date']->range     = $this->config->search->flexible_date_range;
         }
 
         return $options;
