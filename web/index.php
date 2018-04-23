@@ -3,10 +3,10 @@
 use Flight\Service\Amadeus\Application\Config\CachedConfig;
 use Flight\Service\Amadeus\Application\Middleware\JsonEncodingOptions;
 use Flight\Service\Amadeus\Application\Provider\ErrorProvider;
-use Flight\Service\Amadeus\Application\Provider\TracingHeaderProvider;
 use Flight\Service\Amadeus\Search\Cache\CacheProvider;
 use Flight\Service\Amadeus\Search\Provider\SearchServiceProvider;
 use Flight\Service\Amadeus\Remarks;
+use Flight\TracingHeaderSilex\TracingHeaderProvider;
 use Silex\Application;
 use Symfony\Component\Yaml\Yaml;
 

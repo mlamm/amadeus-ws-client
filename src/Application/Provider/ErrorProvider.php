@@ -16,6 +16,7 @@ use Psr\Log\LogLevel;
 use Silex\Application;
 use Silex\Provider\MonologServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -105,12 +106,14 @@ class ErrorProvider implements ServiceProviderInterface
      */
     private function registerHandlers(Container $app)
     {
+        \Symfony\Component\Debug\ErrorHandler::register();
+
         set_exception_handler(function (\Throwable $throwable) use ($app) {
+            $currentRequest = $app['request_stack']->getCurrentRequest() ?? new Request();
+            $app['error-logger']->logException($throwable, $currentRequest, Response::HTTP_INTERNAL_SERVER_ERROR);
             AmadeusErrorResponse::serverError($this->renderErrors([Error::serverError()]))->send();
-            $app['logger']->error($throwable);
         });
 
-        \Symfony\Component\Debug\ErrorHandler::register();
     }
 
     /**
