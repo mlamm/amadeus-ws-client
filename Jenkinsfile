@@ -98,5 +98,15 @@ pipeline {
         }
       }
     }
+
+    stage('Create Jira Release') {
+      steps {
+        withCredentials([
+          usernamePassword(credentialsId: 'JIRA_REST_API', usernameVariable: 'JIRA_API_USER', passwordVariable: 'JIRA_API_PASSWORD'),
+        ]) {
+          sh './scripts/common/jira-release.sh service.amadeus'
+        }
+      }
+    }
   }
 }
