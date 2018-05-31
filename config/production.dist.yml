@@ -63,6 +63,8 @@ search:
 remarks:
     wsdl: 1ASIWUFITBD_PRD_20180206_095645.wsdl
 
+itinerary:
+    wsdl: admin/1ASIWADMTBD_PRD_20180531_093031.wsdl
 response:
     json_encoding_options:
         - JSON_PRETTY_PRINT

@@ -223,5 +223,15 @@
         "name": "amadeus.client.remarks",
         "type": "class",
         "value": "Flight\Service\Amadeus\\Remarks\\Model\\RemarksAmadeusClient"
-    }
+    },
+    {
+        "name": "businesscase.itinerary-read",
+        "type": "class",
+        "value": "Flight\Service\Amadeus\\Itinerary\\BusinessCase\\ItineraryRead"
+    },
+    {
+        "name": "amadeus.client.itinerary",
+        "type": "class",
+        "value": "Flight\Service\Amadeus\\Itinerary\\Model\\ItineraryAmadeusClient"
+    },
 ]
