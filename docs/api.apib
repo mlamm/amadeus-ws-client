@@ -393,6 +393,52 @@ This request will delete the given remarks, return all remarks for given recordl
 
             <!-- include(remarks/error-response_schema.json) -->
 
+## Itinerary [/itinerary]
+
+### Itinerary [GET /Itinerary/?recordLocator={recordLocator}]
+
+This request will return the itinerary data to the requested recordLocator
+
++ Parameters
+
+    + recordLocator: LTEXQF (required, string) - alphanumeric recordLocator
+
++ Request
+
+    + Headers
+
+            Authenticate: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+            Session: {"session-id": "013GZKUXA2","sequence-number": "2","security-token": "2XCAG3OKA7MOQ3DBAGRL6OULBZ"}
+
+    + Schema
+
+            <!-- include(itinerary/GET_request_schema.json) -->
+            <!-- include(itinerary/identification_schema.json) -->
+
++ Response 200 (application/hal+json)
+
+    + Body
+
+            <!-- include(itinerary/response.json) -->
+
+    + Schema
+
+            <!-- include(itinerary/response_schema.json) -->
+
++ Response 500 (application/hal+json)
+
+    |Code | Message |
+    |---|---|
+    | SRS000X | *Message of an unspecific error.* |
+
+    + Body
+
+            <!-- include(remarks/error-response.json) -->
+
+    + Schema
+
+            <!-- include(remarks/error-response_schema.json) -->
+
 # Data Structures
 
 ## SelfLink (object)

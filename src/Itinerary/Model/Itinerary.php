@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Flight\Service\Amadeus\Remarks\Model;
+namespace Flight\Service\Amadeus\Itinerary\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -44,5 +44,4 @@ class Itinerary
         $this->remarks = $remarks;
         return $this;
     }
-
 }

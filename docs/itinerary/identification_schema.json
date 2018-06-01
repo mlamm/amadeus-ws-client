@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "recordLocator": {
+      "type": "string",
+      "description": "identification for the itinerary",
+      "remarks": {
+        "type": "array",
+        "description": "array of remarks to add",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "name of the remark to add"
+          },
+          "value": {
+            "type": "string",
+            "description": "value of the remark to add"
+          }
+        }
+      }
+    }
+  }
+}

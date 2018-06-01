@@ -3,7 +3,8 @@ namespace Flight\Service\Amadeus\Itinerary\Model;
 
 use Amadeus\Client\Result;
 use Doctrine\Common\Collections\ArrayCollection;
-use Flight\Service\Amadeus\Remarks\Response\ResultResponse;
+use Flight\Service\Amadeus\Itinerary\Response\ResultResponse;
+use Flight\Service\Amadeus\Itinerary\Model\Itinerary;
 
 /**
  * Class AmadeusResponseTransformer
@@ -22,25 +23,26 @@ class AmadeusResponseTransformer
     public function mapResult(Result $result)
     {
         $remarksResponse = new ResultResponse();
-        $remarksResponse->setResult(new ArrayCollection());
+//        $remarksResponse->setResult(new ArrayCollection());
         $remarksCollection = new ArrayCollection();
-        foreach ($result->response->dataElementsMaster->dataElementsIndiv as $remarks) {
-            $remarksData = $remarks->elementManagementData;
-            if (!isset($remarks->miscellaneousRemarks)) {
-                continue;
-            }
-            $remarksDataAdd = $remarks->miscellaneousRemarks;
+//        foreach ($result->response->dataElementsMaster->dataElementsIndiv as $remarks) {
+//            $remarksData = $remarks->elementManagementData;
+//            if (!isset($remarks->miscellaneousRemarks)) {
+//                continue;
+//            }
+//            $remarksDataAdd = $remarks->miscellaneousRemarks;
+//
+//            $remarksCollection->add((new Remark())->setType($remarksDataAdd->remarks->type)->convertFromCrs($remarksDataAdd->remarks->freetext)
+//                ->setManagementData(
+//                    (new ManagementData())->setLineNumber($remarksData->lineNumber)->setReference(
+//                        (new Reference())->setNumber($remarksData->reference->number)->setQualifier($remarksData->reference->qualifier)
+//                    )->setSegmentName($remarksData->segmentName)
+//                ));
+//        }
 
-            $remarksCollection->add((new Remark())->setType($remarksDataAdd->remarks->type)->convertFromCrs($remarksDataAdd->remarks->freetext)
-                ->setManagementData(
-                    (new ManagementData())->setLineNumber($remarksData->lineNumber)->setReference(
-                        (new Reference())->setNumber($remarksData->reference->number)->setQualifier($remarksData->reference->qualifier)
-                    )->setSegmentName($remarksData->segmentName)
-                ));
-        }
-
-        $itinerary = new Itinerary();
+        $itinerary = new \Flight\Service\Amadeus\Itinerary\Model\Itinerary();
         $itinerary->setRemarks($remarksCollection);
+        var_dump($itinerary);die;
         $remarksResponse->getResult()->add($itinerary);
 
         return $remarksResponse;

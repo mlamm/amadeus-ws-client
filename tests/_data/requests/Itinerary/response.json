@@ -1,0 +1,16 @@
+{
+  "errors": {
+    "remarks": [
+      {
+        "code": "ARS0004",
+        "message": "AMADEUS RESPONSE ERROR [ 95,Inactive conversation]",
+        "status": 500
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "/itinerary"
+    }
+  }
+}

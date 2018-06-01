@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "array",
+      "description": "read response with list of itineraries and its remarks.",
+      "itinerary": {
+        "type": "object",
+        "description": "Provides information about remarks",
+        "properties": {
+          "remarks": {
+            "type": "array",
+            "description": "all informations about a remark including its name as key",
+            "properties": {
+              "value": {
+                "type": "string",
+                "description": "the value of the remark"
+              },
+              "rph": {
+                "type": "string",
+                "description": "id of the remark"
+              },
+              "Id": {
+                "type": "string",
+                "description": "id of the place in the itinerary"
+              },
+              "Type": {
+                "type": "string",
+                "description": "type of remark"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
