@@ -20,7 +20,7 @@ $I->canSeeResponseIsJson();
 $I->canSeeResponseContainsJson(
     json_decode(
         file_get_contents(
-            codecept_data_dir('requests/Itinerary/response.json')
+            codecept_data_dir('response/Itinerary/correct-response.json')
         ),
         true
     )
