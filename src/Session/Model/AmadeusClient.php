@@ -84,4 +84,37 @@ class AmadeusClient
 
         return $this->responseTransformer->mapResultSessionCreate($result);
     }
+
+    /**
+     * @param Authenticate $authenticate
+     * @return mixed
+     * @throws \Exception
+     */
+    public function ignoreSession(Authenticate $authenticate)
+    {
+        /** @var Client $client */
+        $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
+
+        $client->setSessionData(array(
+        'sessionId' => '00I0B8DUM9',
+        'sequenceNumber' => 1,
+        'securityToken' => '2ZRRYNZ6P3GXM3JY0KUCMUVN7S'
+        ));
+
+        try {
+            $result = $client->pnrIgnore(
+                new Client\RequestOptions\PnrIgnoreOptions(array(
+                    'actionRequest' => Client\Struct\Pnr\Ignore\ClearInformation::CODE_IGNORE
+                ))
+            );
+        } catch (Client\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        if (Client\Result::STATUS_OK !== $result->status) {
+            throw new \Exception($result->messages);
+        }
+
+        return $this->responseTransformer->mapSessionIgnore($result);
+    }
 }

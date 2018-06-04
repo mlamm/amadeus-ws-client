@@ -18,6 +18,7 @@ class SessionProvider extends \Flight\Service\Amadeus\Application\BusinessCasePr
     {
         // here goes the route definition
         $collection->post('/create', 'businesscase.session-create');
+        $collection->post('/ignore', 'businesscase.session-ignore');
     }
 
 

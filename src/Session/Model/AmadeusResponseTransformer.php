@@ -22,4 +22,9 @@ class AmadeusResponseTransformer
     {
 
     }
+
+    public function mapSessionIgnore(Result $result): ResultResponse
+    {
+
+    }
 }
