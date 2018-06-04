@@ -17,7 +17,7 @@ class SessionProvider extends \Flight\Service\Amadeus\Application\BusinessCasePr
     public function routing(\Silex\ControllerCollection $collection)
     {
         // here goes the route definition
-        $collection->post('/create', \Flight\Service\Amadeus\Session\BusinessCase\CreateSession::class);
+        $collection->post('/create', 'businesscase.session-create');
     }
 
 
