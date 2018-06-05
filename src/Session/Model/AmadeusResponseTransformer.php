@@ -2,10 +2,6 @@
 
 namespace Flight\Service\Amadeus\Session\Model;
 
-use Amadeus\Client\Result;
-use Doctrine\Common\Collections\ArrayCollection;
-use Flight\Service\Amadeus\Session\Response\ResultResponse;
-
 /**
  * AmadeusResponseTransformer
  *
@@ -15,11 +11,30 @@ use Flight\Service\Amadeus\Session\Response\ResultResponse;
 class AmadeusResponseTransformer
 {
     /**
-     * @param Result $result
-     * @return ResultResponse
+     * @param string $response
+     * @return Session
      */
-    public function mapSessionCreate(Result $result): ResultResponse
+    public function mapResultSessionCreate(String $response): Session
     {
+        $xml = new \SimpleXMLElement($response);
+        $result = new Session();
+        $result->setSecurityToken((string)$xml->xpath('//awsse:SecurityToken')[0]);
+        $result->setSessionId((string)$xml->xpath('//awsse:SessionId')[0]);
+        $result->setSequenceNumber((string)$xml->xpath('//awsse:SequenceNumber')[0]);
+        return $result;
+    }
 
+    /**
+     * @param String $response
+     * @return Session
+     */
+    public function mapResultSessionCreateFromHeader(String $response): Session
+    {
+        $xml = new \SimpleXMLElement($response);
+        $result = new Session();
+        $result->setSecurityToken((string)$xml->xpath('//awsse:SecurityToken')[0]);
+        $result->setSessionId((string)$xml->xpath('//awsse:SessionId')[0]);
+        $result->setSequenceNumber((string)$xml->xpath('//awsse:SequenceNumber')[0]);
+        return $result;
     }
 }

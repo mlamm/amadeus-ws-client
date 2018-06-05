@@ -3,7 +3,6 @@
 namespace Flight\Service\Amadeus\Session\Model;
 
 use Amadeus\Client;
-use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Service\Amadeus\Session\Request\Entity\Authenticate;
 use Psr\Log\LoggerInterface;
 
