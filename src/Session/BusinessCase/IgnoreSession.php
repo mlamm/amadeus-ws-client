@@ -42,8 +42,10 @@ class IgnoreSession extends BusinessCase
      */
     public function respond()
     {
+        throw new \Exception('muh');
         $response = ResultResponse::fromJsonString($this->sessionService->ignoreSession(
-            $this->getRequest()->headers->get('authentication')
+            $this->getRequest()->headers->get('authentication'),
+            $this->getRequest()->headers->get('session')
         ));
 
         $this->addLinkToSelf($response);

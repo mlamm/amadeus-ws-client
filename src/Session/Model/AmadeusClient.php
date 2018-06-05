@@ -96,9 +96,9 @@ class AmadeusClient
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
 
         $client->setSessionData(array(
-        'sessionId' => '00I0B8DUM9',
-        'sequenceNumber' => 1,
-        'securityToken' => '2ZRRYNZ6P3GXM3JY0KUCMUVN7S'
+            'sessionId' => '00I0B8DUM9',
+            'sequenceNumber' => 1,
+            'securityToken' => '2ZRRYNZ6P3GXM3JY0KUCMUVN7S'
         ));
 
         try {
@@ -114,7 +114,7 @@ class AmadeusClient
         if (Client\Result::STATUS_OK !== $result->status) {
             throw new \Exception($result->messages);
         }
-
+        throw new \Exception(print_r($result, true));
         return $this->responseTransformer->mapSessionIgnore($result);
     }
 }

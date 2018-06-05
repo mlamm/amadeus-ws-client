@@ -79,9 +79,10 @@ class Session
         return $this->serializer->serialize($response, 'json');
     }
 
-    public function ignoreSession($authHeader)
+    public function ignoreSession($authHeader, $sessionHeader)
     {
         $authHeader = \GuzzleHttp\json_decode($authHeader);
+        $sessionHeader = \GuzzleHttp\json_decode($sessionHeader);
 
         // validate
         $this->requestValidator->validateAuthentication($authHeader);
