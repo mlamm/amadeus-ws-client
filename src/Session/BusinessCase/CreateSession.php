@@ -6,7 +6,6 @@ use Flight\Service\Amadeus\Application\Response\HalResponse;
 use Psr\Log\LoggerInterface;
 use Flight\Service\Amadeus\Session\Service\Session;
 use Flight\Service\Amadeus\Session\Response\ResultResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class CreateSession BusinessCase
@@ -26,12 +25,12 @@ class CreateSession extends BusinessCase
     protected $logger;
 
     /**
-     * @param Session $remarksService
-     * @param LoggerInterface                       $logger
+     * @param Session         $session
+     * @param LoggerInterface $logger
      */
-    public function __construct(Session $remarksService, LoggerInterface $logger)
+    public function __construct(Session $session, LoggerInterface $logger)
     {
-        $this->sessionService = $remarksService;
+        $this->sessionService = $session;
         $this->logger = $logger;
     }
 
@@ -39,6 +38,7 @@ class CreateSession extends BusinessCase
      * Method to define what the business case returns.
      *
      * @return HalResponse
+     * @throws \Exception
      */
     public function respond()
     {

@@ -17,6 +17,16 @@ use Amadeus\Client;
 class AmadeusClient
 {
     /**
+     * result ok
+     */
+    const CHECK_RESULT_OK = 1;
+
+    /**
+     * result already authenticate
+     */
+    const CHECK_RESULT_ALREADY_AUTH = 2;
+
+    /**
      * @var \stdClass
      */
     protected $config;
@@ -73,16 +83,41 @@ class AmadeusClient
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
 
         try {
-            $result = $client->securityAuthenticate();
+            $clientResult = $client->securityAuthenticate();
         } catch (Client\Exception $e) {
             throw new \Exception($e->getMessage());
         }
-
-        if (Client\Result::STATUS_OK !== $result->status) {
-            throw new \Exception($result->messages);
+        $checkResponseResult = $this->checkResult($clientResult);
+        if (self::CHECK_RESULT_OK == $checkResponseResult) {
+            $result = $this->responseTransformer->mapResultSessionCreate($client->getLastResponse());
+        } else {
+            $result = $this->responseTransformer->mapResultSessionCreateFromHeader($client->getLastResponse());
         }
 
-        return $this->responseTransformer->mapResultSessionCreate($result);
+        return $result;
+    }
+
+    /**
+     * check result from AMA
+     *
+     * @param Client\Result $result
+     * @return string check result (s. self::CHECK_RESULT_*)
+     * @throws \Exception
+     */
+    protected function checkResult(Client\Result $result): string
+    {
+        // result ok nothing to do
+        if (Client\Result::STATUS_OK === $result->status) {
+            return self::CHECK_RESULT_OK;
+        }
+        // already authenticate
+        if ("16001" === $result->messages[0]->code) {
+            return self::CHECK_RESULT_ALREADY_AUTH;
+        }
+        throw new \Exception(
+            'something wrong by response from amadeus error code is ' . $result->messages[0]->code,
+            'ARS0004'
+        );
     }
 
     /**

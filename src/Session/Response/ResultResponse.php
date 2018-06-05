@@ -2,7 +2,6 @@
 
 namespace Flight\Service\Amadeus\Session\Response;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Service\Amadeus\Application\Response\HalResponse;
 
 /**
