@@ -25,7 +25,6 @@ class Session
      */
     private $securityToken;
 
-    private $transactionStatusCode = 'Start';
     /**
      * @return string
      */
