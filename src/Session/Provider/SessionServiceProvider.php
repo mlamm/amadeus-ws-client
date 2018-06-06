@@ -21,14 +21,14 @@ class SessionServiceProvider implements ServiceProviderInterface
     /**
      * @var bool
      */
-    private $useMockSearchResponse = false;
+    private $useMockSessionResponse = false;
 
     /**
-     * @param bool $useMockSearchResponse
+     * @param bool $useMockSessionResponse
      */
-    public function __construct(bool $useMockSearchResponse)
+    public function __construct(bool $useMockSessionResponse)
     {
-        $this->useMockSearchResponse = $useMockSearchResponse;
+        $this->useMockSessionResponse = $useMockSessionResponse;
     }
 
     /**
@@ -60,7 +60,7 @@ class SessionServiceProvider implements ServiceProviderInterface
         };
         $app['monolog.logfile'] = '/../var/logs/app.log';
         $app['amadeus.client.session'] = function () use ($app) {
-            $sessionHandlerClass = $this->useMockSearchResponse ? MockSessionHandler::class : null;
+            $sessionHandlerClass = $this->useMockSessionResponse ? MockSessionHandler::class : null;
             return new Session\Model\AmadeusClient(
                 $app['config']->debug->remarks->log_ama_traffic ? $app['logger'] : new NullLogger(),
                 new Session\Model\AmadeusRequestTransformer($app['config'], $sessionHandlerClass),
