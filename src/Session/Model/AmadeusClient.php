@@ -131,9 +131,9 @@ class AmadeusClient
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
 
         $client->setSessionData(array(
-            'sessionId' => '00I0B8DUM9',
+            'sessionId' => '01K8PQQUD5',
             'sequenceNumber' => 1,
-            'securityToken' => '2ZRRYNZ6P3GXM3JY0KUCMUVN7S'
+            'securityToken' => 'CGMIL0WYVE6K26HFHNKLKPVX1'
         ));
 
         try {
@@ -142,6 +142,35 @@ class AmadeusClient
                     'actionRequest' => Client\Struct\Pnr\Ignore\ClearInformation::CODE_IGNORE
                 ))
             );
+        } catch (Client\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        if (Client\Result::STATUS_OK !== $result->status) {
+            throw new \Exception($result->messages);
+        }
+        throw new \Exception(print_r($result, true));
+        return $this->responseTransformer->mapSessionIgnore($result);
+    }
+
+    /**
+     * @param Authenticate $authenticate
+     * @return mixed
+     * @throws \Exception
+     */
+    public function terminateSession(Authenticate $authenticate)
+    {
+        /** @var Client $client */
+        $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
+
+        $client->setSessionData(array(
+            'sessionId' => '01K8PQQUD5',
+            'sequenceNumber' => 1,
+            'securityToken' => 'CGMIL0WYVE6K26HFHNKLKPVX1'
+        ));
+
+        try {
+            $result = $client->securitySignOut();
         } catch (Client\Exception $e) {
             throw new \Exception($e->getMessage());
         }

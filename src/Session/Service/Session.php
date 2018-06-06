@@ -101,4 +101,27 @@ class Session
 
         return $this->serializer->serialize($response, 'json');
     }
+
+    public function terminateSession($authHeader, $sessionHeader)
+    {
+        $authHeader = \GuzzleHttp\json_decode($authHeader);
+        $sessionHeader = \GuzzleHttp\json_decode($sessionHeader);
+
+        // validate
+        $this->requestValidator->validateAuthentication($authHeader);
+
+        $authenticate = (new Request\Entity\Authenticate())
+            ->setDutyCode($authHeader->{'duty-code'})
+            ->setOfficeId($authHeader->{'office-id'})
+            ->setOrganizationId($authHeader->{'organization'})
+            ->setPasswordData($authHeader->{'password-data'})
+            ->setPasswordLength($authHeader->{'password-length'})
+            ->setUserId($authHeader->{'user-id'});
+
+        $response = $this->amadeusClient->ignoreSession(
+            $authenticate
+        );
+
+        return $this->serializer->serialize($response, 'json');
+    }
 }

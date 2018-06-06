@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @package Flight\Service\Amadeus\Session\BusinessCase
  */
-class IgnoreSession extends BusinessCase
+class TerminateSession extends BusinessCase
 {
     /**
      * @var \Flight\Service\Amadeus\Session\Service\Session
