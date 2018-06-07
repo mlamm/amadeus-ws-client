@@ -84,7 +84,7 @@ debug:
         enabled: true
 
 session:
-    wsdl: 1ASIWUFITBD_PDT_20180206_095616.wsdl
+    wsdl: 1ASIWADMTBD/1ASIWADMTBD_PDT_20180606_092050.wsdl
 
 response:
     json_encoding_options:
