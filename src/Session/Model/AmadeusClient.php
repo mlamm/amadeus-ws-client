@@ -125,15 +125,15 @@ class AmadeusClient
      * @return mixed
      * @throws \Exception
      */
-    public function ignoreSession(Authenticate $authenticate)
+    public function ignoreSession(Authenticate $authenticate, Session $session)
     {
         /** @var Client $client */
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
 
         $client->setSessionData(array(
-            'sessionId' => '01K8PQQUD5',
-            'sequenceNumber' => 1,
-            'securityToken' => 'CGMIL0WYVE6K26HFHNKLKPVX1'
+            'sessionId' => $session->getSessionId(),
+            'sequenceNumber' => $session->getSequenceNumber(),
+            'securityToken' => $session->getSecurityToken()
         ));
 
         try {
@@ -147,9 +147,9 @@ class AmadeusClient
         }
 
         if (Client\Result::STATUS_OK !== $result->status) {
-            throw new \Exception($result->messages);
+            throw new \Exception(print_r($result->messages, true));
         }
-        throw new \Exception(print_r($result, true));
+
         return $this->responseTransformer->mapSessionIgnore($result);
     }
 
@@ -158,15 +158,15 @@ class AmadeusClient
      * @return mixed
      * @throws \Exception
      */
-    public function terminateSession(Authenticate $authenticate)
+    public function terminateSession(Authenticate $authenticate, Session $session)
     {
         /** @var Client $client */
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
 
         $client->setSessionData(array(
-            'sessionId' => '01K8PQQUD5',
-            'sequenceNumber' => 1,
-            'securityToken' => 'CGMIL0WYVE6K26HFHNKLKPVX1'
+            'sessionId' => $session->getSessionId(),
+            'sequenceNumber' => $session->getSequenceNumber(),
+            'securityToken' => $session->getSecurityToken()
         ));
 
         try {
@@ -178,7 +178,7 @@ class AmadeusClient
         if (Client\Result::STATUS_OK !== $result->status) {
             throw new \Exception($result->messages);
         }
-        throw new \Exception(print_r($result, true));
-        return $this->responseTransformer->mapSessionIgnore($result);
+
+        return $this->responseTransformer->mapSessionTerminate($result);
     }
 }

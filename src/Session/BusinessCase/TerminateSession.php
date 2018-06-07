@@ -42,7 +42,7 @@ class TerminateSession extends BusinessCase
      */
     public function respond()
     {
-        $response = ResultResponse::fromJsonString($this->sessionService->ignoreSession(
+        $response = ResultResponse::fromJsonString($this->sessionService->terminateSession(
             $this->getRequest()->headers->get('authentication'),
             $this->getRequest()->headers->get('session')
         ));

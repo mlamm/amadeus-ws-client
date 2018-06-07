@@ -104,6 +104,12 @@ $app['businesscase.session-ignore'] = function () use ($app) {
         $app['monolog']
     );
 };
+$app['businesscase.session-terminate'] = function () use ($app) {
+    return new Session\BusinessCase\TerminateSession(
+        $app['service.session'],
+        $app['monolog']
+    );
+};
 $app->register(new \Flight\Service\Amadeus\Search\Cache\CacheProvider());
 
 // application provider

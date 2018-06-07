@@ -84,8 +84,15 @@ class Session
         $authHeader = \GuzzleHttp\json_decode($authHeader);
         $sessionHeader = \GuzzleHttp\json_decode($sessionHeader);
 
+        $session = new \Flight\Service\Amadeus\Session\Model\Session();
+        $session->setSecurityToken($sessionHeader->security_token)
+            ->setSessionId($sessionHeader->session_id)
+            ->setSequenceNumber($sessionHeader->sequence_number);
+;
+
         // validate
         $this->requestValidator->validateAuthentication($authHeader);
+        $this->requestValidator->validateSession($session);
 
         $authenticate = (new Request\Entity\Authenticate())
             ->setDutyCode($authHeader->{'duty-code'})
@@ -96,7 +103,8 @@ class Session
             ->setUserId($authHeader->{'user-id'});
 
         $response = $this->amadeusClient->ignoreSession(
-            $authenticate
+            $authenticate,
+            $session
         );
 
         return $this->serializer->serialize($response, 'json');
@@ -107,8 +115,14 @@ class Session
         $authHeader = \GuzzleHttp\json_decode($authHeader);
         $sessionHeader = \GuzzleHttp\json_decode($sessionHeader);
 
+        $session = new \Flight\Service\Amadeus\Session\Model\Session();
+        $session->setSecurityToken($sessionHeader->security_token)
+            ->setSessionId($sessionHeader->session_id)
+            ->setSequenceNumber($sessionHeader->sequence_number);
+
         // validate
         $this->requestValidator->validateAuthentication($authHeader);
+        $this->requestValidator->validateSession($session);
 
         $authenticate = (new Request\Entity\Authenticate())
             ->setDutyCode($authHeader->{'duty-code'})
@@ -118,8 +132,9 @@ class Session
             ->setPasswordLength($authHeader->{'password-length'})
             ->setUserId($authHeader->{'user-id'});
 
-        $response = $this->amadeusClient->ignoreSession(
-            $authenticate
+        $response = $this->amadeusClient->terminateSession(
+            $authenticate,
+            $session
         );
 
         return $this->serializer->serialize($response, 'json');

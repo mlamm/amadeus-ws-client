@@ -1,6 +1,9 @@
 <?php
 
 namespace Flight\Service\Amadeus\Session\Model;
+use Doctrine\Common\Collections\ArrayCollection;
+use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\Result;
+use Flight\Service\Amadeus\Session\Response\ResultResponse;
 
 /**
  * AmadeusResponseTransformer
@@ -38,8 +41,32 @@ class AmadeusResponseTransformer
         return $result;
     }
 
-    public function mapSessionIgnore(Result $result): ResultResponse
+    public function mapSessionIgnore(\Amadeus\Client\Result $result): ResultResponse
     {
+        $SessionResponse = new ResultResponse();
+        $SessionResponse->setResult(new ArrayCollection());
 
+        if (!empty($result->response->clearInformation->actionRequest)) {
+            $SessionResponse->getResult()->add('session succesfully ignored.');
+            return $SessionResponse;
+        }
+
+        $SessionResponse->getResult()->add('error while ignored.');
+
+        return $SessionResponse;    }
+
+    public function mapSessionTerminate(\Amadeus\Client\Result $result): ResultResponse
+    {
+        $SessionResponse = new ResultResponse();
+        $SessionResponse->setResult(new ArrayCollection());
+
+        if (!empty($result->response->processStatus->statusCode)) {
+            $SessionResponse->getResult()->add('session succesfully terminated(sign out).');
+            return $SessionResponse;
+        }
+
+        $SessionResponse->getResult()->add('error while termination(sign out).');
+
+        return $SessionResponse;
     }
 }
