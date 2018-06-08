@@ -27,6 +27,11 @@ class AmadeusClient
     const CHECK_RESULT_ALREADY_AUTH = 2;
 
     /**
+     * interacted with an inactive session
+     */
+    const CHECK_RESULT_INACTIVE_CONVERSATION = 95;
+
+    /**
      * @var \stdClass
      */
     protected $config;
@@ -176,9 +181,17 @@ class AmadeusClient
         }
 
         if (Client\Result::STATUS_OK !== $result->status) {
-            throw new \Exception($result->messages);
+            $this->checkResultSession($result);//throw new \Exception(print_r($result->messages, true));
         }
 
         return $this->responseTransformer->mapSessionTerminate($result);
+    }
+
+    public function checkResultSession(Client\Result $result): string
+    {
+        // result ok nothing to do
+        if (AmadeusClient::CHECK_RESULT_INACTIVE_CONVERSATION == $result->messages[0]->code) {
+            throw new \Exception('no active session', 4);
+        }
     }
 }

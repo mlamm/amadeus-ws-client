@@ -6,7 +6,6 @@ use Flight\Service\Amadeus\Application\Response\HalResponse;
 use Psr\Log\LoggerInterface;
 use Flight\Service\Amadeus\Session\Service\Session;
 use Flight\Service\Amadeus\Session\Response\ResultResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class CreateSession BusinessCase
@@ -48,6 +47,7 @@ class IgnoreSession extends BusinessCase
         ));
 
         $this->addLinkToSelf($response);
+        $response->setStatusCode(204);
         return $response;
     }
 
