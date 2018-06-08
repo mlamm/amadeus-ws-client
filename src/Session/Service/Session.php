@@ -30,32 +30,26 @@ class Session
     private $amadeusClient;
 
     /**
-     * @var \stdClass
-     */
-    private $config;
-
-    /**
      * @param Request\Validator\Session $requestValidator
      * @param Serializer                $serializer
      * @param AmadeusClient             $amadeusClient
-     * @param \stdClass                 $config
      */
     public function __construct(
         Request\Validator\Session $requestValidator,
         Serializer $serializer,
-        AmadeusClient $amadeusClient,
-        \stdClass $config
+        AmadeusClient $amadeusClient
     ) {
         $this->requestValidator = $requestValidator;
         $this->serializer       = $serializer;
         $this->amadeusClient    = $amadeusClient;
-        $this->config           = $config;
     }
 
     /**
      * @param $authHeader
      * @return mixed|string
-     * @throws \Exception
+     * @throws \Amadeus\Client\Exception
+     * @throws \Flight\Service\Amadeus\Session\Exception\AmadeusRequestException
+     * @throws \Flight\Service\Amadeus\Session\Exception\InvalidRequestParameterException
      */
     public function createSession($authHeader)
     {

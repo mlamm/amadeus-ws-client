@@ -3,6 +3,7 @@
 namespace Flight\Service\Amadeus\Session\Model;
 
 use Flight\Service\Amadeus\Session\Request\Entity\Authenticate;
+use \Flight\Service\Amadeus\Session\Exception\AmadeusRequestException;
 use Psr\Log\LoggerInterface;
 use Amadeus\Client;
 
@@ -19,12 +20,17 @@ class AmadeusClient
     /**
      * result ok
      */
-    const CHECK_RESULT_OK = 1;
+    public const CHECK_RESULT_OK = 1;
 
     /**
      * result already authenticate
      */
-    const CHECK_RESULT_ALREADY_AUTH = 2;
+    public const CHECK_RESULT_ALREADY_AUTH = 2;
+
+    /**
+     * amadeus intern code for already authenticate
+     */
+    public const AMADEUS_RESULT_CODE_ALREADY_AUTH = '16001';
 
     /**
      * interacted with an inactive session
@@ -78,9 +84,12 @@ class AmadeusClient
     }
 
     /**
+     * send create session request to amadeus
+     *
      * @param Authenticate $authenticate
-     * @return mixed
-     * @throws \Exception
+     * @return Session     * @throws \Exception
+     * @throws Client\Exception
+     * @throws AmadeusRequestException
      */
     public function createSession(Authenticate $authenticate)
     {
@@ -90,7 +99,7 @@ class AmadeusClient
         try {
             $clientResult = $client->securityAuthenticate();
         } catch (Client\Exception $e) {
-            throw new \Exception($e->getMessage());
+            throw $e;
         }
         $checkResponseResult = $this->checkResult($clientResult);
         if (self::CHECK_RESULT_OK == $checkResponseResult) {
@@ -107,7 +116,7 @@ class AmadeusClient
      *
      * @param Client\Result $result
      * @return string check result (s. self::CHECK_RESULT_*)
-     * @throws \Exception
+     * @throws AmadeusRequestException
      */
     protected function checkResult(Client\Result $result): string
     {
@@ -116,13 +125,10 @@ class AmadeusClient
             return self::CHECK_RESULT_OK;
         }
         // already authenticate
-        if ("16001" === $result->messages[0]->code) {
+        if (self::AMADEUS_RESULT_CODE_ALREADY_AUTH === $result->messages[0]->code) {
             return self::CHECK_RESULT_ALREADY_AUTH;
         }
-        throw new \Exception(
-            'something wrong by response from amadeus error code is ' . $result->messages[0]->code,
-            'ARS0004'
-        );
+        throw new AmadeusRequestException($result->messages);
     }
 
     /**

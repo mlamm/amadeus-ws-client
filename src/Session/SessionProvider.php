@@ -2,9 +2,11 @@
 namespace Flight\Service\Amadeus\Session;
 
 /**
- * Class Session Provider
+ * Class SessionProvider
+ * setup the routing for the session ndpoint.
  *
- * @package Flight\Service\Amadeus\Session
+ * @author      Alexej Bornemann <alexej.bornemann@invia.de>
+ * @copyright   Copyright (c) 2018 Invia Flights Germany GmbH
  */
 class SessionProvider extends \Flight\Service\Amadeus\Application\BusinessCaseProvider
 {
@@ -21,6 +23,4 @@ class SessionProvider extends \Flight\Service\Amadeus\Application\BusinessCasePr
         $collection->post('/ignore', 'businesscase.session-ignore');
         $collection->post('/terminate', 'businesscase.session-terminate');
     }
-
-
 }

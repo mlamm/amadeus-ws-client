@@ -5,7 +5,8 @@ namespace Flight\Service\Amadeus\Session\Request\Entity;
 /**
  * entity for authentication request
  *
- * @package Flight\Service\Amadeus\Remarks\Request\Entity
+ * @author      Alexej Bornemann <alexej.bornemann@invia.de>
+ * @copyright   Copyright (c) 2018 Invia Flights Germany GmbH
  */
 class Authenticate
 {
@@ -44,7 +45,7 @@ class Authenticate
      *
      * @return string
      */
-    public function getOfficeId()
+    public function getOfficeId(): ?string
     {
         return $this->officeId;
     }
@@ -55,7 +56,7 @@ class Authenticate
      * @param string $officeId
      * @return Authenticate
      */
-    public function setOfficeId($officeId)
+    public function setOfficeId($officeId): Authenticate
     {
         $this->officeId = $officeId;
         return $this;
@@ -66,7 +67,7 @@ class Authenticate
      *
      * @return string
      */
-    public function getDutyCode()
+    public function getDutyCode(): ?string
     {
         return $this->dutyCode;
     }
@@ -77,7 +78,7 @@ class Authenticate
      * @param string $dutyCode
      * @return Authenticate
      */
-    public function setDutyCode($dutyCode)
+    public function setDutyCode($dutyCode): Authenticate
     {
         $this->dutyCode = $dutyCode;
         return $this;
@@ -88,7 +89,7 @@ class Authenticate
      *
      * @return string
      */
-    public function getUserId()
+    public function getUserId(): ?string
     {
         return $this->userId;
     }
@@ -99,7 +100,7 @@ class Authenticate
      * @param string $userId
      * @return Authenticate
      */
-    public function setUserId($userId)
+    public function setUserId($userId): Authenticate
     {
         $this->userId = $userId;
         return $this;
@@ -110,7 +111,7 @@ class Authenticate
      *
      * @return string
      */
-    public function getPasswordData()
+    public function getPasswordData(): ?string
     {
         return $this->passwordData;
     }
@@ -121,7 +122,7 @@ class Authenticate
      * @param string $passwordData
      * @return Authenticate
      */
-    public function setPasswordData($passwordData)
+    public function setPasswordData($passwordData): Authenticate
     {
         $this->passwordData = $passwordData;
         return $this;
@@ -132,7 +133,7 @@ class Authenticate
      *
      * @return int
      */
-    public function getPasswordLength()
+    public function getPasswordLength(): ?int
     {
         return $this->passwordLength;
     }
@@ -143,9 +144,9 @@ class Authenticate
      * @param int $passwordLength
      * @return Authenticate
      */
-    public function setPasswordLength($passwordLength)
+    public function setPasswordLength($passwordLength): Authenticate
     {
-        $this->passwordLength = $passwordLength;
+        $this->passwordLength = (int)$passwordLength;
         return $this;
     }
 
@@ -154,7 +155,7 @@ class Authenticate
      *
      * @return string
      */
-    public function getOrganizationId()
+    public function getOrganizationId(): ?string
     {
         return $this->organizationId;
     }
@@ -165,11 +166,9 @@ class Authenticate
      * @param string $organizationId
      * @return Authenticate
      */
-    public function setOrganizationId($organizationId)
+    public function setOrganizationId($organizationId): Authenticate
     {
         $this->organizationId = $organizationId;
         return $this;
     }
-
-
 }

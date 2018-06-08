@@ -76,26 +76,13 @@ debug:
     remarks:
       log_ama_traffic: false
     pimpledump:
+      enabled: true
+    session:
+      log_ama_traffic: false
+    pimpledump:
         enabled: true
     throwup:
         enabled: true
 
 session:
-    wsdl: 1ASIWADMTBD/1ASIWADMTBD_PDT_20180606_092050.wsdl
-
-response:
-    json_encoding_options:
-        - JSON_PRETTY_PRINT
-        - JSON_UNESCAPED_SLASHES
-
-debug:
-    search:
-      log_ama_traffic: false
-    pimpledump:
-        enabled: true
-    remarks:
-      log_ama_traffic: false
-    pimpledump:
-        enabled: true
-    throwup:
-        enabled: true
+    wsdl: 1ASIWADMTBD/1ASIWADMTBD_PRD_20180606_105150.wsdl

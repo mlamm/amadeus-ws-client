@@ -1,11 +1,17 @@
 <?php
 namespace Flight\Service\Amadeus\Session\BusinessCase;
 
+use Amadeus\Client\Exception;
 use Flight\Service\Amadeus\Application\BusinessCase;
 use Flight\Service\Amadeus\Application\Response\HalResponse;
+use Flight\Service\Amadeus\Session\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Session\Exception\InvalidRequestParameterException;
+use Flight\Service\Amadeus\Application\Exception\GeneralServerErrorException;
+use Flight\Service\Amadeus\Session\Response\AmadeusErrorResponse;
 use Psr\Log\LoggerInterface;
 use Flight\Service\Amadeus\Session\Service\Session;
-use Flight\Service\Amadeus\Session\Response\ResultResponse;
+use Flight\Service\Amadeus\Session\Response\SessionCreateResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class CreateSession BusinessCase
@@ -38,13 +44,46 @@ class CreateSession extends BusinessCase
      * Method to define what the business case returns.
      *
      * @return HalResponse
-     * @throws \Exception
      */
     public function respond()
     {
-        $response = ResultResponse::fromJsonString($this->sessionService->createSession(
-            $this->getRequest()->headers->get('authentication')
-        ));
+
+        try {
+            $response = SessionCreateResponse::fromJsonString(
+                $this->sessionService->createSession(
+                    $this->getRequest()->headers->get('authentication')
+                )
+            );
+
+        } catch (AmadeusRequestException $e) {
+            $this->logger->critical($e);
+            $e->setResponseCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+
+            $errorResponse = new AmadeusErrorResponse();
+            $errorResponse->addViolation('session', $e);
+            $this->addLinkToSelf($errorResponse);
+
+            return $errorResponse;
+        } catch (InvalidRequestParameterException $e) {
+            $this->logger->debug($e);
+
+            $errorResponse = new AmadeusErrorResponse();
+            $errorResponse->addViolationFromValidationFailures($e->getFailures());
+            $errorResponse->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $this->addLinkToSelf($errorResponse);
+
+            return $errorResponse;
+        } catch (Exception $e) {
+            // general exception handling
+            $this->logger->critical($e);
+            $errorException = new GeneralServerErrorException($e->getMessage());
+
+            $errorResponse = new AmadeusErrorResponse();
+            $errorResponse->addViolation('_', $errorException);
+            $this->addLinkToSelf($errorResponse);
+
+            return $errorResponse;
+        }
 
         $this->addLinkToSelf($response);
         return $response;

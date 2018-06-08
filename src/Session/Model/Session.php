@@ -10,18 +10,27 @@ namespace Flight\Service\Amadeus\Session\Model;
  */
 class Session
 {
+    /**
+     * @var string
+     */
     private $sessionId;
 
+    /**
+     * @var int
+     */
     private $sequenceNumber;
 
+    /**
+     * @var string
+     */
     private $securityToken;
 
     /**
      * getter for $this->SessionId
      *
-     * @return mixed
+     * @return string
      */
-    public function getSessionId()
+    public function getSessionId(): ?string
     {
         return $this->sessionId;
     }
@@ -29,43 +38,43 @@ class Session
     /**
      * setter for $this->SessionId
      *
-     * @param mixed $sessionId
+     * @param string $sessionId
      * @return $this
      */
-    public function setSessionId($sessionId): Session
+    public function setSessionId(string $sessionId): Session
     {
         $this->sessionId = $sessionId;
         return $this;
     }
 
     /**
-     * getter for $this->ConversationId
+     * getter for $this->SequenceNumber
      *
-     * @return mixed
+     * @return int
      */
-    public function getSequenceNumber()
+    public function getSequenceNumber(): ?int
     {
         return $this->sequenceNumber;
     }
 
     /**
-     * setter for $this->ConversationId
+     * setter for $this->SequenceNumber
      *
-     * @param mixed $sequenceNumber
+     * @param int $sequenceNumber
      * @return $this
      */
     public function setSequenceNumber($sequenceNumber): Session
     {
-        $this->sequenceNumber = $sequenceNumber;
+        $this->sequenceNumber = (int)$sequenceNumber;
         return $this;
     }
 
     /**
      * getter for $this->SecurityToken
      *
-     * @return mixed
+     * @return string
      */
-    public function getSecurityToken()
+    public function getSecurityToken(): ?string
     {
         return $this->securityToken;
     }
@@ -73,10 +82,10 @@ class Session
     /**
      * setter for $this->SecurityToken
      *
-     * @param mixed $securityToken
+     * @param string $securityToken
      * @return $this
      */
-    public function setSecurityToken($securityToken): Session
+    public function setSecurityToken(string $securityToken): Session
     {
         $this->securityToken = $securityToken;
         return $this;

@@ -9,7 +9,7 @@ use Psr\Log\LoggerInterface;
 /**
  * AmadeusRequestTransformer
  *
- * Description of the class
+ * Build an Amadeus session request
  *
  * @author      Alexej Bornemann <alexej.bornemann@invia.de>
  * @copyright   Copyright (c) 2018 Invia Flights Germany GmbH
@@ -61,7 +61,7 @@ class AmadeusRequestTransformer
                 'sessionHandlerParams' => [
                     'soapHeaderVersion' => Client::HEADER_V4,
                     'stateful' => true,
-                    'wsdl' => "./wsdl/{$this->config->session->wsdl}",
+                    'wsdl' => './wsdl/' . $this->config->session->wsdl,
                     'logger' => $logger
                 ],
                 'requestCreatorParams' => [

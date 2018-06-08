@@ -21,14 +21,14 @@ class SessionServiceProvider implements ServiceProviderInterface
     /**
      * @var bool
      */
-    private $useMockSearchResponse = false;
+    private $useMockSessionResponse = false;
 
     /**
-     * @param bool $useMockSearchResponse
+     * @param bool $useMockSessionResponse
      */
-    public function __construct(bool $useMockSearchResponse)
+    public function __construct(bool $useMockSessionResponse)
     {
-        $this->useMockSearchResponse = $useMockSearchResponse;
+        $this->useMockSessionResponse = $useMockSessionResponse;
     }
 
     /**
@@ -39,7 +39,7 @@ class SessionServiceProvider implements ServiceProviderInterface
      *
      * @param Container $app A container instance
      */
-    public function register(Container $app)
+    public function register(Container $app): void
     {
         $app['service.session'] = function () use ($app) {
             $validator = new Session\Request\Validator\Session(
@@ -54,13 +54,12 @@ class SessionServiceProvider implements ServiceProviderInterface
             return new Session\Service\Session(
                 $validator,
                 $serializerBuilder->build(),
-                $app['amadeus.client.session'],
-                $app['config']->session
+                $app['amadeus.client.session']
             );
         };
         $app['monolog.logfile'] = '/../var/logs/app.log';
         $app['amadeus.client.session'] = function () use ($app) {
-            $sessionHandlerClass = $this->useMockSearchResponse ? MockSessionHandler::class : null;
+            $sessionHandlerClass = $this->useMockSessionResponse ? MockSessionHandler::class : null;
             return new Session\Model\AmadeusClient(
                 $app['config']->debug->remarks->log_ama_traffic ? $app['logger'] : new NullLogger(),
                 new Session\Model\AmadeusRequestTransformer($app['config'], $sessionHandlerClass),
