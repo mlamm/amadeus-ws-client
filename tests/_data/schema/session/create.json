@@ -7,7 +7,7 @@
       "description": "session id"
     },
     "sequence_number": {
-      "type": "string",
+      "type": "integer",
       "description": "sequence number"
     },
     "security_token": {
