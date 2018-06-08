@@ -2,6 +2,7 @@
 
 namespace Flight\Service\Amadeus\Session\Request\Validator;
 
+use Flight\Service\Amadeus\Session\Exception\InvalidRequestParameterException;
 use Particle\Validator\Validator;
 
 /**
@@ -13,10 +14,14 @@ use Particle\Validator\Validator;
 class Session
 {
     /**
-     *@var \stdClass
+     * @var \stdClass
      */
     protected $config;
 
+    /**
+     * Session constructor.
+     * @param \stdClass $config
+     */
     public function __construct(\stdClass $config)
     {
         $this->config  = $config;
@@ -27,9 +32,9 @@ class Session
      *
      * @param $authentication
      *
-     * @throws \Exception
+     * @throws InvalidRequestParameterException
      */
-    public function validateAuthentication($authentication)
+    public function validateAuthentication($authentication): void
     {
         $validator = new Validator();
         $validator->required('office-id')->string();
@@ -42,7 +47,7 @@ class Session
         $validationResult = $validator->validate((array)$authentication);
 
         if ($validationResult->isNotValid()) {
-            throw new \Exception($validationResult->getFailures());
+            throw new InvalidRequestParameterException($validationResult->getFailures());
         }
     }
 }

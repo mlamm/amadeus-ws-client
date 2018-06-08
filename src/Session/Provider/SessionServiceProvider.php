@@ -39,7 +39,7 @@ class SessionServiceProvider implements ServiceProviderInterface
      *
      * @param Container $app A container instance
      */
-    public function register(Container $app)
+    public function register(Container $app): void
     {
         $app['service.session'] = function () use ($app) {
             $validator = new Session\Request\Validator\Session(
@@ -54,8 +54,7 @@ class SessionServiceProvider implements ServiceProviderInterface
             return new Session\Service\Session(
                 $validator,
                 $serializerBuilder->build(),
-                $app['amadeus.client.session'],
-                $app['config']->session
+                $app['amadeus.client.session']
             );
         };
         $app['monolog.logfile'] = '/../var/logs/app.log';
