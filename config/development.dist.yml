@@ -77,12 +77,8 @@ response:
 debug:
     search:
       log_ama_traffic: true
-    pimpledump:
-        enabled: true
     remarks:
       log_ama_traffic: true
-    pimpledump:
-      enabled: true
     session:
       log_ama_traffic: true
     pimpledump:

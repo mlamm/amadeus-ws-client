@@ -61,7 +61,7 @@ class SessionServiceProvider implements ServiceProviderInterface
         $app['amadeus.client.session'] = function () use ($app) {
             $sessionHandlerClass = $this->useMockSessionResponse ? MockSessionHandler::class : null;
             return new Session\Model\AmadeusClient(
-                $app['config']->debug->remarks->log_ama_traffic ? $app['logger'] : new NullLogger(),
+                $app['config']->debug->session->log_ama_traffic ? $app['logger'] : new NullLogger(),
                 new Session\Model\AmadeusRequestTransformer($app['config'], $sessionHandlerClass),
                 new Session\Model\AmadeusResponseTransformer(),
                 function (Amadeus\Client\Params $clientParams) {
