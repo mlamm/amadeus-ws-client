@@ -66,6 +66,9 @@ search:
 remarks:
     wsdl: 1ASIWUFITBD_PDT_20180206_095616.wsdl
 
+session:
+    wsdl: 1ASIWADMTBD/1ASIWADMTBD_PDT_20180606_092050.wsdl
+
 response:
     json_encoding_options:
         - JSON_PRETTY_PRINT
@@ -74,11 +77,12 @@ response:
 debug:
     search:
       log_ama_traffic: true
-    pimpledump:
-        enabled: true
     remarks:
+      log_ama_traffic: true
+    session:
       log_ama_traffic: true
     pimpledump:
         enabled: true
     throwup:
         enabled: true
+
