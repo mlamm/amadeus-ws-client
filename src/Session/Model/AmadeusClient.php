@@ -2,6 +2,7 @@
 
 namespace Flight\Service\Amadeus\Session\Model;
 
+use Flight\Service\Amadeus\Session\Exception\InactiveSessionException;
 use Flight\Service\Amadeus\Session\Request\Entity\Authenticate;
 use \Flight\Service\Amadeus\Session\Exception\AmadeusRequestException;
 use Psr\Log\LoggerInterface;
@@ -133,7 +134,11 @@ class AmadeusClient
 
     /**
      * @param Authenticate $authenticate
-     * @return mixed
+     * @param Session $session
+     *
+     * @return \Flight\Service\Amadeus\Session\Response\SessionCreateResponse
+     *
+     * @throws InactiveSessionException
      * @throws \Exception
      */
     public function ignoreSession(Authenticate $authenticate, Session $session)
@@ -158,15 +163,21 @@ class AmadeusClient
         }
 
         if (Client\Result::STATUS_OK !== $result->status) {
-            throw new \Exception(print_r($result->messages, true));
+            $this->checkResultSession($result);
         }
 
         return $this->responseTransformer->mapSessionIgnore($result);
     }
 
     /**
+     * terminate given session
+     *
      * @param Authenticate $authenticate
-     * @return mixed
+     * @param Session $session
+     *
+     * @return \Flight\Service\Amadeus\Session\Response\SessionCreateResponse
+     *
+     * @throws InactiveSessionException
      * @throws \Exception
      */
     public function terminateSession(Authenticate $authenticate, Session $session)
@@ -187,17 +198,26 @@ class AmadeusClient
         }
 
         if (Client\Result::STATUS_OK !== $result->status) {
-            $this->checkResultSession($result);//throw new \Exception(print_r($result->messages, true));
+            $this->checkResultSession($result);
         }
 
         return $this->responseTransformer->mapSessionTerminate($result);
     }
 
-    public function checkResultSession(Client\Result $result): string
+    /**
+     * check session handling result for active session
+     *
+     * @param Client\Result $result result of session handling
+     *
+     * @throws InactiveSessionException
+     * @throws \Exception
+     */
+    public function checkResultSession(Client\Result $result)
     {
         // result ok nothing to do
         if (AmadeusClient::CHECK_RESULT_INACTIVE_CONVERSATION == $result->messages[0]->code) {
-            throw new \Exception('no active session', 4);
+            throw new InactiveSessionException(array('no active session'));
         }
+        throw new \Exception(print_r($result->messages, true));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Flight\Service\Amadeus\Session\Service;
 
+use Flight\Service\Amadeus\Session\Exception\InactiveSessionException;
 use Flight\Service\Amadeus\Session\Model\AmadeusClient;
 use Flight\Service\Amadeus\Session\Request;
 use JMS\Serializer\Serializer;
@@ -73,6 +74,17 @@ class Session
         return $this->serializer->serialize($response, 'json');
     }
 
+    /**
+     * ignore given session
+     *
+     * @param $authHeader string json string with authentication information
+     * @param $sessionHeader string json string with session information
+     *
+     * @return mixed|string
+     *
+     * @throws InactiveSessionException
+     * @throws \Flight\Service\Amadeus\Session\Exception\InvalidRequestParameterException
+     */
     public function ignoreSession($authHeader, $sessionHeader)
     {
         $authHeader = \GuzzleHttp\json_decode($authHeader);
@@ -82,7 +94,6 @@ class Session
         $session->setSecurityToken($sessionHeader->security_token)
             ->setSessionId($sessionHeader->session_id)
             ->setSequenceNumber($sessionHeader->sequence_number);
-;
 
         // validate
         $this->requestValidator->validateAuthentication($authHeader);
@@ -104,6 +115,17 @@ class Session
         return $this->serializer->serialize($response, 'json');
     }
 
+    /**
+     * terminate given session
+     *
+     * @param $authHeader string json string with authentication information
+     * @param $sessionHeader string json string with session information
+     *
+     * @return mixed|string
+     *
+     * @throws \Flight\Service\Amadeus\Session\Exception\InvalidRequestParameterException
+     * @throws InactiveSessionException
+     */
     public function terminateSession($authHeader, $sessionHeader)
     {
         $authHeader = \GuzzleHttp\json_decode($authHeader);

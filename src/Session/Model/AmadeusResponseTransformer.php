@@ -4,6 +4,7 @@ namespace Flight\Service\Amadeus\Session\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\Result;
 use Flight\Service\Amadeus\Session\Response\ResultResponse;
+use Flight\Service\Amadeus\Session\Response\SessionCreateResponse;
 
 /**
  * AmadeusResponseTransformer
@@ -41,9 +42,15 @@ class AmadeusResponseTransformer
         return $result;
     }
 
-    public function mapSessionIgnore(\Amadeus\Client\Result $result): ResultResponse
+    /**
+     * map session ignore result
+     *
+     * @param \Amadeus\Client\Result $result
+     * @return SessionCreateResponse
+     */
+    public function mapSessionIgnore(\Amadeus\Client\Result $result): SessionCreateResponse
     {
-        $SessionResponse = new ResultResponse();
+        $SessionResponse = new SessionCreateResponse();
         $SessionResponse->setResult(new ArrayCollection());
 
         if (!empty($result->response->clearInformation->actionRequest)) {
@@ -53,11 +60,18 @@ class AmadeusResponseTransformer
 
         $SessionResponse->getResult()->add('error while ignored.');
 
-        return $SessionResponse;    }
+        return $SessionResponse;
+    }
 
-    public function mapSessionTerminate(\Amadeus\Client\Result $result): ResultResponse
+    /**
+     * map session termination result
+     *
+     * @param \Amadeus\Client\Result $result
+     * @return SessionCreateResponse
+     */
+    public function mapSessionTerminate(\Amadeus\Client\Result $result): SessionCreateResponse
     {
-        $SessionResponse = new ResultResponse();
+        $SessionResponse = new SessionCreateResponse();
         $SessionResponse->setResult(new ArrayCollection());
 
         if (!empty($result->response->processStatus->statusCode)) {

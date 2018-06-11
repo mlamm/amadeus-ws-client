@@ -6,6 +6,7 @@ namespace Flight\Service\Amadeus\Amadeus\Client;
 use Amadeus\Client\Params\SessionHandlerParams;
 use Amadeus\Client\Session\Handler\HandlerInterface;
 use Amadeus\Client\Session\Handler\SendResult;
+use Amadeus\Client\Session\Handler\UnsupportedOperationException;
 use Amadeus\Client\Session\Handler\WsdlAnalyser;
 use Amadeus\Client\Struct\BaseWsMessage;
 
@@ -23,6 +24,10 @@ class MockSessionHandler implements HandlerInterface
     private const MASTERPRICER_RESPONSE_FIXTURE = 'tests/_data/fixtures/03-Fare_MasterPricerTravelBoardSearch_FBA-rt.xml';
 
     private const CREATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_Authenticate-Response.xml';
+
+    private const IGNORE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/PNR_Ignore-Response.xml';
+
+    private const TERMINATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_SignOut-Response.xml';
 
     /**
      * @var SessionHandlerParams
@@ -57,6 +62,12 @@ class MockSessionHandler implements HandlerInterface
             case 'Security_Authenticate':
                 return $this->loadCreateSessionResponse();
                 break;
+            case 'Security_SignOut':
+                return $this->loadIgnoreSessionResponse();
+                break;
+            case 'PNR_Ignore':
+                return $this->loadTerminateSessionResponse();
+                break;
         }
 
         throw new \Exception("no mock response configured for message `{$messageName}`");
@@ -75,6 +86,24 @@ class MockSessionHandler implements HandlerInterface
     {
         $sendResult = new SendResult();
         $sendResult->responseXml = file_get_contents(self::CREATE_SESSION_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadIgnoreSessionResponse()
+    {
+        $sendResult = new SendResult();
+        $sendResult->responseXml = file_get_contents(self::IGNORE_SESSION_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadTerminateSessionResponse()
+    {
+        $sendResult = new SendResult();
+        $sendResult->responseXml = file_get_contents(self::TERMINATE_SESSION_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
@@ -160,6 +189,49 @@ class MockSessionHandler implements HandlerInterface
      * @throws \Exception
      */
     public function getLastResponseHeaders($msgName)
+    {
+        throw new \Exception('not implemented for mock session handler');
+    }
+
+    /**
+     * Is the TransactionFlowLink header enabled?
+     *
+     * @return bool
+     */
+    public function isTransactionFlowLinkEnabled()
+    {
+        throw new \Exception('not implemented for mock session handler');
+    }
+
+    /**
+     * Enable or disable TransactionFlowLink header
+     *
+     * @throws UnsupportedOperationException when used on unsupported WSAP versions
+     * @param bool $enabled
+     */
+    public function setTransactionFlowLink($enabled)
+    {
+        throw new \Exception('not implemented for mock session handler');
+    }
+
+    /**
+     * Get the TransactionFlowLink Consumer ID
+     *
+     * @return string|null
+     */
+    public function getConsumerId()
+    {
+        throw new \Exception('not implemented for mock session handler');
+    }
+
+    /**
+     * Set the TransactionFlowLink Consumer ID
+     *
+     * @throws UnsupportedOperationException when used on unsupported WSAP versions
+     * @param string $id
+     * @return void
+     */
+    public function setConsumerId($id)
     {
         throw new \Exception('not implemented for mock session handler');
     }

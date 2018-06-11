@@ -2,7 +2,7 @@
   "errors": {
     "_": [
       {
-        "code": "SRS0001",
+        "code": "ARS0001",
         "message": "Amadeus service error message",
         "status": 500
       }

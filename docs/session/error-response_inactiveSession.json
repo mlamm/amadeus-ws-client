@@ -1,0 +1,11 @@
+{
+  "errors": {
+    "_": [
+      {
+        "code": "ARS0005",
+        "message": "INACTIVE SESSION",
+        "status": 400
+      }
+    ]
+  }
+}

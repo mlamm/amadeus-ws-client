@@ -76,28 +76,4 @@ class AmadeusRequestTransformer
 
         return $clientParams;
     }
-
-    public function buildClientParamsWithSession(LoggerInterface $logger): Client\Params
-    {
-        $clientParams = new Client\Params(
-            [
-                'sessionHandlerParams' => [
-                    'soapHeaderVersion' => Client::HEADER_V4,
-                    'stateful' => true,
-                    'wsdl' => "./wsdl/{$this->config->session->wsdl}",
-                    'logger' => $logger
-                ],
-                'requestCreatorParams' => [
-                    'receivedFrom' => 'service.session'
-                ]
-            ]
-        );
-
-        if ($this->customSessionHandlerClass) {
-            $clientParams->sessionHandler = new $this->customSessionHandlerClass($clientParams->sessionHandlerParams);
-        }
-
-        return $clientParams;
-    }
-
 }

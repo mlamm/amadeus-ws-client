@@ -27,9 +27,9 @@ class SessionCreateResponse extends HalResponse
 
     /**
      * @param ArrayCollection $result
-     * @return ResultResponse
+     * @return SessionCreateResponse
      */
-    public function setResult(ArrayCollection $result): ResultResponse
+    public function setResult(ArrayCollection $result): SessionCreateResponse
     {
         $this->result = $result;
         return $this;

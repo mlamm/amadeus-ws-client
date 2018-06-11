@@ -47,7 +47,7 @@ class Session
         $validationResult = $validator->validate((array)$authentication);
 
         if ($validationResult->isNotValid()) {
-            throw new InvalidRequestParameterException($validationResult->getFailures());
+            throw new InvalidRequestParameterException(print_r($validationResult->getFailures(), true));
         }
     }
 
@@ -55,7 +55,7 @@ class Session
      * validate session
      *
      * @param $session
-     * @throws \Exception
+     * @throws InvalidRequestParameterException
      */
     public function validateSession(\Flight\Service\Amadeus\Session\Model\Session $session)
     {
@@ -67,7 +67,7 @@ class Session
         $validationResult = $validator->validate($session->toArray());
 
         if ($validationResult->isNotValid()) {
-            throw new \Exception(print_r($validationResult->getFailures(), true));
+            throw new InvalidRequestParameterException(print_r($validationResult->getFailures(), true));
         }
     }
 }
