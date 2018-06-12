@@ -41,6 +41,6 @@ class SelectionDetails extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->selection = $data->{'selection'} ?? null;
+        $this->selection = $data->{'selection'}->{'option'} ?? null;
     }
 }
