@@ -7,6 +7,7 @@ use Flight\Service\Amadeus\Itinerary\Exception\AmadeusRequestException;
 use Flight\Service\Amadeus\Itinerary\Request\Entity\Authenticate;
 use Flight\Service\Amadeus\Itinerary\Request\Entity\Session;
 use Flight\Service\Amadeus\Itinerary\Request\Entity\ItineraryRead;
+use Flight\Service\Amadeus\Itinerary\Response\ResultResponse;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -67,8 +68,9 @@ class ItineraryAmadeusClient
      *
      * @param ItineraryRead $requestEntity
      * @param Session       $session
+     * @param Authenticate  $authenticate
      *
-     * @return \Flight\Service\Amadeus\Remarks\Response\ResultResponse
+     * @return ResultResponse
      *
      * @throws AmadeusRequestException
      * @throws Client\Exception
@@ -79,16 +81,15 @@ class ItineraryAmadeusClient
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
 
         $requestOptions = $this->requestTransformer->buildOptionsItineraryRead(
-            $requestEntity->getRecordlocator()
+            $requestEntity->getRecordLocator()
         );
         $client->setSessionData($session->toArray());
-
+        $client->securityAuthenticate()->responseXml;
         $result = $client->pnrRetrieve($requestOptions);
 
         if ($result->status !== Client\Result::STATUS_OK) {
             throw new AmadeusRequestException($result->messages);
         }
-
         return $this->responseTransformer->mapResult($result);
     }
 }

@@ -61,7 +61,7 @@ class AmadeusRequestTransformer
                 ],
                 'sessionHandlerParams' => [
                     'soapHeaderVersion' => Client::HEADER_V4,
-                    'stateful'          => true,
+                    'stateful'          => false,
                     'wsdl'              => "./wsdl/{$this->config->itinerary->wsdl}",
                     'logger'            => $logger,
                 ],
@@ -81,7 +81,7 @@ class AmadeusRequestTransformer
     /**
      * build options for itinerary read (pnr_retrieve)
      *
-     * @param                 $recordLocator
+     * @param string $recordLocator record locator to get pnr for
      *
      * @return Client\RequestOptions\PnrRetrieveOptions
      */
@@ -89,7 +89,7 @@ class AmadeusRequestTransformer
     {
         return new Client\RequestOptions\PnrRetrieveOptions(
             [
-                'recordLocator' => $recordLocator
+                'recordLocator' => $recordLocator,
             ]
         );
     }

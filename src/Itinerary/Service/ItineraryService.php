@@ -82,6 +82,6 @@ class ItineraryService
             $session,
             $authHeader
         );
-        return $this->serializer->serialize($response, 'json');
+        return $this->serializer->serialize($response->getResult()->toArray(), 'json');
     }
 }

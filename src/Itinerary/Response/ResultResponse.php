@@ -4,33 +4,34 @@ namespace Flight\Service\Amadeus\Itinerary\Response;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Service\Amadeus\Application\Response\HalResponse;
+use Flight\Service\Amadeus\Itinerary\Model\Itinerary;
 
 /**
  * Class ItineraryResultResponse
  *
- * @package Flight\Service\Amadeus\Remarks\Response
+ * @package Flight\Service\Amadeus\Itinerary\Response
  */
 class ResultResponse extends HalResponse
 {
     /**
-     * @var ArrayCollection
+     * @var Itinerary
      */
     protected $result;
 
     /**
-     * @return ArrayCollection
+     * @return Itinerary
      */
-    public function getResult() : ArrayCollection
+    public function getResult() : Itinerary
     {
         return $this->result;
     }
 
     /**
-     * @param ArrayCollection $result
+     * @param Itinerary $result
      *
      * @return ResultResponse
      */
-    public function setResult(ArrayCollection $result) : ResultResponse
+    public function setResult(Itinerary $result) : ResultResponse
     {
         $this->result = $result;
         return $this;

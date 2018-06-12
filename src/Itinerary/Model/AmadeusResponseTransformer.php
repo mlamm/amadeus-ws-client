@@ -1,4 +1,5 @@
 <?php
+
 namespace Flight\Service\Amadeus\Itinerary\Model;
 
 use Amadeus\Client\Result;
@@ -22,36 +23,127 @@ class AmadeusResponseTransformer
      */
     public function mapResult(Result $result)
     {
-        $remarksResponse = new ResultResponse();
-//        $remarksResponse->setResult(new ArrayCollection());
-        $remarksCollection = new ArrayCollection();
-//        foreach ($result->response->dataElementsMaster->dataElementsIndiv as $remarks) {
-//            $remarksData = $remarks->elementManagementData;
-//            if (!isset($remarks->miscellaneousRemarks)) {
-//                continue;
-//            }
-//            $remarksDataAdd = $remarks->miscellaneousRemarks;
-//
-//            $remarksCollection->add((new Remark())->setType($remarksDataAdd->remarks->type)->convertFromCrs($remarksDataAdd->remarks->freetext)
-//                ->setManagementData(
-//                    (new ManagementData())->setLineNumber($remarksData->lineNumber)->setReference(
-//                        (new Reference())->setNumber($remarksData->reference->number)->setQualifier($remarksData->reference->qualifier)
-//                    )->setSegmentName($remarksData->segmentName)
-//                ));
-//        }
+        $responseResult = new ResultResponse();
+        $itinerary      = new Itinerary();
 
-        $itinerary = new \Flight\Service\Amadeus\Itinerary\Model\Itinerary();
-        $itinerary->setRemarks($remarksCollection);
-        var_dump($itinerary);die;
-        $remarksResponse->getResult()->add($itinerary);
+        if (isset($result->response->pnrHeader)) {
+            $itinerary->setPnrHeader(new Itinerary\PnrHeader($result->response->pnrHeader));
+        }
+        if (isset($result->response->{'securityInformation'})) {
+            $itinerary->setSecurityInformation(
+                new Itinerary\SecurityInformation($result->response->{'securityInformation'})
+            );
+        }
+        if (isset($result->response->{'freetextData'})) {
+            $itinerary->setFreetextData(new Itinerary\FreetextData($result->response->{'freetextData'}));
+        }
+        if (isset($result->response->{'sbrPOSDetails'})) {
+            $itinerary->setSbrPOSDetails(new Itinerary\SbrPosDetails($result->response->{'sbrPOSDetails'}));
+        }
+        if (isset($result->response->{'sbrCreationPosDetails'})) {
+            $itinerary->setSbrCreationPosDetails(
+                new Itinerary\SbrCreationPosDetails($result->response->{'sbrCreationPosDetails'})
+            );
+        }
+        if (isset($result->response->{'sbrUpdatorPosDetails'})) {
+            $itinerary->setSbrUpdatorPosDetails(
+                new Itinerary\SbrUpdatorPosDetails($result->response->{'sbrUpdatorPosDetails'})
+            );
+        }
+        if (isset($result->response->{'technicalData'})) {
+            $itinerary->setTechnicalData(new Itinerary\TechnicalData($result->response->{'technicalData'}));
+        }
+        if (isset($result->response->{'travellerInfo'})) {
+            $itinerary->setTravellerInfo($this->mapTravellerInfo($result->response->{'travellerInfo'}));
+        }
+        if (isset($result->response->{'originDestinationDetails'})) {
+            $itinerary->setOriginDestinationDetails(
+                new Itinerary\OriginDestinationDetails($result->response->{'originDestinationDetails'})
+            );
+        }
+        if (isset($result->response->{'segmentGroupingInfo'})) {
+            $itinerary->setSegmentGroupingInfo($this->mapSegmentGroupInfo($result->response->{'segmentGroupingInfo'}));
+        }
+        if (isset($result->response->{'dataElementsMaster'})) {
+            $itinerary->setDataElementsMaster($this->mapDataElementsMaster($result->response->{'dataElementsMaster'}));
+        }
+        $responseResult->setResult($itinerary);
+        return $responseResult;
+    }
 
-        return $remarksResponse;
+    /**
+     * @param $data
+     *
+     * @return ArrayCollection
+     */
+    public function mapTravellerInfo($data)
+    {
+        $collection = new ArrayCollection();
+
+        if (is_array($data)) {
+            /** @var \stdClass $travellerInfo */
+            foreach ($data as $travellerInfo) {
+                $traveller = new Itinerary\TravellerInfo($travellerInfo);
+                $collection->add($traveller);
+            }
+        } else {
+            $traveller = new Itinerary\TravellerInfo($data);
+            $collection->add($traveller);
+        }
+        return $collection;
+    }
+
+    /**
+     * map the segmentGroupInfo into ArrayCollection
+     * @param $data
+     *
+     * @return ArrayCollection
+     */
+    public function mapSegmentGroupInfo($data)
+    {
+        $collection = new ArrayCollection();
+
+        if (is_array($data)) {
+            /** @var \stdClass $segmentInfo */
+            foreach ($data as $segmentInfo) {
+                $segment = new Itinerary\SegmentGroupingInfo($segmentInfo);
+                $collection->add($segment);
+            }
+        } else {
+            $segment = new Itinerary\SegmentGroupingInfo($data);
+            $collection->add($segment);
+        }
+        return $collection;
+    }
+
+    /**
+     * map the DataElementsMaster entry/entries
+     * @param $data
+     *
+     * @return ArrayCollection
+     */
+    public function mapDataElementsMaster($data)
+    {
+        $collection = new ArrayCollection();
+
+        if (is_array($data)) {
+            /** @var \stdClass $elementManagementData */
+            foreach ($data as $elementManagementData) {
+                $dataElement = new Itinerary\DataElementsMaster($elementManagementData);
+                $collection->add($dataElement);
+            }
+        } else {
+            $dataElement = new Itinerary\DataElementsMaster($data);
+            $collection->add($dataElement);
+        }
+        return $collection;
     }
 
     /**
      * @see $this->mapResultRemarksRead
      *
      * @param Result $result
+     *
      * @return ResultResponse
      */
     public function mapResultRemarksAdd(Result $result)
@@ -63,6 +155,7 @@ class AmadeusResponseTransformer
      * @see $this->mapResultRemarksRead
      *
      * @param Result $result
+     *
      * @return ResultResponse
      */
     public function mapResultRemarksDelete(Result $result)

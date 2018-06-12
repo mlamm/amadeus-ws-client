@@ -1,7 +1,8 @@
 <?php
-declare(strict_types=1);
 
 namespace Flight\Service\Amadeus\Itinerary\Model;
+
+use Flight\Service\Amadeus\Itinerary\Model\Itinerary\AbstractModel;
 
 /**
  *
@@ -11,7 +12,7 @@ namespace Flight\Service\Amadeus\Itinerary\Model;
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
  * @author    Fluege-Dev <fluege-dev@invia.de>
  */
-class Itinerary
+class Remark extends AbstractModel
 {
 
     /**
@@ -36,11 +37,13 @@ class Itinerary
     private $value;
 
     /**
-     * management data of the remark
-     *
-     * @var ManagementData
+     * @param \stdClass $data
      */
-    private $managementData;
+    public function populate(\stdClass $data)
+    {
+        $this->type = $data->{'type'} ?? 'RM';
+        list($this->name, $this->value) = array_pad(explode('-', (string) $data->freetext, 2), 2, null);
+    }
 
     /**
      * getter for type
@@ -106,50 +109,5 @@ class Itinerary
     {
         $this->value = $value;
         return $this;
-    }
-
-    /**
-     * getter for managementData
-     *
-     * @return ManagementData
-     */
-    public function getManagementData()
-    {
-        return $this->managementData;
-    }
-
-    /**
-     * setter for managementData
-     *
-     * @param ManagementData $managementData
-     * @return Remark
-     */
-    public function setManagementData($managementData)
-    {
-        $this->managementData = $managementData;
-        return $this;
-    }
-
-    /**
-     * @param $crsText
-     * @return $this
-     */
-    public function convertFromCrs($crsText)
-    {
-        list($name, $value) = array_pad(explode('-', (string) $crsText, 2), 2, null);
-        $this->setValue($value);
-        $this->setName($name);
-
-        return $this;
-    }
-
-    /**
-     * returns value and name for crs useage
-     *
-     * @return string
-     */
-    public function convertToCrs()
-    {
-        return $this->getName() . '-' . $this->getValue();
     }
 }

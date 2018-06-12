@@ -24,6 +24,7 @@ ini_set('error_log', 'php://stdout');
 chdir(__DIR__ . '/..');
 require_once __DIR__ . '/../vendor/autoload.php';
 
+define('ROOT_PATH', dirname(__DIR__));
 $app = new Application();
 
 // switch to mock service responses for api tests
