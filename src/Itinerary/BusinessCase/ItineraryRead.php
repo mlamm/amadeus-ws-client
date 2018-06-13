@@ -75,7 +75,7 @@ class ItineraryRead extends BusinessCase
             $exception->setResponseCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 
             $errorResponse = new AmadeusErrorResponse();
-            $errorResponse->addViolation('remarks', $exception);
+            $errorResponse->addViolation('itinerary', $exception);
             $this->addLinkToSelf($errorResponse);
 
             return $errorResponse;

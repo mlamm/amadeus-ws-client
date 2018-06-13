@@ -1,218 +1,659 @@
 {
-  "result": [
-    {
-      "itinerary": {
-        "remarks": [
-          {
-            "IBEBNAME": {
-              "value": "MOPS,MAXXZ",
-              "rph": "001",
-              "Id": "12",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEPAXDOB": {
-              "value": "1.MAR.1979/P1.2",
-              "rph": "002",
-              "Id": "13",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEBCOMPANY": {
-              "value": "MUHKUH INC. 54323",
-              "rph": "003",
-              "Id": "14",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEBSTREET": {
-              "value": "TESTSTRASSE 13",
-              "rph": "004",
-              "Id": "15",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEBPHONEHOME": {
-              "value": "004912334567",
-              "rph": "005",
-              "Id": "16",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEBCOUNTRY": {
-              "value": "DEE",
-              "rph": "006",
-              "Id": "17",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEPAXEMAIL": {
-              "value": "MARTIN.LESKE-AT-INVIA.DEE",
-              "rph": "007",
-              "Id": "18",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEAGT": {
-              "value": "499188",
-              "rph": "008",
-              "Id": "19",
-              "Type": "Historical"
-            }
-          },
-          {
-            "OGOPSPID": {
-              "value": "AERUNINEUSIXX",
-              "rph": "009",
-              "Id": "20",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEPAYMENT": {
-              "value": "ALIASCCZ",
-              "rph": "010",
-              "Id": "21",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBETARIFF": {
-              "value": "NETALLHBO01",
-              "rph": "011",
-              "Id": "22",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEINFO": {
-              "value": "MIT RU 000868",
-              "rph": "012",
-              "Id": "23",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBENETCC": {
-              "value": "126.58",
-              "rph": "013",
-              "Id": "24",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBENET": {
-              "value": "EUR24.00/P1.2",
-              "rph": "014",
-              "Id": "26",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBETAX": {
-              "value": "EUR72.59/P1.2",
-              "rph": "015",
-              "Id": "27",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEORDERTOTAL": {
-              "value": "126.58",
-              "rph": "016",
-              "Id": "28",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEPAYMENTFEE": {
-              "value": "0.01",
-              "rph": "017",
-              "Id": "30",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEPAYMENT": {
-              "value": "ALIASCCZ",
-              "rph": "018",
-              "Id": "31",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBENET": {
-              "value": "EUR24.00/P1.1",
-              "rph": "019",
-              "Id": "33",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBETAX": {
-              "value": "EUR72.59/P1.1",
-              "rph": "020",
-              "Id": "34",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBENETCC": {
-              "value": "126.58",
-              "rph": "021",
-              "Id": "35",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEORDERTOTAL": {
-              "value": "126.57",
-              "rph": "022",
-              "Id": "36",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEPAYMENT": {
-              "value": "ALIASCCZ",
-              "rph": "023",
-              "Id": "37",
-              "Type": "Historical"
-            }
-          },
-          {
-            "OGOPSPID": {
-              "value": "AERUNINEUSIX",
-              "rph": "024",
-              "Id": "39",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBENETCC": {
-              "value": "126.57",
-              "rph": "025",
-              "Id": "40",
-              "Type": "Historical"
-            }
-          },
-          {
-            "IBEPAYMENTFEE": {
-              "value": "0.00",
-              "rph": "026",
-              "Id": "42",
-              "Type": "Historical"
-            }
-          }
-        ]
+  "pnrHeader": {
+    "reservation_info": {
+      "company_id": "1A",
+      "control_number": "R864UO",
+      "date": "290518",
+      "time": "2327"
+    }
+  },
+  "securityInformation": {
+    "responsibilityInformation": {
+      "typeOfPnrElement": "RP",
+      "agentId": "WSSU",
+      "officeId": "BERAE22P9"
+    },
+    "queueingInformation": {
+      "queueingOfficeId": "BERAE22P9"
+    },
+    "secondRpInformation": {
+      "creationOfficeId": "BERAE22FX",
+      "agentSignature": "9996WS",
+      "creationDate": "290518",
+      "creatorIataCode": "23273401",
+      "creationTime": "2256"
+    },
+    "cityCode": "BER"
+  },
+  "freetextData": {
+    "freetextDetail": {
+      "subject_qualifier": "3",
+      "type": "P12"
+    },
+    "longFreetext": "--- TST RLR MSC ---"
+  },
+  "sbrPOSDetails": {
+    "sbrUserIdentificationOwn": {
+      "originIdentification": {
+        "inHouseIdentification1": "BERAE22P9",
+        "originatorId": "23273401"
+      },
+      "originatorTypeCode": "N"
+    }
+  },
+  "sbrCreationPosDetails": {
+    "sbrSystemDetails": {
+      "deliveringSystem": {
+        "companyId": "zew1",
+        "locationId": "123"
+      },
+      "sbrUserIdentificationOwn": {
+        "originIdentification": {
+          "inHouseIdentification1": "BERAE22FX",
+          "originatorId": "23273401"
+        }
+      },
+      "sbrPreferences": {
+        "user_preferences": {
+          "codedCountry": "DE"
+        }
+      }
+    },
+    "sbrUserIdentificationOwn": {
+      "originIdentification": {
+        "inHouseIdentification1": "BERAE22FX",
+        "originatorId": "23273401"
+      },
+      "originatorTypeCode": "N"
+    },
+    "sbrPreferences": {
+      "user_preferences": {
+        "coded_country": "DE"
       }
     }
-  ]
+  },
+  "sbrUpdatorPosDetails": {
+    "sbrUserIdentificationOwn": {
+      "originIdentification": {
+        "inHouseIdentification1": "BERAE2234",
+        "originatorId": "23273401"
+      },
+      "originatorTypeCode": "T"
+    },
+    "sbrSystemDetails": {
+      "deliveringSystem": {
+        "companyId": "zew1",
+        "locationId": "123"
+      },
+      "sbrUserIdentificationOwn": {
+        "originIdentification": {
+          "inHouseIdentification1": "BERAE22P9",
+          "originatorId": "23273401"
+        }
+      },
+      "sbrPreferences": {
+        "user_preferences": {
+          "coded_country": "DE"
+        }
+      }
+    },
+    "sbrPreferences": {
+      "user_preferences": {
+        "coded_country": "DE"
+      }
+    }
+  },
+  "technicalData": {
+    "enveloppeNumberData": {
+      "sequenceDetails": {
+        "number": "12"
+      }
+    },
+    "lastTransmittedEnvelopeNumber": {
+      "currentRecord": "11"
+    },
+    "purgeDateData": "28.04.2019 04:22:49"
+  },
+  "travellerInfo": [
+    {
+      "elementManagementPassenger": {
+        "reference": {
+          "qualifier": "PT",
+          "number": "2"
+        },
+        "segmentName": "NM",
+        "lineNumber": "1"
+      },
+      "passengerData": {
+        "travellerInformation": {
+          "traveller": {
+            "surname": "AMERING",
+            "quantity": "1"
+          },
+          "passenger": {
+            "firstName": "GEORG MR",
+            "type": "ADT"
+          }
+        },
+        "dateOfBirth": {
+          "qualifier": "1",
+          "date": "07081987"
+        }
+      }
+    }
+  ],
+  "dataElementsMaster": [
+    {
+      "elementManagementData": [
+        {
+          "reference": {
+            "qualifier": "OT",
+            "number": "13"
+          },
+          "segmentName": "SSR",
+          "lineNumber": "9"
+        },
+        {
+          "reference": {
+            "qualifier": "OT",
+            "number": "14"
+          },
+          "segmentName": "SSR",
+          "lineNumber": "10"
+        },
+        {
+          "reference": {
+            "qualifier": "OT",
+            "number": "15"
+          },
+          "segmentName": "SSR",
+          "lineNumber": "11"
+        },
+        {
+          "reference": {
+            "qualifier": "OT",
+            "number": "48"
+          },
+          "segmentName": "SSR",
+          "lineNumber": "12"
+        },
+        {
+          "reference": {
+            "qualifier": "OT",
+            "number": "49"
+          },
+          "segmentName": "SSR",
+          "lineNumber": "13"
+        }
+      ],
+      "otherDataFreetext": {
+        "long_freetext": "PAX LH"
+      },
+      "ticketElement": {
+        "indicator": "OK",
+        "date": "300518",
+        "officeId": "BERAE2234"
+      },
+      "serviceRequest": [
+        {
+          "type": "DOCS",
+          "status": "HK",
+          "companyId": "LH",
+          "quantity": "1",
+          "freeText": [
+            "////04MAR78/M//AMERING/GEORG"
+          ]
+        },
+        {
+          "type": "CTCM",
+          "status": "HK",
+          "companyId": "LH",
+          "quantity": "1",
+          "freeText": [
+            "6801112226/AT"
+          ]
+        },
+        {
+          "type": "CTCE",
+          "status": "HK",
+          "companyId": "LH",
+          "quantity": "1",
+          "freeText": [
+            "GEORG..AMERING//HOTMAIL.COM"
+          ]
+        },
+        {
+          "type": "OTHS",
+          "companyId": "1A",
+          "freeText": [
+            "PLS ADV TKT NBR BY 30MAY18/2256Z OR LH OPTG/MKTG FLTS WILL BE CANX / A",
+            "PPLIC FARE RULE APPLIES IF IT DEMANDS"
+          ]
+        },
+        {
+          "type": "OTHS",
+          "companyId": "1A",
+          "freeText": [
+            "/// EARLIER TKTG"
+          ]
+        }
+      ]
+    }
+  ],
+  "originDestinationDetails": {
+    "itineraryInfo": [
+      {
+        "elementManagementItinerary": {
+          "lineNumber": "2",
+          "segmentName": "AIR",
+          "reference": {
+            "qualifier": "ST",
+            "number": "1"
+          }
+        },
+        "travelProduct": {
+          "product": {
+            "arrDate": "171018",
+            "arrTime": "1155",
+            "depDate": "171018",
+            "depTime": "1045"
+          },
+          "boardpointDetail": {
+            "cityCode": "SZG"
+          },
+          "offpointDetail": {
+            "cityCode": "FRA"
+          },
+          "companyDetail": {
+            "identification": "LH"
+          },
+          "productDetails": {
+            "equipment": "E95",
+            "numOfStops": "0",
+            "weekDay": "3",
+            "identification": "1593",
+            "classOfService": "K"
+          },
+          "typeDetail": {
+            "detail": "ET",
+            "processingIndicator": "qwer"
+          }
+        },
+        "itineraryMessageAction": {
+          "business": "1"
+        },
+        "itineraryReservationInfo": {
+          "reservation": {
+            "company_id": "1A",
+            "control_number": "R864UO",
+            "date": "290518",
+            "time": "2327"
+          }
+        },
+        "relatedProduct": {
+          "quantity": "1",
+          "status": "HK"
+        },
+        "flightDetail": {
+          "productDetails": {
+            "equipment": "E95",
+            "numOfStops": "0",
+            "weekDay": "3",
+            "identification": "1593",
+            "classOfService": "K"
+          },
+          "arrivalStationInfo": {
+            "terminal": "1"
+          },
+          "facilities": {
+            "entertainement": "M",
+            "entertainementDescription": "R"
+          }
+        },
+        "selectionDetails": {
+          "selection": "P2"
+        }
+      },
+      {
+        "elementManagementItinerary": {
+          "lineNumber": "3",
+          "segmentName": "AIR",
+          "reference": {
+            "qualifier": "ST",
+            "number": "2"
+          }
+        },
+        "travelProduct": {
+          "product": {
+            "arrDate": "171018",
+            "arrTime": "1825",
+            "depDate": "171018",
+            "depTime": "1620"
+          },
+          "boardpointDetail": {
+            "cityCode": "FRA"
+          },
+          "offpointDetail": {
+            "cityCode": "BIO"
+          },
+          "companyDetail": {
+            "identification": "LH"
+          },
+          "productDetails": {
+            "equipment": "E95",
+            "numOfStops": "0",
+            "weekDay": "3",
+            "identification": "1593",
+            "classOfService": "K"
+          },
+          "typeDetail": {
+            "detail": "ET",
+            "processingIndicator": "qwer"
+          }
+        },
+        "itineraryMessageAction": {
+          "business": "1"
+        },
+        "itineraryReservationInfo": {
+          "reservation": {
+            "company_id": "1A",
+            "control_number": "R864UO",
+            "date": "290518",
+            "time": "2327"
+          }
+        },
+        "relatedProduct": {
+          "quantity": "1",
+          "status": "HK"
+        },
+        "flightDetail": {
+          "productDetails": {
+            "equipment": "E95",
+            "numOfStops": "0",
+            "weekDay": "3",
+            "identification": "1593",
+            "classOfService": "K"
+          },
+          "arrivalStationInfo": {
+            "terminal": "1"
+          },
+          "facilities": {
+            "entertainement": "M",
+            "entertainementDescription": "S"
+          }
+        },
+        "selectionDetails": {
+          "selection": "P2"
+        }
+      },
+      {
+        "elementManagementItinerary": {
+          "lineNumber": "4",
+          "segmentName": "AIR",
+          "reference": {
+            "qualifier": "ST",
+            "number": "3"
+          }
+        },
+        "travelProduct": {
+          "product": {
+            "arrDate": "211018",
+            "arrTime": "1630",
+            "depDate": "211018",
+            "depTime": "1425"
+          },
+          "boardpointDetail": {
+            "cityCode": "BIO"
+          },
+          "offpointDetail": {
+            "cityCode": "FRA"
+          },
+          "companyDetail": {
+            "identification": "LH"
+          },
+          "productDetails": {
+            "equipment": "E95",
+            "numOfStops": "0",
+            "weekDay": "3",
+            "identification": "1593",
+            "classOfService": "K"
+          },
+          "typeDetail": {
+            "detail": "ET",
+            "processingIndicator": "qwer"
+          }
+        },
+        "itineraryMessageAction": {
+          "business": "1"
+        },
+        "itineraryReservationInfo": {
+          "reservation": {
+            "company_id": "1A",
+            "control_number": "R864UO",
+            "date": "290518",
+            "time": "2327"
+          }
+        },
+        "relatedProduct": {
+          "quantity": "1",
+          "status": "HK"
+        },
+        "flightDetail": {
+          "productDetails": {
+            "equipment": "E95",
+            "numOfStops": "0",
+            "weekDay": "3",
+            "identification": "1593",
+            "classOfService": "K"
+          },
+          "arrivalStationInfo": {
+            "terminal": "1"
+          },
+          "facilities": {
+            "entertainement": "M",
+            "entertainementDescription": "S"
+          }
+        },
+        "selectionDetails": {
+          "selection": "P2"
+        }
+      },
+      {
+        "elementManagementItinerary": {
+          "lineNumber": "5",
+          "segmentName": "AIR",
+          "reference": {
+            "qualifier": "ST",
+            "number": "4"
+          }
+        },
+        "travelProduct": {
+          "product": {
+            "arrDate": "211018",
+            "arrTime": "2155",
+            "depDate": "211018",
+            "depTime": "2100"
+          },
+          "boardpointDetail": {
+            "cityCode": "FRA"
+          },
+          "offpointDetail": {
+            "cityCode": "SZG"
+          },
+          "companyDetail": {
+            "identification": "LH"
+          },
+          "productDetails": {
+            "equipment": "E95",
+            "numOfStops": "0",
+            "weekDay": "3",
+            "identification": "1593",
+            "classOfService": "K"
+          },
+          "typeDetail": {
+            "detail": "ET",
+            "processingIndicator": "qwer"
+          }
+        },
+        "itineraryMessageAction": {
+          "business": "1"
+        },
+        "itineraryReservationInfo": {
+          "reservation": {
+            "company_id": "1A",
+            "control_number": "R864UO",
+            "date": "290518",
+            "time": "2327"
+          }
+        },
+        "relatedProduct": {
+          "quantity": "1",
+          "status": "HK"
+        },
+        "flightDetail": {
+          "productDetails": {
+            "equipment": "E95",
+            "numOfStops": "0",
+            "weekDay": "3",
+            "identification": "1593",
+            "classOfService": "K"
+          },
+          "arrivalStationInfo": {
+            "terminal": "1"
+          },
+          "facilities": {
+            "entertainement": "M",
+            "entertainementDescription": "R"
+          }
+        },
+        "selectionDetails": {
+          "selection": "P2"
+        }
+      },
+      {
+        "elementManagementItinerary": {
+          "lineNumber": "6",
+          "segmentName": "RU",
+          "reference": {
+            "qualifier": "ST",
+            "number": "5"
+          }
+        },
+        "travelProduct": {
+          "product": {
+            "depDate": "240419"
+          },
+          "boardpointDetail": {
+            "cityCode": "BER"
+          },
+          "offpointDetail": {
+            "cityCode": "FRA"
+          },
+          "companyDetail": {
+            "identification": "1A"
+          },
+          "productDetails": {
+            "equipment": "E95",
+            "numOfStops": "0",
+            "weekDay": "3",
+            "identification": "1593",
+            "classOfService": "K"
+          },
+          "typeDetail": {
+            "detail": "ET",
+            "processingIndicator": "qwer"
+          }
+        },
+        "itineraryMessageAction": {
+          "business": "1"
+        },
+        "itineraryReservationInfo": {
+          "reservation": {
+            "company_id": "1A",
+            "control_number": "R864UO",
+            "date": "290518",
+            "time": "2327"
+          }
+        },
+        "relatedProduct": {
+          "quantity": "1",
+          "status": "HK"
+        },
+        "flightDetail": {
+          "productDetails": {
+            "equipment": "E95",
+            "numOfStops": "0",
+            "weekDay": "3",
+            "identification": "1593",
+            "classOfService": "K"
+          },
+          "arrivalStationInfo": {
+            "terminal": "1"
+          },
+          "facilities": {
+            "entertainement": "M",
+            "entertainementDescription": "R"
+          }
+        },
+        "selectionDetails": {
+          "selection": "P2"
+        }
+      }
+    ]
+  },
+  "segmentGroupingInfo": [
+    {
+      "groupingCode": "CNX",
+      "marriageDetail": [
+        {
+          "tatooNum": "1"
+        },
+        {
+          "tatooNum": "2"
+        }
+      ]
+    },
+    {
+      "groupingCode": "CNX",
+      "marriageDetail": [
+        {
+          "tatooNum": "3"
+        },
+        {
+          "tatooNum": "4"
+        }
+      ]
+    },
+    {
+      "groupingCode": "MIN",
+      "marriageDetail": [
+        {
+          "tatooNum": "1",
+          "marriageQualifier": "D"
+        },
+        {
+          "tatooNum": "2",
+          "marriageQualifier": "D"
+        }
+      ]
+    },
+    {
+      "groupingCode": "MIN",
+      "marriageDetail": [
+        {
+          "tatooNum": "3",
+          "marriageQualifier": "D"
+        },
+        {
+          "tatooNum": "4",
+          "marriageQualifier": "D"
+        }
+      ]
+    }
+  ],
+  "_links": {
+    "self": {
+      "href": "/itinerary"
+    }
+  }
 }

@@ -11,7 +11,7 @@ use Flight\Service\Amadeus\Application\Exception\ServiceException;
  */
 class InvalidMethodException extends ServiceException
 {
-    const INTERNAL_ERROR_CODE = 'ARS0005';
+    const INTERNAL_ERROR_CODE = 'ARS0006';
 
     /**
      * @inheritdoc
