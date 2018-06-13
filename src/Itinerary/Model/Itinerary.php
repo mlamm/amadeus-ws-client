@@ -6,7 +6,6 @@ namespace Flight\Service\Amadeus\Itinerary\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Service\Amadeus\Itinerary\Exception\InvalidMethodException;
 use Flight\Service\Amadeus\Itinerary\Model\Itinerary\AbstractModel;
-use Flight\Service\Amadeus\Itinerary\Model\Itinerary\DataElementsMaster;
 use Flight\Service\Amadeus\Itinerary\Model\Itinerary\FreetextData;
 use Flight\Service\Amadeus\Itinerary\Model\Itinerary\OriginDestinationDetails;
 use Flight\Service\Amadeus\Itinerary\Model\Itinerary\PnrHeader;
@@ -14,7 +13,6 @@ use Flight\Service\Amadeus\Itinerary\Model\Itinerary\SbrCreationPosDetails;
 use Flight\Service\Amadeus\Itinerary\Model\Itinerary\SbrPosDetails;
 use Flight\Service\Amadeus\Itinerary\Model\Itinerary\SbrUpdatorPosDetails;
 use Flight\Service\Amadeus\Itinerary\Model\Itinerary\SecurityInformation;
-use Flight\Service\Amadeus\Itinerary\Model\Itinerary\SegmentGroupingInfo;
 use Flight\Service\Amadeus\Itinerary\Model\Itinerary\TechnicalData;
 
 /**

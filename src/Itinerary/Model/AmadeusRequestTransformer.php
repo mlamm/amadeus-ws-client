@@ -4,9 +4,7 @@ declare(strict_types = 1);
 namespace Flight\Service\Amadeus\Itinerary\Model;
 
 use Amadeus\Client;
-use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Service\Amadeus\Itinerary\Request\Entity\Authenticate;
-use Flight\Service\Amadeus\Itinerary\Request\Entity\Session;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -25,6 +23,9 @@ class AmadeusRequestTransformer
      */
     protected $config;
 
+    /**
+     * @var null|string
+     */
     protected $customSessionHandlerClass;
 
     /**

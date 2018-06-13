@@ -38,9 +38,7 @@ class ItineraryServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['service.itinerary'] = function () use ($app) {
-            $validator = new Itinerary\Request\Validator\Itinerary(
-                $app['config']->itinerary
-            );
+            $validator = new Itinerary\Request\Validator\Itinerary();
 
             \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
             $serializerBuilder = \JMS\Serializer\SerializerBuilder::create();
@@ -50,8 +48,7 @@ class ItineraryServiceProvider implements ServiceProviderInterface
             return new Itinerary\Service\ItineraryService(
                 $validator,
                 $serializerBuilder->build(),
-                $app['amadeus.client.itinerary'],
-                $app['config']->itinerary
+                $app['amadeus.client.itinerary']
             );
         };
         $app['monolog.logfile'] = '/../var/logs/app.log';

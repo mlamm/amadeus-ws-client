@@ -60,27 +60,8 @@ abstract class AbstractModel
                 $data[$key] = $this->$method();
             }
         }
-        $this->recursiveUnset($data, '__initializer__');
-        $this->recursiveUnset($data, '__cloner__');
-        $this->recursiveUnset($data, '__isInitialized__');
 
         return $data;
-    }
-
-    /**
-     * removes the given key from given (multi-dimension) array.
-     *
-     * @param array  $array       array to remove key from
-     * @param string $unwantedKey key to remove
-     */
-    public function recursiveUnset(&$array, $unwantedKey)
-    {
-        unset($array[$unwantedKey]);
-        foreach ($array as &$value) {
-            if (is_array($value)) {
-                $this->recursiveUnset($value, $unwantedKey);
-            }
-        }
     }
 
     /**

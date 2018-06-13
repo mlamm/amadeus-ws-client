@@ -17,12 +17,12 @@ use Symfony\Component\HttpFoundation\Response;
 class Error
 {
     /**
-     *
+     * 404 Error
      */
     const RESOURCE_NOT_FOUND = 'ARS0404';
 
     /**
-     *
+     * Server_Error
      */
     const SERVER_ERROR = 'ARS0500';
 

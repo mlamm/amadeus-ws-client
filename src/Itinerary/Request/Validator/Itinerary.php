@@ -14,21 +14,6 @@ use Particle\Validator\Validator;
 class Itinerary
 {
     /**
-     * @var \stdClass
-     */
-    protected $config;
-
-    /**
-     * Itinerary constructor.
-     *
-     * @param \stdClass $config
-     */
-    public function __construct(\stdClass $config)
-    {
-        $this->config = $config;
-    }
-
-    /**
      * validate session
      *
      * @param $session

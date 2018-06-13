@@ -30,11 +30,6 @@ class ItineraryService
     private $amadeusClient;
 
     /**
-     * @var \stdClass
-     */
-    private $config;
-
-    /**
      * ItineraryService constructor.
      *
      * @param Request\Validator\Itinerary $requestValidator
@@ -45,13 +40,11 @@ class ItineraryService
     public function __construct(
         Request\Validator\Itinerary $requestValidator,
         Serializer $serializer,
-        ItineraryAmadeusClient $amadeusClient,
-        \stdClass $config
+        ItineraryAmadeusClient $amadeusClient
     ) {
         $this->requestValidator = $requestValidator;
         $this->serializer       = $serializer;
         $this->amadeusClient    = $amadeusClient;
-        $this->config           = $config;
     }
 
     /**
@@ -64,7 +57,7 @@ class ItineraryService
      * @throws \Flight\Service\Amadeus\Itinerary\Exception\AmadeusRequestException
      * @throws \Flight\Service\Amadeus\Itinerary\Exception\InvalidRequestParameterException
      */
-    public function read($authHeader, $session, $recordLocator)
+    public function read($authHeader, $session, $recordLocator) : string
     {
         $session    = \GuzzleHttp\json_decode($session);
         $authHeader = \GuzzleHttp\json_decode($authHeader);

@@ -138,29 +138,4 @@ class AmadeusResponseTransformer
         }
         return $collection;
     }
-
-    /**
-     * @see $this->mapResultRemarksRead
-     *
-     * @param Result $result
-     *
-     * @return ResultResponse
-     */
-    public function mapResultRemarksAdd(Result $result)
-    {
-        return $this->mapResultRemarksRead($result);
-    }
-
-    /**
-     * @see $this->mapResultRemarksRead
-     *
-     * @param Result $result
-     *
-     * @return ResultResponse
-     */
-    public function mapResultRemarksDelete(Result $result)
-    {
-        return $this->mapResultRemarksRead($result);
-    }
-
 }
