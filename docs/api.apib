@@ -220,6 +220,42 @@ This endpoint will report main state of the service
 
             I am alive.
 
+## Session [/session]
+
+### CreateSession [POST /session/create]
+This request will return session data
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+
+
++ Response 200 (application/hal+json)
+
+    + Body
+
+            <!-- include(session/create_response.json) -->
+
+    + Schema
+
+            <!-- include(session/create_response_schema.json) -->
+
++ Response 500 (application/hal+json)
+
+    |Code | Message |
+    |---|---|
+    | SRS000X | *Message of an unspecific error.* |
+
+    + Body
+
+            <!-- include(session/error-response.json) -->
+
+    + Schema
+
+            <!-- include(session/error-response_schema.json) -->
+
 ## Remarks [/remarks]
 
 ### Remarks [GET /remarks/{recordlocator}]

@@ -1,0 +1,10 @@
+{
+  "session_id": "00BVIMXVUW",
+  "sequence_number": "1",
+  "security_token": "CLCHT6NMFY2MNJXGA8QJXCZ0",
+  "_links": {
+    "self": {
+      "href": "/session"
+    }
+  }
+}

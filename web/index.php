@@ -7,6 +7,7 @@ use Flight\Service\Amadeus\Search\Cache\CacheProvider;
 use Flight\Service\Amadeus\Search\Provider\SearchServiceProvider;
 use Flight\Service\Amadeus\Remarks;
 use Flight\Service\Amadeus\Itinerary;
+use Flight\Service\Amadeus\Session;
 use Flight\TracingHeaderSilex\TracingHeaderProvider;
 use Silex\Application;
 use Symfony\Component\Yaml\Yaml;
@@ -24,7 +25,6 @@ ini_set('error_log', 'php://stdout');
 chdir(__DIR__ . '/..');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-define('ROOT_PATH', dirname(__DIR__));
 $app = new Application();
 
 // switch to mock service responses for api tests
@@ -38,6 +38,7 @@ $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->register(new CacheProvider());
 $app->register(new SearchServiceProvider($useMockAmaResponses));
 $app->register(new Remarks\Provider\RemarksServiceProvider($useMockAmaResponses));
+$app->register(new Session\Provider\SessionServiceProvider($useMockAmaResponses));
 $app->register(new Itinerary\Provider\ItineraryServiceProvider($useMockAmaResponses));
 
 // register config
@@ -93,6 +94,12 @@ $app['businesscase.remarks-modify'] = function () use ($app) {
         $app['monolog']
     );
 };
+$app['businesscase.session-create'] = function () use ($app) {
+    return new Session\BusinessCase\CreateSession(
+        $app['service.session'],
+        $app['monolog']
+    );
+};
 
 $app['businesscase.itinerary-read'] = function() use ($app) {
     return new \Flight\Service\Amadeus\Itinerary\BusinessCase\ItineraryRead(
@@ -107,6 +114,7 @@ $app->register(new \Flight\Service\Amadeus\Search\Cache\CacheProvider());
 $app->mount('/', new \Flight\Service\Amadeus\Index\IndexProvider());
 $app->mount('/flight-search', new Flight\Service\Amadeus\Search\SearchProvider());
 $app->mount('/remarks', new Remarks\RemarksProvider());
+$app->mount('/session', new Session\SessionProvider());
 $app->mount('/itinerary', new Itinerary\ItineraryProvider());
 
 if ($app['config']->debug->pimpledump->enabled) {

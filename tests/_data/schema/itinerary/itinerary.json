@@ -1,0 +1,2216 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "pnrHeader": {
+      "type": "object",
+      "properties": {
+        "reservation_info": {
+          "type": "object",
+          "properties": {
+            "company_id": {
+              "type": "string"
+            },
+            "control_number": {
+              "type": "string"
+            },
+            "date": {
+              "type": "string"
+            },
+            "time": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "company_id",
+            "control_number",
+            "date",
+            "time"
+          ]
+        }
+      },
+      "required": [
+        "reservation_info"
+      ]
+    },
+    "securityInformation": {
+      "type": "object",
+      "properties": {
+        "responsibilityInformation": {
+          "type": "object",
+          "properties": {
+            "typeOfPnrElement": {
+              "type": "string"
+            },
+            "agentId": {
+              "type": "string"
+            },
+            "officeId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "typeOfPnrElement",
+            "agentId",
+            "officeId"
+          ]
+        },
+        "queueingInformation": {
+          "type": "object",
+          "properties": {
+            "queueingOfficeId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "queueingOfficeId"
+          ]
+        },
+        "secondRpInformation": {
+          "type": "object",
+          "properties": {
+            "creationOfficeId": {
+              "type": "string"
+            },
+            "agentSignature": {
+              "type": "string"
+            },
+            "creationDate": {
+              "type": "string"
+            },
+            "creatorIataCode": {
+              "type": "string"
+            },
+            "creationTime": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "creationOfficeId",
+            "agentSignature",
+            "creationDate",
+            "creatorIataCode",
+            "creationTime"
+          ]
+        },
+        "cityCode": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "responsibilityInformation",
+        "queueingInformation",
+        "secondRpInformation",
+        "cityCode"
+      ]
+    },
+    "freetextData": {
+      "type": "object",
+      "properties": {
+        "freetextDetail": {
+          "type": "object",
+          "properties": {
+            "subject_qualifier": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject_qualifier",
+            "type"
+          ]
+        },
+        "longFreetext": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "freetextDetail",
+        "longFreetext"
+      ]
+    },
+    "sbrPOSDetails": {
+      "type": "object",
+      "properties": {
+        "sbrUserIdentificationOwn": {
+          "type": "object",
+          "properties": {
+            "originIdentification": {
+              "type": "object",
+              "properties": {
+                "inHouseIdentification1": {
+                  "type": "string"
+                },
+                "originatorId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "inHouseIdentification1",
+                "originatorId"
+              ]
+            },
+            "originatorTypeCode": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "originIdentification",
+            "originatorTypeCode"
+          ]
+        }
+      },
+      "required": [
+        "sbrUserIdentificationOwn"
+      ]
+    },
+    "sbrCreationPosDetails": {
+      "type": "object",
+      "properties": {
+        "sbrSystemDetails": {
+          "type": "object",
+          "properties": {
+            "deliveringSystem": {
+              "type": "array",
+              "items": {}
+            },
+            "sbrUserIdentificationOwn": {
+              "type": "object",
+              "properties": {
+                "originIdentification": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "originIdentification"
+              ]
+            },
+            "sbrPreferences": {
+              "type": "object",
+              "properties": {
+                "user_preferences": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "user_preferences"
+              ]
+            }
+          },
+          "required": [
+            "deliveringSystem",
+            "sbrUserIdentificationOwn",
+            "sbrPreferences"
+          ]
+        },
+        "sbrUserIdentificationOwn": {
+          "type": "object",
+          "properties": {
+            "originIdentification": {
+              "type": "object",
+              "properties": {
+                "inHouseIdentification1": {
+                  "type": "string"
+                },
+                "originatorId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "inHouseIdentification1",
+                "originatorId"
+              ]
+            },
+            "originatorTypeCode": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "originIdentification",
+            "originatorTypeCode"
+          ]
+        },
+        "sbrPreferences": {
+          "type": "object",
+          "properties": {
+            "user_preferences": {
+              "type": "object",
+              "properties": {
+                "coded_country": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "coded_country"
+              ]
+            }
+          },
+          "required": [
+            "user_preferences"
+          ]
+        }
+      },
+      "required": [
+        "sbrSystemDetails",
+        "sbrUserIdentificationOwn",
+        "sbrPreferences"
+      ]
+    },
+    "sbrUpdatorPosDetails": {
+      "type": "object",
+      "properties": {
+        "sbrUserIdentificationOwn": {
+          "type": "object",
+          "properties": {
+            "originIdentification": {
+              "type": "object",
+              "properties": {
+                "inHouseIdentification1": {
+                  "type": "string"
+                },
+                "originatorId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "inHouseIdentification1",
+                "originatorId"
+              ]
+            },
+            "originatorTypeCode": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "originIdentification",
+            "originatorTypeCode"
+          ]
+        },
+        "sbrSystemDetails": {
+          "type": "object",
+          "properties": {
+            "deliveringSystem": {
+              "type": "array",
+              "items": {}
+            },
+            "sbrUserIdentificationOwn": {
+              "type": "object",
+              "properties": {
+                "originIdentification": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "originIdentification"
+              ]
+            },
+            "sbrPreferences": {
+              "type": "object",
+              "properties": {
+                "user_preferences": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "user_preferences"
+              ]
+            }
+          },
+          "required": [
+            "deliveringSystem",
+            "sbrUserIdentificationOwn",
+            "sbrPreferences"
+          ]
+        },
+        "sbrPreferences": {
+          "type": "object",
+          "properties": {
+            "user_preferences": {
+              "type": "object",
+              "properties": {
+                "coded_country": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "coded_country"
+              ]
+            }
+          },
+          "required": [
+            "user_preferences"
+          ]
+        }
+      },
+      "required": [
+        "sbrUserIdentificationOwn",
+        "sbrSystemDetails",
+        "sbrPreferences"
+      ]
+    },
+    "technicalData": {
+      "type": "object",
+      "properties": {
+        "enveloppeNumberData": {
+          "type": "object",
+          "properties": {
+            "sequenceDetails": {
+              "type": "object",
+              "properties": {
+                "number": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "number"
+              ]
+            }
+          },
+          "required": [
+            "sequenceDetails"
+          ]
+        },
+        "lastTransmittedEnvelopeNumber": {
+          "type": "object",
+          "properties": {
+            "currentRecord": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "currentRecord"
+          ]
+        },
+        "purgeDateData": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "enveloppeNumberData",
+        "lastTransmittedEnvelopeNumber",
+        "purgeDateData"
+      ]
+    },
+    "travellerInfo": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "elementManagementPassenger": {
+              "type": "object",
+              "properties": {
+                "reference": {
+                  "type": "object",
+                  "properties": {
+                    "qualifier": {
+                      "type": "string"
+                    },
+                    "number": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "qualifier",
+                    "number"
+                  ]
+                },
+                "segmentName": {
+                  "type": "string"
+                },
+                "lineNumber": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "reference",
+                "segmentName",
+                "lineNumber"
+              ]
+            },
+            "passengerData": {
+              "type": "object",
+              "properties": {
+                "travellerInformation": {
+                  "type": "object",
+                  "properties": {
+                    "traveller": {
+                      "type": "object",
+                      "properties": {
+                        "surname": {
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "surname",
+                        "quantity"
+                      ]
+                    },
+                    "passenger": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "firstName",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "traveller",
+                    "passenger"
+                  ]
+                },
+                "dateOfBirth": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "travellerInformation",
+                "dateOfBirth"
+              ]
+            }
+          },
+          "required": [
+            "elementManagementPassenger",
+            "passengerData"
+          ]
+        }
+      ]
+    },
+    "dataElementsMaster": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "elementManagementData": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "qualifier": {
+                          "type": "string"
+                        },
+                        "number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "qualifier",
+                        "number"
+                      ]
+                    },
+                    "segmentName": {
+                      "type": "string"
+                    },
+                    "lineNumber": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "reference",
+                    "segmentName",
+                    "lineNumber"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "qualifier": {
+                          "type": "string"
+                        },
+                        "number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "qualifier",
+                        "number"
+                      ]
+                    },
+                    "segmentName": {
+                      "type": "string"
+                    },
+                    "lineNumber": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "reference",
+                    "segmentName",
+                    "lineNumber"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "qualifier": {
+                          "type": "string"
+                        },
+                        "number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "qualifier",
+                        "number"
+                      ]
+                    },
+                    "segmentName": {
+                      "type": "string"
+                    },
+                    "lineNumber": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "reference",
+                    "segmentName",
+                    "lineNumber"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "qualifier": {
+                          "type": "string"
+                        },
+                        "number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "qualifier",
+                        "number"
+                      ]
+                    },
+                    "segmentName": {
+                      "type": "string"
+                    },
+                    "lineNumber": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "reference",
+                    "segmentName",
+                    "lineNumber"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "qualifier": {
+                          "type": "string"
+                        },
+                        "number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "qualifier",
+                        "number"
+                      ]
+                    },
+                    "segmentName": {
+                      "type": "string"
+                    },
+                    "lineNumber": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "reference",
+                    "segmentName",
+                    "lineNumber"
+                  ]
+                }
+              ]
+            },
+            "otherDataFreetext": {
+              "type": "object",
+              "properties": {
+                "long_freetext": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "long_freetext"
+              ]
+            },
+            "ticketElement": {
+              "type": "object",
+              "properties": {
+                "indicator": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                },
+                "officeId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "indicator",
+                "date",
+                "officeId"
+              ]
+            },
+            "serviceRequest": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "companyId": {
+                      "type": "string"
+                    },
+                    "quantity": {
+                      "type": "string"
+                    },
+                    "freeText": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "status",
+                    "companyId",
+                    "quantity",
+                    "freeText"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "companyId": {
+                      "type": "string"
+                    },
+                    "quantity": {
+                      "type": "string"
+                    },
+                    "freeText": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "status",
+                    "companyId",
+                    "quantity",
+                    "freeText"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "companyId": {
+                      "type": "string"
+                    },
+                    "quantity": {
+                      "type": "string"
+                    },
+                    "freeText": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "status",
+                    "companyId",
+                    "quantity",
+                    "freeText"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "companyId": {
+                      "type": "string"
+                    },
+                    "freeText": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "companyId",
+                    "freeText"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "companyId": {
+                      "type": "string"
+                    },
+                    "freeText": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "companyId",
+                    "freeText"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "elementManagementData",
+            "otherDataFreetext",
+            "ticketElement",
+            "serviceRequest"
+          ]
+        }
+      ]
+    },
+    "originDestinationDetails": {
+      "type": "object",
+      "properties": {
+        "itineraryInfo": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "elementManagementItinerary": {
+                  "type": "object",
+                  "properties": {
+                    "lineNumber": {
+                      "type": "string"
+                    },
+                    "segmentName": {
+                      "type": "string"
+                    },
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "qualifier": {
+                          "type": "string"
+                        },
+                        "number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "qualifier",
+                        "number"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "lineNumber",
+                    "segmentName",
+                    "reference"
+                  ]
+                },
+                "travelProduct": {
+                  "type": "object",
+                  "properties": {
+                    "product": {
+                      "type": "object",
+                      "properties": {
+                        "arrDate": {
+                          "type": "string"
+                        },
+                        "arrTime": {
+                          "type": "string"
+                        },
+                        "depDate": {
+                          "type": "string"
+                        },
+                        "depTime": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "arrDate",
+                        "arrTime",
+                        "depDate",
+                        "depTime"
+                      ]
+                    },
+                    "boardpointDetail": {
+                      "type": "object",
+                      "properties": {
+                        "cityCode": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "cityCode"
+                      ]
+                    },
+                    "offpointDetail": {
+                      "type": "object",
+                      "properties": {
+                        "cityCode": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "cityCode"
+                      ]
+                    },
+                    "companyDetail": {
+                      "type": "object",
+                      "properties": {
+                        "identification": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "identification"
+                      ]
+                    },
+                    "productDetails": {
+                      "type": "object",
+                      "properties": {
+                        "identification": {
+                          "type": "string"
+                        },
+                        "classOfService": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "identification",
+                        "classOfService"
+                      ]
+                    },
+                    "typeDetail": {
+                      "type": "object",
+                      "properties": {
+                        "detail": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "detail"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "product",
+                    "boardpointDetail",
+                    "offpointDetail",
+                    "companyDetail",
+                    "productDetails",
+                    "typeDetail"
+                  ]
+                },
+                "itineraryMessageAction": {
+                  "type": "array",
+                  "items": {}
+                },
+                "itineraryReservationInfo": {
+                  "type": "object",
+                  "properties": {
+                    "reservation": {
+                      "type": "object",
+                      "properties": {
+                        "company_id": {
+                          "type": "string"
+                        },
+                        "control_number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "company_id",
+                        "control_number"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "reservation"
+                  ]
+                },
+                "relatedProduct": {
+                  "type": "object",
+                  "properties": {
+                    "quantity": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "quantity",
+                    "status"
+                  ]
+                },
+                "flightDetail": {
+                  "type": "object",
+                  "properties": {
+                    "productDetails": {
+                      "type": "object",
+                      "properties": {
+                        "equipment": {
+                          "type": "string"
+                        },
+                        "numOfStops": {
+                          "type": "string"
+                        },
+                        "weekDay": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "equipment",
+                        "numOfStops",
+                        "weekDay"
+                      ]
+                    },
+                    "arrivalStationInfo": {
+                      "type": "object",
+                      "properties": {
+                        "terminal": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "terminal"
+                      ]
+                    },
+                    "facilities": {
+                      "type": "object",
+                      "properties": {
+                        "entertainement": {
+                          "type": "string"
+                        },
+                        "entertainementDescription": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "entertainement",
+                        "entertainementDescription"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "productDetails",
+                    "arrivalStationInfo",
+                    "facilities"
+                  ]
+                },
+                "selectionDetails": {
+                  "type": "object",
+                  "properties": {
+                    "selection": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "selection"
+                  ]
+                }
+              },
+              "required": [
+                "elementManagementItinerary",
+                "travelProduct",
+                "itineraryMessageAction",
+                "itineraryReservationInfo",
+                "relatedProduct",
+                "flightDetail",
+                "selectionDetails"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "elementManagementItinerary": {
+                  "type": "object",
+                  "properties": {
+                    "lineNumber": {
+                      "type": "string"
+                    },
+                    "segmentName": {
+                      "type": "string"
+                    },
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "qualifier": {
+                          "type": "string"
+                        },
+                        "number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "qualifier",
+                        "number"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "lineNumber",
+                    "segmentName",
+                    "reference"
+                  ]
+                },
+                "travelProduct": {
+                  "type": "object",
+                  "properties": {
+                    "product": {
+                      "type": "object",
+                      "properties": {
+                        "arrDate": {
+                          "type": "string"
+                        },
+                        "arrTime": {
+                          "type": "string"
+                        },
+                        "depDate": {
+                          "type": "string"
+                        },
+                        "depTime": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "arrDate",
+                        "arrTime",
+                        "depDate",
+                        "depTime"
+                      ]
+                    },
+                    "boardpointDetail": {
+                      "type": "object",
+                      "properties": {
+                        "cityCode": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "cityCode"
+                      ]
+                    },
+                    "offpointDetail": {
+                      "type": "object",
+                      "properties": {
+                        "cityCode": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "cityCode"
+                      ]
+                    },
+                    "companyDetail": {
+                      "type": "object",
+                      "properties": {
+                        "identification": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "identification"
+                      ]
+                    },
+                    "productDetails": {
+                      "type": "object",
+                      "properties": {
+                        "identification": {
+                          "type": "string"
+                        },
+                        "classOfService": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "identification",
+                        "classOfService"
+                      ]
+                    },
+                    "typeDetail": {
+                      "type": "object",
+                      "properties": {
+                        "detail": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "detail"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "product",
+                    "boardpointDetail",
+                    "offpointDetail",
+                    "companyDetail",
+                    "productDetails",
+                    "typeDetail"
+                  ]
+                },
+                "itineraryMessageAction": {
+                  "type": "array",
+                  "items": {}
+                },
+                "itineraryReservationInfo": {
+                  "type": "object",
+                  "properties": {
+                    "reservation": {
+                      "type": "object",
+                      "properties": {
+                        "company_id": {
+                          "type": "string"
+                        },
+                        "control_number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "company_id",
+                        "control_number"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "reservation"
+                  ]
+                },
+                "relatedProduct": {
+                  "type": "object",
+                  "properties": {
+                    "quantity": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "quantity",
+                    "status"
+                  ]
+                },
+                "flightDetail": {
+                  "type": "object",
+                  "properties": {
+                    "productDetails": {
+                      "type": "object",
+                      "properties": {
+                        "equipment": {
+                          "type": "string"
+                        },
+                        "numOfStops": {
+                          "type": "string"
+                        },
+                        "weekDay": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "equipment",
+                        "numOfStops",
+                        "weekDay"
+                      ]
+                    },
+                    "arrivalStationInfo": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "facilities": {
+                      "type": "object",
+                      "properties": {
+                        "entertainement": {
+                          "type": "string"
+                        },
+                        "entertainementDescription": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "entertainement",
+                        "entertainementDescription"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "productDetails",
+                    "arrivalStationInfo",
+                    "facilities"
+                  ]
+                },
+                "selectionDetails": {
+                  "type": "object",
+                  "properties": {
+                    "selection": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "selection"
+                  ]
+                }
+              },
+              "required": [
+                "elementManagementItinerary",
+                "travelProduct",
+                "itineraryMessageAction",
+                "itineraryReservationInfo",
+                "relatedProduct",
+                "flightDetail",
+                "selectionDetails"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "elementManagementItinerary": {
+                  "type": "object",
+                  "properties": {
+                    "lineNumber": {
+                      "type": "string"
+                    },
+                    "segmentName": {
+                      "type": "string"
+                    },
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "qualifier": {
+                          "type": "string"
+                        },
+                        "number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "qualifier",
+                        "number"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "lineNumber",
+                    "segmentName",
+                    "reference"
+                  ]
+                },
+                "travelProduct": {
+                  "type": "object",
+                  "properties": {
+                    "product": {
+                      "type": "object",
+                      "properties": {
+                        "arrDate": {
+                          "type": "string"
+                        },
+                        "arrTime": {
+                          "type": "string"
+                        },
+                        "depDate": {
+                          "type": "string"
+                        },
+                        "depTime": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "arrDate",
+                        "arrTime",
+                        "depDate",
+                        "depTime"
+                      ]
+                    },
+                    "boardpointDetail": {
+                      "type": "object",
+                      "properties": {
+                        "cityCode": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "cityCode"
+                      ]
+                    },
+                    "offpointDetail": {
+                      "type": "object",
+                      "properties": {
+                        "cityCode": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "cityCode"
+                      ]
+                    },
+                    "companyDetail": {
+                      "type": "object",
+                      "properties": {
+                        "identification": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "identification"
+                      ]
+                    },
+                    "productDetails": {
+                      "type": "object",
+                      "properties": {
+                        "identification": {
+                          "type": "string"
+                        },
+                        "classOfService": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "identification",
+                        "classOfService"
+                      ]
+                    },
+                    "typeDetail": {
+                      "type": "object",
+                      "properties": {
+                        "detail": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "detail"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "product",
+                    "boardpointDetail",
+                    "offpointDetail",
+                    "companyDetail",
+                    "productDetails",
+                    "typeDetail"
+                  ]
+                },
+                "itineraryMessageAction": {
+                  "type": "array",
+                  "items": {}
+                },
+                "itineraryReservationInfo": {
+                  "type": "object",
+                  "properties": {
+                    "reservation": {
+                      "type": "object",
+                      "properties": {
+                        "company_id": {
+                          "type": "string"
+                        },
+                        "control_number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "company_id",
+                        "control_number"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "reservation"
+                  ]
+                },
+                "relatedProduct": {
+                  "type": "object",
+                  "properties": {
+                    "quantity": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "quantity",
+                    "status"
+                  ]
+                },
+                "flightDetail": {
+                  "type": "object",
+                  "properties": {
+                    "productDetails": {
+                      "type": "object",
+                      "properties": {
+                        "equipment": {
+                          "type": "string"
+                        },
+                        "numOfStops": {
+                          "type": "string"
+                        },
+                        "weekDay": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "equipment",
+                        "numOfStops",
+                        "weekDay"
+                      ]
+                    },
+                    "arrivalStationInfo": {
+                      "type": "object",
+                      "properties": {
+                        "terminal": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "terminal"
+                      ]
+                    },
+                    "facilities": {
+                      "type": "object",
+                      "properties": {
+                        "entertainement": {
+                          "type": "string"
+                        },
+                        "entertainementDescription": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "entertainement",
+                        "entertainementDescription"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "productDetails",
+                    "arrivalStationInfo",
+                    "facilities"
+                  ]
+                },
+                "selectionDetails": {
+                  "type": "object",
+                  "properties": {
+                    "selection": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "selection"
+                  ]
+                }
+              },
+              "required": [
+                "elementManagementItinerary",
+                "travelProduct",
+                "itineraryMessageAction",
+                "itineraryReservationInfo",
+                "relatedProduct",
+                "flightDetail",
+                "selectionDetails"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "elementManagementItinerary": {
+                  "type": "object",
+                  "properties": {
+                    "lineNumber": {
+                      "type": "string"
+                    },
+                    "segmentName": {
+                      "type": "string"
+                    },
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "qualifier": {
+                          "type": "string"
+                        },
+                        "number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "qualifier",
+                        "number"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "lineNumber",
+                    "segmentName",
+                    "reference"
+                  ]
+                },
+                "travelProduct": {
+                  "type": "object",
+                  "properties": {
+                    "product": {
+                      "type": "object",
+                      "properties": {
+                        "arrDate": {
+                          "type": "string"
+                        },
+                        "arrTime": {
+                          "type": "string"
+                        },
+                        "depDate": {
+                          "type": "string"
+                        },
+                        "depTime": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "arrDate",
+                        "arrTime",
+                        "depDate",
+                        "depTime"
+                      ]
+                    },
+                    "boardpointDetail": {
+                      "type": "object",
+                      "properties": {
+                        "cityCode": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "cityCode"
+                      ]
+                    },
+                    "offpointDetail": {
+                      "type": "object",
+                      "properties": {
+                        "cityCode": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "cityCode"
+                      ]
+                    },
+                    "companyDetail": {
+                      "type": "object",
+                      "properties": {
+                        "identification": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "identification"
+                      ]
+                    },
+                    "productDetails": {
+                      "type": "object",
+                      "properties": {
+                        "identification": {
+                          "type": "string"
+                        },
+                        "classOfService": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "identification",
+                        "classOfService"
+                      ]
+                    },
+                    "typeDetail": {
+                      "type": "object",
+                      "properties": {
+                        "detail": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "detail"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "product",
+                    "boardpointDetail",
+                    "offpointDetail",
+                    "companyDetail",
+                    "productDetails",
+                    "typeDetail"
+                  ]
+                },
+                "itineraryMessageAction": {
+                  "type": "array",
+                  "items": {}
+                },
+                "itineraryReservationInfo": {
+                  "type": "object",
+                  "properties": {
+                    "reservation": {
+                      "type": "object",
+                      "properties": {
+                        "company_id": {
+                          "type": "string"
+                        },
+                        "control_number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "company_id",
+                        "control_number"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "reservation"
+                  ]
+                },
+                "relatedProduct": {
+                  "type": "object",
+                  "properties": {
+                    "quantity": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "quantity",
+                    "status"
+                  ]
+                },
+                "flightDetail": {
+                  "type": "object",
+                  "properties": {
+                    "productDetails": {
+                      "type": "object",
+                      "properties": {
+                        "equipment": {
+                          "type": "string"
+                        },
+                        "numOfStops": {
+                          "type": "string"
+                        },
+                        "weekDay": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "equipment",
+                        "numOfStops",
+                        "weekDay"
+                      ]
+                    },
+                    "arrivalStationInfo": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "facilities": {
+                      "type": "object",
+                      "properties": {
+                        "entertainement": {
+                          "type": "string"
+                        },
+                        "entertainementDescription": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "entertainement",
+                        "entertainementDescription"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "productDetails",
+                    "arrivalStationInfo",
+                    "facilities"
+                  ]
+                },
+                "selectionDetails": {
+                  "type": "object",
+                  "properties": {
+                    "selection": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "selection"
+                  ]
+                }
+              },
+              "required": [
+                "elementManagementItinerary",
+                "travelProduct",
+                "itineraryMessageAction",
+                "itineraryReservationInfo",
+                "relatedProduct",
+                "flightDetail",
+                "selectionDetails"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "elementManagementItinerary": {
+                  "type": "object",
+                  "properties": {
+                    "lineNumber": {
+                      "type": "string"
+                    },
+                    "segmentName": {
+                      "type": "string"
+                    },
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "qualifier": {
+                          "type": "string"
+                        },
+                        "number": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "qualifier",
+                        "number"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "lineNumber",
+                    "segmentName",
+                    "reference"
+                  ]
+                },
+                "travelProduct": {
+                  "type": "object",
+                  "properties": {
+                    "product": {
+                      "type": "object",
+                      "properties": {
+                        "depDate": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "depDate"
+                      ]
+                    },
+                    "boardpointDetail": {
+                      "type": "object",
+                      "properties": {
+                        "cityCode": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "cityCode"
+                      ]
+                    },
+                    "offpointDetail": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "companyDetail": {
+                      "type": "object",
+                      "properties": {
+                        "identification": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "identification"
+                      ]
+                    },
+                    "productDetails": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "typeDetail": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  },
+                  "required": [
+                    "product",
+                    "boardpointDetail",
+                    "offpointDetail",
+                    "companyDetail",
+                    "productDetails",
+                    "typeDetail"
+                  ]
+                },
+                "itineraryMessageAction": {
+                  "type": "array",
+                  "items": {}
+                },
+                "itineraryReservationInfo": {
+                  "type": "object",
+                  "properties": {
+                    "reservation": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  },
+                  "required": [
+                    "reservation"
+                  ]
+                },
+                "relatedProduct": {
+                  "type": "object",
+                  "properties": {
+                    "quantity": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "quantity",
+                    "status"
+                  ]
+                },
+                "flightDetail": {
+                  "type": "object",
+                  "properties": {
+                    "productDetails": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "arrivalStationInfo": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "facilities": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  },
+                  "required": [
+                    "productDetails",
+                    "arrivalStationInfo",
+                    "facilities"
+                  ]
+                },
+                "selectionDetails": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "elementManagementItinerary",
+                "travelProduct",
+                "itineraryMessageAction",
+                "itineraryReservationInfo",
+                "relatedProduct",
+                "flightDetail",
+                "selectionDetails"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "itineraryInfo"
+      ]
+    },
+    "segmentGroupingInfo": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "groupingCode": {
+              "type": "string"
+            },
+            "marriageDetail": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "tatooNum": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "tatooNum"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "tatooNum": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "tatooNum"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "groupingCode",
+            "marriageDetail"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "groupingCode": {
+              "type": "string"
+            },
+            "marriageDetail": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "tatooNum": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "tatooNum"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "tatooNum": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "tatooNum"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "groupingCode",
+            "marriageDetail"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "groupingCode": {
+              "type": "string"
+            },
+            "marriageDetail": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "tatooNum": {
+                      "type": "string"
+                    },
+                    "marriageQualifier": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "tatooNum",
+                    "marriageQualifier"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "tatooNum": {
+                      "type": "string"
+                    },
+                    "marriageQualifier": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "tatooNum",
+                    "marriageQualifier"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "groupingCode",
+            "marriageDetail"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "groupingCode": {
+              "type": "string"
+            },
+            "marriageDetail": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "tatooNum": {
+                      "type": "string"
+                    },
+                    "marriageQualifier": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "tatooNum",
+                    "marriageQualifier"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "tatooNum": {
+                      "type": "string"
+                    },
+                    "marriageQualifier": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "tatooNum",
+                    "marriageQualifier"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "groupingCode",
+            "marriageDetail"
+          ]
+        }
+      ]
+    },
+    "_links": {
+      "type": "object",
+      "properties": {
+        "self": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "href"
+          ]
+        }
+      },
+      "required": [
+        "self"
+      ]
+    }
+  },
+  "required": [
+    "pnrHeader",
+    "securityInformation",
+    "freetextData",
+    "sbrPOSDetails",
+    "sbrCreationPosDetails",
+    "sbrUpdatorPosDetails",
+    "technicalData",
+    "travellerInfo",
+    "dataElementsMaster",
+    "originDestinationDetails",
+    "segmentGroupingInfo"
+  ]
+}

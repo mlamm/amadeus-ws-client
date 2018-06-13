@@ -21,7 +21,10 @@ use Amadeus\Client\Struct\BaseWsMessage;
 class MockSessionHandler implements HandlerInterface
 {
     private const MASTERPRICER_RESPONSE_FIXTURE = 'tests/_data/fixtures/03-Fare_MasterPricerTravelBoardSearch_FBA-rt.xml';
+
     private const PNR_RETRIEVE_RESPONSE_FIXTURE = 'tests/_data/fixtures/09-pnrRetrieve-response.xml';
+
+    private const CREATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_Authenticate-Response.xml';
 
     /**
      * @var SessionHandlerParams
@@ -53,6 +56,9 @@ class MockSessionHandler implements HandlerInterface
             case 'Fare_MasterPricerTravelBoardSearch':
                 return $this->loadMasterPricerTravelBoardSearchResponse();
                 break;
+            case 'Security_Authenticate':
+                return $this->loadCreateSessionResponse();
+                break;
             case 'PNR_Retrieve':
                 return $this->loadPnrRetrieveResponse();
                 break;
@@ -65,6 +71,15 @@ class MockSessionHandler implements HandlerInterface
     {
         $sendResult = new SendResult();
         $sendResult->responseXml = file_get_contents(self::MASTERPRICER_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadCreateSessionResponse()
+    {
+        $sendResult = new SendResult();
+        $sendResult->responseXml = file_get_contents(self::CREATE_SESSION_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
@@ -126,12 +141,19 @@ class MockSessionHandler implements HandlerInterface
     /**
      * @param string $msgName
      *
-     * @return null|string|void
+     * @return null|string
      * @throws \Exception
      */
     public function getLastResponse($msgName)
     {
-        throw new \Exception('not implemented for mock session handler');
+        switch ($msgName) {
+            case 'Security_Authenticate':
+                return file_get_contents(self::CREATE_SESSION_RESPONSE_FIXTURE);
+                break;
+            default:
+                throw new \Exception('not implemented for mock session handler for msg ' . $msgName);
+
+        }
     }
 
     /**

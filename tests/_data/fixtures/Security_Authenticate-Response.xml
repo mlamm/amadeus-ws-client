@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope
+        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:awsse="http://xml.amadeus.com/2010/06/Session_v3"
+        xmlns:wsa="http://www.w3.org/2005/08/addressing">
+    <SOAP-ENV:Header>
+        <wsa:To>http://www.w3.org/2005/08/addressing/anonymous</wsa:To>
+        <wsa:From>
+            <wsa:Address>https://nodeD1.test.webservices.amadeus.com/1ASIWUFITBD</wsa:Address>
+        </wsa:From>
+        <wsa:Action>http://webservices.amadeus.com/VLSSLQ_06_1_1A</wsa:Action>
+        <wsa:MessageID>urn:uuid:d2152591-2f36-67c4-f516-f6e856fddb29</wsa:MessageID>
+        <wsa:RelatesTo RelationshipType="http://www.w3.org/2005/08/addressing/reply">176852D4-B9CD-D071-EBC7-2D87EE185103
+        </wsa:RelatesTo>
+        <awsse:Session TransactionStatusCode="InSeries">
+            <awsse:SessionId>00BQC6J3LG</awsse:SessionId>
+            <awsse:SequenceNumber>1</awsse:SequenceNumber>
+            <awsse:SecurityToken>37OFZRPB5DUZSBH8BGUOSJ94V</awsse:SecurityToken>
+        </awsse:Session>
+    </SOAP-ENV:Header>
+    <SOAP-ENV:Body>
+        <Security_AuthenticateReply xmlns="http://xml.amadeus.com/VLSSLR_06_1_1A">
+            <processStatus>
+                <statusCode>P</statusCode>
+            </processStatus>
+        </Security_AuthenticateReply>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
