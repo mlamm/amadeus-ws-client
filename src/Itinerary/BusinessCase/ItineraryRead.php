@@ -53,8 +53,8 @@ class ItineraryRead extends BusinessCase
         try {
             $response = ResultResponse::fromJsonString(
                 $this->itineraryService->read(
-                    $this->getRequest()->headers->get('Authenticate'),
-                    $this->getRequest()->headers->get('Session'),
+                    $this->getRequest()->headers->get('authentication'),
+                    $this->getRequest()->headers->get('session'),
                     $this->getRequest()->query->get('recordLocator')
                 )
             );
