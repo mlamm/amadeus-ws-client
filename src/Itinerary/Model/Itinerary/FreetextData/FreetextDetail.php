@@ -103,9 +103,9 @@ class FreetextDetail
      */
     public function populate(\stdClass $data) : FreetextDetail
     {
-        $this->subjectQualifier= $data->subjectQualifier ?? null;
-        $this->type            = $data->type ?? null;
-        $this->longFreetext    = $data->longFreetext ?? null;
+        $this->subjectQualifier = $data->subjectQualifier ?? null;
+        $this->type             = $data->type ?? null;
+        $this->longFreetext     = $data->longFreetext ?? null;
 
         return $this;
     }

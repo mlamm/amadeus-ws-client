@@ -27,7 +27,7 @@ class Itinerary
     {
         $this->config = $config;
     }
-    
+
     /**
      * validate session
      *

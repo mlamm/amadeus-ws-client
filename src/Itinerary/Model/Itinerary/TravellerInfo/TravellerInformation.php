@@ -29,8 +29,8 @@ class TravellerInformation extends AbstractModel
      */
     public function __construct(?\stdClass $data = null)
     {
-        $this->traveller   = new Traveller();
-        $this->passenger   = new Passenger();
+        $this->traveller = new Traveller();
+        $this->passenger = new Passenger();
 
         parent::__construct($data);
     }
