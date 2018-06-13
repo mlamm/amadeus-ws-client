@@ -65,8 +65,8 @@ class OriginDestinationDetails extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        if (!empty((array) $data->{'originDestination'})) {
-            $this->originDestination = $data->{'originDestination'} ?? null;
+        if (!empty((array) $data->originDestination)) {
+            $this->originDestination= $data->originDestination ?? null;
         }
         if (isset($data->itineraryInfo)) {
             $this->itineraryInfo = $this->mapItineraryInfo($data->{'itineraryInfo'});

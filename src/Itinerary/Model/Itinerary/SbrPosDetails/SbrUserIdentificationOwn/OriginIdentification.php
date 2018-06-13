@@ -69,8 +69,8 @@ class OriginIdentification extends AbstractModel
      */
     public function populate(\stdClass $data) : OriginIdentification
     {
-        $this->inHouseIdentification1 = $data->{'inHouseIdentification1'} ?? null;
-        $this->originatorId           = $data->{'originatorId'} ?? null;
+        $this->inHouseIdentification1= $data->inHouseIdentification1 ?? null;
+        $this->originatorId          = $data->originatorId ?? null;
         return $this;
     }
 }

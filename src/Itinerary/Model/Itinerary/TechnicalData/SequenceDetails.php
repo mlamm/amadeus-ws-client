@@ -43,6 +43,6 @@ class SequenceDetails extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->number = $data->{'number'} ?? null;
+        $this->number= $data->number ?? null;
     }
 }

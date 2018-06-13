@@ -51,6 +51,6 @@ class UserPreferences
      */
     public function populate(\stdClass $data)
     {
-        $this->codedCountry = $data->{'codedCountry'} ?? null;
+        $this->codedCountry= $data->codedCountry ?? null;
     }
 }

@@ -40,6 +40,6 @@ class ArrivalStationInfo extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->terminal = $data->{'terminal'} ?? null;
+        $this->terminal= $data->terminal ?? null;
     }
 }

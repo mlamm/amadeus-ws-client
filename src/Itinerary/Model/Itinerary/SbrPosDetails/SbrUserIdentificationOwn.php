@@ -82,7 +82,7 @@ class SbrUserIdentificationOwn extends AbstractModel
      */
     public function populate(\stdClass $data) : SbrUserIdentificationOwn
     {
-        $this->originatorTypeCode   = $data->{'originatorTypeCode'} ?? null;
+        $this->originatorTypeCode  = $data->originatorTypeCode ?? null;
 
         if (isset($data->originatorTypeCode)) {
             $this->originIdentification->populate($data->{'originIdentification'});

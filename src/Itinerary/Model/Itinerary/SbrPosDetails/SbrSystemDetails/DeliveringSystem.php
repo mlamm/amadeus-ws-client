@@ -29,8 +29,8 @@ class DeliveringSystem extends AbstractModel
      */
     public function populate(\stdClass $data) : DeliveringSystem
     {
-        $this->companyId  = $data->{'companyId'} ?? null;
-        $this->locationId = $data->{'locationId'} ?? null;
+        $this->companyId = $data->companyId ?? null;
+        $this->locationId= $data->locationId ?? null;
 
         return $this;
     }

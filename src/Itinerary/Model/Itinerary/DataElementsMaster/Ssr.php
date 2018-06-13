@@ -149,12 +149,12 @@ class Ssr extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->type      = $data->{'type'} ?? null;
-        $this->companyId = $data->{'companyId'} ?? null;
-        $this->quantity  = $data->{'quantity'} ?? null;
+        $this->type     = $data->type ?? null;
+        $this->companyId= $data->companyId ?? null;
+        $this->quantity = $data->quantity ?? null;
 
         if (!empty((array) $data->{'status'})) {
-            $this->status = $data->{'status'} ?? null;
+            $this->status= $data->status ?? null;
         }
 
         if (isset($data->freeText)) {

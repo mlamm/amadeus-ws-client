@@ -23,7 +23,7 @@ class ItineraryMessageAction extends AbstractModel
     public function populate(\stdClass $data)
     {
         if (isset($data->business) && isset($data->{'business'}->function)) {
-            $this->business = $data->{'business'}->{'function'};
+            $this->business= $data->business->{'function'};
         }
     }
 }

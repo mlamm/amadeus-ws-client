@@ -43,6 +43,6 @@ class LastTransmittedEnvelopeNumber extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->currentRecord = $data->{'currentRecord'} ?? null;
+        $this->currentRecord= $data->currentRecord ?? null;
     }
 }

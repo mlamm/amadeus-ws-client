@@ -65,7 +65,7 @@ class Passenger extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->firstName = $data->{'firstName'} ?? null;
-        $this->type      = $data->{'type'} ?? null;
+        $this->firstName= $data->firstName ?? null;
+        $this->type     = $data->type ?? null;
     }
 }

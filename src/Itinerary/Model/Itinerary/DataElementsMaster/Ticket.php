@@ -89,8 +89,8 @@ class Ticket extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->indicator = $data->{'indicator'} ?? null;
-        $this->date      = $data->{'date'} ?? null;
-        $this->officeId  = $data->{'officeId'} ?? null;
+        $this->indicator= $data->indicator ?? null;
+        $this->date     = $data->date ?? null;
+        $this->officeId = $data->officeId ?? null;
     }
 }

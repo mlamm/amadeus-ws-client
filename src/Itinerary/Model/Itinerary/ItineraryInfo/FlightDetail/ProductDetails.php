@@ -89,8 +89,8 @@ class ProductDetails extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->equipment  = $data->{'equipment'} ?? null;
-        $this->numOfStops = $data->{'numOfStops'} ?? null;
-        $this->weekDay    = $data->{'weekDay'} ?? null;
+        $this->equipment = $data->equipment ?? null;
+        $this->numOfStops= $data->numOfStops ?? null;
+        $this->weekDay   = $data->weekDay ?? null;
     }
 }

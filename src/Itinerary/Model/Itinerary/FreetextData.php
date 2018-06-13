@@ -81,7 +81,7 @@ class FreetextData extends AbstractModel
      */
     public function populate(\stdClass $data) : FreetextData
     {
-        $this->longFreetext   = $data->{'longFreetext'};
+        $this->longFreetext  = $data->longFreetext;
         $this->freetextDetail->populate($data->{'freetextDetail'});
 
         return $this;

@@ -41,6 +41,6 @@ class BoardpointDetail extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->cityCode = $data->{'cityCode'} ?? null;
+        $this->cityCode= $data->cityCode ?? null;
     }
 }

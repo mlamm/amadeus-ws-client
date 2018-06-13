@@ -45,7 +45,7 @@ class QueueingInformation extends AbstractModel
      */
     public function populate(\stdClass $data) : QueueingInformation
     {
-        $this->queueingOfficeId = $data->{'queueingOfficeId'} ?? null;
+        $this->queueingOfficeId= $data->queueingOfficeId ?? null;
 
         return $this;
     }

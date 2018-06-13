@@ -41,7 +41,7 @@ class Remark extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->type = $data->{'type'} ?? 'RM';
+        $this->type= $data->type ?? 'RM';
         list($this->name, $this->value) = array_pad(explode('-', (string) $data->freetext, 2), 2, null);
     }
 

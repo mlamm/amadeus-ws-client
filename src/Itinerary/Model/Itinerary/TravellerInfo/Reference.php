@@ -65,7 +65,7 @@ class Reference extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->qualifier = $data->{'qualifier'} ?? null;
-        $this->number    = $data->{'number'} ?? null;
+        $this->qualifier= $data->qualifier ?? null;
+        $this->number   = $data->number ?? null;
     }
 }

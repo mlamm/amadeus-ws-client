@@ -102,8 +102,8 @@ class ElementManagementData extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->segmentName = $data->{'segmentName'} ?? null;
-        $this->lineNumber  = $data->{'lineNumber'} ?? null;
+        $this->segmentName= $data->segmentName ?? null;
+        $this->lineNumber = $data->lineNumber ?? null;
 
         if (isset($data->reference)) {
             $this->reference->populate($data->{'reference'});

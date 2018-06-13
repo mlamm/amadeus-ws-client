@@ -107,7 +107,7 @@ class TechnicalData extends AbstractModel
     public function populate(\stdClass $data)
     {
         if (isset($data->{'purgeDateData'}, $data->{'purgeDateData'}->{'dateTime'})) {
-            $date  = $data->{'purgeDateData'}->{'dateTime'};
+            $date = $data->purgeDateData->{'dateTime'};
             $year  = $date->{'year'} ?? date('Y');
             $month = $date->{'month'} ?? date('m');
             $day   = $date->{'day'} ?? date('d');

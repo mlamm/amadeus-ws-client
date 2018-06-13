@@ -113,9 +113,9 @@ class ProductDetails extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->identification = $data->{'identification'} ?? null;
-        $this->classOfService = $data->{'classOfService'} ?? null;
-        $this->subtype = $data->{'subtype'} ?? null;
-        $this->description = $data->{'description'} ?? null;
+        $this->identification= $data->identification ?? null;
+        $this->classOfService= $data->classOfService ?? null;
+        $this->subtype= $data->subtype ?? null;
+        $this->description= $data->description ?? null;
     }
 }

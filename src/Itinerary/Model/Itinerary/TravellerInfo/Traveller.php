@@ -65,7 +65,7 @@ class Traveller extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->surname  = $data->{'surname'} ?? null;
-        $this->quantity = $data->{'quantity'} ?? null;
+        $this->surname = $data->surname ?? null;
+        $this->quantity= $data->quantity ?? null;
     }
 }

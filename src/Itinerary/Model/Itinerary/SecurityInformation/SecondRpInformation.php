@@ -141,11 +141,11 @@ class SecondRpInformation extends AbstractModel
      */
     public function populate(\stdClass $data) : SecondRpInformation
     {
-        $this->creationOfficeId = $data->{'creationOfficeId'} ?? null;
-        $this->agentSignature   = $data->{'agentSignature'} ?? null;
-        $this->creationDate     = $data->{'creationDate'} ?? null;
-        $this->creationTime     = $data->{'creationTime'} ?? null;
-        $this->creatorIataCode  = $data->{'creatorIataCode'} ?? null;
+        $this->creationOfficeId= $data->creationOfficeId ?? null;
+        $this->agentSignature  = $data->agentSignature ?? null;
+        $this->creationDate    = $data->creationDate ?? null;
+        $this->creationTime    = $data->creationTime ?? null;
+        $this->creatorIataCode = $data->creatorIataCode ?? null;
 
         return $this;
     }

@@ -41,6 +41,6 @@ class CompanyDetail extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->identification = $data->{'identification'} ?? null;
+        $this->identification= $data->identification ?? null;
     }
 }

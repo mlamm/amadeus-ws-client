@@ -113,9 +113,9 @@ class Product extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->arrDate = $data->{'arrDate'} ?? null;
-        $this->arrTime = $data->{'arrTime'} ?? null;
-        $this->depDate = $data->{'depDate'} ?? null;
-        $this->depTime = $data->{'depTime'} ?? null;
+        $this->arrDate= $data->arrDate ?? null;
+        $this->arrTime= $data->arrTime ?? null;
+        $this->depDate= $data->depDate ?? null;
+        $this->depTime= $data->depTime ?? null;
     }
 }

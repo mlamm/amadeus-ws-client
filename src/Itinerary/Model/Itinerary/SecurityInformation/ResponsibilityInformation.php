@@ -93,9 +93,9 @@ class ResponsibilityInformation extends AbstractModel
      */
     public function populate(\stdClass $data) : ResponsibilityInformation
     {
-        $this->typeOfPnrElement = $data->{'typeOfPnrElement'} ?? null;
-        $this->officeId         = $data->{'officeId'} ?? null;
-        $this->agentId          = $data->{'agentId'} ?? null;
+        $this->typeOfPnrElement= $data->typeOfPnrElement ?? null;
+        $this->officeId        = $data->officeId ?? null;
+        $this->agentId         = $data->agentId ?? null;
 
         return $this;
     }

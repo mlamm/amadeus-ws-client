@@ -65,7 +65,7 @@ class MarriageDetail extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->marriageQualifier = $data->{'marriageQualifier'} ?? null;
-        $this->tatooNum          = $data->{'tatooNum'} ?? null;
+        $this->marriageQualifier= $data->marriageQualifier ?? null;
+        $this->tatooNum         = $data->tatooNum ?? null;
     }
 }

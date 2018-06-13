@@ -65,7 +65,7 @@ class TypeDetail extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->detail              = $data->{'detail'} ?? null;
-        $this->processingIndicator = $data->{'processingIndicator'} ?? null;
+        $this->detail             = $data->detail ?? null;
+        $this->processingIndicator= $data->processingIndicator ?? null;
     }
 }

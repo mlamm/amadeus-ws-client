@@ -65,7 +65,7 @@ class DateAndTimeDetails extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->qualifier = $data->{'qualifier'} ?? null;
-        $this->date      = $data->{'date'} ?? null;
+        $this->qualifier= $data->qualifier ?? null;
+        $this->date     = $data->date ?? null;
     }
 }

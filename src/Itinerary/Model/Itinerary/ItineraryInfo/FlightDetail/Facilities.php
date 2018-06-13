@@ -65,7 +65,7 @@ class Facilities extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->entertainement            = $data->{'entertainement'} ?? null;
-        $this->entertainementDescription = $data->{'entertainementDescription'} ?? null;
+        $this->entertainement           = $data->entertainement ?? null;
+        $this->entertainementDescription= $data->entertainementDescription ?? null;
     }
 }

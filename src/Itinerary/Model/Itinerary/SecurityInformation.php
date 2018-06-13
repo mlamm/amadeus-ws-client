@@ -136,7 +136,7 @@ class SecurityInformation extends AbstractModel
         $this->responsibilityInformation = new ResponsibilityInformation($data->{'responsibilityInformation'});
         $this->queueingInformation       = new QueueingInformation($data->{'queueingInformation'});
         $this->secondRpInformation       = new SecondRpInformation($data->{'secondRpInformation'});
-        $this->cityCode                  = $data->{'cityCode'};
+        $this->cityCode                 = $data->cityCode;
 
         return $this;
     }

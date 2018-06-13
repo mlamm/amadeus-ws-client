@@ -89,7 +89,7 @@ class SegmentGroupingInfo extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->groupingCode = $data->{'groupingCode'} ?? null;
+        $this->groupingCode= $data->groupingCode ?? null;
         $this->mapMarriageDetails($data->{'marriageDetail'});
     }
 

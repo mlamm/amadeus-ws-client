@@ -115,10 +115,10 @@ class Reservation
      */
     public function populate(\stdClass $data) : Reservation
     {
-        $this->companyId     = $data->{'companyId'} ?? null;
-        $this->controlNumber = $data->{'controlNumber'} ?? null;
-        $this->date          = $data->{'date'} ?? null;
-        $this->time          = $data->{'time'} ?? null;
+        $this->companyId    = $data->companyId ?? null;
+        $this->controlNumber= $data->controlNumber ?? null;
+        $this->date         = $data->date ?? null;
+        $this->time         = $data->time ?? null;
 
         return $this;
     }
