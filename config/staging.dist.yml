@@ -67,7 +67,7 @@ itinerary:
     wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
 
 session:
-    wsdl: 1ASIWADMTBD/1ASIWADMTBD_PDT_20180606_092050.wsdl
+    wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
 
 response:
     json_encoding_options:

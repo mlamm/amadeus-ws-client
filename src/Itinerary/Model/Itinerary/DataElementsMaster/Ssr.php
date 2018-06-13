@@ -34,6 +34,11 @@ class Ssr extends AbstractModel
     private $freeText;
 
     /**
+     * @var string
+     */
+    private $quantity;
+
+    /**
      * Ssr constructor.
      *
      * @param null|\stdClass $data
@@ -102,6 +107,25 @@ class Ssr extends AbstractModel
     }
 
     /**
+     * @return string
+     */
+    public function getQuantity() : ?string
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param string $quantity
+     *
+     * @return Ssr
+     */
+    public function setQuantity(string $quantity) : Ssr
+    {
+        $this->quantity = $quantity;
+        return $this;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getFreeText() : ?ArrayCollection
@@ -126,8 +150,12 @@ class Ssr extends AbstractModel
     public function populate(\stdClass $data)
     {
         $this->type      = $data->{'type'} ?? null;
-        $this->status    = $data->{'status'} ?? null;
         $this->companyId = $data->{'companyId'} ?? null;
+        $this->quantity  = $data->{'quantity'} ?? null;
+
+        if (!empty((array) $data->{'status'})) {
+            $this->status = $data->{'status'} ?? null;
+        }
 
         if (isset($data->freeText)) {
             if (is_array($data->freeText)) {

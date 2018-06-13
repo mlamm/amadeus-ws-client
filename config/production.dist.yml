@@ -65,6 +65,10 @@ remarks:
 
 itinerary:
     wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+
+session:
+    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+
 response:
     json_encoding_options:
         - JSON_PRETTY_PRINT
@@ -81,6 +85,3 @@ debug:
         enabled: true
     throwup:
         enabled: true
-
-session:
-    wsdl: 1ASIWADMTBD/1ASIWADMTBD_PRD_20180606_105150.wsdl

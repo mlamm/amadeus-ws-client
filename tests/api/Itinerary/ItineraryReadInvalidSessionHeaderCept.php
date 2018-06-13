@@ -19,7 +19,7 @@ $I->canSeeResponseIsJson();
 $I->canSeeResponseContainsJson(
     json_decode(
         file_get_contents(
-            codecept_data_dir('response/Itinerary/missing-request-session-param-response.json')
+            codecept_data_dir('fixtures/response/itinerary/missing-request-session-param-response.json')
         ),
         true
     )

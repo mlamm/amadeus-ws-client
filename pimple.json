@@ -234,4 +234,14 @@
         "type": "class",
         "value": "Flight\Service\Amadeus\\Itinerary\\Model\\ItineraryAmadeusClient"
     },
+    {
+        "name": "businesscase.session-create",
+        "type": "class",
+        "value": "Flight\Service\Amadeus\\Session\\BusinessCase\\CreateSession"
+    },
+    {
+        "name": "service.session",
+        "type": "class",
+        "value": "Flight\Service\Amadeus\\Session\\Service\\Session"
+    }
 ]
