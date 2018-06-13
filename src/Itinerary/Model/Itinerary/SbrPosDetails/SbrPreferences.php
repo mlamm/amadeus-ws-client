@@ -5,7 +5,7 @@ namespace Flight\Service\Amadeus\Itinerary\Model\Itinerary\SbrPosDetails;
 use Flight\Service\Amadeus\Itinerary\Model\Itinerary\SbrPosDetails\SbrPreferences\UserPreferences;
 
 /**
- * Class Description
+ * SbrPreferences Model
  *
  * @author    Michael Mueller <michael.mueller@invia.de>
  * @copyright Copyright (c) 2018  Invia Flights Germany GmbH

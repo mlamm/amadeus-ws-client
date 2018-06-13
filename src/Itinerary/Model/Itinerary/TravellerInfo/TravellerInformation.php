@@ -5,7 +5,7 @@ namespace Flight\Service\Amadeus\Itinerary\Model\Itinerary\TravellerInfo;
 use Flight\Service\Amadeus\Itinerary\Model\Itinerary\AbstractModel;
 
 /**
- * Class Description
+ * TravellerInformation Model
  *
  * @author    Michael Mueller <michael.mueller@invia.de>
  * @copyright Copyright (c) 2018  Invia Flights Germany GmbH

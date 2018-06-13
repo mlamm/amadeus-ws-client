@@ -3,7 +3,7 @@
 namespace Flight\Service\Amadeus\Itinerary\Model\Itinerary\FreetextData;
 
 /**
- * Class Description
+ * FreetextDetail Model
  *
  * @author    Michael Mueller <michael.mueller@invia.de>
  * @copyright Copyright (c) 2018  Invia Flights Germany GmbH

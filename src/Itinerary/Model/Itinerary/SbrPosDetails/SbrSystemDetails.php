@@ -6,7 +6,7 @@ use Flight\Service\Amadeus\Itinerary\Model\Itinerary\AbstractModel;
 use Flight\Service\Amadeus\Itinerary\Model\Itinerary\SbrPosDetails\SbrSystemDetails\DeliveringSystem;
 
 /**
- * Class Description
+ * SbrSystemDetails Model
  *
  * @author    Michael Mueller <michael.mueller@invia.de>
  * @copyright Copyright (c) 2018  Invia Flights Germany GmbH

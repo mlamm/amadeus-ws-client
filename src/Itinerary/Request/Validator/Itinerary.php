@@ -6,7 +6,7 @@ use Flight\Service\Amadeus\Itinerary\Exception\InvalidRequestParameterException;
 use Particle\Validator\Validator;
 
 /**
- * Class Description
+ * Itinerary Request Validator
  *
  * @author    Michael Mueller <michael.mueller@invia.de>
  * @copyright Copyright (c) 2018  Invia Flights Germany GmbH

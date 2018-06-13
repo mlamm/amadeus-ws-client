@@ -25,7 +25,9 @@ class FlightDetail extends AbstractModel
      */
     private $arrivalStationInfo;
 
-
+    /**
+     * @var Facilities
+     */
     private $facilities;
 
     /**
