@@ -84,7 +84,6 @@ class ItineraryAmadeusClient
             $requestEntity->getRecordLocator()
         );
         $client->setSessionData($session->toArray());
-        $client->securityAuthenticate()->responseXml;
         $result = $client->pnrRetrieve($requestOptions);
 
         if ($result->status !== Client\Result::STATUS_OK) {
