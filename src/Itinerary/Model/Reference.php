@@ -7,7 +7,7 @@ namespace Flight\Service\Amadeus\Remarks\Model;
  *
  * model for reference data of a remark
  *
- * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
+ * @copyright Copyright (c) 2018 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
  * @author    Fluege-Dev <fluege-dev@invia.de>
  */

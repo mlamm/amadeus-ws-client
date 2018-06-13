@@ -8,7 +8,7 @@ use Flight\Service\Amadeus\Itinerary\Model\Itinerary\AbstractModel;
  *
  * model for remark data
  *
- * @copyright Copyright (c) 2017 Invia Flights Germany GmbH
+ * @copyright Copyright (c) 2018 Invia Flights Germany GmbH
  * @author    Invia Flights Germany GmbH <teamleitung-dev@invia.de>
  * @author    Fluege-Dev <fluege-dev@invia.de>
  */
