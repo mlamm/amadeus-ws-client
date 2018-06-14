@@ -108,7 +108,7 @@ class AmadeusClient
     }
 
     /**
-     * send create session request to amadeus
+     * send commit session request to amadeus
      *
      * @param Authenticate $authenticate
      * @param Session      $session
@@ -123,7 +123,6 @@ class AmadeusClient
         /** @var Client $client */
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
 
-//        $client->securityAuthenticate();
         $pnrOptions = new Client\RequestOptions\PnrAddMultiElementsOptions(
             [
                 'actionCode' => [
