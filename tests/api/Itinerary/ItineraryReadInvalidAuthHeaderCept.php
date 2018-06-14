@@ -4,11 +4,11 @@
 $I = new ApiTester($scenario);
 $I->wantTo('see an error telling me that the authentication is not valid');
 $I->haveHttpHeader(
-    'Session',
+    'session',
     file_get_contents(codecept_data_dir('requests/Itinerary/valid-session-header.json'))
 );
 $I->haveHttpHeader(
-    'Authenticate',
+    'authentication',
     file_get_contents(codecept_data_dir('requests/Itinerary/invalid-auth-header.json'))
 );
 $I->sendGET('/itinerary/?recordLocator=QTDEOG');
