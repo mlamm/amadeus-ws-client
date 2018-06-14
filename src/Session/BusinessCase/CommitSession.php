@@ -65,7 +65,7 @@ class CommitSession extends BusinessCase
             );
 
             $responses = ['result' => $commit && $signOut];
-            $response  = SessionCommitResponse::fromJsonString(json_encode($responses));
+            $response  = SessionCommitResponse::fromJsonString(json_encode($responses), Response::HTTP_NO_CONTENT);
 
         } catch (AmadeusRequestException $exception) {
             $this->logger->critical($exception);
@@ -97,7 +97,6 @@ class CommitSession extends BusinessCase
             return $errorResponse;
         }
 
-        $this->addLinkToSelf($response);
         return $response;
     }
 

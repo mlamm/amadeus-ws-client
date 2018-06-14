@@ -12,7 +12,5 @@ $I->haveHttpHeader(
 );
 
 $I->sendPOST('/session/commit');
-$I->seeResponseCodeIs(200);
-$I->seeHttpHeader('content-type', 'application/hal+json');
-$I->canSeeResponseIsValidOnSchemaFile(codecept_data_dir('schema/session/commit.json'));
-$I->seeResponseHasLinkToSelf('/session');
+$I->seeResponseCodeIs(204);
+$I->seeHttpHeader('content-type', 'text/html; charset=UTF-8');
