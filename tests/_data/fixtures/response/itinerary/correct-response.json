@@ -1,0 +1,90 @@
+{
+  "pnrHeader": {
+    "reservation_info": {
+      "company_id": "1A",
+      "control_number": "R864UO",
+      "date": "290518",
+      "time": "2327"
+    }
+  },
+  "securityInformation": {
+    "responsibilityInformation": {
+      "typeOfPnrElement": "RP",
+      "agentId": "WSSU",
+      "officeId": "BERAE22P9"
+    },
+    "queueingInformation": {
+      "queueingOfficeId": "BERAE22P9"
+    },
+    "secondRpInformation": {
+      "creationOfficeId": "BERAE22FX",
+      "agentSignature": "9996WS",
+      "creationDate": "290518",
+      "creatorIataCode": "23273401",
+      "creationTime": "2256"
+    },
+    "cityCode": "BER"
+  },
+  "freetextData": {
+    "freetextDetail": {
+      "subject_qualifier": "3",
+      "type": "P12"
+    },
+    "longFreetext": "--- TST RLR MSC ---"
+  },
+  "sbrPOSDetails": {
+    "sbrUserIdentificationOwn": {
+      "originIdentification": {
+        "inHouseIdentification1": "BERAE22P9",
+        "originatorId": "23273401"
+      },
+      "originatorTypeCode": "N"
+    }
+  },
+  "sbrCreationPosDetails": {
+    "sbrSystemDetails": {
+      "deliveringSystem": [],
+      "sbrUserIdentificationOwn": {
+        "originIdentification": []
+      },
+      "sbrPreferences": {
+        "user_preferences": []
+      }
+    },
+    "sbrUserIdentificationOwn": {
+      "originIdentification": {
+        "inHouseIdentification1": "BERAE22FX",
+        "originatorId": "23273401"
+      },
+      "originatorTypeCode": "N"
+    },
+    "sbrPreferences": {
+      "user_preferences": {
+        "coded_country": "DE"
+      }
+    }
+  },
+  "sbrUpdatorPosDetails": {
+    "sbrUserIdentificationOwn": {
+      "originIdentification": {
+        "inHouseIdentification1": "BERAE2234",
+        "originatorId": "23273401"
+      },
+      "originatorTypeCode": "T"
+    },
+    "sbrSystemDetails": {
+      "deliveringSystem": [],
+      "sbrUserIdentificationOwn": {
+        "originIdentification": []
+      },
+      "sbrPreferences": {
+        "user_preferences": []
+      }
+    },
+    "sbrPreferences": {
+      "user_preferences": {
+        "coded_country": "DE"
+      }
+    }
+  }
+}

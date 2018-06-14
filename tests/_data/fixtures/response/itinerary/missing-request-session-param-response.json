@@ -1,0 +1,16 @@
+{
+  "errors": {
+    "session-id": [
+      {
+        "code": "ARS0002",
+        "message": "INVALID OR MISSING REQUEST PARAM - session-id must not be empty",
+        "status": 400
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "/itinerary"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "errors": {
+    "user-id": [
+      {
+        "code": "ARS0002",
+        "message": "INVALID OR MISSING REQUEST PARAM - user-id must not be empty",
+        "status": 400
+      }
+    ],
+    "password-data": [
+      {
+        "code": "ARS0002",
+        "message": "INVALID OR MISSING REQUEST PARAM - password-data must not be empty",
+        "status": 400
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "/itinerary"
+    }
+  }
+}
