@@ -16,6 +16,7 @@ Possible error codes:
 | ARS0003 | The `Amadeus\Client::securityAuthenticate` method didn't return state OK     | the credentials sent with request are invalid                        |
 | ARS0004 | AMADEUS RESPONSE ERROR [{errNo., message}]                                   | the request was technical valid, Amadeus returns failure             |
 | ARS0005 | A message that describes the missing system requirement                      | something like a missing php extension                               |
+| ARS0006 | A internal function was called which was marked to not be called             | a populate function which was de-activated for a class               |
 
 
 #### Search [POST /flight-search/]
@@ -428,6 +429,57 @@ This request will delete the given remarks, return all remarks for given recordl
     + Schema
 
             <!-- include(remarks/error-response_schema.json) -->
+
+## Itinerary [/itinerary]
+
+### Itinerary [GET /itinerary/?recordLocator={recordLocator}]
+
+This request will return the itinerary data to the requested recordLocator
+
++ Parameters
+
+    + recordLocator: LTEXQF (required, string) - alphanumeric recordLocator
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+            session: {"session-id": "013GZKUXA2","sequence-number": "2","security-token": "2XCAG3OKA7MOQ3DBAGRL6OULBZ"}
+
+    + Schema
+
+            <!-- include(itinerary/GET_request_schema.json) -->
+
++ Response 200 (application/hal+json)
+
+    + Body
+
+            <!-- include(itinerary/response.json) -->
+
+    + Schema
+
+            <!-- include(itinerary/response_schema.json) -->
+
++ Response 500 (application/hal+json)
+
+    |Code     | Message                                                                  |
+    |---------|--------------------------------------------------------------------------|
+    | ARS000X | SERVER ERROR - {message}                                                 |
+    | ASR0001 | MALFORMED REQUEST                                                        |
+    | ARS0002 | INVALID OR MISSING REQUEST PARAM                                         |
+    | ARS0003 | The `Amadeus\Client::securityAuthenticate` method didn't return state OK |
+    | ARS0004 | AMADEUS RESPONSE ERROR [{errNo., message}]                               |
+    | ARS0006 | A internal function was called which was marked to not be called         |
+
+
+    + Body
+
+            <!-- include(itinerary/error-response.json) -->
+
+    + Schema
+
+            <!-- include(itinerary/error-response_schema.json) -->
 
 # Data Structures
 
