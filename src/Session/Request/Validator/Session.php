@@ -50,4 +50,25 @@ class Session
             throw new InvalidRequestParameterException($validationResult->getFailures());
         }
     }
+
+    /**
+     * validate session
+     *
+     * @param $session
+     *
+     * @throws InvalidRequestParameterException
+     */
+    public function validateSession($session)
+    {
+        $validator = new Validator();
+        $validator->required('session-id')->string();
+        $validator->required('security-token')->string();
+        $validator->required('sequence-number')->integer();
+
+        $validationResult = $validator->validate((array) $session);
+
+        if ($validationResult->isNotValid()) {
+            throw new InvalidRequestParameterException($validationResult->getFailures());
+        }
+    }
 }

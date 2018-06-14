@@ -257,6 +257,47 @@ This request will return session data
 
             <!-- include(session/error-response_schema.json) -->
 
+### CommitSession [POST /session/commit]
+This request will commit all changes and close the given session (security_signout)
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+            session: {"session-id": "013GZKUXA2","sequence-number": "2","security-token": "2XCAG3OKA7MOQ3DBAGRL6OULBZ"}
+
++ Response 200 (application/hal+json)
+
+    + Body
+
+            {
+                "result": "true",
+                 "_links": {
+                    "self": {
+                        "href": "/session"
+                    }
+                 }
+            }
+
+    + Schema
+
+            <!-- include(session/commit_response_schema.json) -->
+
++ Response 500 (application/hal+json)
+
+    |Code | Message |
+    |---|---|
+    | ARS000X | *Message of an unspecific error.* |
+
+    + Body
+
+            <!-- include(session/error-response.json) -->
+
+    + Schema
+
+            <!-- include(session/error-response_schema.json) -->
+
 ## Remarks [/remarks]
 
 ### Remarks [GET /remarks/{recordlocator}]

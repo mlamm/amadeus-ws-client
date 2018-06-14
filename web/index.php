@@ -101,6 +101,13 @@ $app['businesscase.session-create'] = function () use ($app) {
     );
 };
 
+$app['businesscase.session-commit'] = function () use ($app) {
+    return new Session\BusinessCase\CommitSession(
+        $app['service.session'],
+        $app['monolog']
+    );
+};
+
 $app['businesscase.itinerary-read'] = function() use ($app) {
     return new \Flight\Service\Amadeus\Itinerary\BusinessCase\ItineraryRead(
         $app['service.itinerary'],

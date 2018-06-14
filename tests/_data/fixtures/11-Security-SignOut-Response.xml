@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Header xmlns="http://xml.amadeus.com/ws/2009/01/WBS_Session-2.0.xsd">
+        <Session>
+            <SessionId>01EHQHP08H</SessionId>
+            <SequenceNumber>5</SequenceNumber>
+            <SecurityToken>B5DQWG7MU6AS3Q9WGG81HELXJ</SecurityToken>
+        </Session>
+    </soap:Header>
+    <soap:Body>
+        <Security_SignOutReply xmlns="http://xml.amadeus.com/VLSSOR_04_1_1A">
+            <processStatus>
+                <statusCode>P</statusCode>
+            </processStatus>
+        </Security_SignOutReply>
+    </soap:Body>
+</soap:Envelope>

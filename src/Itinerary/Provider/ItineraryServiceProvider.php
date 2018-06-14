@@ -43,7 +43,7 @@ class ItineraryServiceProvider implements ServiceProviderInterface
             \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
             $serializerBuilder = \JMS\Serializer\SerializerBuilder::create();
 
-            $serializerBuilder->setCacheDir(__DIR__ . '/../var/cache/serializer');
+            $serializerBuilder->setCacheDir(__DIR__ . '/../../../var/cache/serializer');
 
             return new Itinerary\Service\ItineraryService(
                 $validator,
