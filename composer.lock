@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e24abeeee3067bef00356ecbab45f91c",
+    "content-hash": "1594aeb2e951e09fb11fe78ba45852f1",
     "packages": [
         {
             "name": "alcaeus/mongo-php-adapter",
@@ -463,17 +463,17 @@
         },
         {
             "name": "flight/library-search-request-response-mapping",
-            "version": "6.3.0",
+            "version": "6.3.1",
             "source": {
                 "type": "git",
                 "url": "ssh://git@stash.unister.lan:2200/flight/library.search-request-response-mapping.git",
-                "reference": "3db369c5d378224bf884d59c9e36d74e1f2281e0"
+                "reference": "302d74d28e8130785d330841110ab8a35694dcb5"
             },
             "dist": {
                 "type": "tar",
-                "url": "https://packages.unister.lan/dist/flight-library-search-request-response-mapping-6.3.0-e2d56f.tar.bz2",
-                "reference": "3db369c5d378224bf884d59c9e36d74e1f2281e0",
-                "shasum": "6f3bc5392554aa78a1c2d2de343f587726dbdf3a"
+                "url": "https://packages.unister.lan/dist/flight-library-search-request-response-mapping-6.3.1-114ae1.tar.bz2",
+                "reference": "302d74d28e8130785d330841110ab8a35694dcb5",
+                "shasum": "50b368ad57414e9aab541570c86719bac1df690f"
             },
             "archive": {
                 "exclude": [
@@ -510,7 +510,7 @@
                     "verify_peer": false
                 }
             },
-            "time": "2018-06-08T11:56:50+00:00"
+            "time": "2018-06-14T12:38:16+00:00"
         },
         {
             "name": "flight/search-request-mapping",
