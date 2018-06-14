@@ -90,4 +90,14 @@ class Session
         $this->securityToken = $securityToken;
         return $this;
     }
+
+    /**
+     * returns the properties as array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return get_object_vars($this);
+    }
 }

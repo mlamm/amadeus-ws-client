@@ -24,6 +24,10 @@ class MockSessionHandler implements HandlerInterface
 
     private const CREATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_Authenticate-Response.xml';
 
+    private const COMMIT_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/10-Session-Commit-Response.xml';
+
+    private const SECURITY_SIGNOUT_RESPONSE_FIXTURE = 'tests/_data/fixtures/11-Security-SignOut-Response.xml';
+
     /**
      * @var SessionHandlerParams
      */
@@ -57,6 +61,11 @@ class MockSessionHandler implements HandlerInterface
             case 'Security_Authenticate':
                 return $this->loadCreateSessionResponse();
                 break;
+            case 'PNR_AddMultiElements':
+                return $this->loadSessionCommitResponse();
+            case 'Security_SignOut':
+                return $this->loadSecuritySignOutResponse();
+                break;
         }
 
         throw new \Exception("no mock response configured for message `{$messageName}`");
@@ -75,6 +84,24 @@ class MockSessionHandler implements HandlerInterface
     {
         $sendResult = new SendResult();
         $sendResult->responseXml = file_get_contents(self::CREATE_SESSION_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadSessionCommitResponse()
+    {
+        $sendResult = new SendResult();
+        $sendResult->responseXml = file_get_contents(self::COMMIT_SESSION_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadSecuritySignOutResponse()
+    {
+        $sendResult = new SendResult();
+        $sendResult->responseXml = file_get_contents(self::SECURITY_SIGNOUT_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
@@ -135,6 +162,9 @@ class MockSessionHandler implements HandlerInterface
         switch ($msgName) {
             case 'Security_Authenticate':
                 return file_get_contents(self::CREATE_SESSION_RESPONSE_FIXTURE);
+                break;
+            case 'PNR_AddMultiElements':
+                return file_get_contents(self::COMMIT_SESSION_RESPONSE_FIXTURE);
                 break;
             default:
                 throw new \Exception('not implemented for mock session handler for msg ' . $msgName);

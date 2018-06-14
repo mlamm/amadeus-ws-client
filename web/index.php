@@ -98,6 +98,13 @@ $app['businesscase.session-create'] = function () use ($app) {
         $app['monolog']
     );
 };
+
+$app['businesscase.session-commit'] = function () use ($app) {
+    return new Session\BusinessCase\CommitSession(
+        $app['service.session'],
+        $app['monolog']
+    );
+};
 $app->register(new \Flight\Service\Amadeus\Search\Cache\CacheProvider());
 
 // application provider
