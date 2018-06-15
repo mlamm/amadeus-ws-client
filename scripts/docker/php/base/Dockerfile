@@ -1,6 +1,9 @@
-FROM php:7.1-fpm-alpine
+FROM php:7.2.6-fpm-alpine
 
-ENV XDEBUG_VERSION=2.5.5
+# update apk
+RUN rm -rf /var/cache/apk/* && \
+    rm -rf /tmp/* && \
+    apk update
 
 # Install packages we want to keep
 RUN apk --no-cache add fcgi git openssh libxml2 libxslt zlib libbz2 openssl-dev
@@ -11,14 +14,14 @@ RUN set -xe \
        $PHPIZE_DEPS \
        coreutils \
        bzip2-dev libxml2-dev libxslt-dev zlib-dev \
-    && docker-php-ext-install -j"$(/usr/bin/nproc)" opcache mbstring zip soap pdo pdo_mysql mysqli xsl bz2 \
-    && pecl install xdebug-$XDEBUG_VERSION mongodb redis \
-    && docker-php-ext-enable opcache xdebug mbstring zip soap pdo pdo_mysql mysqli xsl mongodb redis \
+    && docker-php-ext-install -j"$(/usr/bin/nproc)" zip soap pdo_mysql xsl bz2 \
+    && pecl install mongodb redis \
+    && docker-php-ext-enable opcache zip soap xsl mongodb redis \
     && apk del .build-deps
 
 # install tideways extension
-ENV TIDEWAYS_VERSION=4.1.4
-RUN wget -Otideways-php.tar.gz "https://s3-eu-west-1.amazonaws.com/tideways/extension/4.1.4/tideways-php-$TIDEWAYS_VERSION-x86_64.tar.gz" \
+ENV TIDEWAYS_VERSION=4.1.5
+RUN wget -Otideways-php.tar.gz "https://s3-eu-west-1.amazonaws.com/tideways/extension/$TIDEWAYS_VERSION/tideways-php-$TIDEWAYS_VERSION-x86_64.tar.gz" \
     && tar xzvf tideways-php.tar.gz \
     && cd tideways-php-$TIDEWAYS_VERSION \
     && sh install.sh \
@@ -28,12 +31,7 @@ RUN wget -Otideways-php.tar.gz "https://s3-eu-west-1.amazonaws.com/tideways/exte
 
 COPY . /var/www
 
-# Use our own xdebug configuration.
-# Just extend the existing xdebug config as the path to xdebug.so is already existent.
-COPY ./scripts/docker/php/20-xdebug.ini /tmp/xdebug.ini
-RUN cat /tmp/xdebug.ini >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
-
-COPY ./scripts/docker/php/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+COPY ./scripts/docker/php/base/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
 # Add nginx user for unix socket permission
 RUN addgroup -S nginx \
@@ -47,7 +45,7 @@ RUN mkdir -p /var/www/var/logs /var/www/var/cache \
 
 WORKDIR /var/www
 
-COPY ./scripts/docker/php/docker-entrypoint /usr/local/bin/
+COPY ./scripts/docker/php/base/docker-entrypoint /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint"]
 
 CMD ["php-fpm"]

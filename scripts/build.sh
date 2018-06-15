@@ -23,12 +23,17 @@ info "Building Nginx image..."
 docker build -t $nginx_image:$TAG -t $nginx_image:latest -f scripts/docker/nginx/Dockerfile .
 
 info "Building PHP base image..."
-docker build -t $build_image -f scripts/docker/php/Dockerfile .
+docker build -t $build_image -f scripts/docker/php/base/Dockerfile .
 
 info "Installing PHP dependencies..."
 composer_install $build_image
 
 info "Building app image..."
-docker build -t $app_image:$TAG -t $app_image:latest -f scripts/docker/php/Dockerfile .
+dockerfile=scripts/docker/php/base/Dockerfile
+if [ "$1" == "dev" ]; then
+    info "Building app image with dev dependencies..."
+    dockerfile=scripts/docker/php/dev/Dockerfile
+fi
+docker build -t $app_image:$TAG -t $app_image:latest -f "$dockerfile" .
 
 success "done!"
