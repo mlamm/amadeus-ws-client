@@ -47,7 +47,7 @@
                     }
                   },
                   "remaining-seats": 9,
-                  "technical-stops": null,
+                  "technical-stops": [],
                   "baggage-rules": {
                     "pieces": 0,
                     "weight": null,
@@ -107,7 +107,7 @@
                     }
                   },
                   "remaining-seats": 9,
-                  "technical-stops": null,
+                  "technical-stops": [],
                   "baggage-rules": {
                     "pieces": 0,
                     "weight": null,

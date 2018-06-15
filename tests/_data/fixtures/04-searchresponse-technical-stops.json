@@ -54,7 +54,7 @@
                     "res-book-desig-code": "S"
                   },
                   "duration": null,
-                  "technical-stops": null,
+                  "technical-stops": [],
                   "baggage-rules": null
                 },
                 {
@@ -87,7 +87,7 @@
                     "res-book-desig-code": "S"
                   },
                   "duration": null,
-                  "technical-stops": null,
+                  "technical-stops": [],
                   "baggage-rules": null
                 },
                 {
@@ -240,7 +240,7 @@
                     "res-book-desig-code": "T"
                   },
                   "duration": null,
-                  "technical-stops": null,
+                  "technical-stops": [],
                   "baggage-rules": null
                 },
                 {
@@ -274,7 +274,7 @@
                     "res-book-desig-code": "T"
                   },
                   "duration": null,
-                  "technical-stops": null,
+                  "technical-stops": [],
                   "baggage-rules": null
                 }
               ]

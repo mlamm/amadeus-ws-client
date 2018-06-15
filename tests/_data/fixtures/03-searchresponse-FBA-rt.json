@@ -59,7 +59,7 @@
                     "res-book-desig-code": "O"
                   },
                   "duration": null,
-                  "technical-stops": null
+                  "technical-stops": []
                 }
               ]
             }
@@ -119,7 +119,7 @@
                     "res-book-desig-code": "P"
                   },
                   "duration": null,
-                  "technical-stops": null
+                  "technical-stops": []
                 }
               ]
             }
