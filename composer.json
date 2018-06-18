@@ -26,7 +26,7 @@
         }
     },
     "require": {
-        "php": "~7.1",
+        "php": "^7.2",
         "silex/silex": "~2.0",
         "amabnl/amadeus-ws-client": "dev-master#2c35a014a04994670a243d71a686005451596dce",
         "monolog/monolog": "~1.23",

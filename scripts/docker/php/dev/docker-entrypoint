@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+# Workaround for bug in php-fpm which prefixes and truncate output to logging
+LOG_STREAM="/var/www/var/logs/logToStdOut_pipe"
+
+if [ ! -f $LOG_STREAM ] ; then
+    mkfifo ${LOG_STREAM} && chmod 777 $LOG_STREAM
+fi
+
+# exec origin container entrypoint
+(tail -q -f ${LOG_STREAM} >> /dev/stdout || pkill php-fpm) & exec docker-php-entrypoint "$@"
