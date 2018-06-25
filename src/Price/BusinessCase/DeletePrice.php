@@ -46,7 +46,7 @@ class DeletePrice extends BusinessCase
      *
      * @return HalResponse
      */
-    public function respond()
+    public function respond() : HalResponse
     {
 
         try {

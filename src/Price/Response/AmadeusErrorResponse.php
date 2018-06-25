@@ -22,7 +22,7 @@ class AmadeusErrorResponse extends ErrorResponse
      *
      * @return ErrorResponse
      */
-    public function addViolationFromValidationFailures(array $failures)
+    public function addViolationFromValidationFailures(array $failures) : ErrorResponse
     {
         foreach ($failures as $failure) {
             $validationException = new ValidationException($failure->format());

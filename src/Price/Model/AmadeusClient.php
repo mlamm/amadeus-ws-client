@@ -5,7 +5,6 @@ namespace Flight\Service\Amadeus\Price\Model;
 use Flight\Service\Amadeus\Price\Request\Entity\Authenticate;
 use Amadeus\Client\RequestOptions\TicketDeleteTstOptions;
 use \Flight\Service\Amadeus\Price\Exception\AmadeusRequestException;
-use Flight\Service\Amadeus\Price\Response\PriceDeleteResponse;
 use Psr\Log\LoggerInterface;
 use Amadeus\Client;
 
@@ -82,7 +81,7 @@ class AmadeusClient
      * @throws \Exception
      * @throws AmadeusRequestException
      */
-    public function deletePrice(Authenticate $authenticate, Session $session)
+    public function deletePrice(Authenticate $authenticate, Session $session) : bool
     {
         /** @var Client $client */
         $client  = ($this->clientBuilder)(

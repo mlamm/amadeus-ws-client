@@ -3,7 +3,6 @@
 namespace Flight\Service\Amadeus\Price\Service;
 
 use Flight\Service\Amadeus\Price\Model\AmadeusClient;
-use Flight\Service\Amadeus\Price\Model\Price as PriceModel;
 use Flight\Service\Amadeus\Price\Model\Session;
 use Flight\Service\Amadeus\Price\Request;
 use JMS\Serializer\Serializer;
@@ -33,8 +32,8 @@ class Price
 
     /**
      * @param Request\Validator\Price $requestValidator
-     * @param Serializer                $serializer
-     * @param AmadeusClient             $amadeusClient
+     * @param Serializer              $serializer
+     * @param AmadeusClient           $amadeusClient
      */
     public function __construct(
         Request\Validator\Price $requestValidator,
