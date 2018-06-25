@@ -69,6 +69,9 @@ itinerary:
 session:
     wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
 
+price:
+    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+
 response:
     json_encoding_options:
         - JSON_PRETTY_PRINT
@@ -81,6 +84,8 @@ debug:
       log_ama_traffic: false
     session:
       log_ama_traffic: false
+    price:
+      log_ama_traffic: true
     pimpledump:
         enabled: true
     throwup:
