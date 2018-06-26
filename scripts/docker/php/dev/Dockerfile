@@ -1,4 +1,4 @@
-FROM sabre-php-base-build
+FROM php:7.2.6-fpm-alpine
 
 ENV XDEBUG_VERSION=2.6.0
 
