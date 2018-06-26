@@ -654,15 +654,8 @@
       <wsdl:output message="tns:Ticket_CreditCardCheckReply_6_1" />
     </wsdl:operation>
     <wsdl:operation name="Ticket_DeleteTST">
-      <soap:operation soapAction="http://webservices.amadeus.com/1ASIWIBEAEC/TTSTDQ_04_1_1A"/>
-      <wsdl:input>
-        <soap:body use="literal"/>
-        <soap:header part="session" use="literal" message="tns:Session_2.0"/>
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal"/>
-        <soap:header part="session" use="literal" message="tns:Session_2.0"/>
-      </wsdl:output>
+      <wsdl:input message="tns:Ticket_DeleteTST_4_1"/>
+      <wsdl:output message="tns:Ticket_DeleteTSTReply_4_1"/>
     </wsdl:operation>
     <wsdl:operation name="Ticket_DisplayTST">
       <wsdl:input message="tns:Ticket_DisplayTST_7_1" />
