@@ -15,7 +15,7 @@
   <wsdl:types>
     <xs:schema>
       <xs:import namespace="http://xml.amadeus.com/2010/06/Session_v3" schemaLocation="AMA/2012B/AMA_WS_Session.xsd" />
-      <xs:import namespace="http://wsdl.amadeus.com/2010/06/ws/Link_v1" schemaLocation="AMA_WSLink.xsd" />
+      <xs:import namespace="http://wsdl.amadeus.com/2010/06/wtns:Session_3.000s/Link_v1" schemaLocation="AMA_WSLink.xsd" />
       <xs:import namespace="http://xml.amadeus.com/2010/06/Security_v1" schemaLocation="AMA/2012B/AMA_SecurityHostedUser.xsd" />
       <xs:import namespace="http://xml.amadeus.com/CCVRQT_06_1_1A" schemaLocation="Ticket_CreditCardCheck_06_1_1A.xsd" />
       <xs:import namespace="http://xml.amadeus.com/CCVRSP_06_1_1A" schemaLocation="Ticket_CreditCardCheckReply_06_1_1A.xsd" />
@@ -855,11 +855,11 @@
       <soap:operation soapAction="http://webservices.amadeus.com/1ASIWIBEAEC/TTSTDQ_04_1_1A"/>
       <wsdl:input>
         <soap:body use="literal"/>
-        <soap:header part="session" use="literal" message="tns:Session_2.0"/>
+        <soap:header part="session" use="literal" message="tns:Session_3.000"/>
       </wsdl:input>
       <wsdl:output>
         <soap:body use="literal"/>
-        <soap:header part="session" use="literal" message="tns:Session_2.0"/>
+        <soap:header part="session" use="literal" message="tns:Session_3.000"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="Ticket_DisplayTST">
