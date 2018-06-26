@@ -20,5 +20,6 @@ class PriceProvider extends \Flight\Service\Amadeus\Application\BusinessCaseProv
     {
         // here goes the route definition
         $collection->match('/', 'businesscase.price-delete')->method('DELETE');
+        $collection->match('/', 'businesscase.price-create')->method('POST');
     }
 }

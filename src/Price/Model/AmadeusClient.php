@@ -2,6 +2,7 @@
 
 namespace Flight\Service\Amadeus\Price\Model;
 
+use Amadeus\Client\RequestOptions\FarePricePnrWithBookingClassOptions;
 use Flight\Service\Amadeus\Price\Request\Entity\Authenticate;
 use Amadeus\Client\RequestOptions\TicketDeleteTstOptions;
 use \Flight\Service\Amadeus\Price\Exception\AmadeusRequestException;
@@ -98,6 +99,35 @@ class AmadeusClient
         $clientResult        = $client->ticketDeleteTST($options);
 
         return self::CHECK_RESULT_OK == $this->checkResult($clientResult);
+    }
+
+    /**
+     * send create Price request to amadeus
+     *
+     * @param Authenticate $authenticate
+     * @param Session      $session
+     *
+     * @return bool
+     * @throws \Exception
+     * @throws AmadeusRequestException
+     */
+    public function createPrice(Authenticate $authenticate, Session $session, $tarif) : bool
+    {
+        /** @var Client $client */
+        $client  = ($this->clientBuilder)(
+            $this->requestTransformer
+                ->buildClientParams($authenticate, $this->logger)
+        );
+        $options = new FarePricePnrWithBookingClassOptions([
+            ]
+        // %TODO, translate tariff
+        );
+        $client->setSessionData($session->toArray());
+
+        $clientResult        = $client->farePricePnrWithBookingClass($options);
+        $this->checkResult($clientResult);
+
+        return (new AmadeusRequestTransformer)->mapPostPriceResult($clientResult);
     }
 
     /**

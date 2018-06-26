@@ -71,4 +71,16 @@ class Price
             throw new InvalidRequestParameterException($validationResult->getFailures());
         }
     }
+
+    public function validatePostBody($body)
+    {
+        $validator = new Validator();
+        $validator->required('tariff')->string();
+
+        $validationResult = $validator->validate((array) $body);
+
+        if ($validationResult->isNotValid()) {
+            throw new InvalidRequestParameterException($validationResult->getFailures());
+        }
+    }
 }

@@ -76,4 +76,9 @@ class AmadeusRequestTransformer
 
         return $clientParams;
     }
+
+    public function mapPostPriceResult($clientResult)
+    {
+        var_dump($clientResult);die(__METHOD__ . ':' . __LINE__); // %TODO
+    }
 }

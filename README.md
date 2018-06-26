@@ -183,3 +183,17 @@ Delete Amadeus service and associated dependencies:
 ```
 $ helm del --purge amadeus
 ```
+
+## Looking for XDEBUG?
+
+Build with *dev*:
+
+```
+$ ./scripts/build.sh dev
+```
+
+Append XDEBUG to URLs, where *service-amadeus* is the ide-key configured in PHPStorm.
+
+```
+$ curl http://localhost/price/?XDEBUG_SESSION_START=service-amadeus
+```
