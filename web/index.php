@@ -8,6 +8,7 @@ use Flight\Service\Amadeus\Search\Provider\SearchServiceProvider;
 use Flight\Service\Amadeus\Remarks;
 use Flight\Service\Amadeus\Itinerary;
 use Flight\Service\Amadeus\Session;
+use Flight\Service\Amadeus\Price;
 use Flight\TracingHeaderSilex\TracingHeaderProvider;
 use Silex\Application;
 use Symfony\Component\Yaml\Yaml;
@@ -40,6 +41,7 @@ $app->register(new SearchServiceProvider($useMockAmaResponses));
 $app->register(new Remarks\Provider\RemarksServiceProvider($useMockAmaResponses));
 $app->register(new Session\Provider\SessionServiceProvider($useMockAmaResponses));
 $app->register(new Itinerary\Provider\ItineraryServiceProvider($useMockAmaResponses));
+$app->register(new Price\Provider\PriceServiceProvider($useMockAmaResponses));
 
 // register config
 $app['config'] = function () {
@@ -115,6 +117,13 @@ $app['businesscase.itinerary-read'] = function() use ($app) {
     );
 };
 
+$app['businesscase.price-delete'] = function() use ($app) {
+    return new Price\BusinessCase\DeletePrice(
+        $app['service.price'],
+        $app['monolog']
+    );
+};
+
 $app->register(new \Flight\Service\Amadeus\Search\Cache\CacheProvider());
 
 // application provider
@@ -123,6 +132,7 @@ $app->mount('/flight-search', new Flight\Service\Amadeus\Search\SearchProvider()
 $app->mount('/remarks', new Remarks\RemarksProvider());
 $app->mount('/session', new Session\SessionProvider());
 $app->mount('/itinerary', new Itinerary\ItineraryProvider());
+$app->mount('/price', new Price\PriceProvider());
 
 if ($app['config']->debug->pimpledump->enabled) {
     $app->register(new \Sorien\Provider\PimpleDumpProvider(), [
@@ -135,3 +145,4 @@ if ($app['config']->debug->throwup->enabled) {
 }
 
 $app->run();
+

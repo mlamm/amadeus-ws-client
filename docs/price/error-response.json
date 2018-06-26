@@ -1,0 +1,36 @@
+{
+  "errors": {
+    "_": [
+      {
+        "code": "ARS0001",
+        "message": "Amadeus service error message",
+        "status": 500
+      },
+      {
+        "code": "ARS0002",
+        "message": "MALFORMED REQUEST",
+        "status": 500
+      },
+      {
+        "code": "ARS0003",
+        "message": "INVALID OR MISSING REQUEST PARAM",
+        "status": 500
+      },
+      {
+        "code": "ARS0004",
+        "message": "The Amadeus\\Client::securityAuthenticate method didn’t return state OK",
+        "status": 500
+      },
+      {
+        "code": "ARS0006",
+        "message": "INVALID INTERNAL METHOD CALL - '$called Method$'",
+        "status": 500
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "/itinerary"
+    }
+  }
+}

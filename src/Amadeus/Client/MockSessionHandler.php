@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Flight\Service\Amadeus\Amadeus\Client;
 
@@ -29,6 +29,8 @@ class MockSessionHandler implements HandlerInterface
     private const COMMIT_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/10-Session-Commit-Response.xml';
 
     private const SECURITY_SIGNOUT_RESPONSE_FIXTURE = 'tests/_data/fixtures/11-Security-SignOut-Response.xml';
+
+    private const TICKET_DELETETST_RESPONSE_FIXTURE = 'tests/_data/fixtures/12-Ticket_DeleteTST-Response.xml';
 
     /**
      * @var SessionHandlerParams
@@ -71,15 +73,19 @@ class MockSessionHandler implements HandlerInterface
             case 'PNR_Retrieve':
                 return $this->loadPnrRetrieveResponse();
                 break;
+            case 'Ticket_DeleteTST':
+                return $this->loadTicketDeleteTstResponse();
+                break;
+
         }
 
         throw new \Exception("no mock response configured for message `{$messageName}`");
     }
 
-    private function loadMasterPricerTravelBoardSearchResponse(): SendResult
+    private function loadMasterPricerTravelBoardSearchResponse() : SendResult
     {
-        $sendResult = new SendResult();
-        $sendResult->responseXml = file_get_contents(self::MASTERPRICER_RESPONSE_FIXTURE);
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::MASTERPRICER_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
@@ -87,17 +93,17 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadCreateSessionResponse()
     {
-        $sendResult = new SendResult();
-        $sendResult->responseXml = file_get_contents(self::CREATE_SESSION_RESPONSE_FIXTURE);
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::CREATE_SESSION_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
     }
 
-    private function loadPnrRetrieveResponse(): SendResult
+    private function loadPnrRetrieveResponse() : SendResult
     {
-        $sendResult = new SendResult();
-        $sendResult->responseXml = file_get_contents(self::PNR_RETRIEVE_RESPONSE_FIXTURE);
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::PNR_RETRIEVE_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
@@ -105,8 +111,8 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadSessionCommitResponse()
     {
-        $sendResult = new SendResult();
-        $sendResult->responseXml = file_get_contents(self::COMMIT_SESSION_RESPONSE_FIXTURE);
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::COMMIT_SESSION_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
@@ -114,8 +120,17 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadSecuritySignOutResponse()
     {
-        $sendResult = new SendResult();
-        $sendResult->responseXml = file_get_contents(self::SECURITY_SIGNOUT_RESPONSE_FIXTURE);
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::SECURITY_SIGNOUT_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadTicketDeleteTstResponse()
+    {
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::TICKET_DELETETST_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;

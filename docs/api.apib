@@ -522,6 +522,43 @@ This request will return the itinerary data to the requested recordLocator
 
             <!-- include(itinerary/error-response_schema.json) -->
 
+## Price [/price/]
+
+### Price [DELETE /price/]
+
+This request will delete the pricing from the given session
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+            session: {"session-id": "013GZKUXA2","sequence-number": "2","security-token": "2XCAG3OKA7MOQ3DBAGRL6OULBZ"}
+
+    + Schema
+
+            <!-- include(itinerary/GET_request_schema.json) -->
+
++ Response 204 (text/html; charset=UTF-8)
+
++ Response 500 (application/hal+json)
+
+    |Code     | Message                                                                  |
+    |---------|--------------------------------------------------------------------------|
+    | ARS000X | SERVER ERROR - {message}                                                 |
+    | ASR0001 | MALFORMED REQUEST                                                        |
+    | ARS0002 | INVALID OR MISSING REQUEST PARAM                                         |
+    | ARS0004 | AMADEUS RESPONSE ERROR [{errNo., message}]                               |
+
+
+    + Body
+
+            <!-- include(price/error-response.json) -->
+
+    + Schema
+
+            <!-- include(price/error-response_schema.json) -->
+
 # Data Structures
 
 ## SelfLink (object)
