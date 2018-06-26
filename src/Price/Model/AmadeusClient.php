@@ -3,6 +3,7 @@
 namespace Flight\Service\Amadeus\Price\Model;
 
 use Amadeus\Client\RequestOptions\FarePricePnrWithBookingClassOptions;
+use Amadeus\Client\RequestOptions\TicketCreateTstFromPricingOptions;
 use Flight\Service\Amadeus\Price\Request\Entity\Authenticate;
 use Amadeus\Client\RequestOptions\TicketDeleteTstOptions;
 use \Flight\Service\Amadeus\Price\Exception\AmadeusRequestException;
@@ -105,29 +106,62 @@ class AmadeusClient
      * send create Price request to amadeus
      *
      * @param Authenticate $authenticate
-     * @param Session      $session
+     * @param Session $session
      *
      * @return bool
      * @throws \Exception
      * @throws AmadeusRequestException
      */
-    public function createPrice(Authenticate $authenticate, Session $session, $tarif) : bool
+    public function createAndSafePrice(Authenticate $authenticate, Session $session) : bool
     {
         /** @var Client $client */
         $client  = ($this->clientBuilder)(
             $this->requestTransformer
                 ->buildClientParams($authenticate, $this->logger)
         );
-        $options = new FarePricePnrWithBookingClassOptions([
-            ]
-        // %TODO, translate tariff
-        );
-        $client->setSessionData($session->toArray());
 
+        $options = new FarePricePnrWithBookingClassOptions([
+            'overrideOptions' => [
+                FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_PUB,
+                FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_UNI,
+                FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,
+                FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
+                ],
+                'ticketType' => FarePricePnrWithBookingClassOptions::TICKET_TYPE_ELECTRONIC,
+                'corporateUniFares' => ['000867']
+            ]
+        );
+
+        $client->setSessionData($session->toArray());
         $clientResult        = $client->farePricePnrWithBookingClass($options);
         $this->checkResult($clientResult);
 
-        return (new AmadeusRequestTransformer)->mapPostPriceResult($clientResult);
+        if (self::CHECK_RESULT_OK != $this->checkResult($clientResult)) {
+            return false;
+        }
+
+        $options = new TicketCreateTstFromPricingOptions([
+            'pricings' => [
+                new Client\RequestOptions\Ticket\Pricing([
+                    'tstNumber' => 1
+                ])
+            ]
+//                'overrideOptions' => [
+//                    FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_PUB,
+//                    FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_UNI,
+//                    FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,
+//                    FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
+//                ],
+//                'ticketType' => FarePricePnrWithBookingClassOptions::TICKET_TYPE_ELECTRONIC,
+//                'corporateUniFares' => ['000867']
+            ]
+        );
+
+        $client->setSessionData($session->toArray());
+        $clientResult        = $client->ticketCreateTSTFromPricing($options);
+        $this->checkResult($clientResult);
+
+        return self::CHECK_RESULT_OK == $this->checkResult($clientResult);
     }
 
     /**

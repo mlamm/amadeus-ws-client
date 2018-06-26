@@ -94,16 +94,14 @@ class Price
      * @throws \Flight\Service\Amadeus\Price\Exception\AmadeusRequestException
      * @throws \Flight\Service\Amadeus\Price\Exception\InvalidRequestParameterException
      */
-    public function createPrice($authHeader, $sessionHeader, $body)
+    public function createPrice($authHeader, $sessionHeader)
     {
         $authHeader    = \GuzzleHttp\json_decode($authHeader);
         $sessionHeader = \GuzzleHttp\json_decode($sessionHeader);
-        $body       = \GuzzleHttp\json_decode($body);
 
         // validate
         $this->requestValidator->validateAuthentication($authHeader);
         $this->requestValidator->validateSession($sessionHeader);
-        $this->requestValidator->validatePostBody($body);
 
         $authenticate = (new Request\Entity\Authenticate())
             ->setDutyCode($authHeader->{'duty-code'})
@@ -118,18 +116,8 @@ class Price
             ->setSequenceNumber($sessionHeader->{'sequence-number'})
             ->setSecurityToken($sessionHeader->{'security-token'});
 
-        /**
-         *         \Default_Service_Crs_PriceInterface::TARIFF_CODE_PUBLIC => array('FXP/LO'),
-        \Default_Service_Crs_PriceInterface::TARIFF_CODE_PRIVATE => array('FXP/LO/R,U', 'FXP/LO/R,UP'),
-        \Default_Service_Crs_PriceInterface::TARIFF_CODE_NETTO => array('FXP/LO/R,U000867'),
-        \Default_Service_Crs_PriceInterface::TARIFF_CODE_CALCPUB => array('FXP/LO/R,U000867'),
-         */
-
-        $response = $this->amadeusClient->createPrice(
-            $authenticate,
-            $session,
-            $body->tariff
-        );
+        $response = $this->amadeusClient->createAndSafePrice($authenticate, $session);
 
         return $this->serializer->serialize($response, 'json');
-    }}
+    }
+}
