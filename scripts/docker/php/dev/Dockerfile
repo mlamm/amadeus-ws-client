@@ -2,6 +2,12 @@ FROM php:7.2.6-fpm-alpine
 
 ENV XDEBUG_VERSION=2.6.0
 
+COPY ./scripts/docker/php/base/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+
+# Add nginx user for unix socket permission
+RUN addgroup -S nginx \
+  && adduser -S -D -G nginx nginx
+
 # Install packages we want to keep
 RUN apk --no-cache add fcgi git openssh libxml2 libxslt zlib libbz2 openssl-dev
 

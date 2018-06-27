@@ -7,6 +7,7 @@ use Amadeus\Client\RequestOptions\TicketCreateTstFromPricingOptions;
 use Flight\Service\Amadeus\Price\Request\Entity\Authenticate;
 use Amadeus\Client\RequestOptions\TicketDeleteTstOptions;
 use \Flight\Service\Amadeus\Price\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Price\Response\PriceCreateResponse;
 use Psr\Log\LoggerInterface;
 use Amadeus\Client;
 
