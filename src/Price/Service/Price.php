@@ -86,8 +86,10 @@ class Price
 
 
     /**
-     * @param $authHeader
-     * @param $sessionHeader
+     * Create Pricing quote in CRS.
+     *
+     * @param string $authHeader authentication header
+     * @param string $sessionHeader session header
      *
      * @return mixed|string
      *

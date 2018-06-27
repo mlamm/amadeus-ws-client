@@ -48,7 +48,6 @@ class CreatePrice extends BusinessCase
      */
     public function respond() : HalResponse
     {
-
         try {
             $response = PriceCreateResponse::fromJsonString(
                 $this->priceService->createPrice(

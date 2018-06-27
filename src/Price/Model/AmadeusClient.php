@@ -7,7 +7,6 @@ use Amadeus\Client\RequestOptions\TicketCreateTstFromPricingOptions;
 use Flight\Service\Amadeus\Price\Request\Entity\Authenticate;
 use Amadeus\Client\RequestOptions\TicketDeleteTstOptions;
 use \Flight\Service\Amadeus\Price\Exception\AmadeusRequestException;
-use Flight\Service\Amadeus\Price\Response\PriceCreateResponse;
 use Psr\Log\LoggerInterface;
 use Amadeus\Client;
 
@@ -104,7 +103,7 @@ class AmadeusClient
     }
 
     /**
-     * send create Price request to amadeus
+     * Create pricing quote in CRS and safe it into TST.
      *
      * @param Authenticate $authenticate
      * @param Session $session
@@ -121,6 +120,7 @@ class AmadeusClient
                 ->buildClientParams($authenticate, $this->logger)
         );
 
+        // create fare pricing in record locator
         $options = new FarePricePnrWithBookingClassOptions([
             'overrideOptions' => [
                 FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_PUB,
@@ -134,32 +134,23 @@ class AmadeusClient
         );
 
         $client->setSessionData($session->toArray());
-        $clientResult        = $client->farePricePnrWithBookingClass($options);
+        $clientResult = $client->farePricePnrWithBookingClass($options);
         $this->checkResult($clientResult);
 
         if (self::CHECK_RESULT_OK != $this->checkResult($clientResult)) {
             return false;
         }
 
+        // create tst entry from prior pricing
         $options = new TicketCreateTstFromPricingOptions([
-            'pricings' => [
-                new Client\RequestOptions\Ticket\Pricing([
-                    'tstNumber' => 1
-                ])
-            ]
-//                'overrideOptions' => [
-//                    FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_PUB,
-//                    FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_UNI,
-//                    FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,
-//                    FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
-//                ],
-//                'ticketType' => FarePricePnrWithBookingClassOptions::TICKET_TYPE_ELECTRONIC,
-//                'corporateUniFares' => ['000867']
+                'pricings' => [
+                    new Client\RequestOptions\Ticket\Pricing([
+                        'tstNumber' => 1
+                    ])
+                ]
             ]
         );
-
-        $client->setSessionData($session->toArray());
-        $clientResult        = $client->ticketCreateTSTFromPricing($options);
+        $clientResult = $client->ticketCreateTSTFromPricing($options);
         $this->checkResult($clientResult);
 
         return self::CHECK_RESULT_OK == $this->checkResult($clientResult);
