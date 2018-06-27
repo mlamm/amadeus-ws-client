@@ -32,6 +32,8 @@ class MockSessionHandler implements HandlerInterface
 
     private const TICKET_DELETETST_RESPONSE_FIXTURE = 'tests/_data/fixtures/12-Ticket_DeleteTST-Response.xml';
 
+    private const FARE_PNRWITHBOOKINGCLASS_RESPONSE_FIXTURE = 'tests/_data/fixtures/13-Fare_PricePNRWithBookingClass-Response.xml';
+
     /**
      * @var SessionHandlerParams
      */
@@ -76,7 +78,9 @@ class MockSessionHandler implements HandlerInterface
             case 'Ticket_DeleteTST':
                 return $this->loadTicketDeleteTstResponse();
                 break;
-
+            case 'Fare_PricePNRWithBookingClass':
+                return $this->loadFarePricePNRResponse();
+                break;
         }
 
         throw new \Exception("no mock response configured for message `{$messageName}`");
@@ -131,6 +135,15 @@ class MockSessionHandler implements HandlerInterface
     {
         $sendResult                 = new SendResult();
         $sendResult->responseXml    = file_get_contents(self::TICKET_DELETETST_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadFarePricePNRResponse()
+    {
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::FARE_PNRWITHBOOKINGCLASS_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
