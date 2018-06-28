@@ -1,4 +1,4 @@
-FROM sabre-php-base-build
+FROM amadeus-php-base-build
 
 ENV XDEBUG_VERSION=2.6.0
 
