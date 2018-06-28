@@ -52,7 +52,8 @@ class CreatePrice extends BusinessCase
             $response = PriceCreateResponse::fromJsonString(
                 $this->priceService->createPrice(
                     $this->getRequest()->headers->get('authentication'),
-                    $this->getRequest()->headers->get('session')
+                    $this->getRequest()->headers->get('session'),
+                    $this->getRequest()->getContent()
                 ),
                 Response::HTTP_NO_CONTENT
             );

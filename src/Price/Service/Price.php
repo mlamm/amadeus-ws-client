@@ -96,14 +96,16 @@ class Price
      * @throws \Flight\Service\Amadeus\Price\Exception\AmadeusRequestException
      * @throws \Flight\Service\Amadeus\Price\Exception\InvalidRequestParameterException
      */
-    public function createPrice($authHeader, $sessionHeader)
+    public function createPrice($authHeader, $sessionHeader, $plainBody)
     {
         $authHeader    = \GuzzleHttp\json_decode($authHeader);
         $sessionHeader = \GuzzleHttp\json_decode($sessionHeader);
+        $jsonBody = \GuzzleHttp\json_decode($plainBody);
 
         // validate
         $this->requestValidator->validateAuthentication($authHeader);
         $this->requestValidator->validateSession($sessionHeader);
+        $this->requestValidator->validatePostBody($jsonBody);
 
         $authenticate = (new Request\Entity\Authenticate())
             ->setDutyCode($authHeader->{'duty-code'})
@@ -118,7 +120,7 @@ class Price
             ->setSequenceNumber($sessionHeader->{'sequence-number'})
             ->setSecurityToken($sessionHeader->{'security-token'});
 
-        $response = $this->amadeusClient->createAndSafePrice($authenticate, $session);
+        $response = $this->amadeusClient->createAndSafePrice($authenticate, $session, $jsonBody->tariff);
 
         return $this->serializer->serialize($response, 'json');
     }

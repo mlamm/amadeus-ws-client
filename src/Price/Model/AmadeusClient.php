@@ -112,7 +112,7 @@ class AmadeusClient
      * @throws \Exception
      * @throws AmadeusRequestException
      */
-    public function createAndSafePrice(Authenticate $authenticate, Session $session) : bool
+    public function createAndSafePrice(Authenticate $authenticate, Session $session, $tarif) : bool
     {
         /** @var Client $client */
         $client  = ($this->clientBuilder)(
@@ -121,6 +121,7 @@ class AmadeusClient
         );
 
         // create fare pricing in record locator
+        // %TODO, map tarif to options
         $options = new FarePricePnrWithBookingClassOptions([
             'overrideOptions' => [
                 FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_PUB,

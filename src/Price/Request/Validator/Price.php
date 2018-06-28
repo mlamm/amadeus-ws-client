@@ -76,6 +76,9 @@ class Price
     {
         $validator = new Validator();
         $validator->required('tariff')->string();
+        $validator->required('tariff')->inArray([
+// %TODO
+        ]);
 
         $validationResult = $validator->validate((array) $body);
 
