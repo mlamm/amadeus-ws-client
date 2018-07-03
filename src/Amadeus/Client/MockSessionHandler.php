@@ -249,4 +249,24 @@ class MockSessionHandler implements HandlerInterface
     {
         throw new \Exception('not implemented for mock session handler');
     }
+
+    public function isTransactionFlowLinkEnabled()
+    {
+        return null; //Not supported
+    }
+
+    public function setTransactionFlowLink($enabled)
+    {
+        return null; //Not supported
+    }
+
+    public function getConsumerId()
+    {
+        return null; //Not supported
+    }
+
+    public function setConsumerId($id)
+    {
+        return null; //Not supported
+    }
 }

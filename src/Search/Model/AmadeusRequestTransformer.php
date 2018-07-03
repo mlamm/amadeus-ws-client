@@ -4,11 +4,7 @@ declare(strict_types=1);
 namespace Flight\Service\Amadeus\Search\Model;
 
 use Amadeus\Client;
-use Amadeus\Client\RequestOptions\Fare\MasterPricer\CarrierFeeDetails;
-use Amadeus\Client\RequestOptions\Fare\MasterPricer\DataTypeInformation;
 use Amadeus\Client\RequestOptions\Fare\MasterPricer\FeeDetails;
-use Amadeus\Client\RequestOptions\Fare\MasterPricer\FeeInfo;
-use Amadeus\Client\RequestOptions\Fare\MasterPricer\FeeTypeInfo;
 use Amadeus\Client\RequestOptions\Fare\MPFeeOption;
 use Amadeus\Client\RequestOptions\FareMasterPricerTbSearch;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
@@ -248,24 +244,15 @@ class AmadeusRequestTransformer
      *
      * @return array
      */
-    protected function buildFeeOption() :array
+    protected function buildFeeOption() : array
     {
         $feeOption = [
             new MPFeeOption([
-                'feeTypeInfo' => new FeeTypeInfo([
-                        'carrierFeeDetails' => new CarrierFeeDetails([
-                            'type' => CarrierFeeDetails::TYPE_TICKETING_FEES
-                        ])
-                    ]
-                ),
-                'feeDetails'  => [
+                'type'       => MPFeeOption::TYPE_TICKETING_FEES,
+                'feeDetails' => [
                     new FeeDetails([
-                        'feeInfo' => new FeeInfo([
-                            'dataTypeInformation' => new DataTypeInformation([
-                                'subType' => DataTypeInformation::SUB_TYPE_FARE_COMPONENT_AMOUNT,
-                                'option'  => DataTypeInformation::OPTION_MANUALLY_INCLUDED
-                            ])
-                        ])
+                        'subType' => FeeDetails::SUB_TYPE_FARE_COMPONENT_AMOUNT,
+                        'option'  => FeeDetails::OPTION_MANUALLY_INCLUDED
                     ])
                 ]
             ])

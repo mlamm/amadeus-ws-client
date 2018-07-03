@@ -35,7 +35,6 @@ class ItineraryService
      * @param Request\Validator\Itinerary $requestValidator
      * @param Serializer                  $serializer
      * @param ItineraryAmadeusClient      $amadeusClient
-     * @param \stdClass                   $config
      */
     public function __construct(
         Request\Validator\Itinerary $requestValidator,
