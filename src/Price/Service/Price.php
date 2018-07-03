@@ -84,13 +84,13 @@ class Price
         return $this->serializer->serialize($response, 'json');
     }
 
-
     /**
      * Create Pricing quote in CRS.
      *
      * @param string $authHeader authentication header
      * @param string $sessionHeader session header
      *
+     * @param string $plainBody body content of request
      * @return mixed|string
      *
      * @throws \Flight\Service\Amadeus\Price\Exception\AmadeusRequestException
@@ -98,9 +98,9 @@ class Price
      */
     public function createPrice($authHeader, $sessionHeader, $plainBody)
     {
-        $authHeader    = \GuzzleHttp\json_decode($authHeader);
-        $sessionHeader = \GuzzleHttp\json_decode($sessionHeader);
-        $jsonBody = \GuzzleHttp\json_decode($plainBody);
+        $authHeader    = \json_decode($authHeader);
+        $sessionHeader = \json_decode($sessionHeader);
+        $jsonBody = \json_decode($plainBody);
 
         // validate
         $this->requestValidator->validateAuthentication($authHeader);

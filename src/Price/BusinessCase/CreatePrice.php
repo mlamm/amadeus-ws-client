@@ -59,7 +59,7 @@ class CreatePrice extends BusinessCase
             );
 
         } catch (AmadeusRequestException $exception) {
-            $this->logger->critical($exception);
+            $this->logger->error($exception);
             $exception->setResponseCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 
             $errorResponse = new AmadeusErrorResponse();

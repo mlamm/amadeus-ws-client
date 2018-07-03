@@ -72,12 +72,21 @@ class Price
         }
     }
 
+    /**
+     * Validate body parameters for price create.
+     *
+     * @param \stdClass|null $body body content
+     * @throws InvalidRequestParameterException
+     */
     public function validatePostBody($body)
     {
         $validator = new Validator();
         $validator->required('tariff')->string();
         $validator->required('tariff')->inArray([
-// %TODO
+            'IATA',
+            'NEGO',
+            'NETALLU000867',
+            'CALCPUB',
         ]);
 
         $validationResult = $validator->validate((array) $body);

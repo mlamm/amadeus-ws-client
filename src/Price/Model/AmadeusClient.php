@@ -108,8 +108,8 @@ class AmadeusClient
      * @param Authenticate $authenticate
      * @param Session $session
      *
+     * @param $tarif
      * @return bool
-     * @throws \Exception
      * @throws AmadeusRequestException
      */
     public function createAndSafePrice(Authenticate $authenticate, Session $session, $tarif) : bool
@@ -120,25 +120,26 @@ class AmadeusClient
                 ->buildClientParams($authenticate, $this->logger)
         );
 
-        // create fare pricing in record locator
-        // %TODO, map tarif to options
-        $options = new FarePricePnrWithBookingClassOptions([
-            'overrideOptions' => [
-                FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_PUB,
-                FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_UNI,
-                FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,
-                FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
-                ],
-                'ticketType' => FarePricePnrWithBookingClassOptions::TICKET_TYPE_ELECTRONIC,
-                'corporateUniFares' => ['000867']
-            ]
-        );
+        $tarifOptionsBuilder = new TarifOptionsBuilder($tarif);
+        $tarifOptions = $tarifOptionsBuilder->getTarifOptions();
+        $clientResult = null;
 
-        $client->setSessionData($session->toArray());
-        $clientResult = $client->farePricePnrWithBookingClass($options);
-        $this->checkResult($clientResult);
+        foreach ($tarifOptions as $tarifOption) {
+            try {
+                // create fare pricing in record locator
+                $client->setSessionData($session->toArray());
+                $clientResult = $client->farePricePnrWithBookingClass($tarifOption);
+                $this->checkResult($clientResult);
 
-        if (self::CHECK_RESULT_OK != $this->checkResult($clientResult)) {
+                if (self::CHECK_RESULT_OK == $this->checkResult($clientResult)) {
+                    break;
+                }
+            } catch (AmadeusRequestException $requestException) {
+                // ignore
+            }
+        }
+
+        if ($clientResult !== null && self::CHECK_RESULT_OK != $this->checkResult($clientResult)) {
             return false;
         }
 
@@ -171,10 +172,12 @@ class AmadeusClient
         if (Client\Result::STATUS_OK === $result->status) {
             return self::CHECK_RESULT_OK;
         }
+
         // already authenticate
         if (self::AMADEUS_RESULT_CODE_ALREADY_AUTH === $result->messages[0]->code) {
             return self::CHECK_RESULT_ALREADY_AUTH;
         }
+
         throw new AmadeusRequestException($result->messages);
     }
 }
