@@ -15,9 +15,10 @@ use Flight\Service\Amadeus\Price\Service\Price;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class CreatePrice BusinessCase
+ * CreatePrice BusinessCase
  *
- * @package Flight\Service\Amadeus\Price\BusinessCase
+ * @author     Marcel Lamm <marcel.lamm@invia.de>
+ * @copyright  Copyright (c) 2018 Invia Flights Germany GmbH
  */
 class CreatePrice extends BusinessCase
 {
