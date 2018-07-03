@@ -10,6 +10,7 @@ $I->haveHttpHeader(
     'authentication',
     file_get_contents(codecept_data_dir('requests/Price/valid-auth-header.json'))
 );
+$I->haveHttpHeader('Content-Type', 'application/json');
 $I->sendPOST(
     '/price/',
     file_get_contents(codecept_data_dir('requests/Price/create-price-tarif.json'))
