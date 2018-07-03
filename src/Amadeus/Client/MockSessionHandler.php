@@ -34,6 +34,8 @@ class MockSessionHandler implements HandlerInterface
 
     private const FARE_PNRWITHBOOKINGCLASS_RESPONSE_FIXTURE = 'tests/_data/fixtures/13-Fare_PricePNRWithBookingClass-Response.xml';
 
+    private const TICKET_CREATE_TSTS_FROM_PRICING_RESPONSE_FIXTURE = 'tests/_data/fixtures/14-Ticket-CreateTSTFromPricing-Response.xml';
+
     /**
      * @var SessionHandlerParams
      */
@@ -80,6 +82,9 @@ class MockSessionHandler implements HandlerInterface
                 break;
             case 'Fare_PricePNRWithBookingClass':
                 return $this->loadFarePricePNRResponse();
+                break;
+            case 'Ticket_CreateTSTFromPricing':
+                return $this->loadCreateTstResponse();
                 break;
         }
 
@@ -144,6 +149,15 @@ class MockSessionHandler implements HandlerInterface
     {
         $sendResult                 = new SendResult();
         $sendResult->responseXml    = file_get_contents(self::FARE_PNRWITHBOOKINGCLASS_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadCreateTstResponse()
+    {
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::TICKET_CREATE_TSTS_FROM_PRICING_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
