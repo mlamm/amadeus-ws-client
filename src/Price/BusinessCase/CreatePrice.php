@@ -104,7 +104,7 @@ class CreatePrice extends BusinessCase
         return $response->addMetaData(
             [
                 '_links' => [
-                    'self' => ['href' => '/price'],
+                    'self' => ['href' => '/price/'],
                 ],
             ]
         );

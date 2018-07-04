@@ -49,7 +49,7 @@ class TarifOptionsBuilder
                     'overrideOptions' => [FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST],
                 ]
             );
-        } else if ($this->tarif === 'NEGO') {
+        } elseif ($this->tarif === 'NEGO') {
             $options[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_UNI,
@@ -65,7 +65,7 @@ class TarifOptionsBuilder
                     ],
                 ]
             );
-        } else if (\in_array($this->tarif, ['NETALLU000867', 'CALCPUB'], true)) {
+        } elseif (\in_array($this->tarif, ['NETALLU000867', 'CALCPUB'], true)) {
             $options[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,

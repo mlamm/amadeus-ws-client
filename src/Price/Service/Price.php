@@ -100,7 +100,7 @@ class Price
     {
         $authHeader    = \json_decode($authHeader);
         $sessionHeader = \json_decode($sessionHeader);
-        $jsonBody = \json_decode($plainBody);
+        $jsonBody      = \json_decode($plainBody);
 
         // validate
         $this->requestValidator->validateAuthentication($authHeader);

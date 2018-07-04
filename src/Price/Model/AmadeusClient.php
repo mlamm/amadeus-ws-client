@@ -121,8 +121,8 @@ class AmadeusClient
         );
 
         $tarifOptionsBuilder = new TarifOptionsBuilder($tarif);
-        $tarifOptions = $tarifOptionsBuilder->getTarifOptions();
-        $clientResult = null;
+        $tarifOptions        = $tarifOptionsBuilder->getTarifOptions();
+        $clientResult        = null;
 
         foreach ($tarifOptions as $tarifOption) {
             try {
@@ -135,7 +135,7 @@ class AmadeusClient
                     break;
                 }
             } catch (AmadeusRequestException $requestException) {
-                // ignore
+                $this->logger->error($requestException);
             }
         }
 
