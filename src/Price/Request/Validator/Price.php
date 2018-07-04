@@ -52,20 +52,44 @@ class Price
     }
 
     /**
-     * validate Price
+     * Validate session header of request.
      *
-     * @param $Price
+     * @param $sessionHeader
      *
      * @throws InvalidRequestParameterException
      */
-    public function validateSession($Price)
+    public function validateSession($sessionHeader)
     {
         $validator = new Validator();
         $validator->required('session-id')->string();
         $validator->required('security-token')->string();
         $validator->required('sequence-number')->integer();
 
-        $validationResult = $validator->validate((array) $Price);
+        $validationResult = $validator->validate((array) $sessionHeader);
+
+        if ($validationResult->isNotValid()) {
+            throw new InvalidRequestParameterException($validationResult->getFailures());
+        }
+    }
+
+    /**
+     * Validate body parameters for price create.
+     *
+     * @param \stdClass|null $body body content
+     * @throws InvalidRequestParameterException
+     */
+    public function validatePostBody($body)
+    {
+        $validator = new Validator();
+        $validator->required('tariff')->string();
+        $validator->required('tariff')->inArray([
+            'IATA',
+            'NEGO',
+            'NETALLU000867',
+            'CALCPUB',
+        ]);
+
+        $validationResult = $validator->validate((array) $body);
 
         if ($validationResult->isNotValid()) {
             throw new InvalidRequestParameterException($validationResult->getFailures());

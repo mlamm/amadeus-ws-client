@@ -1386,11 +1386,11 @@
       <soap:operation soapAction="http://webservices.amadeus.com/1ASIWIBEAEC/TTSTDQ_04_1_1A"/>
       <wsdl:input>
         <soap:body use="literal"/>
-        <soap:header part="session" use="literal" message="tns:Session_2.0"/>
+        <soap:header part="session" use="literal" message="tns:Session_3.000"/>
       </wsdl:input>
       <wsdl:output>
         <soap:body use="literal"/>
-        <soap:header part="session" use="literal" message="tns:Session_2.0"/>
+        <soap:header part="session" use="literal" message="tns:Session_3.000"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="Ticket_DisplayTST">

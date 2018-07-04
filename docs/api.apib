@@ -524,6 +524,41 @@ This request will return the itinerary data to the requested recordLocator
 
 ## Price [/price/]
 
+### Price [POST /price/]
+
+This request will price an itinerary and save the pricing into a new TST element on the filekey
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+            session: {"session-id": "013GZKUXA2","sequence-number": "2","security-token": "2XCAG3OKA7MOQ3DBAGRL6OULBZ"}
+
+    + Attributes
+
+        + `tariff`: IATA (string, required) - the tariff to be used for pricing, choose one of: IATA, NEGO, NETALLU000867, CALCPUB
+
++ Response 204 (text/html; charset=UTF-8)
+
++ Response 500 (application/hal+json)
+
+    |Code     | Message                                                                  |
+    |---------|--------------------------------------------------------------------------|
+    | ARS000X | SERVER ERROR - {message}                                                 |
+    | ASR0001 | MALFORMED REQUEST                                                        |
+    | ARS0002 | INVALID OR MISSING REQUEST PARAM                                         |
+    | ARS0004 | AMADEUS RESPONSE ERROR [{errNo., message}]                               |
+
+
+    + Body
+
+            <!-- include(price/error-response.json) -->
+
+    + Schema
+
+            <!-- include(price/error-response_schema.json) -->
+
 ### Price [DELETE /price/]
 
 This request will delete the pricing from the given session

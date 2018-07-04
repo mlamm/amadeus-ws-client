@@ -124,6 +124,13 @@ $app['businesscase.price-delete'] = function() use ($app) {
     );
 };
 
+$app['businesscase.price-create'] = function() use ($app) {
+    return new Price\BusinessCase\CreatePrice(
+        $app['service.price'],
+        $app['monolog']
+    );
+};
+
 $app->register(new \Flight\Service\Amadeus\Search\Cache\CacheProvider());
 
 // application provider

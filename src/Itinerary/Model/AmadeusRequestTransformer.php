@@ -62,7 +62,7 @@ class AmadeusRequestTransformer
                 ],
                 'sessionHandlerParams' => [
                     'soapHeaderVersion' => Client::HEADER_V4,
-                    'stateful'          => false,
+                    'stateful'          => true,
                     'wsdl'              => "./wsdl/{$this->config->itinerary->wsdl}",
                     'logger'            => $logger,
                 ],
