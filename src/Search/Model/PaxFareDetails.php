@@ -105,8 +105,10 @@ class PaxFareDetails
 
         $monetaryDetail = $fareProduct ? MonetaryDetails::fromPaxFareProduct($fareProduct) : new MonetaryDetails([]);
 
-        $fares = (float) ($monetaryDetail->getTotalWithoutTicketingFees() ?? $fareProduct->paxFareDetail->totalFareAmount ?? 0.0);
-        $pax   = (float) ($fareProduct->paxFareDetail->totalTaxAmount ?? 0.0);
+        $flightTax   = (float) ($fareProduct->paxFareDetail->totalTaxAmount ?? 0.0);
+        $flightTotal = (float) ($monetaryDetail->getTotalWithoutTicketingFees() ?? $fareProduct->paxFareDetail->totalFareAmount ?? 0.0);
+        $flightFare  = $flightTotal - $flightTax;
+
         $paymentFees = $monetaryDetail->getTicketingFeesTotal() ?? 0.0;
 
         $paxCount = 0;
@@ -114,7 +116,7 @@ class PaxFareDetails
             $paxCount = count((array)$fareProduct->paxReference->traveller);
         }
 
-        return new static($pax, $fares, $paymentFees, $paxCount);
+        return new static($flightTax, $flightFare, $paymentFees, $paxCount);
     }
 
     public function getTaxPerPax(): float

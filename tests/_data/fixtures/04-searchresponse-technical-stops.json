@@ -284,12 +284,12 @@
       },
       "_calculation": {
         "flight": {
-          "total": 4720.66,
+          "total": 3085.33,
           "fare": {
-            "total": 3085.33,
+            "total": 1450,
             "passenger-types": {
-              "adult": 1125.11,
-              "child": 980.11,
+              "adult": 580,
+              "child": 435,
               "infant": null
             }
           },
