@@ -336,6 +336,7 @@ class AmadeusResponseTransformer
                     $baggageRules = new SearchResponse\BaggageRules();
                     if ($baggageDetails->quantityCode === 'W') {
                         $baggageRules
+                            ->setPieces(1)
                             ->setWeight($baggageDetails->freeAllowance)
                             ->setUnit('kg');
                     } elseif ($baggageDetails->quantityCode === 'N') {
