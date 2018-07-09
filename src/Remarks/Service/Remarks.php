@@ -117,6 +117,7 @@ class Remarks
 
         $remarks = new ArrayCollection();
         foreach ($body as $remarkString) {
+            // first item has the remarkName so we explode it out of the array to let the remarkValue rest in pieces
             $remark = explode('-', $remarkString);
             $remarkName = $remark[0];
             unset($remark[0]);
@@ -183,6 +184,7 @@ class Remarks
         /** @var Remark $remark */
         foreach ($remarksReadCollection->getRemarks() as $remark) {
             foreach ($body as $remarkString) {
+                // first item has the remarkName so we explode it out of the array to let the remarkValue rest in pieces
                 $remarkData = explode('-', $remarkString);
                 if ($remarkData[0] == $remark->getName()) {
                     $remarksDeleteCollection->add($remark);
