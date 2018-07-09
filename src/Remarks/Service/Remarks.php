@@ -116,8 +116,9 @@ class Remarks
         $this->requestValidator->validateRecordlocator($recordlocator);
 
         $remarks = new ArrayCollection();
-        foreach ($body as $remarkName => $remarkValue) {
-            $remarks->add((new Remark())->setName($remarkName)->setValue($remarkValue));
+        foreach ($body as $remarkString) {
+            $remark = explode('-', $remarkString);
+            $remarks->add((new Remark())->setName($remark[0])->setValue($remark[1]));
         }
 
         $authenticate = (new Request\Entity\Authenticate())
@@ -178,8 +179,9 @@ class Remarks
         $remarksDeleteCollection = new ArrayCollection();
         /** @var Remark $remark */
         foreach ($remarksReadCollection->getRemarks() as $remark) {
-            foreach ($body as $remarkName => $remarkValue) {
-                if ($remarkName == $remark->getName()) {
+            foreach ($body as $remarkString) {
+                $remarkData = explode('-', $remarkString);
+                if ($remarkData[0] == $remark->getName()) {
                     $remarksDeleteCollection->add($remark);
                 }
             }
