@@ -116,7 +116,12 @@ class Remarks
         $this->requestValidator->validateRecordlocator($recordlocator);
 
         $remarks = new ArrayCollection();
-        foreach ($body as $remarkName => $remarkValue) {
+        foreach ($body as $remarkString) {
+            // first item has the remarkName so we explode it out of the array to let the remarkValue rest in pieces
+            $remark = explode('-', $remarkString);
+            $remarkName = $remark[0];
+            unset($remark[0]);
+            $remarkValue = implode('-', $remark);
             $remarks->add((new Remark())->setName($remarkName)->setValue($remarkValue));
         }
 
@@ -178,8 +183,10 @@ class Remarks
         $remarksDeleteCollection = new ArrayCollection();
         /** @var Remark $remark */
         foreach ($remarksReadCollection->getRemarks() as $remark) {
-            foreach ($body as $remarkName => $remarkValue) {
-                if ($remarkName == $remark->getName()) {
+            foreach ($body as $remarkString) {
+                // first item has the remarkName so we explode it out of the array to let the remarkValue rest in pieces
+                $remarkData = explode('-', $remarkString);
+                if ($remarkData[0] == $remark->getName()) {
                     $remarksDeleteCollection->add($remark);
                 }
             }
