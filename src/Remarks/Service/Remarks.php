@@ -118,7 +118,10 @@ class Remarks
         $remarks = new ArrayCollection();
         foreach ($body as $remarkString) {
             $remark = explode('-', $remarkString);
-            $remarks->add((new Remark())->setName($remark[0])->setValue($remark[1]));
+            $remarkName = $remark[0];
+            unset($remark[0]);
+            $remarkValue = implode('-', $remark);
+            $remarks->add((new Remark())->setName($remarkName)->setValue($remarkValue));
         }
 
         $authenticate = (new Request\Entity\Authenticate())
