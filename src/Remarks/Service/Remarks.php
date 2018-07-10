@@ -8,6 +8,7 @@ use Flight\Service\Amadeus\Remarks\Model\Itinerary;
 use Flight\Service\Amadeus\Remarks\Model\Remark;
 use Flight\Service\Amadeus\Remarks\Model\RemarksAmadeusClient;
 use Flight\Service\Amadeus\Remarks\Request;
+use Flight\Service\Amadeus\Remarks\Response\ResultResponse;
 use JMS\Serializer\Serializer;
 
 /**
@@ -179,6 +180,7 @@ class Remarks
         /** @var Itinerary $remarksReadCollection */
         $remarksReadCollection   = $response->getResult()->get(0);
         $remarksDeleteCollection = new ArrayCollection();
+
         /** @var Remark $remark */
         foreach ($remarksReadCollection->getRemarks() as $remark) {
             foreach ($body->remarks as $remarkString) {
@@ -192,11 +194,15 @@ class Remarks
         // be clean, remove garbage
         unset($remarksReadCollection);
 
-        $response = $this->amadeusClient->remarksDelete(
-            (new Request\Entity\RemarksDelete())
-                ->setRecordLocator($body->recordLocator)->setRemarks($remarksDeleteCollection),
-            $authenticate
-        );
+        if (!$remarksDeleteCollection->isEmpty()) {
+            $response = $this->amadeusClient->remarksDelete(
+                (new Request\Entity\RemarksDelete())
+                    ->setRecordLocator($body->recordLocator)->setRemarks($remarksDeleteCollection),
+                $authenticate
+            );
+        } else {
+            $response = (new ResultResponse())->setResult(new ArrayCollection());
+        }
 
         return $this->serializer->serialize($response, 'json');
     }
