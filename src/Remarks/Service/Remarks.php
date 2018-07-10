@@ -64,19 +64,19 @@ class Remarks
      * handling remarks read requests
      *
      * @param $authHeader
-     * @param $recordlocator
+     * @param $recordLocator
      *
      * @return mixed|string
      * @throws \Flight\Service\Amadeus\Remarks\Exception\AmadeusRequestException
      * @throws \Flight\Service\Amadeus\Remarks\Exception\InvalidRequestParameterException
      */
-    public function remarksRead($authHeader, $recordlocator)
+    public function remarksRead($authHeader, $recordLocator)
     {
         $authHeader = \GuzzleHttp\json_decode($authHeader);
 
         // validate
         $this->requestValidator->validateAuthentication($authHeader);
-        $this->requestValidator->validateRecordlocator($recordlocator);
+        $this->requestValidator->validateRecordlocator($recordLocator);
 
         $authenticate = (new Request\Entity\Authenticate())
             ->setDutyCode($authHeader->{'duty-code'})
@@ -87,7 +87,7 @@ class Remarks
             ->setUserId($authHeader->{'user-id'});
 
         $response = $this->amadeusClient->remarksRead(
-            (new Request\Entity\RemarksRead())->setRecordlocator($recordlocator),
+            (new Request\Entity\RemarksRead())->setRecordLocator($recordLocator),
             $authenticate
         );
 
@@ -112,7 +112,7 @@ class Remarks
 
         // validate
         $this->requestValidator->validateAuthentication($authHeader);
-        $this->requestValidator->validateRecordlocator($body->recordlocator);
+        $this->requestValidator->validateRecordlocator($body->recordLocator);
 
         $remarks = new ArrayCollection();
         foreach ($body->remarks as $remarkString) {
@@ -133,7 +133,7 @@ class Remarks
             ->setUserId($authHeader->{'user-id'});
         $response     = $this->amadeusClient->remarksAdd(
             (new Request\Entity\RemarksAdd())
-                ->setRecordlocator($body->recordlocator)->setRemarks($remarks),
+                ->setRecordLocator($body->recordLocator)->setRemarks($remarks),
             $authenticate
         );
 
@@ -158,7 +158,7 @@ class Remarks
 
         // validate
         $this->requestValidator->validateAuthentication($authHeader);
-        $this->requestValidator->validateRecordlocator($body->recordlocator);
+        $this->requestValidator->validateRecordlocator($body->recordLocator);
 
         // authenticate
         $authenticate = (new Request\Entity\Authenticate())
@@ -171,7 +171,7 @@ class Remarks
 
         // get remarks for line number
         $response = $this->amadeusClient->remarksRead(
-            (new Request\Entity\RemarksRead())->setRecordlocator($body->recordlocator),
+            (new Request\Entity\RemarksRead())->setRecordLocator($body->recordLocator),
             $authenticate
         );
 
@@ -194,7 +194,7 @@ class Remarks
 
         $response = $this->amadeusClient->remarksDelete(
             (new Request\Entity\RemarksDelete())
-                ->setRecordlocator($body->recordlocator)->setRemarks($remarksDeleteCollection),
+                ->setRecordLocator($body->recordLocator)->setRemarks($remarksDeleteCollection),
             $authenticate
         );
 

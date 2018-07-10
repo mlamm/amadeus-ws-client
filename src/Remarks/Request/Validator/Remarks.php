@@ -52,17 +52,17 @@ class Remarks
     }
 
     /**
-     * validate recordlocator
+     * validate recordLocator
      *
-     * @param string $recordlocator
+     * @param string $recordLocator
      *
      * @throws InvalidRequestParameterException
      */
-    public function validateRecordlocator(string $recordlocator)
+    public function validateRecordlocator(string $recordLocator)
     {
         $validator = new Validator();
-        $validator->required('recordlocator')->alnum();
-        $validationResult = $validator->validate(['recordlocator' => $recordlocator]);
+        $validator->required('recordLocator')->alnum();
+        $validationResult = $validator->validate(['recordLocator' => $recordLocator]);
 
         if ($validationResult->isNotValid()) {
             throw new InvalidRequestParameterException($validationResult->getFailures());

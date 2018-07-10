@@ -80,24 +80,24 @@ class AmadeusRequestTransformer
     /**
      * build options for remarksread
      *
-     * @param $recordlocator
+     * @param $recordLocator
      *
      * @return Client\RequestOptions\PnrRetrieveOptions
      */
-    public function buildOptionsRemarksRead($recordlocator)
+    public function buildOptionsRemarksRead($recordLocator)
     {
-        return new Client\RequestOptions\PnrRetrieveOptions(['recordLocator' => $recordlocator]);
+        return new Client\RequestOptions\PnrRetrieveOptions(['recordLocator' => $recordLocator]);
     }
 
     /**
      * build options for remarks add
      *
-     * @param $recordlocator
+     * @param $recordLocator
      * @param ArrayCollection $remarks
      *
      * @return Client\RequestOptions\PnrAddMultiElementsOptions
      */
-    public function buildOptionsRemarksAdd($recordlocator, ArrayCollection $remarks)
+    public function buildOptionsRemarksAdd($recordLocator, ArrayCollection $remarks)
     {
         $elements = [];
         /** @var Remark $remark */
@@ -110,7 +110,7 @@ class AmadeusRequestTransformer
         }
 
         return new Client\RequestOptions\PnrAddMultiElementsOptions([
-            'recordLocator' => $recordlocator,
+            'recordLocator' => $recordLocator,
             'actionCode'    => Client\RequestOptions\PnrCancelOptions::ACTION_END_TRANSACT_RETRIEVE,
             'elements'      => $elements
         ]);
@@ -119,12 +119,12 @@ class AmadeusRequestTransformer
     /**
      * build options for remarks delete
      *
-     * @param $recordlocator
+     * @param $recordLocator
      * @param ArrayCollection $remarks
      *
      * @return Client\RequestOptions\PnrCancelOptions
      */
-    public function buildOptionsRemarksDelete($recordlocator, ArrayCollection $remarks)
+    public function buildOptionsRemarksDelete($recordLocator, ArrayCollection $remarks)
     {
         $elements = [];
         /** @var Remark $remark */
@@ -134,7 +134,7 @@ class AmadeusRequestTransformer
         }
 
         return new Client\RequestOptions\PnrCancelOptions([
-            'recordLocator'    => $recordlocator,
+            'recordLocator'    => $recordLocator,
             'actionCode'       => Client\RequestOptions\PnrCancelOptions::ACTION_END_TRANSACT_RETRIEVE,
             'elementsByTattoo' => $elements
         ]);

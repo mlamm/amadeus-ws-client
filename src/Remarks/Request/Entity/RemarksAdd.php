@@ -14,7 +14,7 @@ class RemarksAdd
     /**
      * @var string identification of pnr
      */
-    private $recordlocator;
+    private $recordLocator;
 
     /**
      * @var ArrayCollection remarks to add
@@ -22,24 +22,24 @@ class RemarksAdd
     private $remarks;
 
     /**
-     * getter for recordlocator
+     * getter for recordLocator
      *
      * @return string
      */
-    public function getRecordlocator() : string
+    public function getRecordLocator() : string
     {
-        return $this->recordlocator;
+        return $this->recordLocator;
     }
 
     /**
-     * setter for recordlocator
+     * setter for recordLocator
      *
-     * @param string $recordlocator
+     * @param string $recordLocator
      * @return RemarksAdd
      */
-    public function setRecordlocator($recordlocator) : RemarksAdd
+    public function setRecordLocator($recordLocator) : RemarksAdd
     {
-        $this->recordlocator = $recordlocator;
+        $this->recordLocator = $recordLocator;
         return $this;
     }
 
