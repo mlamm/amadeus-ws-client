@@ -98,7 +98,6 @@ class Remarks
      * handling remarks add request
      *
      * @param $authHeader
-     * @param $recordlocator
      * @param $body
      *
      * @return mixed|string
@@ -106,17 +105,17 @@ class Remarks
      * @throws \Flight\Service\Amadeus\Remarks\Exception\AmadeusRequestException
      * @throws \Flight\Service\Amadeus\Remarks\Exception\InvalidRequestParameterException
      */
-    public function remarksAdd($authHeader, $recordlocator, $body)
+    public function remarksAdd($authHeader, $body)
     {
         $authHeader = \GuzzleHttp\json_decode($authHeader);
         $body       = \GuzzleHttp\json_decode($body);
 
         // validate
         $this->requestValidator->validateAuthentication($authHeader);
-        $this->requestValidator->validateRecordlocator($recordlocator);
+        $this->requestValidator->validateRecordlocator($body->recordlocator);
 
         $remarks = new ArrayCollection();
-        foreach ($body as $remarkString) {
+        foreach ($body->remarks as $remarkString) {
             // first item has the remarkName so we explode it out of the array to let the remarkValue rest in pieces
             $remark = explode('-', $remarkString);
             $remarkName = $remark[0];
@@ -134,7 +133,7 @@ class Remarks
             ->setUserId($authHeader->{'user-id'});
         $response     = $this->amadeusClient->remarksAdd(
             (new Request\Entity\RemarksAdd())
-                ->setRecordlocator($recordlocator)->setRemarks($remarks),
+                ->setRecordlocator($body->recordlocator)->setRemarks($remarks),
             $authenticate
         );
 
@@ -145,14 +144,13 @@ class Remarks
      * handling remarks delete requests
      *
      * @param $authHeader
-     * @param $recordlocator
      * @param $body
      *
      * @return mixed|string
      * @throws \Flight\Service\Amadeus\Remarks\Exception\AmadeusRequestException
      * @throws \Flight\Service\Amadeus\Remarks\Exception\InvalidRequestParameterException
      */
-    public function remarksDelete($authHeader, $recordlocator, $body)
+    public function remarksDelete($authHeader, $body)
     {
         // json data
         $authHeader = \GuzzleHttp\json_decode($authHeader);
@@ -160,7 +158,7 @@ class Remarks
 
         // validate
         $this->requestValidator->validateAuthentication($authHeader);
-        $this->requestValidator->validateRecordlocator($recordlocator);
+        $this->requestValidator->validateRecordlocator($body->recordlocator);
 
         // authenticate
         $authenticate = (new Request\Entity\Authenticate())
@@ -173,7 +171,7 @@ class Remarks
 
         // get remarks for line number
         $response = $this->amadeusClient->remarksRead(
-            (new Request\Entity\RemarksRead())->setRecordlocator($recordlocator),
+            (new Request\Entity\RemarksRead())->setRecordlocator($body->recordlocator),
             $authenticate
         );
 
@@ -183,7 +181,7 @@ class Remarks
         $remarksDeleteCollection = new ArrayCollection();
         /** @var Remark $remark */
         foreach ($remarksReadCollection->getRemarks() as $remark) {
-            foreach ($body as $remarkString) {
+            foreach ($body->remarks as $remarkString) {
                 // first item has the remarkName so we explode it out of the array to let the remarkValue rest in pieces
                 $remarkData = explode('-', $remarkString);
                 if ($remarkData[0] == $remark->getName()) {
@@ -196,7 +194,7 @@ class Remarks
 
         $response = $this->amadeusClient->remarksDelete(
             (new Request\Entity\RemarksDelete())
-                ->setRecordlocator($recordlocator)->setRemarks($remarksDeleteCollection),
+                ->setRecordlocator($body->recordlocator)->setRemarks($remarksDeleteCollection),
             $authenticate
         );
 
@@ -214,10 +212,10 @@ class Remarks
      * @throws \Flight\Service\Amadeus\Remarks\Exception\AmadeusRequestException
      * @throws \Flight\Service\Amadeus\Remarks\Exception\InvalidRequestParameterException
      */
-    public function remarksModify($authHeader, $recordlocator, $body)
+    public function remarksModify($authHeader, $body)
     {
-        $this->remarksDelete($authHeader, $recordlocator, $body);
+        $this->remarksDelete($authHeader, $body);
 
-        return $this->remarksAdd($authHeader, $recordlocator, $body);
+        return $this->remarksAdd($authHeader, $body);
     }
 }

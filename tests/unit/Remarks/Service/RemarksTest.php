@@ -81,7 +81,6 @@ class RemarksTest extends Unit
 
         $response = $remarksService->remarksAdd(
             $phpUnitHelper->generateAuthHeader('fixtures/06-remarks_auth_header.json'),
-            'UNIT',
             $phpUnitHelper->generateRemarksAddRequest('fixtures/07-add_remarks_body.json')
         );
 
@@ -110,7 +109,6 @@ class RemarksTest extends Unit
 
         $response = $remarksService->remarksModify(
             $phpUnitHelper->generateAuthHeader('fixtures/06-remarks_auth_header.json'),
-            'UNIT',
             $phpUnitHelper->generateRemarksAddRequest('fixtures/08-modify_remarks_body.json')
         );
 
@@ -132,7 +130,6 @@ class RemarksTest extends Unit
 
         $response = $remarksService->remarksDelete(
             $phpUnitHelper->generateAuthHeader('fixtures/06-remarks_auth_header.json'),
-            'UNIT',
             $phpUnitHelper->generateRemarksAddRequest('fixtures/07-add_remarks_body.json')
         );
 

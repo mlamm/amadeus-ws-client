@@ -47,7 +47,6 @@ class RemarksDelete extends BusinessCase
         try {
             $response = ResultResponse::fromJsonString($this->remarksService->remarksDelete(
                 $this->getRequest()->headers->get('Authenticate'),
-                $this->getRequest()->query->get('recordlocator'),
                 $this->getRequest()->getContent()
             ));
 
