@@ -1,4 +1,5 @@
 <?php
+
 namespace Flight\Service\Amadeus\Remarks\BusinessCase;
 
 use Flight\Service\Amadeus\Application\BusinessCase;
@@ -30,13 +31,13 @@ class RemarksRead extends BusinessCase
     protected $logger;
 
     /**
-     * @param Remarks $remarksService
-     * @param LoggerInterface                       $logger
+     * @param Remarks         $remarksService
+     * @param LoggerInterface $logger
      */
     public function __construct(Remarks $remarksService, LoggerInterface $logger)
     {
         $this->remarksService = $remarksService;
-        $this->logger = $logger;
+        $this->logger         = $logger;
     }
 
     /**
@@ -45,10 +46,12 @@ class RemarksRead extends BusinessCase
     public function respond() : HalResponse
     {
         try {
-            $response = ResultResponse::fromJsonString($this->remarksService->remarksRead(
-                $this->getRequest()->headers->get('Authenticate'),
-                $this->getRequest()->query->get('recordlocator')
-            ));
+            $response = ResultResponse::fromJsonString(
+                $this->remarksService->remarksRead(
+                    $this->getRequest()->headers->get('authentication'),
+                    $this->getRequest()->query->get('recordlocator')
+                )
+            );
             $this->addLinkToSelf($response);
             return $response;
         } catch (InvalidRequestParameterException $ex) {
@@ -87,14 +90,17 @@ class RemarksRead extends BusinessCase
      * Add the required self-link to the hal response
      *
      * @param HalResponse $response
+     *
      * @return HalResponse
      */
     private function addLinkToSelf(HalResponse $response) : HalResponse
     {
-        return $response->addMetaData([
-            '_links' => [
-                'self' => ['href' => '/remarks']
+        return $response->addMetaData(
+            [
+                '_links' => [
+                    'self' => ['href' => '/remarks'],
+                ],
             ]
-        ]);
+        );
     }
 }

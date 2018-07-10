@@ -46,7 +46,7 @@ class RemarksModify extends BusinessCase
     {
         try {
             $response = ResultResponse::fromJsonString($this->remarksService->remarksModify(
-                $this->getRequest()->headers->get('authenticate'),
+                $this->getRequest()->headers->get('authentication'),
                 $this->getRequest()->getContent()
             ));
 

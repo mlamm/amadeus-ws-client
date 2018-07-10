@@ -205,7 +205,6 @@ class Remarks
      * handling remarks modify request by using delete and add
      *
      * @param $authHeader
-     * @param $recordlocator
      * @param $body
      *
      * @return mixed|string
