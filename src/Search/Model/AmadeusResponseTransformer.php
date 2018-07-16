@@ -339,9 +339,11 @@ class AmadeusResponseTransformer
                             ->setPieces(1)
                             ->setWeight($baggageDetails->freeAllowance)
                             ->setUnit('kg');
+                        $legSegment->setBaggageRules($baggageRules);
                     } elseif ($baggageDetails->quantityCode === 'N') {
                         $baggageRules
-                            ->setPieces($baggageDetails->freeAllowance);
+                            ->setPieces((int)$baggageDetails->freeAllowance);
+                        $legSegment->setBaggageRules($baggageRules);
                     }
 
                     $baggageRefNumber = $segmentFlightRefs->getBaggageRefNumber();
@@ -359,7 +361,6 @@ class AmadeusResponseTransformer
                             }
                         }
                     }
-                    $legSegment->setBaggageRules($baggageRules);
                 }
             }
 
