@@ -39,7 +39,8 @@
         "flight/throwup-errors": "^0.1",
         "perftools/xhgui-collector": "^1.0",
         "alcaeus/mongo-php-adapter": "^1.0",
-        "flight/tracing-header-silex": "^1.0"
+        "flight/tracing-header-silex": "^1.0",
+        "jimdo/prometheus_client_php": "dev-master"
     },
     "require-dev": {
         "codeception/codeception": "~2.3",
