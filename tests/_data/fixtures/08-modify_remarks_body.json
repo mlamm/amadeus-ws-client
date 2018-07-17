@@ -1,4 +1,7 @@
 {
-  "IBEPAXELIG-ADT": "P1.2",
-  "IBEBZIP": 6243
+  "recordLocator": "UNIT",
+  "remarks": [
+    "IBEPAXELIG-ADT-P1.2",
+    "IBEBZIP-6243"
+  ]
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Header xmlns="http://xml.amadeus.com/ws/2009/01/WBS_Session-2.0.xsd">
+        <Session>
+            <SessionId>01EHQHP08H</SessionId>
+            <SequenceNumber>5</SequenceNumber>
+            <SecurityToken>B5DQWG7MU6AS3Q9WGG81HELXJ</SecurityToken>
+        </Session>
+    </soap:Header>
+    <soap:Body />
+</soap:Envelope>

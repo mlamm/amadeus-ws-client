@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Flight\Service\Amadeus\Amadeus\Client;
 
@@ -23,11 +23,23 @@ class MockSessionHandler implements HandlerInterface
 {
     private const MASTERPRICER_RESPONSE_FIXTURE = 'tests/_data/fixtures/03-Fare_MasterPricerTravelBoardSearch_FBA-rt.xml';
 
+    private const PNR_RETRIEVE_RESPONSE_FIXTURE = 'tests/_data/fixtures/09-pnrRetrieve-response.xml';
+
     private const CREATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_Authenticate-Response.xml';
 
     private const IGNORE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/PNR_Ignore-Response.xml';
 
     private const TERMINATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_SignOut-Response.xml';
+
+    private const COMMIT_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/10-Session-Commit-Response.xml';
+
+    private const SECURITY_SIGNOUT_RESPONSE_FIXTURE = 'tests/_data/fixtures/11-Security-SignOut-Response.xml';
+
+    private const TICKET_DELETETST_RESPONSE_FIXTURE = 'tests/_data/fixtures/12-Ticket_DeleteTST-Response.xml';
+
+    private const FARE_PNRWITHBOOKINGCLASS_RESPONSE_FIXTURE = 'tests/_data/fixtures/13-Fare_PricePNRWithBookingClass-Response.xml';
+
+    private const TICKET_CREATE_TSTS_FROM_PRICING_RESPONSE_FIXTURE = 'tests/_data/fixtures/14-Ticket-CreateTSTFromPricing-Response.xml';
 
     /**
      * @var SessionHandlerParams
@@ -62,8 +74,22 @@ class MockSessionHandler implements HandlerInterface
             case 'Security_Authenticate':
                 return $this->loadCreateSessionResponse();
                 break;
+            case 'PNR_AddMultiElements':
+                return $this->loadSessionCommitResponse();
             case 'Security_SignOut':
-                return $this->loadIgnoreSessionResponse();
+                return $this->loadSecuritySignOutResponse();
+                break;
+            case 'PNR_Retrieve':
+                return $this->loadPnrRetrieveResponse();
+                break;
+            case 'Ticket_DeleteTST':
+                return $this->loadTicketDeleteTstResponse();
+                break;
+            case 'Fare_PricePNRWithBookingClass':
+                return $this->loadFarePricePNRResponse();
+                break;
+            case 'Ticket_CreateTSTFromPricing':
+                return $this->loadCreateTstResponse();
                 break;
             case 'PNR_Ignore':
                 return $this->loadTerminateSessionResponse();
@@ -73,10 +99,10 @@ class MockSessionHandler implements HandlerInterface
         throw new \Exception("no mock response configured for message `{$messageName}`");
     }
 
-    private function loadMasterPricerTravelBoardSearchResponse(): SendResult
+    private function loadMasterPricerTravelBoardSearchResponse() : SendResult
     {
-        $sendResult = new SendResult();
-        $sendResult->responseXml = file_get_contents(self::MASTERPRICER_RESPONSE_FIXTURE);
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::MASTERPRICER_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
@@ -84,17 +110,62 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadCreateSessionResponse()
     {
-        $sendResult = new SendResult();
-        $sendResult->responseXml = file_get_contents(self::CREATE_SESSION_RESPONSE_FIXTURE);
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::CREATE_SESSION_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
     }
 
-    private function loadIgnoreSessionResponse()
+    private function loadPnrRetrieveResponse() : SendResult
     {
-        $sendResult = new SendResult();
-        $sendResult->responseXml = file_get_contents(self::IGNORE_SESSION_RESPONSE_FIXTURE);
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::PNR_RETRIEVE_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadSessionCommitResponse()
+    {
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::COMMIT_SESSION_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadSecuritySignOutResponse()
+    {
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::SECURITY_SIGNOUT_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadTicketDeleteTstResponse()
+    {
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::TICKET_DELETETST_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadFarePricePNRResponse()
+    {
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::FARE_PNRWITHBOOKINGCLASS_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadCreateTstResponse()
+    {
+        $sendResult                 = new SendResult();
+        $sendResult->responseXml    = file_get_contents(self::TICKET_CREATE_TSTS_FROM_PRICING_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
@@ -165,6 +236,9 @@ class MockSessionHandler implements HandlerInterface
             case 'Security_Authenticate':
                 return file_get_contents(self::CREATE_SESSION_RESPONSE_FIXTURE);
                 break;
+            case 'PNR_AddMultiElements':
+                return file_get_contents(self::COMMIT_SESSION_RESPONSE_FIXTURE);
+                break;
             default:
                 throw new \Exception('not implemented for mock session handler for msg ' . $msgName);
 
@@ -193,46 +267,23 @@ class MockSessionHandler implements HandlerInterface
         throw new \Exception('not implemented for mock session handler');
     }
 
-    /**
-     * Is the TransactionFlowLink header enabled?
-     *
-     * @return bool
-     */
     public function isTransactionFlowLinkEnabled()
     {
-        throw new \Exception('not implemented for mock session handler');
+        return null; //Not supported
     }
 
-    /**
-     * Enable or disable TransactionFlowLink header
-     *
-     * @throws UnsupportedOperationException when used on unsupported WSAP versions
-     * @param bool $enabled
-     */
     public function setTransactionFlowLink($enabled)
     {
-        throw new \Exception('not implemented for mock session handler');
+        return null; //Not supported
     }
 
-    /**
-     * Get the TransactionFlowLink Consumer ID
-     *
-     * @return string|null
-     */
     public function getConsumerId()
     {
-        throw new \Exception('not implemented for mock session handler');
+        return null; //Not supported
     }
 
-    /**
-     * Set the TransactionFlowLink Consumer ID
-     *
-     * @throws UnsupportedOperationException when used on unsupported WSAP versions
-     * @param string $id
-     * @return void
-     */
     public function setConsumerId($id)
     {
-        throw new \Exception('not implemented for mock session handler');
+        return null; //Not supported
     }
 }

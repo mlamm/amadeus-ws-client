@@ -59,7 +59,7 @@
                     "res-book-desig-code": "O"
                   },
                   "duration": null,
-                  "technical-stops": null
+                  "technical-stops": []
                 }
               ]
             }
@@ -119,7 +119,7 @@
                     "res-book-desig-code": "P"
                   },
                   "duration": null,
-                  "technical-stops": null
+                  "technical-stops": []
                 }
               ]
             }
@@ -128,13 +128,13 @@
       },
       "_calculation": {
         "flight": {
-          "total": 1330.84,
+          "total": 832.42,
           "fare": {
-            "total": 832.42,
+            "total": 334,
             "passenger-types": {
-              "adult": 208.84,
-              "child": 186.84,
-              "infant": 20.53
+              "adult": 90,
+              "child": 68,
+              "infant": 9
             }
           },
           "tax": {

@@ -46,8 +46,7 @@ class RemarksAdd extends BusinessCase
     {
         try {
             $response = ResultResponse::fromJsonString($this->remarksService->remarksAdd(
-                $this->getRequest()->headers->get('Authenticate'),
-                $this->getRequest()->query->get('recordlocator'),
+                $this->getRequest()->headers->get('authentication'),
                 $this->getRequest()->getContent()
             ));
 

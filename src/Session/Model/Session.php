@@ -92,6 +92,8 @@ class Session
     }
 
     /**
+     * returns the properties as array
+     *
      * @return array
      */
     public function toArray()

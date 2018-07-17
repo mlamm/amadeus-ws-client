@@ -216,10 +216,7 @@
                               ],
                               "properties": {
                                 "pieces": {
-                                  "type": [
-                                    "number",
-                                    "null"
-                                  ],
+                                  "type": "number",
                                   "description": "Number of allowed baggage pieces."
                                 },
                                 "unit": {
@@ -243,7 +240,10 @@
                                   ],
                                   "description": "Fee of additional baggage when there is no free baggage allowance (pieces). Will also make use of 'unit' and 'wight' nodes."
                                 }
-                              }
+                              },
+                              "required": [
+                                "pieces"
+                              ]
                             },
                             "gds-information": {
                               "type": "object",
@@ -259,8 +259,7 @@
                             },
                             "technical-stops": {
                               "type": [
-                                "array",
-                                "null"
+                                "array"
                               ],
                               "items": {
                                 "type": "object",

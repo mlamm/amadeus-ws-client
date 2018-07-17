@@ -16,6 +16,7 @@ Possible error codes:
 | ARS0003 | The `Amadeus\Client::securityAuthenticate` method didn't return state OK     | the credentials sent with request are invalid                        |
 | ARS0004 | AMADEUS RESPONSE ERROR [{errNo., message}]                                   | the request was technical valid, Amadeus returns failure             |
 | ARS0005 | A message that describes the missing system requirement                      | something like a missing php extension                               |
+| ARS0006 | A internal function was called which was marked to not be called             | a populate function which was de-activated for a class               |
 
 
 #### Search [POST /flight-search/]
@@ -112,7 +113,7 @@ format.
 
                                         + `remaining-seats`: 9 (number, nullable) - number of seats remaining for that flight
                                         + `baggage-rules` (nullable)
-                                            + `pieces`: 1 (number, nullable) - number of baggage pieces included
+                                            + `pieces`: 1 (number) - number of baggage pieces included
                                             + `weight`: 20 (number, nullable) - value of baggage weight
                                             + `unit`: KG  (string, nullable) - unit of baggage weight
                                             + `additional-baggage-fee`: 30 (number, nullable) - fee of additional baggage when there is no free baggage allowance
@@ -338,15 +339,56 @@ This request will return session data
 
             <!-- include(session/error-response_schema.json) -->
 
+### CommitSession [POST /session/commit]
+This request will commit all changes and close the given session (security_signout)
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+            session: {"session-id": "013GZKUXA2","sequence-number": "2","security-token": "2XCAG3OKA7MOQ3DBAGRL6OULBZ"}
+
++ Response 200 (application/hal+json)
+
+    + Body
+
+            {
+                "result": "true",
+                 "_links": {
+                    "self": {
+                        "href": "/session"
+                    }
+                 }
+            }
+
+    + Schema
+
+            <!-- include(session/commit_response_schema.json) -->
+
++ Response 500 (application/hal+json)
+
+    |Code | Message |
+    |---|---|
+    | ARS000X | *Message of an unspecific error.* |
+
+    + Body
+
+            <!-- include(session/error-response.json) -->
+
+    + Schema
+
+            <!-- include(session/error-response_schema.json) -->
+
 ## Remarks [/remarks]
 
-### Remarks [GET /remarks/{recordlocator}]
+### Remarks [GET /remarks/{recordLocator}]
 
-This request will return all remarks for given recordlocator and officeId
+This request will return all remarks for given recordLocator and officeId
 
 + Parameters
 
-    + recordlocator: LTEXQF (required, string) - alphanumeric recordlocator
+    + recordLocator: LTEXQF (required, string) - alphanumeric recordLocator
 
 + Request
 
@@ -384,7 +426,7 @@ This request will return all remarks for given recordlocator and officeId
 
 ### Remarks [POST /remarks]
 
-This request will add the given remarks, return all remarks for given recordlocator and officeId
+This request will add the given remarks, return all remarks for given recordLocator and officeId
 
 + Request
 
@@ -427,7 +469,7 @@ This request will add the given remarks, return all remarks for given recordloca
 
 ### Remarks [PUT /remarks]
 
-This request will change the given remarks, return all remarks for given recordlocator and officeId
+This request will change the given remarks, return all remarks for given recordLocator and officeId
 
 + Request
 
@@ -470,7 +512,7 @@ This request will change the given remarks, return all remarks for given recordl
 
 ### Remarks [DELETE /remarks]
 
-This request will delete the given remarks, return all remarks for given recordlocator and officeId
+This request will delete the given remarks, return all remarks for given recordLocator and officeId
 
 + Request
 
@@ -510,6 +552,129 @@ This request will delete the given remarks, return all remarks for given recordl
     + Schema
 
             <!-- include(remarks/error-response_schema.json) -->
+
+## Itinerary [/itinerary]
+
+### Itinerary [GET /itinerary/?recordLocator={recordLocator}]
+
+This request will return the itinerary data to the requested recordLocator
+
++ Parameters
+
+    + recordLocator: LTEXQF (required, string) - alphanumeric recordLocator
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+            session: {"session-id": "013GZKUXA2","sequence-number": "2","security-token": "2XCAG3OKA7MOQ3DBAGRL6OULBZ"}
+
+    + Schema
+
+            <!-- include(itinerary/GET_request_schema.json) -->
+
++ Response 200 (application/hal+json)
+
+    + Body
+
+            <!-- include(itinerary/response.json) -->
+
+    + Schema
+
+            <!-- include(itinerary/response_schema.json) -->
+
++ Response 500 (application/hal+json)
+
+    |Code     | Message                                                                  |
+    |---------|--------------------------------------------------------------------------|
+    | ARS000X | SERVER ERROR - {message}                                                 |
+    | ASR0001 | MALFORMED REQUEST                                                        |
+    | ARS0002 | INVALID OR MISSING REQUEST PARAM                                         |
+    | ARS0003 | The `Amadeus\Client::securityAuthenticate` method didn't return state OK |
+    | ARS0004 | AMADEUS RESPONSE ERROR [{errNo., message}]                               |
+    | ARS0006 | A internal function was called which was marked to not be called         |
+
+
+    + Body
+
+            <!-- include(itinerary/error-response.json) -->
+
+    + Schema
+
+            <!-- include(itinerary/error-response_schema.json) -->
+
+## Price [/price/]
+
+### Price [POST /price/]
+
+This request will price an itinerary and save the pricing into a new TST element on the filekey
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+            session: {"session-id": "013GZKUXA2","sequence-number": "2","security-token": "2XCAG3OKA7MOQ3DBAGRL6OULBZ"}
+
+    + Attributes
+
+        + `tariff`: IATA (string, required) - the tariff to be used for pricing, choose one of: IATA, NEGO, NETALLU000867, CALCPUB
+
++ Response 204 (text/html; charset=UTF-8)
+
++ Response 500 (application/hal+json)
+
+    |Code     | Message                                                                  |
+    |---------|--------------------------------------------------------------------------|
+    | ARS000X | SERVER ERROR - {message}                                                 |
+    | ASR0001 | MALFORMED REQUEST                                                        |
+    | ARS0002 | INVALID OR MISSING REQUEST PARAM                                         |
+    | ARS0004 | AMADEUS RESPONSE ERROR [{errNo., message}]                               |
+
+
+    + Body
+
+            <!-- include(price/error-response.json) -->
+
+    + Schema
+
+            <!-- include(price/error-response_schema.json) -->
+
+### Price [DELETE /price/]
+
+This request will delete the pricing from the given session
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+            session: {"session-id": "013GZKUXA2","sequence-number": "2","security-token": "2XCAG3OKA7MOQ3DBAGRL6OULBZ"}
+
+    + Schema
+
+            <!-- include(itinerary/GET_request_schema.json) -->
+
++ Response 204 (text/html; charset=UTF-8)
+
++ Response 500 (application/hal+json)
+
+    |Code     | Message                                                                  |
+    |---------|--------------------------------------------------------------------------|
+    | ARS000X | SERVER ERROR - {message}                                                 |
+    | ASR0001 | MALFORMED REQUEST                                                        |
+    | ARS0002 | INVALID OR MISSING REQUEST PARAM                                         |
+    | ARS0004 | AMADEUS RESPONSE ERROR [{errNo., message}]                               |
+
+
+    + Body
+
+            <!-- include(price/error-response.json) -->
+
+    + Schema
+
+            <!-- include(price/error-response_schema.json) -->
 
 # Data Structures
 

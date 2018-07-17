@@ -88,6 +88,7 @@ class AmadeusClient
      * send create session request to amadeus
      *
      * @param Authenticate $authenticate
+     *
      * @return Session     * @throws \Exception
      * @throws Client\Exception
      * @throws AmadeusRequestException
@@ -99,8 +100,8 @@ class AmadeusClient
 
         try {
             $clientResult = $client->securityAuthenticate();
-        } catch (Client\Exception $e) {
-            throw $e;
+        } catch (Client\Exception $exception) {
+            throw $exception;
         }
         $checkResponseResult = $this->checkResult($clientResult);
         if (self::CHECK_RESULT_OK == $checkResponseResult) {
@@ -113,13 +114,87 @@ class AmadeusClient
     }
 
     /**
+     * send commit session request to amadeus
+     *
+     * @param Authenticate $authenticate
+     * @param Session      $session
+     *
+     * @return bool
+     * @throws \Exception
+     * @throws Client\Exception
+     * @throws AmadeusRequestException
+     */
+    public function commitSession(Authenticate $authenticate, Session $session) : bool
+    {
+        /** @var Client $client */
+        $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
+
+        $pnrOptions = new Client\RequestOptions\PnrAddMultiElementsOptions(
+            [
+                'actionCode' => [
+                    Client\RequestOptions\PnrAddMultiElementsOptions::ACTION_END_TRANSACT,
+                    Client\RequestOptions\PnrAddMultiElementsOptions::ACTION_WARNING_AT_EOT,
+                ],
+            ]
+        );
+
+        try {
+            $client->setSessionData($session->toArray());
+            $clientResult = $client->pnrAddMultiElements($pnrOptions);
+        } catch (Client\Exception $exception) {
+            throw $exception;
+        }
+        $checkResponseResult = $this->checkResult($clientResult);
+
+        if (self::CHECK_RESULT_OK == $checkResponseResult) {
+            $result = true;
+        } else {
+            $result = false;
+        }
+        return $result;
+    }
+
+    /**
+     * send security sign out request to amadeus
+     *
+     * @param Authenticate $authenticate
+     * @param Session      $session
+     *
+     * @return bool
+     * @throws \Exception
+     * @throws Client\Exception
+     * @throws AmadeusRequestException
+     */
+    public function closeSession(Authenticate $authenticate, Session $session) : bool
+    {
+        /** @var Client $client */
+        $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
+
+        try {
+            $client->setSessionData($session->toArray());
+            $clientResult = $client->securitySignOut();
+        } catch (Client\Exception $exception) {
+            throw $exception;
+        }
+        $checkResponseResult = $this->checkResult($clientResult);
+        if (self::CHECK_RESULT_OK == $checkResponseResult) {
+            $result = true;
+        } else {
+            $result = false;
+        }
+
+        return $result;
+    }
+
+    /**
      * check result from AMA
      *
      * @param Client\Result $result
+     *
      * @return string check result (s. self::CHECK_RESULT_*)
      * @throws AmadeusRequestException
      */
-    protected function checkResult(Client\Result $result): string
+    protected function checkResult(Client\Result $result) : string
     {
         // result ok nothing to do
         if (Client\Result::STATUS_OK === $result->status) {

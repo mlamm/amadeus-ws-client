@@ -78,7 +78,7 @@ class RemarksAmadeusClient
         /** @var Client $client */
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
 
-        $requestOptions = $this->requestTransformer->buildOptionsRemarksRead($requestEntity->getRecordlocator());
+        $requestOptions = $this->requestTransformer->buildOptionsRemarksRead($requestEntity->getRecordLocator());
 
 
         $result = $client->pnrRetrieve($requestOptions);
@@ -106,7 +106,7 @@ class RemarksAmadeusClient
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
 
         $requestOptions = $this->requestTransformer->buildOptionsRemarksAdd(
-            $requestEntity->getRecordlocator(),
+            $requestEntity->getRecordLocator(),
             $requestEntity->getRemarks()
         );
 
@@ -135,7 +135,10 @@ class RemarksAmadeusClient
         /** @var Client $client */
         $client = ($this->clientBuilder)($this->requestTransformer->buildClientParams($authenticate, $this->logger));
 
-        $requestOptions = $this->requestTransformer->buildOptionsRemarksDelete($requestEntity->getRecordlocator(), $requestEntity->getRemarks());
+        $requestOptions = $this->requestTransformer->buildOptionsRemarksDelete(
+            $requestEntity->getRecordLocator(),
+            $requestEntity->getRemarks()
+        );
 
         $result = $client->pnrCancel($requestOptions);
 

@@ -61,7 +61,16 @@ search:
         - "BL"
 
 remarks:
-    wsdl: 1ASIWUFITBD_PRD_20180206_095645.wsdl
+    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+
+itinerary:
+    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+
+session:
+    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+
+price:
+    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
 
 response:
     json_encoding_options:
@@ -71,18 +80,13 @@ response:
 debug:
     search:
       log_ama_traffic: false
-    pimpledump:
-        enabled: true
     remarks:
       log_ama_traffic: false
-    pimpledump:
-      enabled: true
     session:
       log_ama_traffic: false
+    price:
+      log_ama_traffic: true
     pimpledump:
         enabled: true
     throwup:
         enabled: true
-
-session:
-    wsdl: 1ASIWADMTBD/1ASIWADMTBD_PRD_20180606_105150.wsdl

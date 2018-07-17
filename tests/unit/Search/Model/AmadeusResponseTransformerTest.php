@@ -74,8 +74,7 @@ class AmadeusResponseTransformerTest extends \Codeception\Test\Unit
         $mapper = new Mapper();
         $serializedResponse = $mapper->createJson($response);
 
-        // Deactivated for now, as the serialization library does not produce correct output atm.
-        //$this->tester->canSeeJsonStringIsValidOnSchema($serializedResponse, codecept_data_dir('schema/response-schema.json'));
+        $this->tester->canSeeJsonStringIsValidOnSchema($serializedResponse, codecept_data_dir('schema/response-schema.json'));
 
         $this->assertEquals(
             json_decode(file_get_contents(codecept_data_dir($expectedSearchResponseFile)), true),

@@ -66,7 +66,7 @@ class PaxFareDetailsTest extends \Codeception\Test\Unit
 
         $object = PaxFareDetails::adultFromFareProducts(new ArrayCollection($fareProducts));
         $this->assertSame(44.0, $object->getTaxPerPax());
-        $this->assertSame(100.0, $object->getFarePerPax());
+        $this->assertSame(56.0, $object->getFarePerPax());
         $this->assertSame(23.0, $object->getPaymentFeesPerPax());
     }
 
@@ -93,7 +93,7 @@ class PaxFareDetailsTest extends \Codeception\Test\Unit
 
         $object = PaxFareDetails::adultFromFareProducts(new ArrayCollection($fareProducts));
         $this->assertSame(44.0, $object->getTaxPerPax());
-        $this->assertSame(123.0, $object->getFarePerPax());
+        $this->assertSame(79.0, $object->getFarePerPax());
         $this->assertSame(0.0, $object->getPaymentFeesPerPax());
     }
 
@@ -111,7 +111,7 @@ class PaxFareDetailsTest extends \Codeception\Test\Unit
                     ]
                 ],
                 'paxFareDetail' => (object) [
-                    'totalFareAmount' => 1.0,
+                    'totalFareAmount' => 2.0,
                     'totalTaxAmount' => 1.0,
                 ]
             ],
@@ -123,7 +123,7 @@ class PaxFareDetailsTest extends \Codeception\Test\Unit
                     ]
                 ],
                 'paxFareDetail' => (object) [
-                    'totalFareAmount' => 2.0,
+                    'totalFareAmount' => 3.0,
                     'totalTaxAmount' => 2.0,
                 ]
             ],
@@ -135,7 +135,7 @@ class PaxFareDetailsTest extends \Codeception\Test\Unit
                     ]
                 ],
                 'paxFareDetail' => (object) [
-                    'totalFareAmount' => 3.0,
+                    'totalFareAmount' => 4.0,
                     'totalTaxAmount' => 3.0,
                 ]
             ],
@@ -146,8 +146,8 @@ class PaxFareDetailsTest extends \Codeception\Test\Unit
         $infants = PaxFareDetails::infantFromFareProducts($fareProducts);
 
         $this->assertSame(1.0, $adults->getFarePerPax());
-        $this->assertSame(2.0, $children->getFarePerPax());
-        $this->assertSame(3.0, $infants->getFarePerPax());
+        $this->assertSame(1.0, $children->getFarePerPax());
+        $this->assertSame(1.0, $infants->getFarePerPax());
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Flight\Service\Amadeus\Remarks\Model;
 
@@ -29,19 +29,19 @@ class AmadeusRequestTransformer
     /**
      * AmadeusRequestTransformer constructor.
      *
-     * @param \stdClass $config
-     * @param null|string     $customSessionHandlerClass
+     * @param \stdClass   $config
+     * @param null|string $customSessionHandlerClass
      */
     public function __construct(\stdClass $config, $customSessionHandlerClass = null)
     {
-        $this->config = $config;
+        $this->config                    = $config;
         $this->customSessionHandlerClass = $customSessionHandlerClass;
     }
 
     /**
      * builds the client
      *
-     * @param Authenticate $authentication
+     * @param Authenticate    $authentication
      * @param LoggerInterface $logger
      *
      * @return Client\Params
@@ -50,23 +50,23 @@ class AmadeusRequestTransformer
     {
         $clientParams = new Client\Params(
             [
-                'authParams' => [
-                    'officeId' => $authentication->getOfficeId(),
-                    'userId' => $authentication->getUserId(),
-                    'passwordData' => $authentication->getPasswordData(),
+                'authParams'           => [
+                    'officeId'       => $authentication->getOfficeId(),
+                    'userId'         => $authentication->getUserId(),
+                    'passwordData'   => $authentication->getPasswordData(),
                     'passwordLength' => $authentication->getPasswordLength(),
-                    'dutyCode' => $authentication->getDutyCode(),
-                    'organizationId' => $authentication->getOrganizationId()
+                    'dutyCode'       => $authentication->getDutyCode(),
+                    'organizationId' => $authentication->getOrganizationId(),
                 ],
                 'sessionHandlerParams' => [
                     'soapHeaderVersion' => Client::HEADER_V4,
-                    'stateful' => false,
-                    'wsdl' => "./wsdl/{$this->config->remarks->wsdl}",
-                    'logger' => $logger
+                    'stateful'          => false,
+                    'wsdl'              => "./wsdl/{$this->config->remarks->wsdl}",
+                    'logger'            => $logger,
                 ],
                 'requestCreatorParams' => [
-                    'receivedFrom' => 'service.remarks'
-                ]
+                    'receivedFrom' => 'service.remarks',
+                ],
             ]
         );
 
@@ -80,51 +80,55 @@ class AmadeusRequestTransformer
     /**
      * build options for remarksread
      *
-     * @param $recordlocator
+     * @param $recordLocator
      *
      * @return Client\RequestOptions\PnrRetrieveOptions
      */
-    public function buildOptionsRemarksRead($recordlocator)
+    public function buildOptionsRemarksRead($recordLocator)
     {
-        return new Client\RequestOptions\PnrRetrieveOptions(['recordLocator' => $recordlocator]);
+        return new Client\RequestOptions\PnrRetrieveOptions(['recordLocator' => $recordLocator]);
     }
 
     /**
      * build options for remarks add
      *
-     * @param $recordlocator
+     * @param                 $recordLocator
      * @param ArrayCollection $remarks
      *
      * @return Client\RequestOptions\PnrAddMultiElementsOptions
      */
-    public function buildOptionsRemarksAdd($recordlocator, ArrayCollection $remarks)
+    public function buildOptionsRemarksAdd($recordLocator, ArrayCollection $remarks)
     {
         $elements = [];
         /** @var Remark $remark */
         foreach ($remarks as $remark) {
-            $elements[] = (new \Amadeus\Client\RequestOptions\Pnr\Element\MiscellaneousRemark([
-                'type'     => $remark->getType() ? $remark->getType() : 'RM',
-                'text'     => $remark->convertToCrs(),
-                //'category' => '*' /** 1-character Category indicator */ will be put in front of the name
-            ]));
+            $elements[] = (new \Amadeus\Client\RequestOptions\Pnr\Element\MiscellaneousRemark(
+                [
+                    'type' => $remark->getType() ? $remark->getType() : 'RM',
+                    'text' => $remark->convertToCrs(),
+                    //'category' => '*' /** 1-character Category indicator */ will be put in front of the name
+                ]
+            ));
         }
 
-        return new Client\RequestOptions\PnrAddMultiElementsOptions([
-            'recordLocator' => $recordlocator,
-            'actionCode'    => Client\RequestOptions\PnrCancelOptions::ACTION_END_TRANSACT_RETRIEVE,
-            'elements'      => $elements
-        ]);
+        return new Client\RequestOptions\PnrAddMultiElementsOptions(
+            [
+                'recordLocator' => $recordLocator,
+                'actionCode'    => Client\RequestOptions\PnrCancelOptions::ACTION_END_TRANSACT_RETRIEVE,
+                'elements'      => $elements,
+            ]
+        );
     }
 
     /**
      * build options for remarks delete
      *
-     * @param $recordlocator
+     * @param                 $recordLocator
      * @param ArrayCollection $remarks
      *
      * @return Client\RequestOptions\PnrCancelOptions
      */
-    public function buildOptionsRemarksDelete($recordlocator, ArrayCollection $remarks)
+    public function buildOptionsRemarksDelete($recordLocator, ArrayCollection $remarks)
     {
         $elements = [];
         /** @var Remark $remark */
@@ -133,10 +137,12 @@ class AmadeusRequestTransformer
             $elements[] = $remark->getManagementData()->getReference()->getNumber();
         }
 
-        return new Client\RequestOptions\PnrCancelOptions([
-            'recordLocator'    => $recordlocator,
-            'actionCode'       => Client\RequestOptions\PnrCancelOptions::ACTION_END_TRANSACT_RETRIEVE,
-            'elementsByTattoo' => $elements
-        ]);
+        return new Client\RequestOptions\PnrCancelOptions(
+            [
+                'recordLocator'    => $recordLocator,
+                'actionCode'       => Client\RequestOptions\PnrCancelOptions::ACTION_END_TRANSACT_RETRIEVE,
+                'elementsByTattoo' => $elements,
+            ]
+        );
     }
 }

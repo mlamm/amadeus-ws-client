@@ -14,7 +14,7 @@ class RemarksDelete
     /**
      * @var string identification of pnr
      */
-    private $recordlocator;
+    private $recordLocator;
 
     /**
      * @var ArrayCollection remarks to delete
@@ -22,24 +22,24 @@ class RemarksDelete
     private $remarks;
 
     /**
-     * getter for recordlocator
+     * getter for recordLocator
      *
      * @return string
      */
-    public function getRecordlocator() : string
+    public function getRecordLocator() : string
     {
-        return $this->recordlocator;
+        return $this->recordLocator;
     }
 
     /**
-     * setter for recordlocator
+     * setter for recordLocator
      *
-     * @param string $recordlocator
+     * @param string $recordLocator
      * @return RemarksDelete
      */
-    public function setRecordlocator($recordlocator) : RemarksDelete
+    public function setRecordLocator($recordLocator) : RemarksDelete
     {
-        $this->recordlocator = $recordlocator;
+        $this->recordLocator = $recordLocator;
         return $this;
     }
     /**

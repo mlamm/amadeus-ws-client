@@ -29,19 +29,19 @@ class AmadeusRequestTransformer
     /**
      * AmadeusRequestTransformer constructor.
      *
-     * @param \stdClass $config
-     * @param null|string     $customSessionHandlerClass
+     * @param \stdClass   $config
+     * @param null|string $customSessionHandlerClass
      */
     public function __construct(\stdClass $config, $customSessionHandlerClass = null)
     {
-        $this->config = $config;
+        $this->config                    = $config;
         $this->customSessionHandlerClass = $customSessionHandlerClass;
     }
 
     /**
      * builds the client
      *
-     * @param Authenticate $authentication
+     * @param Authenticate    $authentication
      * @param LoggerInterface $logger
      *
      * @return Client\Params
@@ -50,23 +50,23 @@ class AmadeusRequestTransformer
     {
         $clientParams = new Client\Params(
             [
-                'authParams' => [
-                    'officeId' => $authentication->getOfficeId(),
-                    'userId' => $authentication->getUserId(),
-                    'passwordData' => $authentication->getPasswordData(),
+                'authParams'           => [
+                    'officeId'       => $authentication->getOfficeId(),
+                    'userId'         => $authentication->getUserId(),
+                    'passwordData'   => $authentication->getPasswordData(),
                     'passwordLength' => $authentication->getPasswordLength(),
-                    'dutyCode' => $authentication->getDutyCode(),
-                    'organizationId' => $authentication->getOrganizationId()
+                    'dutyCode'       => $authentication->getDutyCode(),
+                    'organizationId' => $authentication->getOrganizationId(),
                 ],
                 'sessionHandlerParams' => [
                     'soapHeaderVersion' => Client::HEADER_V4,
-                    'stateful' => true,
-                    'wsdl' => './wsdl/' . $this->config->session->wsdl,
-                    'logger' => $logger
+                    'stateful'          => true,
+                    'wsdl'              => './wsdl/' . $this->config->session->wsdl,
+                    'logger'            => $logger,
                 ],
                 'requestCreatorParams' => [
-                    'receivedFrom' => 'service.session'
-                ]
+                    'receivedFrom' => 'service.session',
+                ],
             ]
         );
 

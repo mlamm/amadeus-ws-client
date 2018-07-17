@@ -26,15 +26,15 @@
         }
     },
     "require": {
-        "php": "~7.1",
+        "php": "^7.2",
         "silex/silex": "~2.0",
-        "amabnl/amadeus-ws-client": "dev-master#6ad41e1c9df340ce03e92c475e73f08a1b8db121",
+        "amabnl/amadeus-ws-client": "^1.7.0",
         "monolog/monolog": "~1.23",
         "flight/search-request-mapping": "^5.2.0",
         "doctrine/cache": "~1.7",
         "symfony/yaml": "~3.3",
         "jms/serializer": "^1.8",
-        "flight/library-search-request-response-mapping": "^6.2.0",
+        "flight/library-search-request-response-mapping": "^6.3.0",
         "particle/validator": "^2.2",
         "flight/throwup-errors": "^0.1",
         "perftools/xhgui-collector": "^1.0",
@@ -64,10 +64,6 @@
                     "verify_peer": false
                 }
             }
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/zervel/amadeus-ws-client.git"
         }
     ]
 }

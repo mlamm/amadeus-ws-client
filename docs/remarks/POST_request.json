@@ -1,6 +1,6 @@
 {
-  "recordlocator": "LTEXQF",
-  "remarks": {
-    "TESTVALUE": "test"
-  }
+  "recordLocator": "LTEXQF",
+  "remarks": [
+    "TESTVALUE-test"
+  ]
 }

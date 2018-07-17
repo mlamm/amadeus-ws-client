@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "authentication": {
+      "type": "object",
+      "description": "Credentials for calling amadeus interface.",
+      "properties": {
+        "office-id": {
+          "type": "string",
+          "description": "Identification code."
+        },
+        "password-data": {
+          "type": "string",
+          "description": "Password of user id"
+        },
+        "user-id": {
+          "type": "string",
+          "description": "User id"
+        }
+      }
+    },
+    "session": {
+      "type": "object",
+      "description": "Session data for using session based calls.",
+      "properties": {
+        "session-id": {
+          "type": "string",
+          "description": "Session identification code."
+        },
+        "sequence-number": {
+          "type": "int",
+          "description": "call sequence count in current session"
+        },
+        "security-token": {
+          "type": "string",
+          "description": "session security token"
+        }
+      }
+    }
+  }
+}
