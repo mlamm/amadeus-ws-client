@@ -5,6 +5,7 @@ use Flight\Service\Amadeus\Application\BusinessCase;
 use Flight\Service\Amadeus\Application\Exception\GeneralServerErrorException;
 use Flight\Service\Amadeus\Application\Response\HalResponse;
 use Flight\Service\Amadeus\Session\Exception\InactiveSessionException;
+use Flight\Service\Amadeus\Session\Exception\InvalidRequestException;
 use Flight\Service\Amadeus\Session\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Session\Response\AmadeusErrorResponse;
 use Flight\Service\Amadeus\Session\Response\SessionTerminateResponse;
@@ -67,6 +68,15 @@ class TerminateSession extends BusinessCase
 
             $errorResponse = new AmadeusErrorResponse();
             $errorResponse->addViolationFromValidationFailures($e->getFailures());
+            $errorResponse->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $this->addLinkToSelf($errorResponse);
+
+            return $errorResponse;
+        } catch (InvalidRequestException $e) {
+            $this->logger->debug($e);
+
+            $errorResponse = new AmadeusErrorResponse();
+            $errorResponse->addViolation('_', $e);
             $errorResponse->setStatusCode(Response::HTTP_BAD_REQUEST);
             $this->addLinkToSelf($errorResponse);
 
