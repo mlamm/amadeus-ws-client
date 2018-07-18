@@ -28,7 +28,7 @@
     "require": {
         "php": "^7.2",
         "silex/silex": "~2.0",
-        "amabnl/amadeus-ws-client": "^1.7.0",
+        "amabnl/amadeus-ws-client": "dev-master#6ad41e1c9df340ce03e92c475e73f08a1b8db121",
         "monolog/monolog": "~1.23",
         "flight/search-request-mapping": "^5.2.0",
         "doctrine/cache": "~1.7",

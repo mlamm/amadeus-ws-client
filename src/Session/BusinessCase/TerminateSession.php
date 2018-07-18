@@ -7,10 +7,10 @@ use Flight\Service\Amadeus\Application\Response\HalResponse;
 use Flight\Service\Amadeus\Session\Exception\InactiveSessionException;
 use Flight\Service\Amadeus\Session\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Session\Response\AmadeusErrorResponse;
+use Flight\Service\Amadeus\Session\Response\SessionTerminateResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Log\LoggerInterface;
 use Flight\Service\Amadeus\Session\Service\Session;
-use Flight\Service\Amadeus\Session\Response\SessionCreateResponse;
 
 /**
  * Class CreateSession BusinessCase
@@ -47,13 +47,12 @@ class TerminateSession extends BusinessCase
     public function respond()
     {
         try {
-            $response = SessionCreateResponse::fromJsonString(
-                $this->sessionService->terminateSession(
-                    $this->getRequest()->headers->get('authentication'),
-                    $this->getRequest()->headers->get('session')
-                )
+            $response = $this->sessionService->closeSession(
+                $this->getRequest()->headers->get('authentication'),
+                $this->getRequest()->headers->get('session')
             );
-
+            $responses = ['result' => $response];
+            $response  = SessionTerminateResponse::fromJsonString(json_encode($responses), Response::HTTP_NO_CONTENT);
         } catch (InactiveSessionException $e) {
             $this->logger->warning($e);
             $e->setResponseCode(Response::HTTP_BAD_REQUEST);
@@ -84,7 +83,7 @@ class TerminateSession extends BusinessCase
             return $errorResponse;
         }
 
-        $response->setStatusCode(204);
+        $response->setStatusCode(Response::HTTP_NO_CONTENT);
         $this->addLinkToSelf($response);
         return $response;
     }

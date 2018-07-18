@@ -55,26 +55,6 @@ class Session
      * validate session
      *
      * @param $session
-     * @throws InvalidRequestParameterException
-     */
-    public function validateSession(\Flight\Service\Amadeus\Session\Model\Session $session)
-    {
-        //throw new \Exception(print_r($session, true));
-        $validator = new Validator();
-        $validator->required('sessionId')->string();
-        $validator->required('securityToken')->string();
-
-        $validationResult = $validator->validate($session->toArray());
-
-        if ($validationResult->isNotValid()) {
-            throw new InvalidRequestParameterException(print_r($validationResult->getFailures(), true));
-        }
-    }
-
-    /**
-     * validate session
-     *
-     * @param $session
      *
      * @throws InvalidRequestParameterException
      */

@@ -6,6 +6,7 @@ use Amadeus\Client\Exception;
 use Flight\Service\Amadeus\Application\BusinessCase;
 use Flight\Service\Amadeus\Application\Response\HalResponse;
 use Flight\Service\Amadeus\Session\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Session\Exception\InactiveSessionException;
 use Flight\Service\Amadeus\Session\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Application\Exception\GeneralServerErrorException;
 use Flight\Service\Amadeus\Session\Response\AmadeusErrorResponse;
@@ -67,6 +68,15 @@ class CommitSession extends BusinessCase
             $responses = ['result' => $commit && $signOut];
             $response  = SessionCommitResponse::fromJsonString(json_encode($responses), Response::HTTP_NO_CONTENT);
 
+        } catch (InactiveSessionException $exception) {
+            $this->logger->warning($exception);
+            $exception->setResponseCode(Response::HTTP_BAD_REQUEST);
+
+            $errorResponse = new AmadeusErrorResponse();
+            $errorResponse->addViolation('session', $exception);
+            $this->addLinkToSelf($errorResponse);
+
+            return $errorResponse;
         } catch (AmadeusRequestException $exception) {
             $this->logger->critical($exception);
             $exception->setResponseCode(Response::HTTP_INTERNAL_SERVER_ERROR);

@@ -164,6 +164,7 @@ class AmadeusClient
      * @throws \Exception
      * @throws Client\Exception
      * @throws AmadeusRequestException
+     * @throws InactiveSessionException
      */
     public function closeSession(Authenticate $authenticate, Session $session) : bool
     {
@@ -180,6 +181,8 @@ class AmadeusClient
         if (self::CHECK_RESULT_OK == $checkResponseResult) {
             $result = true;
         } else {
+            // inactive session check
+            $this->checkResultSession($clientResult);
             $result = false;
         }
 
