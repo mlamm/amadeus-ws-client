@@ -2,6 +2,8 @@
 
 namespace Flight\Service\Amadeus\Session\Service;
 
+use Flight\Service\Amadeus\Session\Exception\InactiveSessionException;
+use Flight\Service\Amadeus\Session\Exception\InvalidRequestException;
 use Flight\Service\Amadeus\Session\Model\AmadeusClient;
 use Flight\Service\Amadeus\Session\Model\Session as SessionModel;
 use Flight\Service\Amadeus\Session\Request;
@@ -52,9 +54,14 @@ class Session
      * @throws \Amadeus\Client\Exception
      * @throws \Flight\Service\Amadeus\Session\Exception\AmadeusRequestException
      * @throws \Flight\Service\Amadeus\Session\Exception\InvalidRequestParameterException
+     * @throws InvalidRequestException
      */
     public function createSession($authHeader)
     {
+        if (empty($authHeader)) {
+            throw new InvalidRequestException('no authentication header set');
+        }
+        
         $authHeader = \GuzzleHttp\json_decode($authHeader);
 
         // validate
@@ -83,9 +90,17 @@ class Session
      * @throws \Amadeus\Client\Exception
      * @throws \Flight\Service\Amadeus\Session\Exception\AmadeusRequestException
      * @throws \Flight\Service\Amadeus\Session\Exception\InvalidRequestParameterException
+     * @throws InvalidRequestException
      */
     public function commitSession($authHeader, $sessionHeader)
     {
+        if (empty($authHeader)) {
+            throw new InvalidRequestException('no authentication header set');
+        }
+        if (empty($sessionHeader)) {
+            throw new InvalidRequestException('no session header set');
+        }
+        
         $authHeader    = \GuzzleHttp\json_decode($authHeader);
         $sessionHeader = \GuzzleHttp\json_decode($sessionHeader);
 
@@ -122,9 +137,18 @@ class Session
      * @throws \Amadeus\Client\Exception
      * @throws \Flight\Service\Amadeus\Session\Exception\AmadeusRequestException
      * @throws \Flight\Service\Amadeus\Session\Exception\InvalidRequestParameterException
+     * @throws InactiveSessionException
+     * @throws InvalidRequestException
      */
     public function closeSession($authHeader, $sessionHeader)
-    {
+    {$authHeader = null;
+        if (empty($authHeader)) {
+            throw new InvalidRequestException('no authentication header set');
+        }
+        if (empty($sessionHeader)) {
+            throw new InvalidRequestException('no session header set');
+        }
+
         $authHeader    = \GuzzleHttp\json_decode($authHeader);
         $sessionHeader = \GuzzleHttp\json_decode($sessionHeader);
 
@@ -146,6 +170,56 @@ class Session
             ->setSecurityToken($sessionHeader->{'security-token'});
 
         $response = $this->amadeusClient->closeSession(
+            $authenticate,
+            $session
+        );
+
+        return $this->serializer->serialize($response, 'json');
+    }
+
+    /**
+     * ignore given session
+     *
+     * @param $authHeader string json string with authentication information
+     * @param $sessionHeader string json string with session information
+     *
+     * @return mixed|string
+     *
+     * @throws InactiveSessionException
+     * @throws \Flight\Service\Amadeus\Session\Exception\InvalidRequestParameterException
+     * @throws InvalidRequestException
+     */
+    public function ignoreSession($authHeader, $sessionHeader)
+    {
+        if (empty($authHeader)) {
+            throw new InvalidRequestException('no authentication header set');
+        }
+        if (empty($sessionHeader)) {
+            throw new InvalidRequestException('no session header set');
+        }
+
+        $authHeader = \GuzzleHttp\json_decode($authHeader);
+        $sessionHeader = \GuzzleHttp\json_decode($sessionHeader);
+
+
+        // validate
+        $this->requestValidator->validateAuthentication($authHeader);
+        $this->requestValidator->validateSession($sessionHeader);
+
+        $session = new \Flight\Service\Amadeus\Session\Model\Session();
+        $session->setSecurityToken($sessionHeader->{'security-token'})
+            ->setSessionId($sessionHeader->{'session-id'})
+            ->setSequenceNumber($sessionHeader->{'sequence-number'});
+
+        $authenticate = (new Request\Entity\Authenticate())
+            ->setDutyCode($authHeader->{'duty-code'})
+            ->setOfficeId($authHeader->{'office-id'})
+            ->setOrganizationId($authHeader->{'organization'})
+            ->setPasswordData($authHeader->{'password-data'})
+            ->setPasswordLength($authHeader->{'password-length'})
+            ->setUserId($authHeader->{'user-id'});
+
+        $response = $this->amadeusClient->ignoreSession(
             $authenticate,
             $session
         );

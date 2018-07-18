@@ -1,6 +1,10 @@
 <?php
 
 namespace Flight\Service\Amadeus\Session\Model;
+use Doctrine\Common\Collections\ArrayCollection;
+use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse\Result;
+use Flight\Service\Amadeus\Session\Response\ResultResponse;
+use Flight\Service\Amadeus\Session\Response\SessionCreateResponse;
 
 /**
  * AmadeusResponseTransformer
@@ -36,5 +40,47 @@ class AmadeusResponseTransformer
         $result->setSessionId((string)$xml->xpath('//awsse:SessionId')[0]);
         $result->setSequenceNumber((string)$xml->xpath('//awsse:SequenceNumber')[0]);
         return $result;
+    }
+
+    /**
+     * map session ignore result
+     *
+     * @param \Amadeus\Client\Result $result
+     * @return SessionCreateResponse
+     */
+    public function mapSessionIgnore(\Amadeus\Client\Result $result): SessionCreateResponse
+    {
+        $SessionResponse = new SessionCreateResponse();
+        $SessionResponse->setResult(new ArrayCollection());
+
+        if (!empty($result->response->clearInformation->actionRequest)) {
+            $SessionResponse->getResult()->add('session succesfully ignored.');
+            return $SessionResponse;
+        }
+
+        $SessionResponse->getResult()->add('error while ignored.');
+
+        return $SessionResponse;
+    }
+
+    /**
+     * map session termination result
+     *
+     * @param \Amadeus\Client\Result $result
+     * @return SessionCreateResponse
+     */
+    public function mapSessionTerminate(\Amadeus\Client\Result $result): SessionCreateResponse
+    {
+        $SessionResponse = new SessionCreateResponse();
+        $SessionResponse->setResult(new ArrayCollection());
+
+        if (!empty($result->response->processStatus->statusCode)) {
+            $SessionResponse->getResult()->add('session succesfully terminated(sign out).');
+            return $SessionResponse;
+        }
+
+        $SessionResponse->getResult()->add('error while termination(sign out).');
+
+        return $SessionResponse;
     }
 }

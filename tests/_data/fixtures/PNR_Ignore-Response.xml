@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+                   xmlns:awsse="http://xml.amadeus.com/2010/06/Session_v3"
+                   xmlns:wsa="http://www.w3.org/2005/08/addressing">
+    <SOAP-ENV:Header>
+        <wsa:To>http://www.w3.org/2005/08/addressing/anonymous</wsa:To>
+        <wsa:From>
+            <wsa:Address>https://nodeD1.test.webservices.amadeus.com/1ASIWADMTBD</wsa:Address>
+        </wsa:From>
+        <wsa:Action>http://webservices.amadeus.com/CLTREQ_04_1_IA</wsa:Action>
+        <wsa:MessageID>urn:uuid:9c0468fc-faa1-61a4-89ac-1ddc9d9e03b5</wsa:MessageID>
+        <wsa:RelatesTo RelationshipType="http://www.w3.org/2005/08/addressing/reply">
+            EFD1C9B7-BF00-CC48-0BF5-6880F768836B
+        </wsa:RelatesTo>
+        <awsse:Session TransactionStatusCode="InSeries">
+            <awsse:SessionId>017POQ7VRM</awsse:SessionId>
+            <awsse:SequenceNumber>2</awsse:SequenceNumber>
+            <awsse:SecurityToken>19DT0P1MALG7D1E3P92017YRQ2</awsse:SecurityToken>
+        </awsse:Session>
+    </SOAP-ENV:Header>
+    <SOAP-ENV:Body>
+        <PNR_IgnoreReply xmlns="http://xml.amadeus.com/CLTRES_04_1_IA">
+            <clearInformation>
+                <actionRequest>A</actionRequest>
+            </clearInformation>
+        </PNR_IgnoreReply>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

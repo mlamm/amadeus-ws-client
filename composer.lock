@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d310cc6266c7c02bc128410d755f8327",
+    "content-hash": "332581541ddc1dc235c55b2bab3fbae8",
     "packages": [
         {
             "name": "alcaeus/mongo-php-adapter",
@@ -73,16 +73,16 @@
         },
         {
             "name": "amabnl/amadeus-ws-client",
-            "version": "v1.7.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amabnl/amadeus-ws-client.git",
-                "reference": "83013ee890f4fb7c06b9715544bc9b7dea023393"
+                "reference": "6ad41e1c9df340ce03e92c475e73f08a1b8db121"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amabnl/amadeus-ws-client/zipball/83013ee890f4fb7c06b9715544bc9b7dea023393",
-                "reference": "83013ee890f4fb7c06b9715544bc9b7dea023393",
+                "url": "https://api.github.com/repos/amabnl/amadeus-ws-client/zipball/6ad41e1c9df340ce03e92c475e73f08a1b8db121",
+                "reference": "6ad41e1c9df340ce03e92c475e73f08a1b8db121",
                 "shasum": ""
             },
             "require": {
@@ -133,7 +133,7 @@
                 "wsdl",
                 "xml"
             ],
-            "time": "2018-04-30T06:42:56+00:00"
+            "time": "2018-06-08T10:18:20+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -838,16 +838,16 @@
         },
         {
             "name": "mongodb/mongodb",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mongodb/mongo-php-library.git",
-                "reference": "ae05e905dbb3ae5fac846a2906dd273d717708f2"
+                "reference": "0534ed0ff44e26fe96e9172e7f34e2bbf5c0efde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/ae05e905dbb3ae5fac846a2906dd273d717708f2",
-                "reference": "ae05e905dbb3ae5fac846a2906dd273d717708f2",
+                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/0534ed0ff44e26fe96e9172e7f34e2bbf5c0efde",
+                "reference": "0534ed0ff44e26fe96e9172e7f34e2bbf5c0efde",
                 "shasum": ""
             },
             "require": {
@@ -862,7 +862,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "dev-master": "1.4.x-dev"
                 }
             },
             "autoload": {
@@ -899,7 +899,7 @@
                 "mongodb",
                 "persistence"
             ],
-            "time": "2018-06-27T17:05:43+00:00"
+            "time": "2018-07-10T15:23:29+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -1988,16 +1988,16 @@
         },
         {
             "name": "codeception/codeception",
-            "version": "2.4.3",
+            "version": "2.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "13b2db0d54068afaabf3ca8ac8b6591d69018f46"
+                "reference": "2060fc1fe8ac2823ff3b8ece04616fc12aca968a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/13b2db0d54068afaabf3ca8ac8b6591d69018f46",
-                "reference": "13b2db0d54068afaabf3ca8ac8b6591d69018f46",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/2060fc1fe8ac2823ff3b8ece04616fc12aca968a",
+                "reference": "2060fc1fe8ac2823ff3b8ece04616fc12aca968a",
                 "shasum": ""
             },
             "require": {
@@ -2075,7 +2075,7 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2018-06-26T14:09:28+00:00"
+            "time": "2018-07-16T08:14:50+00:00"
         },
         {
             "name": "codeception/phpunit-wrapper",
@@ -3564,16 +3564,16 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "591a30922f54656695e59b1f39501aec513403da"
+                "reference": "5de4fc177adf9bce8df98d8d141a7559d7ccf6da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/591a30922f54656695e59b1f39501aec513403da",
-                "reference": "591a30922f54656695e59b1f39501aec513403da",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/5de4fc177adf9bce8df98d8d141a7559d7ccf6da",
+                "reference": "5de4fc177adf9bce8df98d8d141a7559d7ccf6da",
                 "shasum": ""
             },
             "require": {
@@ -3624,7 +3624,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2018-06-14T15:05:28+00:00"
+            "time": "2018-07-12T15:12:46+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -4780,7 +4780,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "amabnl/amadeus-ws-client": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

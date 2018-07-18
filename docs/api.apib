@@ -247,7 +247,89 @@ This request will return session data
 
     |Code | Message |
     |---|---|
-    | SRS000X | *Message of an unspecific error.* |
+    | ARS000X | *Message of an unspecific error.* |
+
+    + Body
+
+            <!-- include(session/error-response.json) -->
+
+    + Schema
+
+            <!-- include(session/error-response_schema.json) -->
+
+### CreateSession [POST /session/ignore]
+This request will return session data
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+            session: {"session-id": "017CD9PLTG", "sequence-number": 1, "security-token": "1JOK2H6I4S93LGJ75S2T70XCQ"}
+
+
++ Response 204 (application/hal+json)
+
++ Response 400 (application/hal+json)
+
+    |Code | Message |
+    |---|---|
+    | ARS0005 | *INACTIVE SESSION* |
+
+    + Body
+
+            <!-- include(session/error-response_inactiveSession.json) -->
+
+    + Schema
+
+            <!-- include(session/error-response_schema.json) -->
+            
++ Response 500 (application/hal+json)
+
+    |Code | Message |
+    |---|---|
+    | ARS000X | *Message of an unspecific error.* |
+
+    + Body
+
+            <!-- include(session/error-response.json) -->
+
+    + Schema
+
+            <!-- include(session/error-response_schema.json) -->
+
+### CreateSession [POST /session/terminate]
+This request will return session data
+
++ Request
+
+    + Headers
+
+            authentication: {"office-id": "ABC1","user-id": "1234","password-data": "AB123456", "password-length": "8", "duty-code": "SU", "organization": "invia"}
+            session: {"session-id": "017CD9PLTG", "sequence-number": 1, "security-token": "1JOK2H6I4S93LGJ75S2T70XCQ"}
+
+
++ Response 204 (application/hal+json)
+
++ Response 400 (application/hal+json)
+
+    |Code | Message |
+    |---|---|
+    | ARS0005 | *INACTIVE SESSION* |
+
+    + Body
+
+            <!-- include(session/error-response_inactiveSession.json) -->
+
+    + Schema
+
+            <!-- include(session/error-response_schema.json) -->
+
++ Response 500 (application/hal+json)
+
+    |Code | Message |
+    |---|---|
+    | ARS000X | *Message of an unspecific error.* |
 
     + Body
 
@@ -332,7 +414,7 @@ This request will return all remarks for given recordLocator and officeId
 
     |Code | Message |
     |---|---|
-    | SRS000X | *Message of an unspecific error.* |
+    | ARS000X | *Message of an unspecific error.* |
 
     + Body
 
@@ -375,7 +457,7 @@ This request will add the given remarks, return all remarks for given recordLoca
 
     |Code | Message |
     |---|---|
-    | SRS000X | *Message of an unspecific error.* |
+    | ARS000X | *Message of an unspecific error.* |
 
     + Body
 
@@ -418,7 +500,7 @@ This request will change the given remarks, return all remarks for given recordL
 
     |Code | Message |
     |---|---|
-    | SRS000X | *Message of an unspecific error.* |
+    | ARS000X | *Message of an unspecific error.* |
 
     + Body
 
@@ -461,7 +543,7 @@ This request will delete the given remarks, return all remarks for given recordL
 
     |Code | Message |
     |---|---|
-    | SRS000X | *Message of an unspecific error.* |
+    | ARS000X | *Message of an unspecific error.* |
 
     + Body
 
