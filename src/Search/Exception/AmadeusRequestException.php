@@ -24,9 +24,10 @@ class AmadeusRequestException extends ServiceException
     {
         foreach ($messages as $error) {
             if ($error instanceof Result\NotOk) {
-                $this->errors[] = $error;
+                $this->internalErrorMessage .= " [{$error->code},{$error->text}],";
+            } elseif (is_string($error)) {
+                $this->internalErrorMessage .= " - $error";
             }
-            $this->internalErrorMessage .= " [{$error->code},{$error->text}],";
         }
 
         $this->internalErrorMessage = rtrim($this->internalErrorMessage, ',');

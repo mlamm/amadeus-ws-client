@@ -1,17 +1,10 @@
 <?php
 
-use Flight\Service\Amadeus\Application\Config\CachedConfig;
-use Flight\Service\Amadeus\Application\Middleware\JsonEncodingOptions;
-use Flight\Service\Amadeus\Application\Provider\ErrorProvider;
-use Flight\Service\Amadeus\Search\Cache\CacheProvider;
-use Flight\Service\Amadeus\Search\Provider\SearchServiceProvider;
+use Flight\Service\Amadeus\Application;
 use Flight\Service\Amadeus\Remarks;
 use Flight\Service\Amadeus\Itinerary;
 use Flight\Service\Amadeus\Session;
 use Flight\Service\Amadeus\Price;
-use Flight\TracingHeaderSilex\TracingHeaderProvider;
-use Silex\Application;
-use Symfony\Component\Yaml\Yaml;
 
 // send all errors to the error handler
 error_reporting(E_ALL);
@@ -26,39 +19,7 @@ ini_set('error_log', 'php://stdout');
 chdir(__DIR__ . '/..');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$app = new Application();
-
-// switch to mock service responses for api tests
-$useMockAmaResponses = env('MOCK_AMA_RESPONSE_IN_TEST', 'disabled') === 'enabled'
-    && isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] === 'Symfony BrowserKit';
-
-// register provider
-$app->register(new ErrorProvider());
-$app->register(new TracingHeaderProvider());
-$app->register(new Silex\Provider\ServiceControllerServiceProvider());
-$app->register(new CacheProvider());
-$app->register(new SearchServiceProvider($useMockAmaResponses));
-$app->register(new Remarks\Provider\RemarksServiceProvider($useMockAmaResponses));
-$app->register(new Session\Provider\SessionServiceProvider($useMockAmaResponses));
-$app->register(new Itinerary\Provider\ItineraryServiceProvider($useMockAmaResponses));
-$app->register(new Price\Provider\PriceServiceProvider($useMockAmaResponses));
-
-// register config
-$app['config'] = function () {
-    return CachedConfig::load(
-        env('CONFIG_CACHING', 'enabled') !== 'disabled',
-        __DIR__ . '/../var/cache/config',
-        function () {
-            return Yaml::parse(
-                file_get_contents(__DIR__ . '/../config/app.yml'),
-                Yaml::PARSE_OBJECT_FOR_MAP
-            );
-        }
-    );
-};
-
-// set json ecoding options from config
-$app->after(new JsonEncodingOptions($app['config']));
+$app = new Application;
 
 // search cases
 $app['businesscase.search'] = function () use ($app) {
@@ -130,8 +91,6 @@ $app['businesscase.price-create'] = function() use ($app) {
         $app['monolog']
     );
 };
-
-$app->register(new \Flight\Service\Amadeus\Search\Cache\CacheProvider());
 
 // application provider
 $app->mount('/', new \Flight\Service\Amadeus\Index\IndexProvider());

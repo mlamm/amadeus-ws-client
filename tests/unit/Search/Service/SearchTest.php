@@ -9,6 +9,7 @@ use Flight\Library\SearchRequest\ResponseMapping\Mapper;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\BusinessCaseAuthentication;
 use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
+use Flight\Service\Amadeus\Search\Exception\EmptyResponseException;
 use Flight\Service\Amadeus\Search\Model\AmadeusClient;
 use Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator;
 use Flight\Service\Amadeus\Search\Service\Search;

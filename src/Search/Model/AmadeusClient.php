@@ -6,6 +6,10 @@ use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Request;
 use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Search\Exception\EmptyResponseException;
+use Pimple\Container;
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class AmadeusClient
@@ -13,7 +17,7 @@ use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
  */
 class AmadeusClient
 {
-    private const EMPTY_RESULT_ERRORS = [
+    public const EMPTY_RESULT_ERRORS = [
         830, // No recommendation found with lower or equal price
         866, // No fare found for requested itinerary
         931, // No itinerary found for Requested Segment n
@@ -45,31 +49,45 @@ class AmadeusClient
     protected $clientBuilder;
 
     /**
+     * @var float The time when the request to amadeus starts.
+     */
+    protected $startTime;
+
+    /**
+     * @var Application|Container
+     */
+    private $application;
+
+    /**
      * @param ClientParamsFactory        $clientParamsFactory
      * @param AmadeusRequestTransformer  $requestTransformer
      * @param AmadeusResponseTransformer $responseTransformer
      * @param \Closure                   $clientBuilder
+     * @param Container                  $application
      */
     public function __construct(
         ClientParamsFactory $clientParamsFactory,
         AmadeusRequestTransformer $requestTransformer,
         AmadeusResponseTransformer $responseTransformer,
-        \Closure $clientBuilder
+        \Closure $clientBuilder,
+        Container $application
     ) {
         $this->clientParamsFactory = $clientParamsFactory;
         $this->requestTransformer = $requestTransformer;
         $this->responseTransformer = $responseTransformer;
         $this->clientBuilder = $clientBuilder;
+        $this->application = $application;
     }
 
     /**
      * Method to start a search request based on a sent Request object
      *
-     * @param Request $request
+     * @param Request      $request
      * @param BusinessCase $businessCase
      *
      * @return SearchResponse
      * @throws AmadeusRequestException
+     * @throws EmptyResponseException
      * @throws \Exception
      */
     public function search(Request $request, BusinessCase $businessCase) : SearchResponse
@@ -80,21 +98,28 @@ class AmadeusClient
 
         $requestOptions = $this->requestTransformer->buildFareMasterRequestOptions($request);
 
+        $this->startTime = microtime(true);
+
         try {
             $result = $client->fareMasterPricerTravelBoardSearch($requestOptions);
+            $this->trackLatency();
         } catch (\Exception $exception) {
             if ($this->isEmptyResponseError($exception)) {
-                return $this->responseTransformer->createEmptyResponse();
+                $this->trackLatency(Response::HTTP_BAD_REQUEST);
+                throw new EmptyResponseException([$exception->getMessage()]);
             }
+
+            $this->trackLatency(Response::HTTP_INTERNAL_SERVER_ERROR);
             throw $exception;
         }
 
         if ($this->isEmptyResultError($result)) {
-            // @TODO [ts] - MID - create a metric do track these behavior
-            return $this->responseTransformer->createEmptyResponse();
+            $this->trackLatency(Response::HTTP_BAD_REQUEST);
+            throw new EmptyResponseException($result->messages);
         }
 
         if ($this->isErrorResponse($result)) {
+            $this->trackLatency(Response::HTTP_INTERNAL_SERVER_ERROR);
             throw new AmadeusRequestException($result->messages);
         }
 
@@ -138,5 +163,19 @@ class AmadeusClient
         }
 
         return false;
+    }
+
+    /**
+     * @param int $statusCode
+     *
+     * @return void
+     */
+    private function trackLatency(int $statusCode = 200)
+    {
+        $this->application['metrics.prometheus.tracker']->logResponseLatency(
+            microtime(true) - $this->startTime,
+            'fareMasterPricerTravelBoardSearch',
+            $statusCode
+        );
     }
 }

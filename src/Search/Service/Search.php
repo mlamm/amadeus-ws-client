@@ -9,9 +9,11 @@ use Flight\SearchRequestMapping\Entity\Request;
 use Flight\Service\Amadeus\Search\Cache\CacheKey;
 use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
 use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Search\Exception\EmptyResponseException;
 use Flight\Service\Amadeus\Search\Exception\InvalidRequestException;
 use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Search\Model\AmadeusClient;
+use Flight\Service\Amadeus\Search\Model\AmadeusResponseTransformer;
 use Flight\Service\Amadeus\Search\Request\Validator\AmadeusRequestValidator;
 use JMS\Serializer\Serializer;
 
@@ -59,12 +61,12 @@ class Search
     private $config;
 
     /**
-     * @param AmadeusRequestValidator $requestValidator
-     * @param Serializer              $serializer
-     * @param Mapper                  $responseMapper
-     * @param FlightCacheInterface    $cache
-     * @param AmadeusClient           $amadeusClient
-     * @param \stdClass               $config
+     * @param AmadeusRequestValidator    $requestValidator
+     * @param Serializer                 $serializer
+     * @param Mapper                     $responseMapper
+     * @param FlightCacheInterface       $cache
+     * @param AmadeusClient              $amadeusClient
+     * @param \stdClass                  $config
      */
     public function __construct(
         AmadeusRequestValidator $requestValidator,
@@ -88,9 +90,10 @@ class Search
      * @param string $requestJson
      *
      * @return string
+     * @throws AmadeusRequestException
+     * @throws EmptyResponseException
      * @throws InvalidRequestException
      * @throws InvalidRequestParameterException
-     * @throws AmadeusRequestException
      */
     public function search(string $requestJson) : string
     {
@@ -107,13 +110,13 @@ class Search
         $cachedResponse = $this->cache->fetch((string) $cacheKey);
 
         if ($cachedResponse !== false) {
+            // @TODO [ts] - HIGH - track cache hit rate
             return $cachedResponse;
         }
 
         $searchResponse = $this->amadeusClient->search($searchRequest, $businessCase);
 
         $serializedResponse = $this->responseMapper->createJson($searchResponse);
-
         $this->cache->save((string) $cacheKey, $serializedResponse);
 
         return $serializedResponse;

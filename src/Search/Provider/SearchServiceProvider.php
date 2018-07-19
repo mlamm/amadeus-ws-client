@@ -55,7 +55,8 @@ class SearchServiceProvider implements ServiceProviderInterface
                 new AmadeusResponseTransformer(),
                 function (Amadeus\Client\Params $clientParams) {
                     return new Amadeus\Client($clientParams);
-                }
+                },
+                $app
             );
         };
 

@@ -80,6 +80,9 @@ response:
         - JSON_PRETTY_PRINT
         - JSON_UNESCAPED_SLASHES
 
+prometheus:
+    storage_type: apcu
+
 debug:
     search:
       log_ama_traffic: true

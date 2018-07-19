@@ -2,17 +2,18 @@
 
 namespace Flight\Service\Amadeus\Search\BusinessCase;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\Service\Amadeus\Application\BusinessCase;
 use Flight\Service\Amadeus\Application\Exception\GeneralServerErrorException;
 use Flight\Service\Amadeus\Application\Exception\ServiceException;
 use Flight\Service\Amadeus\Application\Logger\ErrorLogger;
 use Flight\Service\Amadeus\Application\Response\HalResponse;
+use Flight\Service\Amadeus\Search\Exception\EmptyResponseException;
 use Flight\Service\Amadeus\Search\Exception\InvalidRequestException;
 use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse;
 use Flight\Service\Amadeus\Search\Response\SearchResultResponse;
-use Monolog\Logger;
-use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -52,7 +53,12 @@ class Search extends BusinessCase
             $response = SearchResultResponse::fromJsonString(
                 $this->searchService->search($this->getRequest()->getContent())
             );
-        } catch (InvalidRequestException $ex) {
+        }
+        catch (EmptyResponseException $ex) {
+            $this->errorLogger->logException($ex, $this->getRequest(), Response::HTTP_BAD_REQUEST);
+            $response = new SearchResultResponse((new SearchResponse)->setResult(new ArrayCollection));
+        }
+        catch (InvalidRequestException $ex) {
             $this->errorLogger->logException($ex, $this->getRequest(), Response::HTTP_BAD_REQUEST);
             $ex->setResponseCode(Response::HTTP_BAD_REQUEST);
 

@@ -6,6 +6,7 @@ namespace Flight\Service\Amadeus\Tests\Search\BusinessCase;
 use Codeception\Test\Unit;
 use Flight\Service\Amadeus\Application\Logger\ErrorLogger;
 use Flight\Service\Amadeus\Search\BusinessCase\Search;
+use Flight\Service\Amadeus\Search\Exception\EmptyResponseException;
 use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Search\Response\AmadeusErrorResponse;
 use Flight\Service\Amadeus\Search\Response\SearchResultResponse;
@@ -107,6 +108,19 @@ class SearchTest extends Unit
 
         $this->assertInstanceOf(AmadeusErrorResponse::class, $response);
         $this->assertEquals(500, $response->getStatusCode());
+        $this->assertNotEmpty($this->logger->log);
+    }
+
+    public function testItReturnsEmptySearchResponseOnSomeExceptions()
+    {
+        $this->service
+            ->method('search')
+            ->willThrowException(new EmptyResponseException(['A message that should append to the exception message.']));
+
+        $response = $this->object->__invoke(new Application(), new Request());
+
+        $this->assertInstanceOf(SearchResultResponse::class, $response);
+        $this->assertEquals(200, $response->getStatusCode());
         $this->assertNotEmpty($this->logger->log);
     }
 }
