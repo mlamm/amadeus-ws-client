@@ -56,7 +56,7 @@ class SearchServiceProvider implements ServiceProviderInterface
                 function (Amadeus\Client\Params $clientParams) {
                     return new Amadeus\Client($clientParams);
                 },
-                $app
+                $app['metrics.prometheus.tracker']
             );
         };
 
@@ -76,7 +76,8 @@ class SearchServiceProvider implements ServiceProviderInterface
                 new Mapper(),
                 $app['cache.flights'],
                 $app['amadeus.client.search'],
-                $app['config']->search
+                $app['config']->search,
+                $app['metrics.prometheus.tracker']
             );
         };
     }

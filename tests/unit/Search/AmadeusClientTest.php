@@ -5,6 +5,7 @@ use Amadeus\Client;
 use Codeception\Test\Unit;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\Service\Amadeus\Application;
+use Flight\Service\Amadeus\Metrics\MetricsTracker;
 use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
 use Flight\Service\Amadeus\Search\Exception\EmptyResponseException;
 use Flight\Service\Amadeus\Search\Model\AmadeusClient;
@@ -75,7 +76,7 @@ class AmadeusClientTest extends Unit
             $this->requestTransformer,
             $this->responseTransformer,
             $clientBuilder,
-            new Application
+            new MetricsTracker(new Application)
         );
     }
 

@@ -17,6 +17,9 @@ use Silex\Application;
  */
 class MetricsProvider extends BusinessCaseProvider implements ServiceProviderInterface
 {
+    public const CACHE_REQUEST_HIT = 'hit';
+    public const CACHE_REQUEST_MISS = 'miss';
+
     /**
      * Method to setup the routing for the endpoint.
      *
@@ -74,6 +77,16 @@ class MetricsProvider extends BusinessCaseProvider implements ServiceProviderInt
                 [1, 2, 3, 5, 8, 10, 30] // buckets
             );
         };
+
+        $application['metrics.supplier_cache_requests_total'] = function () use ($registry) {
+            return $registry->getOrRegisterCounter(
+                'supplier',
+                'cache_requests_total',
+                'Request count for cache requests used to reduce supplier requests.',
+                ['status', 'supplier_name', 'action'] // labels
+            );
+        };
+
 
         return $registry;
     }

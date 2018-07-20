@@ -5,10 +5,9 @@ use Amadeus\Client;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Request;
+use Flight\Service\Amadeus\Metrics\MetricsTracker;
 use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
 use Flight\Service\Amadeus\Search\Exception\EmptyResponseException;
-use Pimple\Container;
-use Silex\Application;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -17,13 +16,18 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AmadeusClient
 {
-    public const EMPTY_RESULT_ERRORS = [
+    private const EMPTY_RESULT_ERRORS = [
         830, // No recommendation found with lower or equal price
         866, // No fare found for requested itinerary
         931, // No itinerary found for Requested Segment n
         977, // No available flight found for requested segment nn
         996, // NO JOURNEY FOUND FOR REQUESTED ITINERARY
     ];
+
+    /**
+     * Method invoked in amadeus api to trigger a search request.
+     */
+    public const SEARCH_ACTION = 'fareMasterPricerTravelBoardSearch';
 
     /**
      * @var ClientParamsFactory
@@ -54,29 +58,29 @@ class AmadeusClient
     protected $startTime;
 
     /**
-     * @var Application|Container
+     * @var MetricsTracker
      */
-    private $application;
+    private $metricsTracker;
 
     /**
      * @param ClientParamsFactory        $clientParamsFactory
      * @param AmadeusRequestTransformer  $requestTransformer
      * @param AmadeusResponseTransformer $responseTransformer
      * @param \Closure                   $clientBuilder
-     * @param Container                  $application
+     * @param MetricsTracker             $metricsTracker
      */
     public function __construct(
         ClientParamsFactory $clientParamsFactory,
         AmadeusRequestTransformer $requestTransformer,
         AmadeusResponseTransformer $responseTransformer,
         \Closure $clientBuilder,
-        Container $application
+        MetricsTracker $metricsTracker
     ) {
         $this->clientParamsFactory = $clientParamsFactory;
         $this->requestTransformer = $requestTransformer;
         $this->responseTransformer = $responseTransformer;
         $this->clientBuilder = $clientBuilder;
-        $this->application = $application;
+        $this->metricsTracker = $metricsTracker;
     }
 
     /**
@@ -172,9 +176,9 @@ class AmadeusClient
      */
     private function trackLatency(int $statusCode = 200)
     {
-        $this->application['metrics.prometheus.tracker']->logResponseLatency(
+        $this->metricsTracker->logResponseLatency(
             microtime(true) - $this->startTime,
-            'fareMasterPricerTravelBoardSearch',
+            self::SEARCH_ACTION,
             $statusCode
         );
     }

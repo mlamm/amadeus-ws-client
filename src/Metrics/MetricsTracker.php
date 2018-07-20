@@ -12,7 +12,10 @@ use Pimple\Container;
  */
 class MetricsTracker
 {
-    const SUPPLIER_NAME = 'amadeus';
+    const SUPPLIER_NAME     = 'amadeus';
+
+    const CACHE_REQUEST_HIT = 'hit';
+    const CACHE_REQUEST_MISS = 'miss';
 
     /**
      * @var Container
@@ -48,5 +51,18 @@ class MetricsTracker
                 $action
             ]
         );
+    }
+
+    /**
+     * Increases the cache requests by 1 either for hits or misses.
+     *
+     * @param string $action The target action used for the supplier request.
+     * @param string $status MetricsTracker::CACHE_REQUEST_HIT or MetricsTracker::CACHE_REQUEST_MISS
+     *
+     * @return void
+     */
+    public function incrementCacheRequestCounter(string $action, string $status = self::CACHE_REQUEST_HIT)
+    {
+        $this->application['metrics.supplier_cache_requests_total']->incBy(1, [$status, self::SUPPLIER_NAME, $action]);
     }
 }
