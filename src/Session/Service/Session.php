@@ -100,7 +100,6 @@ class Session
         if (empty($sessionHeader)) {
             throw new InvalidRequestException('no session header set');
         }
-        
         $authHeader    = \GuzzleHttp\json_decode($authHeader);
         $sessionHeader = \GuzzleHttp\json_decode($sessionHeader);
 
@@ -125,7 +124,6 @@ class Session
             $authenticate,
             $session
         );
-
         return $this->serializer->serialize($response, 'json');
     }
 
@@ -141,7 +139,7 @@ class Session
      * @throws InvalidRequestException
      */
     public function closeSession($authHeader, $sessionHeader)
-    {$authHeader = null;
+    {
         if (empty($authHeader)) {
             throw new InvalidRequestException('no authentication header set');
         }
