@@ -1,13 +1,12 @@
 <?php
 namespace Flight\Service\Amadeus\Session\BusinessCase;
 
-use Amadeus\Client\Exception;
 use Flight\Service\Amadeus\Application\BusinessCase;
+use Flight\Service\Amadeus\Application\Exception\GeneralServerErrorException;
 use Flight\Service\Amadeus\Application\Response\HalResponse;
-use Flight\Service\Amadeus\Session\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Session\Exception\InactiveSessionException;
 use Flight\Service\Amadeus\Session\Exception\InvalidRequestException;
 use Flight\Service\Amadeus\Session\Exception\InvalidRequestParameterException;
-use Flight\Service\Amadeus\Application\Exception\GeneralServerErrorException;
 use Flight\Service\Amadeus\Session\Response\AmadeusErrorResponse;
 use Psr\Log\LoggerInterface;
 use Flight\Service\Amadeus\Session\Service\Session;
@@ -19,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @package Flight\Service\Amadeus\Session\BusinessCase
  */
-class CreateSession extends BusinessCase
+class IgnoreSession extends BusinessCase
 {
     /**
      * @var \Flight\Service\Amadeus\Session\Service\Session
@@ -32,12 +31,12 @@ class CreateSession extends BusinessCase
     protected $logger;
 
     /**
-     * @param Session         $session
-     * @param LoggerInterface $logger
+     * @param Session $remarksService
+     * @param LoggerInterface                       $logger
      */
-    public function __construct(Session $session, LoggerInterface $logger)
+    public function __construct(Session $remarksService, LoggerInterface $logger)
     {
-        $this->sessionService = $session;
+        $this->sessionService = $remarksService;
         $this->logger = $logger;
     }
 
@@ -48,17 +47,17 @@ class CreateSession extends BusinessCase
      */
     public function respond()
     {
-
         try {
             $response = SessionCreateResponse::fromJsonString(
-                $this->sessionService->createSession(
-                    $this->getRequest()->headers->get('authentication')
+                $this->sessionService->ignoreSession(
+                    $this->getRequest()->headers->get('authentication'),
+                    $this->getRequest()->headers->get('session')
                 )
             );
 
-        } catch (AmadeusRequestException $e) {
-            $this->logger->critical($e);
-            $e->setResponseCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (InactiveSessionException $e) {
+            $this->logger->warning($e);
+            $e->setResponseCode(Response::HTTP_BAD_REQUEST);
 
             $errorResponse = new AmadeusErrorResponse();
             $errorResponse->addViolation('session', $e);
@@ -83,7 +82,7 @@ class CreateSession extends BusinessCase
             $this->addLinkToSelf($errorResponse);
 
             return $errorResponse;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // general exception handling
             $this->logger->critical($e);
             $errorException = new GeneralServerErrorException($e->getMessage());
@@ -95,6 +94,7 @@ class CreateSession extends BusinessCase
             return $errorResponse;
         }
 
+        $response->setStatusCode(204);
         $this->addLinkToSelf($response);
         return $response;
     }

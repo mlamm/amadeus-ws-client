@@ -76,5 +76,4 @@ class AmadeusRequestTransformer
 
         return $clientParams;
     }
-
 }

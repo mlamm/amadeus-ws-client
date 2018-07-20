@@ -47,7 +47,7 @@ class Session
         $validationResult = $validator->validate((array)$authentication);
 
         if ($validationResult->isNotValid()) {
-            throw new InvalidRequestParameterException($validationResult->getFailures());
+            throw new InvalidRequestParameterException(print_r($validationResult->getFailures(), true));
         }
     }
 

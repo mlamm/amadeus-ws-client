@@ -63,6 +63,18 @@ $app['businesscase.session-create'] = function () use ($app) {
         $app['monolog']
     );
 };
+$app['businesscase.session-ignore'] = function () use ($app) {
+    return new Session\BusinessCase\IgnoreSession(
+        $app['service.session'],
+        $app['monolog']
+    );
+};
+$app['businesscase.session-terminate'] = function () use ($app) {
+    return new Session\BusinessCase\TerminateSession(
+        $app['service.session'],
+        $app['monolog']
+    );
+};
 
 $app['businesscase.session-commit'] = function () use ($app) {
     return new Session\BusinessCase\CommitSession(

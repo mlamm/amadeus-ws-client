@@ -73,16 +73,16 @@
         },
         {
             "name": "amabnl/amadeus-ws-client",
-            "version": "v1.7.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amabnl/amadeus-ws-client.git",
-                "reference": "83013ee890f4fb7c06b9715544bc9b7dea023393"
+                "reference": "6ad41e1c9df340ce03e92c475e73f08a1b8db121"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amabnl/amadeus-ws-client/zipball/83013ee890f4fb7c06b9715544bc9b7dea023393",
-                "reference": "83013ee890f4fb7c06b9715544bc9b7dea023393",
+                "url": "https://api.github.com/repos/amabnl/amadeus-ws-client/zipball/6ad41e1c9df340ce03e92c475e73f08a1b8db121",
+                "reference": "6ad41e1c9df340ce03e92c475e73f08a1b8db121",
                 "shasum": ""
             },
             "require": {
@@ -133,7 +133,7 @@
                 "wsdl",
                 "xml"
             ],
-            "time": "2018-04-30T06:42:56+00:00"
+            "time": "2018-06-08T10:18:20+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -4885,7 +4885,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "jimdo/prometheus_client_php": 20
+        "jimdo/prometheus_client_php": 20,
+        "amabnl/amadeus-ws-client": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -2,15 +2,15 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "session_id": {
+    "session-id": {
       "type": "string",
       "description": "session id"
     },
-    "sequence_number": {
+    "sequence-number": {
       "type": "integer",
       "description": "sequence number"
     },
-    "security_token": {
+    "security-token": {
       "type": "string",
       "description": "security token"
     },

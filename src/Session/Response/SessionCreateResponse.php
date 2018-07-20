@@ -1,6 +1,7 @@
 <?php
 namespace Flight\Service\Amadeus\Session\Response;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Service\Amadeus\Application\Response\HalResponse;
 
 /**
@@ -11,5 +12,26 @@ use Flight\Service\Amadeus\Application\Response\HalResponse;
  */
 class SessionCreateResponse extends HalResponse
 {
+    /**
+     * @var ArrayCollection
+     */
+    protected $result;
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getResult(): ArrayCollection
+    {
+        return $this->result;
+    }
+
+    /**
+     * @param ArrayCollection $result
+     * @return SessionCreateResponse
+     */
+    public function setResult(ArrayCollection $result): SessionCreateResponse
+    {
+        $this->result = $result;
+        return $this;
+    }
 }

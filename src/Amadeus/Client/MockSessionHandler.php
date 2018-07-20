@@ -6,6 +6,7 @@ namespace Flight\Service\Amadeus\Amadeus\Client;
 use Amadeus\Client\Params\SessionHandlerParams;
 use Amadeus\Client\Session\Handler\HandlerInterface;
 use Amadeus\Client\Session\Handler\SendResult;
+use Amadeus\Client\Session\Handler\UnsupportedOperationException;
 use Amadeus\Client\Session\Handler\WsdlAnalyser;
 use Amadeus\Client\Struct\BaseWsMessage;
 
@@ -25,6 +26,10 @@ class MockSessionHandler implements HandlerInterface
     private const PNR_RETRIEVE_RESPONSE_FIXTURE = 'tests/_data/fixtures/09-pnrRetrieve-response.xml';
 
     private const CREATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_Authenticate-Response.xml';
+
+    private const IGNORE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/PNR_Ignore-Response.xml';
+
+    private const TERMINATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_SignOut-Response.xml';
 
     private const COMMIT_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/10-Session-Commit-Response.xml';
 
@@ -85,6 +90,9 @@ class MockSessionHandler implements HandlerInterface
                 break;
             case 'Ticket_CreateTSTFromPricing':
                 return $this->loadCreateTstResponse();
+                break;
+            case 'PNR_Ignore':
+                return $this->loadTerminateSessionResponse();
                 break;
         }
 
@@ -158,6 +166,15 @@ class MockSessionHandler implements HandlerInterface
     {
         $sendResult                 = new SendResult();
         $sendResult->responseXml    = file_get_contents(self::TICKET_CREATE_TSTS_FROM_PRICING_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadTerminateSessionResponse()
+    {
+        $sendResult = new SendResult();
+        $sendResult->responseXml = file_get_contents(self::TERMINATE_SESSION_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
