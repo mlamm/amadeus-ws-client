@@ -19,6 +19,7 @@ class AmadeusClient
     private const EMPTY_RESULT_ERRORS = [
         830, // No recommendation found with lower or equal price
         866, // No fare found for requested itinerary
+        920, // Past date/time not allowed
         931, // No itinerary found for Requested Segment n
         977, // No available flight found for requested segment nn
         996, // NO JOURNEY FOUND FOR REQUESTED ITINERARY
