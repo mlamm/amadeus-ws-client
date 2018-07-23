@@ -46,4 +46,4 @@ source "$scriptsDirectory/common/base.sh"
 build_image=amadeus-php-base-build
 nginx_image=${REGISTRY}/flight/invia/service/amadeus/nginx
 app_image=${REGISTRY}/flight/invia/service/amadeus/app
-composer_version=1.5.2
+composer_version=1.6.5

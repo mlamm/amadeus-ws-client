@@ -20,6 +20,7 @@ info "Setting default config..."
 cp config/development.dist.yml config/app.yml
 
 info "Building Nginx image..."
+build_or_pull_base_nginx
 docker build -t $nginx_image:$TAG -t $nginx_image:latest -f scripts/docker/nginx/Dockerfile .
 
 info "Building PHP base image..."

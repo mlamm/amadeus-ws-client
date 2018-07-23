@@ -1,5 +1,5 @@
 search:
-    wsdl: 1ASIWUFITBD_PRD_20180206_095645.wsdl
+    wsdl: 1ASIWUFITBD_PDT_20180206_095616.wsdl
 
     allowed_types:
         - round-trip
@@ -11,10 +11,13 @@ search:
         - C
 
     flight_cache:
-        adapter: redis   # options are: void, apcu, file, memcached, redis (@see CacheProvider)
+        adapter: void   # options are: void, apcu, file, memcached, redis (@see CacheProvider)
         life_time: 3600
+        memcached:
+            host: amadeus-memcache
+            port: 11211
         redis:
-            host: redis01-a.sgafxu.ng.0001.euc1.cache.amazonaws.com
+            host: amadeus-redis
             port: 6379
 
     request_options:
@@ -61,16 +64,16 @@ search:
         - "BL"
 
 remarks:
-    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+    wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
 
 itinerary:
-    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+    wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
 
 session:
-    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+    wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
 
 price:
-    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+    wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
 
 response:
     json_encoding_options:
@@ -78,18 +81,19 @@ response:
         - JSON_UNESCAPED_SLASHES
 
 prometheus:
-    storage_type: apcu
+    storage_type: memory
 
 debug:
     search:
-      log_ama_traffic: false
+      log_ama_traffic: true
     remarks:
-      log_ama_traffic: false
+      log_ama_traffic: true
     session:
-      log_ama_traffic: false
+      log_ama_traffic: true
     price:
       log_ama_traffic: true
     pimpledump:
         enabled: true
     throwup:
         enabled: true
+

@@ -6,9 +6,11 @@ namespace Flight\Service\Amadeus\Search\Service;
 use Flight\Library\SearchRequest\ResponseMapping\Mapper;
 use Flight\SearchRequestMapping\Entity\BusinessCase;
 use Flight\SearchRequestMapping\Entity\Request;
+use Flight\Service\Amadeus\Metrics\MetricsTracker;
 use Flight\Service\Amadeus\Search\Cache\CacheKey;
 use Flight\Service\Amadeus\Search\Cache\FlightCacheInterface;
 use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Search\Exception\EmptyResponseException;
 use Flight\Service\Amadeus\Search\Exception\InvalidRequestException;
 use Flight\Service\Amadeus\Search\Exception\InvalidRequestParameterException;
 use Flight\Service\Amadeus\Search\Model\AmadeusClient;
@@ -59,12 +61,18 @@ class Search
     private $config;
 
     /**
+     * @var MetricsTracker
+     */
+    private $metricsTracker;
+
+    /**
      * @param AmadeusRequestValidator $requestValidator
      * @param Serializer              $serializer
      * @param Mapper                  $responseMapper
      * @param FlightCacheInterface    $cache
      * @param AmadeusClient           $amadeusClient
      * @param \stdClass               $config
+     * @param MetricsTracker          $metricsTracker
      */
     public function __construct(
         AmadeusRequestValidator $requestValidator,
@@ -72,7 +80,8 @@ class Search
         Mapper $responseMapper,
         FlightCacheInterface $cache,
         AmadeusClient $amadeusClient,
-        \stdClass $config
+        \stdClass $config,
+        MetricsTracker $metricsTracker
     ) {
         $this->requestValidator = $requestValidator;
         $this->serializer = $serializer;
@@ -80,6 +89,7 @@ class Search
         $this->cache = $cache;
         $this->amadeusClient = $amadeusClient;
         $this->config = $config;
+        $this->metricsTracker = $metricsTracker;
     }
 
     /**
@@ -88,9 +98,10 @@ class Search
      * @param string $requestJson
      *
      * @return string
+     * @throws AmadeusRequestException
+     * @throws EmptyResponseException
      * @throws InvalidRequestException
      * @throws InvalidRequestParameterException
-     * @throws AmadeusRequestException
      */
     public function search(string $requestJson) : string
     {
@@ -107,13 +118,14 @@ class Search
         $cachedResponse = $this->cache->fetch((string) $cacheKey);
 
         if ($cachedResponse !== false) {
+            $this->metricsTracker->incrementCacheRequestCounter(AmadeusClient::SEARCH_ACTION);
             return $cachedResponse;
         }
+        $this->metricsTracker->incrementCacheRequestCounter(AmadeusClient::SEARCH_ACTION, MetricsTracker::CACHE_REQUEST_MISS);
 
         $searchResponse = $this->amadeusClient->search($searchRequest, $businessCase);
 
         $serializedResponse = $this->responseMapper->createJson($searchResponse);
-
         $this->cache->save((string) $cacheKey, $serializedResponse);
 
         return $serializedResponse;

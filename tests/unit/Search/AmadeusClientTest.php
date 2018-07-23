@@ -4,7 +4,10 @@ namespace Flight\Service\Amadeus\Tests\Search;
 use Amadeus\Client;
 use Codeception\Test\Unit;
 use Flight\Library\SearchRequest\ResponseMapping\Entity\SearchResponse;
+use Flight\Service\Amadeus\Application;
+use Flight\Service\Amadeus\Metrics\MetricsTracker;
 use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Search\Exception\EmptyResponseException;
 use Flight\Service\Amadeus\Search\Model\AmadeusClient;
 use Flight\Service\Amadeus\Search\Model\AmadeusRequestTransformer;
 use Flight\Service\Amadeus\Search\Model\AmadeusResponseTransformer;
@@ -72,7 +75,8 @@ class AmadeusClientTest extends Unit
             $this->clientParamsFactory,
             $this->requestTransformer,
             $this->responseTransformer,
-            $clientBuilder
+            $clientBuilder,
+            new MetricsTracker(new Application)
         );
     }
 
@@ -89,7 +93,7 @@ class AmadeusClientTest extends Unit
         $requestOptions = new Client\RequestOptions\FareMasterPricerTbSearch();
         $amaResult = new Client\Result(new Client\Session\Handler\SendResult());
         $amaResult->status = Client\Result::STATUS_OK;
-        $expecedSearchResponse = new SearchResponse();
+        $expectedSearchResponse = new SearchResponse();
 
         $this->clientParamsFactory
             ->expects($this->once())
@@ -113,10 +117,10 @@ class AmadeusClientTest extends Unit
             ->expects($this->once())
             ->method('mapResultToDefinedStructure')
             ->with($businessCase, $request, $amaResult)
-            ->willReturn($expecedSearchResponse);
+            ->willReturn($expectedSearchResponse);
 
         $searchResponse = $this->object->search($request, $businessCase);
-        $this->assertSame($expecedSearchResponse, $searchResponse);
+        $this->assertSame($expectedSearchResponse, $searchResponse);
     }
 
     /**
@@ -160,21 +164,20 @@ class AmadeusClientTest extends Unit
     /**
      * Does it return an empty result for some types of errors?
      *
+     * @dataProvider exceptionProvider
+     *
+     * @param $errorMessage
+     * @param $expectedException
+     *
      * @throws AmadeusRequestException
+     * @throws EmptyResponseException
      */
-    public function testItTreatsSomeErrorsAsEmptyResults()
+    public function testItThrowsSpecialExceptionsOnSomeErrors($errorMessage, $expectedException)
     {
         $request = RequestFaker::buildDefaultRequest();
         $businessCase = $request->getBusinessCases()->first()->first();
         $clientParams = new Client\Params();
         $requestOptions = new Client\RequestOptions\FareMasterPricerTbSearch();
-
-        $errorMessage = new Client\Result\NotOk;
-        $errorMessage->code = 931;
-
-        $amaResult = new Client\Result(new Client\Session\Handler\SendResult());
-        $amaResult->status = Client\Result::STATUS_ERROR;
-        $amaResult->messages = [$errorMessage];
 
         $this->clientParamsFactory
             ->expects($this->any())
@@ -186,15 +189,52 @@ class AmadeusClientTest extends Unit
             ->method('buildFareMasterRequestOptions')
             ->willReturn($requestOptions);
 
-        $this->client
-            ->expects($this->once())
-            ->method('fareMasterPricerTravelBoardSearch')
-            ->with($requestOptions)
-            ->willReturn($amaResult);
+        if ($errorMessage instanceof Client\Result\NotOk) {
+            $amaResult = new Client\Result(new Client\Session\Handler\SendResult());
+            $amaResult->status = Client\Result::STATUS_ERROR;
+            $amaResult->messages = [$errorMessage];
 
-        $response = $this->object->search($request, $businessCase);
+            $this->client
+                ->expects($this->once())
+                ->method('fareMasterPricerTravelBoardSearch')
+                ->with($requestOptions)
+                ->willReturn($amaResult);
+        } else {
+            $this->client
+                ->expects($this->once())
+                ->method('fareMasterPricerTravelBoardSearch')
+                ->willThrowException(new \Exception($errorMessage));
+        }
 
-        $this->assertNotNull($response->getResult());
-        $this->assertCount(0, $response->getResult());
+        $this->expectException($expectedException);
+        $this->object->search($request, $businessCase);
     }
+
+    public function exceptionProvider()
+    {
+        $treatedAsEmpty = new Client\Result\NotOk;
+        $treatedAsEmpty->code = 931;
+
+        $treatedAsException = new Client\Result\NotOk;
+        $treatedAsException->code = 666;
+        return [
+            [
+                'errorMessage' => $treatedAsEmpty,
+                'exception' => EmptyResponseException::class
+            ],
+            [
+                'errorMessage' => $treatedAsException,
+                'exception' => AmadeusRequestException::class
+            ],
+            [
+                'errorMessage' => 'Warning: DOMDocument::loadXML(): Empty string supplied as input',
+                'exception' => EmptyResponseException::class
+            ],
+            [
+                'errorMessage' => 'Something unexpected',
+                'exception' => \Exception::class
+            ]
+        ];
+    }
+
 }
