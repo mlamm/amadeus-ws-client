@@ -16,7 +16,7 @@ class RemarksProvider extends \Flight\Service\Amadeus\Application\BusinessCasePr
      */
     public function routing(\Silex\ControllerCollection $collection)
     {
-        $collection->get('/{recordLocator}', 'businesscase.remarks-read');
+        $collection->get('/', 'businesscase.remarks-read');
         $collection->post('/', 'businesscase.remarks-add');
         $collection->delete('/', 'businesscase.remarks-delete');
         $collection->put('/', 'businesscase.remarks-modify');

@@ -49,7 +49,7 @@ class RemarksRead extends BusinessCase
             $response = ResultResponse::fromJsonString(
                 $this->remarksService->remarksRead(
                     $this->getRequest()->headers->get('authentication'),
-                    $this->getRequest()->attributes->get('recordLocator')
+                    $this->getRequest()->query->get('recordLocator')
                 )
             );
             $this->addLinkToSelf($response);
