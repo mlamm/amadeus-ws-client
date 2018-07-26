@@ -43,7 +43,9 @@ scriptsDirectory=$(find_base_scripts_directory)
 
 source "$scriptsDirectory/common/base.sh"
 
-build_image=amadeus-php-base-build
+BASE_APP_IMAGE_NAME=${REGISTRY}/flight/invia/image/amadeus/app
+BASE_APP_IMAGE_REPOSITORY=ssh://git@stash.unister.lan:2200/fsearch/image.amadeus.git
+
 nginx_image=${REGISTRY}/flight/invia/service/amadeus/nginx
 app_image=${REGISTRY}/flight/invia/service/amadeus/app
 composer_version=1.6.5

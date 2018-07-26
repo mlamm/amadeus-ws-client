@@ -3,6 +3,10 @@
 pipeline {
   agent any
 
+  triggers {
+    pollSCM ''
+  }
+
   environment {
     AWS_COMPOSER_CACHE_S3_BUCKET = 's3://invia-composer-cache'
     AWS_REGION = 'eu-central-1'
@@ -16,6 +20,7 @@ pipeline {
   options {
     disableConcurrentBuilds()
     buildDiscarder(logRotator(numToKeepStr: '20'))
+    ansiColor('xterm')
   }
 
   stages {

@@ -61,7 +61,7 @@ class MetricsProvider extends BusinessCaseProvider implements ServiceProviderInt
                 break;
 
             case 'memory':
-                $registry = $registry = new CollectorRegistry(new InMemory);
+                $registry = new CollectorRegistry(new InMemory);
                 break;
 
             default:
