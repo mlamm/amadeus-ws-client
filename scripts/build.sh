@@ -24,17 +24,18 @@ build_or_pull_base_nginx
 docker build -t $nginx_image:$TAG -t $nginx_image:latest -f scripts/docker/nginx/Dockerfile .
 
 info "Building PHP base image..."
-docker build -t $build_image -f scripts/docker/php/base/Dockerfile .
+build_or_pull_base_app_image
+docker build -t $app_image:build -f scripts/docker/php/Dockerfile .
 
 info "Installing PHP dependencies..."
-composer_install $build_image
+composer_install $app_image:build
 
 info "Building app image..."
-dockerfile=scripts/docker/php/base/Dockerfile
+target_environment=production
 if [ "$1" == "dev" ]; then
     info "Building app image with dev dependencies..."
-    dockerfile=scripts/docker/php/dev/Dockerfile
+    target_environment=development
 fi
-docker build -t $app_image:$TAG -t $app_image:latest -f "$dockerfile" .
+docker build --target "$target_environment" -t $app_image:$TAG -t $app_image:latest -f scripts/docker/php/Dockerfile .
 
 success "done!"

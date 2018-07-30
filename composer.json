@@ -15,7 +15,6 @@
             "Flight\\Service\\Amadeus\\": "./src"
         },
         "files": [
-            "vendor/perftools/xhgui-collector/external/header.php",
             "src/helpers.php"
         ]
     },
@@ -37,8 +36,6 @@
         "flight/library-search-request-response-mapping": "^6.3.0",
         "particle/validator": "^2.2",
         "flight/throwup-errors": "^0.1",
-        "perftools/xhgui-collector": "^1.0",
-        "alcaeus/mongo-php-adapter": "^1.0",
         "flight/tracing-header-silex": "^1.0",
         "jimdo/prometheus_client_php": "dev-master"
     },

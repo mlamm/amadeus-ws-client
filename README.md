@@ -56,6 +56,10 @@ section in `./src/Index/BusinessCase/HealthCheck`.
 ## Profiling
 Profiling is integrated for local development with docker-composer. If you want to collect data you have comment in the `XHGUI_PROFILING=enabled` env var in `docker-compose.override.yml`.
 
+- Build the app docker image with `--target profiling`
+- require `alcaeus/mongo-php-adapter` and `perftools/xhgui-collector` with composer
+- configure file autoloading for `vendor/perftools/xhgui-collector/external/header.php` in your composer.json
+
 Navigate to `localhost:8000` to browser through your profiled data with XHGUI.
 
 ## Docs
