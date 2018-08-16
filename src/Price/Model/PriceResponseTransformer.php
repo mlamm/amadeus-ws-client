@@ -23,7 +23,13 @@ class PriceResponseTransformer
         $responseResult = new PriceGetResponse();
         $price          = new Price();
         $fareList       = (array) $response->fareList;
+        $passengerPrice = new ArrayCollection();
         if (array_key_exists('fareDataQualifier', $fareList)) {
+            $price->setValidatingCarrier(
+                (string) $response->fareList->validatingCarrier
+                    ->carrierInformation
+                    ->carrierCode
+            );
             $tktDate = '0000-00-00';
             foreach ($fareList['lastTktDate'] as $lastTktDate) {
                 if ($lastTktDate->businessSemantic == 'LT') {
@@ -34,10 +40,11 @@ class PriceResponseTransformer
             };
             $price->setLastTicketingDate(date('Y-m-d', strtotime($tktDate)));
             $price->setValidatingCarrier(
-                (string) $response->fareList->validatingCarrier
+                (string) $fareList['validatingCarrier']
                     ->carrierInformation
                     ->carrierCode
             );
+            $passengerPrice->add($this->mapPassengerPrice((object) $fareList));
         } else {
             $passengerPrice = new ArrayCollection();
             foreach ($fareList as $fare) {
@@ -70,7 +77,7 @@ class PriceResponseTransformer
      *
      * @return PassengerPrice
      */
-    public function mapPassengerPrice($fare)
+    public function mapPassengerPrice($fare) : PassengerPrice
     {
         $price    = new PassengerPrice();
         $totalTax = 0.00;

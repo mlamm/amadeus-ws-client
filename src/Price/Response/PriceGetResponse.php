@@ -8,8 +8,8 @@ use Flight\Service\Amadeus\Price\Model\Price;
 /**
  * Response for creating pricing.
  *
- * @author     Marcel Lamm <marcel.lamm@invia.de>
- * @copyright  Copyright (c) 2018 Invia Flights Germany GmbH
+ * @author    Michael Mueller <michael.mueller@invia.de>
+ * @copyright Copyright (c) 2018  Invia Flights Germany GmbH
  */
 class PriceGetResponse extends HalResponse
 {

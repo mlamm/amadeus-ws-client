@@ -88,7 +88,7 @@ class Price
     /**
      * @return string
      */
-    public function getValidatingCarrier()
+    public function getValidatingCarrier() : ?string
     {
         return $this->validatingCarrier;
     }
@@ -98,7 +98,7 @@ class Price
      *
      * @return Price
      */
-    public function setValidatingCarrier($validatingCarrier)
+    public function setValidatingCarrier($validatingCarrier) : Price
     {
         $this->validatingCarrier = $validatingCarrier;
         return $this;
