@@ -2,11 +2,12 @@
 
 namespace Flight\Service\Amadeus\Price\Model;
 
-use Amadeus\Client\RequestOptions\FarePricePnrWithBookingClassOptions;
+use Amadeus\Client\RequestOptions\TicketDisplayTstOptions;
 use Amadeus\Client\RequestOptions\TicketCreateTstFromPricingOptions;
 use Flight\Service\Amadeus\Price\Request\Entity\Authenticate;
 use Amadeus\Client\RequestOptions\TicketDeleteTstOptions;
 use \Flight\Service\Amadeus\Price\Exception\AmadeusRequestException;
+use Flight\Service\Amadeus\Price\Response\PriceGetResponse;
 use Psr\Log\LoggerInterface;
 use Amadeus\Client;
 
@@ -50,6 +51,12 @@ class AmadeusClient
      */
     protected $requestTransformer;
 
+
+    /**
+     * @var PriceResponseTransformer
+     */
+    protected $responseTransformer;
+
     /**
      * The client must be created from request data. This makes it impossible to inject.
      * Therefore inject a factory method which builds the client.
@@ -59,17 +66,20 @@ class AmadeusClient
     protected $clientBuilder;
 
     /**
-     * @param LoggerInterface            $logger
-     * @param AmadeusRequestTransformer  $requestTransformer
-     * @param \Closure                   $clientBuilder
+     * @param LoggerInterface           $logger
+     * @param AmadeusRequestTransformer $requestTransformer
+     * @param PriceResponseTransformer  $responseTransformer
+     * @param \Closure                  $clientBuilder
      */
     public function __construct(
         LoggerInterface $logger,
         AmadeusRequestTransformer $requestTransformer,
+        PriceResponseTransformer $responseTransformer,
         \Closure $clientBuilder
     ) {
         $this->logger              = $logger;
         $this->requestTransformer  = $requestTransformer;
+        $this->responseTransformer = $responseTransformer;
         $this->clientBuilder       = $clientBuilder;
     }
 
@@ -97,7 +107,7 @@ class AmadeusClient
         );
         $client->setSessionData($session->toArray());
 
-        $clientResult        = $client->ticketDeleteTST($options);
+        $clientResult = $client->ticketDeleteTST($options);
 
         return self::CHECK_RESULT_OK == $this->checkResult($clientResult);
     }
@@ -106,21 +116,27 @@ class AmadeusClient
      * Create pricing quote in CRS and safe it into TST.
      *
      * @param Authenticate $authenticate
-     * @param Session $session
+     * @param Session      $session
      *
-     * @param $tarif
+     * @param Authenticate $authenticate
+     * @param Session      $session
+     * @param              $tariff
+     *
      * @return bool
      * @throws AmadeusRequestException
+     * @throws Client\Exception
+     * @throws Client\InvalidMessageException
+     * @throws Client\RequestCreator\MessageVersionUnsupportedException
      */
-    public function createAndSafePrice(Authenticate $authenticate, Session $session, $tarif) : bool
+    public function createAndSafePrice(Authenticate $authenticate, Session $session, $tariff) : bool
     {
         /** @var Client $client */
-        $client  = ($this->clientBuilder)(
+        $client = ($this->clientBuilder)(
             $this->requestTransformer
                 ->buildClientParams($authenticate, $this->logger)
         );
 
-        $tarifOptionsBuilder = new TarifOptionsBuilder($tarif);
+        $tarifOptionsBuilder = new TarifOptionsBuilder($tariff);
         $tarifOptions        = $tarifOptionsBuilder->getTarifOptions();
         $clientResult        = null;
 
@@ -144,18 +160,51 @@ class AmadeusClient
         }
 
         // create tst entry from prior pricing
-        $options = new TicketCreateTstFromPricingOptions([
+        $options      = new TicketCreateTstFromPricingOptions(
+            [
                 'pricings' => [
-                    new Client\RequestOptions\Ticket\Pricing([
-                        'tstNumber' => 1
-                    ])
-                ]
+                    new Client\RequestOptions\Ticket\Pricing(
+                        [
+                            'tstNumber' => 1,
+                        ]
+                    ),
+                ],
             ]
         );
         $clientResult = $client->ticketCreateTSTFromPricing($options);
         $this->checkResult($clientResult);
 
         return self::CHECK_RESULT_OK == $this->checkResult($clientResult);
+    }
+
+    /**
+     * send delete Price request to amadeus
+     *
+     * @param Authenticate $authenticate
+     * @param Session      $session
+     *
+     * @return PriceGetResponse
+     * @throws \Exception
+     * @throws AmadeusRequestException
+     */
+    public function getPrice(Authenticate $authenticate, Session $session)
+    {
+        /** @var Client $client */
+        $client  = ($this->clientBuilder)(
+            $this->requestTransformer
+                ->buildClientParams($authenticate, $this->logger)
+        );
+        $options = new Client\RequestOptions\TicketDisplayTstOptions(
+            [
+                'displayMode' => TicketDisplayTstOptions::MODE_ALL,
+            ]
+        );
+        $client->setSessionData($session->toArray());
+
+        $clientResult = $client->ticketDisplayTST($options);
+        if (self::CHECK_RESULT_OK == $this->checkResult($clientResult)) {
+            return $this->responseTransformer->mapResult($clientResult->response);
+        }
     }
 
     /**

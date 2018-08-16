@@ -104,6 +104,13 @@ $app['businesscase.price-create'] = function() use ($app) {
     );
 };
 
+$app['businesscase.price-get'] = function() use ($app) {
+    return new Price\BusinessCase\GetPrice(
+        $app['service.price'],
+        $app['monolog']
+    );
+};
+
 // application provider
 $app->mount('/', new \Flight\Service\Amadeus\Index\IndexProvider());
 $app->mount('/flight-search', new Flight\Service\Amadeus\Search\SearchProvider());

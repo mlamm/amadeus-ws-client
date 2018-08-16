@@ -41,6 +41,8 @@ class MockSessionHandler implements HandlerInterface
 
     private const TICKET_CREATE_TSTS_FROM_PRICING_RESPONSE_FIXTURE = 'tests/_data/fixtures/14-Ticket-CreateTSTFromPricing-Response.xml';
 
+    private const TICKET_DISPLAY_TST = 'tests/_data/fixtures/15-Ticket-Display-Tst-Response.xml';
+
     /**
      * @var SessionHandlerParams
      */
@@ -94,6 +96,8 @@ class MockSessionHandler implements HandlerInterface
             case 'PNR_Ignore':
                 return $this->loadTerminateSessionResponse();
                 break;
+            case 'Ticket_DisplayTST':
+                return $this->loadDisplayTstResponse();
         }
 
         throw new \Exception("no mock response configured for message `{$messageName}`");
@@ -175,6 +179,15 @@ class MockSessionHandler implements HandlerInterface
     {
         $sendResult = new SendResult();
         $sendResult->responseXml = file_get_contents(self::TERMINATE_SESSION_RESPONSE_FIXTURE);
+        $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
+
+        return $sendResult;
+    }
+
+    private function loadDisplayTstResponse()
+    {
+        $sendResult = new SendResult();
+        $sendResult->responseXml = file_get_contents(self::TICKET_DISPLAY_TST);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
 
         return $sendResult;
