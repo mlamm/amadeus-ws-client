@@ -19,6 +19,7 @@ class PriceProvider extends \Flight\Service\Amadeus\Application\BusinessCaseProv
     public function routing(\Silex\ControllerCollection $collection)
     {
         // here goes the route definition
+        $collection->match('/', 'businesscase.price-get')->method('GET');
         $collection->match('/', 'businesscase.price-delete')->method('DELETE');
         $collection->match('/', 'businesscase.price-create')->method('POST');
     }
