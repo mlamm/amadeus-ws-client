@@ -63,6 +63,7 @@ class PriceServiceProvider implements ServiceProviderInterface
             return new Price\Model\AmadeusClient(
                 $app['config']->debug->price->log_ama_traffic ? $app['logger'] : new NullLogger(),
                 new Price\Model\AmadeusRequestTransformer($app['config'], $sessionHandlerClass),
+                new Price\Model\PriceResponseTransformer(),
                 function (Amadeus\Client\Params $clientParams) {
                     return new Amadeus\Client($clientParams);
                 }

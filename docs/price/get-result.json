@@ -1,0 +1,21 @@
+{
+  "last_ticketing_date": "2018-08-16",
+  "passenger_price": [
+    {
+      "total_tax": 62.38,
+      "base_fare": 25,
+      "base_fare_currency": "EUR"
+    },
+    {
+      "total_tax": 62.38,
+      "base_fare": 25,
+      "base_fare_currency": "EUR"
+    }
+  ],
+  "validating_carrier": "UX",
+  "_links": {
+    "self": {
+      "href": "/price/"
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "last_ticketing_date": {
+      "type": "string"
+    },
+    "passenger_price": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "total_tax": {
+              "type": "number"
+            },
+            "base_fare": {
+              "type": "integer"
+            },
+            "base_fare_currency": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "total_tax",
+            "base_fare",
+            "base_fare_currency"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "total_tax": {
+              "type": "number"
+            },
+            "base_fare": {
+              "type": "integer"
+            },
+            "base_fare_currency": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "total_tax",
+            "base_fare",
+            "base_fare_currency"
+          ]
+        }
+      ]
+    },
+    "validating_carrier": {
+      "type": "string"
+    },
+    "_links": {
+      "type": "object",
+      "properties": {
+        "self": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "href"
+          ]
+        }
+      },
+      "required": [
+        "self"
+      ]
+    }
+  },
+  "required": [
+    "last_ticketing_date",
+    "passenger_price",
+    "validating_carrier",
+    "_links"
+  ]
+}

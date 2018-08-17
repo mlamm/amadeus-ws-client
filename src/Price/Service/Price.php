@@ -87,12 +87,14 @@ class Price
     /**
      * Create Pricing quote in CRS.
      *
-     * @param string $authHeader authentication header
+     * @param string $authHeader    authentication header
      * @param string $sessionHeader session header
+     * @param string $plainBody     body content of request
      *
-     * @param string $plainBody body content of request
      * @return mixed|string
-     *
+     * @throws \Amadeus\Client\Exception
+     * @throws \Amadeus\Client\InvalidMessageException
+     * @throws \Amadeus\Client\RequestCreator\MessageVersionUnsupportedException
      * @throws \Flight\Service\Amadeus\Price\Exception\AmadeusRequestException
      * @throws \Flight\Service\Amadeus\Price\Exception\InvalidRequestParameterException
      */
@@ -123,5 +125,42 @@ class Price
         $response = $this->amadeusClient->createAndSafePrice($authenticate, $session, $jsonBody->tariff);
 
         return $this->serializer->serialize($response, 'json');
+    }
+
+    /**
+     * get Pricing quote from CRS.
+     *
+     * @param string $authHeader    authentication header
+     * @param string $sessionHeader session header
+     *
+     * @return mixed|string
+     *
+     * @throws \Flight\Service\Amadeus\Price\Exception\AmadeusRequestException
+     * @throws \Flight\Service\Amadeus\Price\Exception\InvalidRequestParameterException
+     */
+    public function getPrice($authHeader, $sessionHeader)
+    {
+        $authHeader    = \json_decode($authHeader);
+        $sessionHeader = \json_decode($sessionHeader);
+
+        // validate
+        $this->requestValidator->validateAuthentication($authHeader);
+        $this->requestValidator->validateSession($sessionHeader);
+
+        $authenticate = (new Request\Entity\Authenticate())
+            ->setDutyCode($authHeader->{'duty-code'})
+            ->setOfficeId($authHeader->{'office-id'})
+            ->setOrganizationId($authHeader->{'organization'})
+            ->setPasswordData($authHeader->{'password-data'})
+            ->setPasswordLength($authHeader->{'password-length'})
+            ->setUserId($authHeader->{'user-id'});
+
+        $session = (new Session())
+            ->setSessionId($sessionHeader->{'session-id'})
+            ->setSequenceNumber($sessionHeader->{'sequence-number'})
+            ->setSecurityToken($sessionHeader->{'security-token'});
+
+        $response = $this->amadeusClient->getPrice($authenticate, $session);
+        return $this->serializer->serialize($response->getResult(), 'json');
     }
 }
