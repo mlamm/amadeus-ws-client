@@ -22,50 +22,56 @@ class PriceResponseTransformer
     {
         $responseResult = new PriceGetResponse();
         $price          = new Price();
-        $fareList       = (array) $response->fareList;
-        $passengerPrice = new ArrayCollection();
-        if (array_key_exists('fareDataQualifier', $fareList)) {
-            $price->setValidatingCarrier(
-                (string) $response->fareList->validatingCarrier
-                    ->carrierInformation
-                    ->carrierCode
-            );
-            $tktDate = '0000-00-00';
-            foreach ($fareList['lastTktDate'] as $lastTktDate) {
-                if ($lastTktDate->businessSemantic == 'LT') {
-                    $tktDate = $lastTktDate->dateTime->year
-                               . '-' . $lastTktDate->dateTime->month
-                               . '-' . $lastTktDate->dateTime->day;
-                }
-            };
-            $price->setLastTicketingDate(date('Y-m-d', strtotime($tktDate)));
-            $price->setValidatingCarrier(
-                (string) $fareList['validatingCarrier']
-                    ->carrierInformation
-                    ->carrierCode
-            );
-            $passengerPrice->add($this->mapPassengerPrice((object) $fareList));
-        } else {
+
+        // no TST exists -- "NO TST RECORD EXISTS"
+        if (!empty($response->fareList)) {
+            $fareList       = (array) $response->fareList;
             $passengerPrice = new ArrayCollection();
-            foreach ($fareList as $fare) {
+
+            if (array_key_exists('fareDataQualifier', $fareList)) {
+                $price->setValidatingCarrier(
+                    (string) $response->fareList->validatingCarrier
+                        ->carrierInformation
+                        ->carrierCode
+                );
                 $tktDate = '0000-00-00';
-                foreach ($fare->lastTktDate as $lastTktDate) {
+                foreach ($fareList['lastTktDate'] as $lastTktDate) {
                     if ($lastTktDate->businessSemantic == 'LT') {
                         $tktDate = $lastTktDate->dateTime->year
-                                   . '-' . $lastTktDate->dateTime->month
-                                   . '-' . $lastTktDate->dateTime->day;
+                            . '-' . $lastTktDate->dateTime->month
+                            . '-' . $lastTktDate->dateTime->day;
                     }
                 };
                 $price->setLastTicketingDate(date('Y-m-d', strtotime($tktDate)));
                 $price->setValidatingCarrier(
-                    (string) $fare->validatingCarrier
+                    (string) $fareList['validatingCarrier']
                         ->carrierInformation
                         ->carrierCode
                 );
-                $passengerPrice->add($this->mapPassengerPrice($fare));
+                $passengerPrice->add($this->mapPassengerPrice((object) $fareList));
+            } else {
+                $passengerPrice = new ArrayCollection();
+                foreach ($fareList as $fare) {
+                    $tktDate = '0000-00-00';
+                    foreach ($fare->lastTktDate as $lastTktDate) {
+                        if ($lastTktDate->businessSemantic == 'LT') {
+                            $tktDate = $lastTktDate->dateTime->year
+                                . '-' . $lastTktDate->dateTime->month
+                                . '-' . $lastTktDate->dateTime->day;
+                        }
+                    };
+                    $price->setLastTicketingDate(date('Y-m-d', strtotime($tktDate)));
+                    $price->setValidatingCarrier(
+                        (string) $fare->validatingCarrier
+                            ->carrierInformation
+                            ->carrierCode
+                    );
+                    $passengerPrice->add($this->mapPassengerPrice($fare));
+                }
+                $price->setPassengerPrice($passengerPrice);
             }
-            $price->setPassengerPrice($passengerPrice);
         }
+
         $responseResult->setResult($price);
         return $responseResult;
     }
