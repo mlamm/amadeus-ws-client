@@ -29,6 +29,7 @@ class PriceResponseTransformer
             $passengerPrice = new ArrayCollection();
 
             if (array_key_exists('fareDataQualifier', $fareList)) {
+                // %TODO, when is this being used? TEST 1 pax
                 $price->setValidatingCarrier(
                     (string) $response->fareList->validatingCarrier
                         ->carrierInformation
@@ -92,6 +93,7 @@ class PriceResponseTransformer
 
         }
         $price->setTotalTax(round($totalTax, 2));
+        $price->setPassengerRef($this->getPassengerRef($fare));
 
         foreach ($fare->fareDataInformation as $baseFare) {
             if (is_array($baseFare)) {
@@ -107,5 +109,24 @@ class PriceResponseTransformer
             }
         }
         return $price;
+    }
+
+    /**
+     * @param \stdClass $fare
+     * @return ArrayCollection
+     */
+    private function getPassengerRef(\stdClass $fare): ArrayCollection
+    {
+        $passengerRefs = new ArrayCollection();
+
+        foreach ($fare->paxSegReference->refDetails as $refDetail) {
+            $passengerRef = new ArrayCollection([
+                'qualifier' => $refDetail->refQualifier,
+                'number'    => $refDetail->refNumber
+            ]);
+            $passengerRefs->add($passengerRef);
+        }
+
+        return $passengerRefs;
     }
 }
