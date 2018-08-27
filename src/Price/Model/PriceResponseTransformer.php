@@ -28,7 +28,7 @@ class PriceResponseTransformer
             $fareList       = (array) $response->fareList;
             $passengerPrice = new ArrayCollection();
 
-            if (array_key_exists('fareDataQualifier', $fareList)) {
+            if (array_key_exists('pricingInformation', $fareList)) {
                 // %TODO, when is this being used? TEST 1 pax
                 $price->setValidatingCarrier(
                     (string) $response->fareList->validatingCarrier
@@ -52,23 +52,34 @@ class PriceResponseTransformer
                 $passengerPrice->add($this->mapPassengerPrice((object) $fareList));
             } else {
                 $passengerPrice = new ArrayCollection();
+
+                // 1 PAX - QLWH2V
+                // 4 PAX - PGV84B
                 foreach ($fareList as $fare) {
                     $tktDate = '0000-00-00';
-                    foreach ($fare->lastTktDate as $lastTktDate) {
-                        if ($lastTktDate->businessSemantic == 'LT') {
-                            $tktDate = $lastTktDate->dateTime->year
-                                . '-' . $lastTktDate->dateTime->month
-                                . '-' . $lastTktDate->dateTime->day;
-                        }
-                    };
+                    if (!empty($fare->lastTktDate)) {
+                        foreach ($fare->lastTktDate as $lastTktDate) {
+                            if ($lastTktDate->businessSemantic == 'LT') {
+                                $tktDate = $lastTktDate->dateTime->year
+                                    . '-' . $lastTktDate->dateTime->month
+                                    . '-' . $lastTktDate->dateTime->day;
+                            }
+                        };
+                    }
+
                     $price->setLastTicketingDate(date('Y-m-d', strtotime($tktDate)));
-                    $price->setValidatingCarrier(
-                        (string) $fare->validatingCarrier
-                            ->carrierInformation
-                            ->carrierCode
-                    );
+
+                    if (!empty($fare->validatingCarrier)) {
+                        $price->setValidatingCarrier(
+                            (string) $fare->validatingCarrier
+                                ->carrierInformation
+                                ->carrierCode
+                        );
+                    }
+
                     $passengerPrice->add($this->mapPassengerPrice($fare));
                 }
+
                 $price->setPassengerPrice($passengerPrice);
             }
         }
@@ -88,10 +99,11 @@ class PriceResponseTransformer
     {
         $price    = new PassengerPrice();
         $totalTax = 0.00;
+
         foreach ($fare->taxInformation as $taxData) {
             $totalTax += (float) $taxData->amountDetails->fareDataMainInformation->fareAmount;
-
         }
+
         $price->setTotalTax(round($totalTax, 2));
         $price->setPassengerRef($this->getPassengerRef($fare));
 
@@ -108,6 +120,7 @@ class PriceResponseTransformer
                 }
             }
         }
+
         return $price;
     }
 
