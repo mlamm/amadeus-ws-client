@@ -48,6 +48,13 @@ class AmadeusRequestTransformer
      */
     public function buildClientParams(Authenticate $authentication, LoggerInterface $logger) : Client\Params
     {
+        $wsdlPath = './wsdl/' . $this->config->price->wsdl;
+
+        $soapClient = new \SoapClient($wsdlPath);
+        if (!empty($this->config->price->overrideHost)) {
+            $soapClient->__setLocation($this->config->price->overrideHost);
+        }
+
         $clientParams = new Client\Params(
             [
                 'authParams'           => [
@@ -59,10 +66,12 @@ class AmadeusRequestTransformer
                     'organizationId' => $authentication->getOrganizationId(),
                 ],
                 'sessionHandlerParams' => [
-                    'soapHeaderVersion' => Client::HEADER_V4,
-                    'stateful'          => true,
-                    'wsdl'              => './wsdl/' . $this->config->price->wsdl,
-                    'logger'            => $logger,
+                    'soapHeaderVersion'          => Client::HEADER_V4,
+                    'stateful'                   => true,
+                    'wsdl'                       => $wsdlPath,
+                    'logger'                     => $logger,
+                    'overrideSoapClient'         => $soapClient,
+                    'overrideSoapClientWsdlName' => '16dbc24b' // %TODO
                 ],
                 'requestCreatorParams' => [
                     'receivedFrom' => 'service.Price',

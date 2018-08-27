@@ -26,6 +26,7 @@
     },
     "require": {
         "php": "^7.2",
+        "ext-soap": "*",
         "silex/silex": "~2.0",
         "amabnl/amadeus-ws-client": "dev-master#6ad41e1c9df340ce03e92c475e73f08a1b8db121",
         "monolog/monolog": "~1.23",
@@ -51,7 +52,8 @@
         "sorien/silex-pimple-dumper": "^2.0",
         "flow/jsonpath": "^0.3.4",
         "gamez/psr-testlogger": "^2.0",
-        "digitaladapt/codeception-json-schema": "^0.1.2"
+        "digitaladapt/codeception-json-schema": "^0.1.2",
+        "mcustiel/phiremock": "~1.8.0"
     },
     "repositories": [
         {

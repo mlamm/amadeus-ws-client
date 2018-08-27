@@ -74,6 +74,7 @@ session:
 
 price:
     wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
+    overrideHost: 'http://172.17.0.1:18080'
 
 response:
     json_encoding_options:
@@ -96,4 +97,9 @@ debug:
         enabled: true
     throwup:
         enabled: true
+
+phiremock:
+#    host: sabre-phiremock
+    host: 172.17.0.1
+    port: 18080
 

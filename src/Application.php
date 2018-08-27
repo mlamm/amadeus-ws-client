@@ -33,17 +33,7 @@ class Application extends \Silex\Application
                 env('CONFIG_CACHING', 'enabled') !== 'disabled',
                 __DIR__ . '/../var/cache/config',
                 function () {
-                    $configFile = 'app.yml';
-                    if (strpos($_SERVER['SCRIPT_FILENAME'], 'codecept')
-                        || (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] === 'Symfony BrowserKit')
-                    ) {
-                        $configFile = 'testing.yml';
-                    }
-
-                    return Yaml::parse(
-                        file_get_contents(__DIR__ . '/../config/' . $configFile),
-                        Yaml::PARSE_OBJECT_FOR_MAP
-                    );
+                    return Application::getConfig();
                 }
             );
         };
@@ -66,5 +56,26 @@ class Application extends \Silex\Application
         $this->register(new Itinerary\Provider\ItineraryServiceProvider($useMockAmaResponses));
         $this->register(new Price\Provider\PriceServiceProvider($useMockAmaResponses));
         $this->register(new MetricsProvider);
+    }
+
+    /**
+     * Build and return current config.
+     *
+     * @return mixed
+     */
+    public static function getConfig()
+    {
+        $configFile = 'app.yml';
+
+        if (strpos($_SERVER['SCRIPT_FILENAME'], 'codecept')
+            || (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] === 'Symfony BrowserKit')
+        ) {
+            $configFile = 'testing.yml';
+        }
+
+        return Yaml::parse(
+            file_get_contents(__DIR__ . '/../config/' . $configFile),
+            Yaml::PARSE_OBJECT_FOR_MAP
+        );
     }
 }
