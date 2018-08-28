@@ -53,6 +53,12 @@ class ClientParamsFactory
     {
         $authentication = $businessCase->getAuthentication();
 
+        $wsdlPath = './wsdl/' . $this->config->search->wsdl;
+        $soapClient = new \SoapClient($wsdlPath, ['trace' => 1]);
+        if (!empty($this->config->price->overrideHost)) {
+            $soapClient->__setLocation($this->config->price->overrideHost);
+        }
+
         $params = new Client\Params(
             [
                 'authParams' => [
@@ -65,9 +71,11 @@ class ClientParamsFactory
                 ],
                 'sessionHandlerParams' => [
                     'soapHeaderVersion' => Client::HEADER_V4,
-                    'stateful' => false,
-                    'wsdl' => "./wsdl/{$this->config->search->wsdl}",
-                    'logger' => $this->sessionLogger,
+                    'stateful'          => false,
+                    'wsdl'              => $wsdlPath,
+                    'logger'            => $this->sessionLogger,
+//                    'overrideSoapClient'         => $soapClient,
+//                    'overrideSoapClientWsdlName' => '35a2ec45' // %TODO
                 ],
                 'requestCreatorParams' => [
                     'receivedFrom' => 'service.search'
@@ -79,6 +87,5 @@ class ClientParamsFactory
             $params->sessionHandler = new $this->customSessionHandlerClass($params->sessionHandlerParams);
         }
 
-        return $params;
-    }
+        return $params;}
 }

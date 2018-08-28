@@ -50,16 +50,6 @@ class CommitSessionCest
         $request = new Request('POST', 'http://amadeus-nginx/session/commit', $httpHeader);
 
         $response = $client->send($request);
-        \PHPUnit_Framework_Assert::assertSame(200, $response->getStatusCode());
-
-        /** @var \GuzzleHttp\Psr7\Stream $responseBody */
-        $responseBody = $response->getBody();
-        $responseBody = $responseBody->getContents();
-        /** @var \stdClass $responseBody */
-        $responseBody = \json_decode($responseBody);
-
-        \PHPUnit_Framework_Assert::assertSame('00BQC6J3LG', $responseBody->session_id);
-        \PHPUnit_Framework_Assert::assertSame(1, $responseBody->sequence_number);
-        \PHPUnit_Framework_Assert::assertSame('37OFZRPB5DUZSBH8BGUOSJ94V', $responseBody->security_token);
+        \PHPUnit_Framework_Assert::assertSame(204, $response->getStatusCode());
     }
 }

@@ -1,5 +1,6 @@
 search:
     wsdl: 1ASIWUFITBD_PDT_20180206_095616.wsdl
+    overrideHost: 'http://172.17.0.1:18080'
 
     allowed_types:
         - round-trip

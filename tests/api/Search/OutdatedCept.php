@@ -1,7 +1,9 @@
 <?php
 /** @var \Codeception\Scenario $scenario */
 
-$scenario->skip('returning the correct mock response from the ama request is not possible yet');
+//$scenario->skip('returning the correct mock response from the ama request is not possible yet');
+
+// %TODO, test this, get a real response from ama for that
 
 $I = new ApiTester($scenario);
 $I->wantTo('see an error when requested offers for past dates');

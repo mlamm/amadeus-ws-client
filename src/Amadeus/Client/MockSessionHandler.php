@@ -21,7 +21,7 @@ use Amadeus\Client\Struct\BaseWsMessage;
  */
 class MockSessionHandler implements HandlerInterface
 {
-    private const MASTERPRICER_RESPONSE_FIXTURE = 'tests/_data/fixtures/03-Fare_MasterPricerTravelBoardSearch_FBA-rt.xml';
+    public const MASTERPRICER_RESPONSE_FIXTURE = 'tests/_data/fixtures/03-Fare_MasterPricerTravelBoardSearch_FBA-rt.xml';
 
     private const PNR_RETRIEVE_RESPONSE_FIXTURE = 'tests/_data/fixtures/09-pnrRetrieve-response.xml';
 
