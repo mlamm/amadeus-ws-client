@@ -201,8 +201,6 @@ class AmadeusClient
         );
         $client->setSessionData($session->toArray());
 
-//        $client->getLastRequest()
-
         $clientResult = $client->ticketDisplayTST($options);
         if (self::CHECK_RESULT_OK == $this->checkResult($clientResult)) {
             return $this->responseTransformer->mapResult($clientResult->response);
