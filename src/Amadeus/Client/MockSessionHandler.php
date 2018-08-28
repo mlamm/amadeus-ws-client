@@ -25,9 +25,9 @@ class MockSessionHandler implements HandlerInterface
 
     private const PNR_RETRIEVE_RESPONSE_FIXTURE = 'tests/_data/fixtures/09-pnrRetrieve-response.xml';
 
-    private const CREATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_Authenticate-Response.xml';
+    public const CREATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_Authenticate-Response.xml';
 
-    private const IGNORE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/PNR_Ignore-Response.xml';
+    public const IGNORE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/PNR_Ignore-Response.xml';
 
     public const TERMINATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_SignOut-Response.xml';
 

@@ -4,12 +4,12 @@ use Flight\Service\Amadeus\Amadeus\Client\MockSessionHandler;
 use GuzzleHttp\Psr7\Request;
 
 /**
- * Test POST /session/terminate endpoint using phiremock for the gds backend.
+ * Test POST /session/ignore endpoint using phiremock for the gds backend.
  *
  * @author     Marcel Lamm <marcel.lamm@invia.de>
  * @copyright  Copyright (c) 2018 Invia Flights Germany GmbH
  */
-class TerminateSessionCest
+class IgnoreSessionCest
 {
     /**
      * @var \Helper\PhireHelper
@@ -29,16 +29,16 @@ class TerminateSessionCest
      */
     public function _before(ApiTester $I)
     {
-        $this->phiremockHelper->prep($I, MockSessionHandler::TERMINATE_SESSION_RESPONSE_FIXTURE);
+        $this->phiremockHelper->prep($I, MockSessionHandler::IGNORE_SESSION_RESPONSE_FIXTURE);
     }
 
     /**
-     * Test the POST /session/terminate endpoint.
+     * Test the POST /session/ignore endpoint.
      *
      * @param ApiTester $I
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testSessionTerminate(ApiTester $I)
+    public function testSessionIgnore(ApiTester $I)
     {
         // http header, holding session and auth info
         $httpHeader = [
@@ -47,7 +47,7 @@ class TerminateSessionCest
         ];
 
         $client = new GuzzleHttp\Client();
-        $request = new Request('POST', 'http://amadeus-nginx/session/terminate', $httpHeader);
+        $request = new Request('POST', 'http://amadeus-nginx/session/ignore', $httpHeader);
 
         $response = $client->send($request);
         \PHPUnit_Framework_Assert::assertSame(204, $response->getStatusCode());
