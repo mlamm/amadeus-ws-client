@@ -4,12 +4,12 @@ use Flight\Service\Amadeus\Amadeus\Client\MockSessionHandler;
 use GuzzleHttp\Psr7\Request;
 
 /**
- * Test the GET /price endpoint while using phiremock as the gds backend here.
+ * Test POST /price endpoint using phiremock for the gds backend.
  *
  * @author     Marcel Lamm <marcel.lamm@invia.de>
  * @copyright  Copyright (c) 2018 Invia Flights Germany GmbH
  */
-class GetPriceCest
+class CreatePriceCest
 {
     /**
      * @var \Helper\PhireHelper
@@ -29,16 +29,16 @@ class GetPriceCest
      */
     public function _before(ApiTester $I)
     {
-        $this->phiremockHelper->prep($I, MockSessionHandler::TICKET_DISPLAY_TST);
+        $this->phiremockHelper->prep($I, MockSessionHandler::TICKET_CREATE_TSTS_FROM_PRICING_RESPONSE_FIXTURE);
     }
 
     /**
-     * Test the GET /price endpoint.
+     * Test the POST /price endpoint.
      *
      * @param ApiTester $I
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testGetPrice(ApiTester $I)
+    public function testPriceRequestForCorporateId(ApiTester $I)
     {
         // http header, holding session and auth info
         $httpHeader = [
@@ -46,18 +46,11 @@ class GetPriceCest
             'authentication' => file_get_contents(codecept_data_dir('requests/Price/valid-auth-header.json'))
         ];
 
+        $req = file_get_contents(codecept_data_dir('requests/Price/create-price-tarif.json'));
         $client = new GuzzleHttp\Client();
-        $request = new Request('GET', 'http://amadeus-nginx/price/', $httpHeader);
+        $request = new Request('POST', 'http://amadeus-nginx/price/', $httpHeader, $req);
 
         $response = $client->send($request);
-        \PHPUnit_Framework_Assert::assertSame(200, $response->getStatusCode());
-
-        /** @var \GuzzleHttp\Psr7\Stream $responseBody */
-        $responseBody = $response->getBody();
-        $responseBody = $responseBody->getContents();
-        /** @var \stdClass $responseBody */
-        $responseBody = \json_decode($responseBody);
-
-        \PHPUnit_Framework_Assert::assertSame('UX', $responseBody->validating_carrier);
+        \PHPUnit_Framework_Assert::assertSame(204, $response->getStatusCode());
     }
 }

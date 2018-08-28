@@ -29,19 +29,19 @@ class MockSessionHandler implements HandlerInterface
 
     private const IGNORE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/PNR_Ignore-Response.xml';
 
-    private const TERMINATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_SignOut-Response.xml';
+    public const TERMINATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_SignOut-Response.xml';
 
     private const COMMIT_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/10-Session-Commit-Response.xml';
 
     private const SECURITY_SIGNOUT_RESPONSE_FIXTURE = 'tests/_data/fixtures/11-Security-SignOut-Response.xml';
 
-    private const TICKET_DELETETST_RESPONSE_FIXTURE = 'tests/_data/fixtures/12-Ticket_DeleteTST-Response.xml';
+    public const TICKET_DELETETST_RESPONSE_FIXTURE = 'tests/_data/fixtures/12-Ticket_DeleteTST-Response.xml';
 
     private const FARE_PNRWITHBOOKINGCLASS_RESPONSE_FIXTURE = 'tests/_data/fixtures/13-Fare_PricePNRWithBookingClass-Response.xml';
 
-    private const TICKET_CREATE_TSTS_FROM_PRICING_RESPONSE_FIXTURE = 'tests/_data/fixtures/14-Ticket-CreateTSTFromPricing-Response.xml';
+    public const TICKET_CREATE_TSTS_FROM_PRICING_RESPONSE_FIXTURE = 'tests/_data/fixtures/14-Ticket-CreateTSTFromPricing-Response.xml';
 
-    private const TICKET_DISPLAY_TST = 'tests/_data/fixtures/15-Ticket-Display-Tst-Response.xml';
+    public const TICKET_DISPLAY_TST = 'tests/_data/fixtures/15-Ticket-Display-Tst-Response.xml';
 
     /**
      * @var SessionHandlerParams
@@ -105,6 +105,10 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadMasterPricerTravelBoardSearchResponse() : SendResult
     {
+        throw new \RuntimeException('do not use');
+
+
+
         $sendResult                 = new SendResult();
         $sendResult->responseXml    = file_get_contents(self::MASTERPRICER_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
@@ -114,6 +118,9 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadCreateSessionResponse()
     {
+        throw new \RuntimeException('do not use');
+
+
         $sendResult                 = new SendResult();
         $sendResult->responseXml    = file_get_contents(self::CREATE_SESSION_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
@@ -123,6 +130,9 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadPnrRetrieveResponse() : SendResult
     {
+
+        throw new \RuntimeException('do not use');
+
         $sendResult                 = new SendResult();
         $sendResult->responseXml    = file_get_contents(self::PNR_RETRIEVE_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
@@ -141,6 +151,8 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadSecuritySignOutResponse()
     {
+        throw new \RuntimeException('do not use');
+
         $sendResult                 = new SendResult();
         $sendResult->responseXml    = file_get_contents(self::SECURITY_SIGNOUT_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
@@ -150,6 +162,8 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadTicketDeleteTstResponse()
     {
+        throw new \RuntimeException('do not use');
+
         $sendResult                 = new SendResult();
         $sendResult->responseXml    = file_get_contents(self::TICKET_DELETETST_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
@@ -159,6 +173,8 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadFarePricePNRResponse()
     {
+        throw new \RuntimeException('do not use');
+
         $sendResult                 = new SendResult();
         $sendResult->responseXml    = file_get_contents(self::FARE_PNRWITHBOOKINGCLASS_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
@@ -168,6 +184,7 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadCreateTstResponse()
     {
+        throw new \RuntimeException('do not use');
         $sendResult                 = new SendResult();
         $sendResult->responseXml    = file_get_contents(self::TICKET_CREATE_TSTS_FROM_PRICING_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
@@ -177,6 +194,8 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadTerminateSessionResponse()
     {
+        throw new \RuntimeException('do not use');
+
         $sendResult = new SendResult();
         $sendResult->responseXml = file_get_contents(self::TERMINATE_SESSION_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
@@ -186,6 +205,8 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadDisplayTstResponse()
     {
+        throw new \RuntimeException('do not use');
+
         $sendResult = new SendResult();
         $sendResult->responseXml = file_get_contents(self::TICKET_DISPLAY_TST);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));

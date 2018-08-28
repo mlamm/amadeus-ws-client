@@ -50,7 +50,7 @@ class AmadeusRequestTransformer
     {
         $wsdlPath = './wsdl/' . $this->config->price->wsdl;
 
-        $soapClient = new \SoapClient($wsdlPath);
+        $soapClient = new \SoapClient($wsdlPath, ['trace' => 1]);
         if (!empty($this->config->price->overrideHost)) {
             $soapClient->__setLocation($this->config->price->overrideHost);
         }

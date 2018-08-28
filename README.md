@@ -110,6 +110,18 @@ This will execute both suites.
 $ vendor/bin/codecept run
 ```
 
+## Run single test in container
+
+```
+$ php vendor/bin/codecept run -vvv tests/api/Price/DeletePriceCept.php
+```
+
+#### Run single test in container with debug
+
+```
+$ php -dxdebug.remote_enable=1 -dxdebug.remote_host=172.17.0.1 -dxdebug.remote_autostart=1 -dxdebug.remote_connect_back=0 -dxdebug.idekey=service-amadeus vendor/bin/codecept run tests/api/Price/GetPriceCest.php
+```
+
 ## Errors
 
 Following a list of internal response errors the application returns with status 500.
@@ -200,10 +212,4 @@ Append XDEBUG to URLs, where *service-amadeus* is the ide-key configured in PHPS
 
 ```
 $ curl http://localhost/price/?XDEBUG_SESSION_START=service-amadeus
-```
-
-## Run single test in container
-
-```
-$ php vendor/bin/codecept run -vvv tests/api/Price/DeletePriceCept.php
 ```

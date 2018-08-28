@@ -49,9 +49,8 @@ class PhireHelper extends Api
     public function getLastRequest(): \stdClass
     {
         $config = \Flight\Service\Amadeus\Application::getConfig();
-        var_dump($config);die(__METHOD__ . ':' . __LINE__); // %TODO
+        $phiremock = new Phiremock($config->phiremock->host, $config->phiremock->port);
 
-        $phiremock = new Phiremock($config['phiremock']['host'], $config['phiremock']['port']);
         $actualExecutions = $phiremock->listExecutions(
             A::postRequest()->andUrl(Is::equalTo('/'))
         );
