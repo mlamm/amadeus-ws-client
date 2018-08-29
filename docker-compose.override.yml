@@ -8,4 +8,3 @@ services:
   amadeus-php:
     environment:
       CONFIG_CACHING: disabled
-      MOCK_AMA_RESPONSE_IN_TEST: disabled

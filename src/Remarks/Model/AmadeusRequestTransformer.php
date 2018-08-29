@@ -24,18 +24,14 @@ class AmadeusRequestTransformer
      */
     protected $config;
 
-    protected $customSessionHandlerClass;
-
     /**
      * AmadeusRequestTransformer constructor.
      *
      * @param \stdClass   $config
-     * @param null|string $customSessionHandlerClass
      */
-    public function __construct(\stdClass $config, $customSessionHandlerClass = null)
+    public function __construct(\stdClass $config)
     {
         $this->config                    = $config;
-        $this->customSessionHandlerClass = $customSessionHandlerClass;
     }
 
     /**
@@ -69,10 +65,6 @@ class AmadeusRequestTransformer
                 ],
             ]
         );
-
-        if ($this->customSessionHandlerClass) {
-            $clientParams->sessionHandler = new $this->customSessionHandlerClass($clientParams->sessionHandlerParams);
-        }
 
         return $clientParams;
     }

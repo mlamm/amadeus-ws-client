@@ -3,7 +3,6 @@
 namespace Flight\Service\Amadeus\Session\Provider;
 
 use Amadeus;
-use Flight\Service\Amadeus\Amadeus\Client\MockSessionHandler;
 use Flight\Service\Amadeus\Session;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -17,20 +16,6 @@ use Psr\Log\NullLogger;
  */
 class SessionServiceProvider implements ServiceProviderInterface
 {
-
-    /**
-     * @var bool
-     */
-    private $useMockSessionResponse = false;
-
-    /**
-     * @param bool $useMockSessionResponse
-     */
-    public function __construct(bool $useMockSessionResponse)
-    {
-        $this->useMockSessionResponse = $useMockSessionResponse;
-    }
-
     /**
      * Registers services on the given container.
      *
@@ -59,10 +44,9 @@ class SessionServiceProvider implements ServiceProviderInterface
         };
         $app['monolog.logfile'] = '/../var/logs/app.log';
         $app['amadeus.client.session'] = function () use ($app) {
-            $sessionHandlerClass = $this->useMockSessionResponse ? MockSessionHandler::class : null;
             return new Session\Model\AmadeusClient(
                 $app['config']->debug->session->log_ama_traffic ? $app['logger'] : new NullLogger(),
-                new Session\Model\AmadeusRequestTransformer($app['config'], $sessionHandlerClass),
+                new Session\Model\AmadeusRequestTransformer($app['config']),
                 new Session\Model\AmadeusResponseTransformer(),
                 function (Amadeus\Client\Params $clientParams) {
                     return new Amadeus\Client($clientParams);

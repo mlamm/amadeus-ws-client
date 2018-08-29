@@ -41,20 +41,16 @@ class Application extends \Silex\Application
         // set json encoding options from config
         $this->after(new JsonEncodingOptions($this['config']));
 
-        // switch to mock service responses for api tests
-        $useMockAmaResponses = env('MOCK_AMA_RESPONSE_IN_TEST', 'disabled') === 'enabled'
-                               && isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] === 'Symfony BrowserKit';
-
         // register provider
         $this->register(new ErrorProvider());
         $this->register(new TracingHeaderProvider());
         $this->register(new ServiceControllerServiceProvider());
         $this->register(new CacheProvider());
-        $this->register(new SearchServiceProvider($useMockAmaResponses));
-        $this->register(new Remarks\Provider\RemarksServiceProvider($useMockAmaResponses));
-        $this->register(new Session\Provider\SessionServiceProvider($useMockAmaResponses));
-        $this->register(new Itinerary\Provider\ItineraryServiceProvider($useMockAmaResponses));
-        $this->register(new Price\Provider\PriceServiceProvider($useMockAmaResponses));
+        $this->register(new SearchServiceProvider());
+        $this->register(new Remarks\Provider\RemarksServiceProvider());
+        $this->register(new Session\Provider\SessionServiceProvider());
+        $this->register(new Itinerary\Provider\ItineraryServiceProvider());
+        $this->register(new Price\Provider\PriceServiceProvider());
         $this->register(new MetricsProvider);
     }
 
