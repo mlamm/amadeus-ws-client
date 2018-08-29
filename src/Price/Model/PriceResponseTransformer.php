@@ -79,9 +79,9 @@ class PriceResponseTransformer
 
                     $passengerPrice->add($this->mapPassengerPrice($fare));
                 }
-
-                $price->setPassengerPrice($passengerPrice);
             }
+
+            $price->setPassengerPrice($passengerPrice);
         }
 
         $responseResult->setResult($price);
@@ -132,10 +132,18 @@ class PriceResponseTransformer
     {
         $passengerRefs = new ArrayCollection();
 
-        foreach ($fare->paxSegReference->refDetails as $refDetail) {
+        if (is_array($fare->paxSegReference->refDetails)) {
+            foreach ($fare->paxSegReference->refDetails as $refDetail) {
+                $passengerRef = new ArrayCollection([
+                    'qualifier' => $refDetail->refQualifier,
+                    'id'        => $refDetail->refNumber
+                ]);
+                $passengerRefs->add($passengerRef);
+            }
+        } else {
             $passengerRef = new ArrayCollection([
-                'qualifier' => $refDetail->refQualifier,
-                'number'    => $refDetail->refNumber
+                'qualifier' => $fare->paxSegReference->refDetails->refQualifier,
+                'id'        => $fare->paxSegReference->refDetails->refNumber
             ]);
             $passengerRefs->add($passengerRef);
         }
