@@ -84,6 +84,10 @@ For testing use the setup `codeception`. For endpoint tests (**mandatory**) use 
 use unit testing suite.
 Best use it in the docker container itself. `docker exec -it {docker_container_id} /bin/sh`.
 
+You should use phiremock for API tests as the GDS backend, the former "MockSessionHandler" has been removed,
+cause it was not possible to use multiple fixtures files for the very same Soap-Action.
+This can now be achieved. See tests/api/ for examples.
+
 ### Create an endpoint test
 
 This will create an acceptance test based on a codeception
