@@ -29,7 +29,6 @@ class PriceResponseTransformer
             $passengerPrice = new ArrayCollection();
 
             if (array_key_exists('pricingInformation', $fareList)) {
-                // %TODO, when is this being used? TEST 1 pax
                 $price->setValidatingCarrier(
                     (string) $response->fareList->validatingCarrier
                         ->carrierInformation
@@ -53,8 +52,6 @@ class PriceResponseTransformer
             } else {
                 $passengerPrice = new ArrayCollection();
 
-                // 1 PAX - QLWH2V
-                // 4 PAX - PGV84B
                 foreach ($fareList as $fare) {
                     $tktDate = '0000-00-00';
                     if (!empty($fare->lastTktDate)) {
@@ -125,13 +122,16 @@ class PriceResponseTransformer
     }
 
     /**
-     * @param \stdClass $fare
+     * Build passenger-reference element and return it.
+     *
+     * @param \stdClass $fare input fare element from gds
      * @return ArrayCollection
      */
     private function getPassengerRef(\stdClass $fare): ArrayCollection
     {
         $passengerRefs = new ArrayCollection();
 
+        // support various formats, if there are multiple pax, this will be an array
         if (is_array($fare->paxSegReference->refDetails)) {
             foreach ($fare->paxSegReference->refDetails as $refDetail) {
                 $passengerRef = new ArrayCollection([
