@@ -29,7 +29,10 @@ class IgnoreSessionCest
      */
     public function _before(ApiTester $I)
     {
-        $this->phiremockHelper->prep($I, MockSessionHandler::IGNORE_SESSION_RESPONSE_FIXTURE);
+        $this->phiremockHelper->prep(
+            $I,
+            codecept_data_dir('fixtures/PNR_Ignore-Response.xml')
+        );
     }
 
     /**
@@ -42,6 +45,7 @@ class IgnoreSessionCest
     {
         // http header, holding session and auth info
         $httpHeader = [
+            'User-Agent' => 'Symfony BrowserKit',
             'session' => file_get_contents(codecept_data_dir('requests/Price/valid-session-header.json')),
             'authentication' => file_get_contents(codecept_data_dir('requests/Price/valid-auth-header.json'))
         ];

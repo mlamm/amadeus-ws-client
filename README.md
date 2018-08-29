@@ -102,6 +102,16 @@ codeception ([docs](http://codeception.com/docs/05-UnitTests)).
 $ vendor/bin/codecept g:test unit <Endpoint>/<BusinessCase>
 ```
 
+### API tests
+
+When writing API-Tests you need to make sure the initiated HTTP-Request towards the service itself from that test,
+is using the HTTP-Header "User-Agent: Symfony BrowserKit".
+
+e.g.:
+```
+$request = new GuzzleHttp\Psr7\Request('POST', 'http://amadeus-nginx/session/terminate', ['User-Agent' => 'Symfony BrowserKit']);
+```
+
 ### Run tests
 
 This will execute both suites.
@@ -212,4 +222,16 @@ Append XDEBUG to URLs, where *service-amadeus* is the ide-key configured in PHPS
 
 ```
 $ curl http://localhost/price/?XDEBUG_SESSION_START=service-amadeus
+```
+
+## Stuff
+
+### Emulating HTTP Request initiated by codeception API tests towards nginx container
+```
+$ curl \
+  --header 'authentication: {"office-id": "LEJL1213T", "user-id": "NMC-GERMAN", "password-data": "9347", "password-length": "8", "duty-code": "SU", "organization": "NMC-GERMAN"}' \
+  --header 'session: {"session-id": "013GZKUXA2", "sequence-number": "1", "security-token": "2XCAG3OKA7MOQ3DBAGRL6OULBZ"}' \
+  --header 'User-Agent: Symfony BrowserKit'\
+  -X 'POST' \
+  http://amadeus-nginx/session/terminate?XDEBUG_SESSION_START=service-amadeus
 ```

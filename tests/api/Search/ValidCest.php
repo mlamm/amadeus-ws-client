@@ -29,7 +29,9 @@ class ValidCest
      */
     public function _before(ApiTester $I)
     {
-        $this->phiremockHelper->prep($I, MockSessionHandler::MASTERPRICER_RESPONSE_FIXTURE);
+        $this->phiremockHelper->prep($I,
+            codecept_data_dir('fixtures/03-Fare_MasterPricerTravelBoardSearch_FBA-rt.xml'
+        ));
     }
 
     /**
@@ -43,7 +45,12 @@ class ValidCest
         $bodyRequestParams = file_get_contents(codecept_data_dir('requests/valid-request.json'));
 
         $client = new GuzzleHttp\Client();
-        $request = new Request('POST', 'http://amadeus-nginx/flight-search/', [], $bodyRequestParams);
+        $request = new Request(
+            'POST',
+            'http://amadeus-nginx/flight-search/',
+            ['User-Agent' => 'Symfony BrowserKit'],
+            $bodyRequestParams
+        );
 
         $response = $client->send($request);
         \PHPUnit_Framework_Assert::assertSame(200, $response->getStatusCode());

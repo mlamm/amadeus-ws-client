@@ -29,7 +29,10 @@ class TerminateSessionCest
      */
     public function _before(ApiTester $I)
     {
-        $this->phiremockHelper->prep($I, MockSessionHandler::TERMINATE_SESSION_RESPONSE_FIXTURE);
+        $this->phiremockHelper->prep(
+            $I,
+            codecept_data_dir('fixtures/Security_SignOut-Response.xml')
+        );
     }
 
     /**
@@ -42,6 +45,7 @@ class TerminateSessionCest
     {
         // http header, holding session and auth info
         $httpHeader = [
+            'User-Agent' => 'Symfony BrowserKit',
             'session' => file_get_contents(codecept_data_dir('requests/Price/valid-session-header.json')),
             'authentication' => file_get_contents(codecept_data_dir('requests/Price/valid-auth-header.json'))
         ];
