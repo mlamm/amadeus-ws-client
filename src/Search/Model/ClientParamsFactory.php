@@ -72,6 +72,7 @@ class ClientParamsFactory
             $soapClient->__setLocation($this->config->search->overrideHost);
 
             $params['sessionHandlerParams']['overrideSoapClient']         = $soapClient;
+            // wsdl-hash that is internally used to match the right soap-client
             $params['sessionHandlerParams']['overrideSoapClientWsdlName'] = '35a2ec45';
         }
 

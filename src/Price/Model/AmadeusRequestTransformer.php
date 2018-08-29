@@ -68,6 +68,7 @@ class AmadeusRequestTransformer
             $soapClient->__setLocation($this->config->price->overrideHost);
 
             $params['sessionHandlerParams']['overrideSoapClient']         = $soapClient;
+            // wsdl-hash that is internally used to match the right soap-client
             $params['sessionHandlerParams']['overrideSoapClientWsdlName'] = '16dbc24b';
         }
 
