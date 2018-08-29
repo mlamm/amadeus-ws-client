@@ -5,6 +5,7 @@ use GuzzleHttp\Psr7\Request;
 
 /**
  * Test POST /flight-search/ endpoint using phiremock for the gds backend.
+ * Here, a GDS error is returned, that leads to an empty result.
  *
  * @author     Marcel Lamm <marcel.lamm@invia.de>
  * @copyright  Copyright (c) 2018 Invia Flights Germany GmbH
@@ -29,7 +30,7 @@ class OutdatedCest
      */
     public function _before(ApiTester $I)
     {
-        $this->phiremockHelper->prep($I, MockSessionHandler::MASTERPRICER_RESPONSE_FIXTURE);
+        $this->phiremockHelper->prep($I, MockSessionHandler::FARE_MASTER_PRICER_TRAVEL_BOARD_SEARCH_REPLY_PAST_DATE);
     }
 
     /**
@@ -51,8 +52,8 @@ class OutdatedCest
         $responseBody = $response->getBody();
         $responseBody = $responseBody->getContents();
         $responseBody = \json_decode($responseBody);
-var_dump($responseBody);die(__METHOD__ . ':' . __LINE__); // %TODO
+
         \PHPUnit_Framework_Assert::assertNotEmpty($responseBody);
-        \PHPUnit_Framework_Assert::assertTrue(isset($responseBody->result));
+        \PHPUnit_Framework_Assert::assertSame([], $responseBody->result);
     }
 }

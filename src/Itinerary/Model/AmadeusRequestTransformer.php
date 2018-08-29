@@ -50,6 +50,13 @@ class AmadeusRequestTransformer
      */
     public function buildClientParams(Authenticate $authentication, LoggerInterface $logger) : Client\Params
     {
+        $wsdlPath = './wsdl/' . $this->config->itinerary->wsdl;
+
+        $soapClient = new \SoapClient($wsdlPath, ['trace' => 1]);
+        if (!empty($this->config->itinerary->overrideHost)) {
+            $soapClient->__setLocation($this->config->itinerary->overrideHost);
+        }
+
         $clientParams = new Client\Params(
             [
                 'authParams'           => [
@@ -63,8 +70,10 @@ class AmadeusRequestTransformer
                 'sessionHandlerParams' => [
                     'soapHeaderVersion' => Client::HEADER_V4,
                     'stateful'          => true,
-                    'wsdl'              => "./wsdl/{$this->config->itinerary->wsdl}",
+                    'wsdl'              => $wsdlPath,
                     'logger'            => $logger,
+                    'overrideSoapClient'         => $soapClient,
+                    'overrideSoapClientWsdlName' => '16dbc24b' // %TODO
                 ],
                 'requestCreatorParams' => [
                     'receivedFrom' => 'service.itinerary',

@@ -23,7 +23,7 @@ class MockSessionHandler implements HandlerInterface
 {
     public const MASTERPRICER_RESPONSE_FIXTURE = 'tests/_data/fixtures/03-Fare_MasterPricerTravelBoardSearch_FBA-rt.xml';
 
-    private const PNR_RETRIEVE_RESPONSE_FIXTURE = 'tests/_data/fixtures/09-pnrRetrieve-response.xml';
+    public const PNR_RETRIEVE_RESPONSE_FIXTURE = 'tests/_data/fixtures/09-pnrRetrieve-response.xml';
 
     public const CREATE_SESSION_RESPONSE_FIXTURE = 'tests/_data/fixtures/Security_Authenticate-Response.xml';
 
@@ -42,6 +42,8 @@ class MockSessionHandler implements HandlerInterface
     public const TICKET_CREATE_TSTS_FROM_PRICING_RESPONSE_FIXTURE = 'tests/_data/fixtures/14-Ticket-CreateTSTFromPricing-Response.xml';
 
     public const TICKET_DISPLAY_TST = 'tests/_data/fixtures/15-Ticket-Display-Tst-Response.xml';
+
+    public const FARE_MASTER_PRICER_TRAVEL_BOARD_SEARCH_REPLY_PAST_DATE = 'tests/_data/fixtures/Fare_MasterPricerTravelBoardSearchReply.xml';
 
     /**
      * @var SessionHandlerParams
@@ -69,6 +71,8 @@ class MockSessionHandler implements HandlerInterface
      */
     public function sendMessage($messageName, BaseWsMessage $messageBody, $messageOptions)
     {
+        throw new \RuntimeException('do not use');
+
         switch ($messageName) {
             case 'Fare_MasterPricerTravelBoardSearch':
                 return $this->loadMasterPricerTravelBoardSearchResponse();
@@ -142,6 +146,8 @@ class MockSessionHandler implements HandlerInterface
 
     private function loadSessionCommitResponse()
     {
+        throw new \RuntimeException('do not use');
+
         $sendResult                 = new SendResult();
         $sendResult->responseXml    = file_get_contents(self::COMMIT_SESSION_RESPONSE_FIXTURE);
         $sendResult->responseObject = json_decode(json_encode(new \SimpleXMLElement($sendResult->responseXml)));
@@ -266,6 +272,8 @@ class MockSessionHandler implements HandlerInterface
      */
     public function getLastResponse($msgName)
     {
+        throw new \RuntimeException('do not use');
+
         switch ($msgName) {
             case 'Security_Authenticate':
                 return file_get_contents(self::CREATE_SESSION_RESPONSE_FIXTURE);

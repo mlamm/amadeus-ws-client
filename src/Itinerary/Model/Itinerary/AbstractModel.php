@@ -55,7 +55,11 @@ abstract class AbstractModel
                 }
                 $data[$key] = $collectionData;
             } elseif ($this->$method() instanceof \DateTime) {
-                $data[$key] = $this->$method()->format('d.m.Y H:i:s');
+                if ('getPurgeDateData' === $method) {
+                    $data[$key] = $this->$method()->format('d.m.Y');
+                } else {
+                    $data[$key] = $this->$method()->format('d.m.Y H:i:s');
+                }
             } else {
                 $data[$key] = $this->$method();
             }

@@ -55,8 +55,8 @@ class ClientParamsFactory
 
         $wsdlPath = './wsdl/' . $this->config->search->wsdl;
         $soapClient = new \SoapClient($wsdlPath, ['trace' => 1]);
-        if (!empty($this->config->price->overrideHost)) {
-            $soapClient->__setLocation($this->config->price->overrideHost);
+        if (!empty($this->config->search->overrideHost)) {
+            $soapClient->__setLocation($this->config->search->overrideHost);
         }
 
         $params = new Client\Params(
@@ -74,8 +74,8 @@ class ClientParamsFactory
                     'stateful'          => false,
                     'wsdl'              => $wsdlPath,
                     'logger'            => $this->sessionLogger,
-//                    'overrideSoapClient'         => $soapClient,
-//                    'overrideSoapClientWsdlName' => '35a2ec45' // %TODO
+                    'overrideSoapClient'         => $soapClient,
+                    'overrideSoapClientWsdlName' => '35a2ec45' // %TODO
                 ],
                 'requestCreatorParams' => [
                     'receivedFrom' => 'service.search'
@@ -87,5 +87,6 @@ class ClientParamsFactory
             $params->sessionHandler = new $this->customSessionHandlerClass($params->sessionHandlerParams);
         }
 
-        return $params;}
+        return $params;
+    }
 }

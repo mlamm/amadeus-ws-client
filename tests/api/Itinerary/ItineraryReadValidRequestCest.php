@@ -4,12 +4,12 @@ use Flight\Service\Amadeus\Amadeus\Client\MockSessionHandler;
 use GuzzleHttp\Psr7\Request;
 
 /**
- * Test POST /flight-search/ endpoint using phiremock for the gds backend.
+ * Test the GET /itinerary endpoint while using phiremock as the gds backend here.
  *
  * @author     Marcel Lamm <marcel.lamm@invia.de>
  * @copyright  Copyright (c) 2018 Invia Flights Germany GmbH
  */
-class ValidCest
+class ItineraryReadValidRequestCest
 {
     /**
      * @var \Helper\PhireHelper
@@ -29,30 +29,39 @@ class ValidCest
      */
     public function _before(ApiTester $I)
     {
-        $this->phiremockHelper->prep($I, MockSessionHandler::MASTERPRICER_RESPONSE_FIXTURE);
+        $this->phiremockHelper->prep($I, MockSessionHandler::PNR_RETRIEVE_RESPONSE_FIXTURE);
     }
 
     /**
-     * Test the POST /flight-search endpoint.
+     * Test the GET /itinerary endpoint.
      *
      * @param ApiTester $I
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testSearch(ApiTester $I)
+    public function testGetItin(ApiTester $I)
     {
-        $bodyRequestParams = file_get_contents(codecept_data_dir('requests/valid-request.json'));
+        // http header, holding session and auth info
+        $httpHeader = [
+            'session' => file_get_contents(codecept_data_dir('requests/Price/valid-session-header.json')),
+            'authentication' => file_get_contents(codecept_data_dir('requests/Price/valid-auth-header.json'))
+        ];
 
         $client = new GuzzleHttp\Client();
-        $request = new Request('POST', 'http://amadeus-nginx/flight-search/', [], $bodyRequestParams);
+        $request = new Request('GET', 'http://amadeus-nginx/itinerary/?recordLocator=QTDEOG', $httpHeader);
 
         $response = $client->send($request);
         \PHPUnit_Framework_Assert::assertSame(200, $response->getStatusCode());
-        /** @var GuzzleHttp\Psr7\Stream $responseBody */
+
+        /** @var \GuzzleHttp\Psr7\Stream $responseBody */
         $responseBody = $response->getBody();
         $responseBody = $responseBody->getContents();
+        /** @var \stdClass $responseBody */
         $responseBody = \json_decode($responseBody);
 
-        \PHPUnit_Framework_Assert::assertNotEmpty($responseBody);
-        \PHPUnit_Framework_Assert::assertSame([], $responseBody->result);
+        \PHPUnit_Framework_Assert::assertEquals(json_decode(file_get_contents(
+            codecept_data_dir('fixtures/response/itinerary/correct-response.json')
+        )),
+            $responseBody
+        );
     }
 }
