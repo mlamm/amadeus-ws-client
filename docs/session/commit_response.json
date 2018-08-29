@@ -1,0 +1,11 @@
+{
+  "result": {
+    "commit": "true",
+    "sign-out": "true"
+  },
+  "_links": {
+    "self": {
+      "href": "/session"
+    }
+  }
+}

@@ -8,6 +8,7 @@ use Flight\SearchRequestMapping\Entity\Request;
 use Flight\Service\Amadeus\Metrics\MetricsTracker;
 use Flight\Service\Amadeus\Search\Exception\AmadeusRequestException;
 use Flight\Service\Amadeus\Search\Exception\EmptyResponseException;
+use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -16,10 +17,26 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AmadeusClient
 {
-    private const EMPTY_RESULT_ERRORS = [
+
+    /**
+     * Empty response messages, that display wrong endpoint usage.
+     *
+     * @const array
+     */
+    private const EMPTY_RESULT_CLIENT_ERRORS = [
         830, // No recommendation found with lower or equal price
-        866, // No fare found for requested itinerary
+        910, // Latest future date possible dMy
         920, // Past date/time not allowed
+        950, // Unknown City/Airport
+    ];
+
+    /**
+     * Empty response messages, that display common behaviour.
+     *
+     * @const array
+     */
+    private const EMPTY_RESULT_COMMON_BEHAVIOUR = [
+        866, // No fare found for requested itinerary
         931, // No itinerary found for Requested Segment n
         977, // No available flight found for requested segment nn
         996, // NO JOURNEY FOUND FOR REQUESTED ITINERARY
@@ -111,16 +128,21 @@ class AmadeusClient
         } catch (\Exception $exception) {
             if ($this->isEmptyResponseError($exception)) {
                 $this->trackLatency(Response::HTTP_BAD_REQUEST);
-                throw new EmptyResponseException([$exception->getMessage()]);
+                throw new EmptyResponseException([$exception->getMessage()], Response::HTTP_BAD_REQUEST, LogLevel::NOTICE);
             }
 
             $this->trackLatency(Response::HTTP_INTERNAL_SERVER_ERROR);
             throw $exception;
         }
 
-        if ($this->isEmptyResultError($result)) {
+        if ($this->hasWrongUsageEmptyResultMessage($result)) {
             $this->trackLatency(Response::HTTP_BAD_REQUEST);
             throw new EmptyResponseException($result->messages);
+        }
+
+        if ($this->hasCommonEmptyResultMessage($result)) {
+            $this->trackLatency(Response::HTTP_NO_CONTENT);
+            throw new EmptyResponseException($result->messages, Response::HTTP_NO_CONTENT, LogLevel::NOTICE);
         }
 
         if ($this->isErrorResponse($result)) {
@@ -143,16 +165,29 @@ class AmadeusClient
     }
 
     /**
-     * Does the response error indicate that no flights were found?
+     * Does the response error indicate that no flights were found because of wrong usage?
      *
      * @param Client\Result $result
      * @return bool
      */
-    private function isEmptyResultError(Client\Result $result)
+    private function hasWrongUsageEmptyResultMessage(Client\Result $result)
     {
         return $this->isErrorResponse($result)
-            && isset($result->messages[0])
-            && in_array($result->messages[0]->code, self::EMPTY_RESULT_ERRORS);
+               && isset($result->messages[0])
+               && in_array($result->messages[0]->code, self::EMPTY_RESULT_CLIENT_ERRORS);
+    }
+
+    /**
+     * Does the response error indicate that no flights were found, but there is no misbehaviour?
+     *
+     * @param Client\Result $result
+     * @return bool
+     */
+    private function hasCommonEmptyResultMessage(Client\Result $result)
+    {
+        return $this->isErrorResponse($result)
+               && isset($result->messages[0])
+               && in_array($result->messages[0]->code, self::EMPTY_RESULT_COMMON_BEHAVIOUR);
     }
 
     /**

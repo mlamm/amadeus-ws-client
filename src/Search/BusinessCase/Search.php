@@ -55,7 +55,7 @@ class Search extends BusinessCase
             );
         }
         catch (EmptyResponseException $ex) {
-            $this->errorLogger->logException($ex, $this->getRequest(), Response::HTTP_BAD_REQUEST);
+            $this->errorLogger->logException($ex, $this->getRequest(), $ex->getResponseCode(), $ex->getLogSeverity());
             $response = new SearchResultResponse((new SearchResponse)->setResult(new ArrayCollection));
         }
         catch (InvalidRequestException $ex) {

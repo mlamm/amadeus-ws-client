@@ -3,7 +3,19 @@
   "type": "object",
   "properties": {
     "result": {
-      "type": "boolean"
+      "type": "object",
+      "properties": {
+        "commit": {
+          "type": "string"
+        },
+        "sign-out": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "commit",
+        "sign-out"
+      ]
     },
     "_links": {
       "type": "object",
