@@ -18,19 +18,6 @@ use Psr\Log\NullLogger;
 class ItineraryServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @var bool
-     */
-    private $useMockSearchResponse = false;
-
-    /**
-     * @param bool $useMockSearchResponse
-     */
-    public function __construct(bool $useMockSearchResponse)
-    {
-        $this->useMockSearchResponse = $useMockSearchResponse;
-    }
-
-    /**
      * register all that important stuff for the app
      *
      * @param Container $app
@@ -53,10 +40,9 @@ class ItineraryServiceProvider implements ServiceProviderInterface
         };
         $app['monolog.logfile'] = '/../var/logs/app.log';
         $app['amadeus.client.itinerary'] = function () use ($app) {
-            $sessionHandlerClass = $this->useMockSearchResponse ? MockSessionHandler::class : null;
             return new Itinerary\Model\ItineraryAmadeusClient(
                 $app['config']->debug->remarks->log_ama_traffic ? $app['logger'] : new NullLogger(),
-                new Itinerary\Model\AmadeusRequestTransformer($app['config'], $sessionHandlerClass),
+                new Itinerary\Model\AmadeusRequestTransformer($app['config']),
                 new Itinerary\Model\AmadeusResponseTransformer(),
                 function (Amadeus\Client\Params $clientParams) {
                     return new Amadeus\Client($clientParams);

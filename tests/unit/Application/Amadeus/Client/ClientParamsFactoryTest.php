@@ -48,29 +48,4 @@ class ClientParamsFactoryTest extends \Codeception\Test\Unit
         $this->assertEquals('password-length', $params->authParams->passwordLength);
         $this->assertEquals('user-id', $params->authParams->userId);
     }
-
-    /**
-     * Does it build an instance of the mock session handler?
-     * Does it inject this handler into the params?
-     */
-    public function testItInjectsMockSessionHandler()
-    {
-        $config = new \stdClass();
-        $config->search = new \stdClass();
-        $config->search->wsdl = 'wsdl';
-
-        $businessCase = new BusinessCase();
-        $businessCase->setAuthentication(new BusinessCaseAuthentication());
-        $businessCase->getAuthentication()->setDutyCode('duty-code');
-        $businessCase->getAuthentication()->setOfficeId('office-id');
-        $businessCase->getAuthentication()->setOrganizationId('organization-id');
-        $businessCase->getAuthentication()->setPasswordData('password-data');
-        $businessCase->getAuthentication()->setPasswordLength('password-length');
-        $businessCase->getAuthentication()->setUserId('user-id');
-
-        $factory = new ClientParamsFactory($config, new NullLogger(), MockSessionHandler::class);
-        $params = $factory->buildFromBusinessCase($businessCase);
-
-        $this->assertInstanceOf(MockSessionHandler::class, $params->sessionHandler);
-    }
 }

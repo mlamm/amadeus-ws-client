@@ -24,7 +24,7 @@ class FreeBaggageIndexTest extends \Codeception\Test\Unit
     {
         $sendResult = new SendResult();
         $sendResult->responseObject = json_decode(json_encode(simplexml_load_file(
-            codecept_data_dir('fixtures/03-Fare_MasterPricerTravelBoardSearch_FBA-rt.xml')
+            codecept_data_dir('fixtures/03-Fare_MasterPricerTravelBoardSearch_FBA-rt-no-header.xml')
         )));
 
         $freeBaggageAllowanceGroups = [
