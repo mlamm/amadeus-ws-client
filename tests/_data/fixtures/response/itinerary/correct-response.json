@@ -86,5 +86,482 @@
         "coded_country": "DE"
       }
     }
+  },
+  "technicalData": {
+    "enveloppeNumberData": {
+      "sequenceDetails": {
+        "number": "12"
+      }
+    },
+    "lastTransmittedEnvelopeNumber": {
+      "currentRecord": "11"
+    },
+    "purgeDateData": "28.04.2019"
+  },
+  "travellerInfo": [
+    {
+      "elementManagementPassenger": {
+        "reference": {
+          "qualifier": "PT",
+          "number": "2"
+        },
+        "segmentName": "NM",
+        "lineNumber": "1"
+      },
+      "passengerData": {
+        "travellerInformation": {
+          "traveller": {
+            "surname": "AMERING",
+            "quantity": "1"
+          },
+          "passenger": {
+            "firstName": "GEORG MR",
+            "type": "ADT"
+          }
+        },
+        "dateOfBirth": []
+      }
+    }
+  ],
+  "dataElementsMaster": [
+    {
+      "elementManagementData": [
+        {
+          "reference": {
+            "qualifier": "OT",
+            "number": "13"
+          },
+          "segmentName": "SSR",
+          "lineNumber": "9"
+        },
+        {
+          "reference": {
+            "qualifier": "OT",
+            "number": "14"
+          },
+          "segmentName": "SSR",
+          "lineNumber": "10"
+        },
+        {
+          "reference": {
+            "qualifier": "OT",
+            "number": "15"
+          },
+          "segmentName": "SSR",
+          "lineNumber": "11"
+        },
+        {
+          "reference": {
+            "qualifier": "OT",
+            "number": "48"
+          },
+          "segmentName": "SSR",
+          "lineNumber": "12"
+        },
+        {
+          "reference": {
+            "qualifier": "OT",
+            "number": "49"
+          },
+          "segmentName": "SSR",
+          "lineNumber": "13"
+        }
+      ],
+      "otherDataFreetext": {
+        "long_freetext": "PAX LH"
+      },
+      "ticketElement": {
+        "indicator": "OK",
+        "date": "300518",
+        "officeId": "BERAE2234"
+      },
+      "serviceRequest": [
+        {
+          "type": "DOCS",
+          "status": "HK",
+          "companyId": "LH",
+          "quantity": "1",
+          "freeText": [
+            "////04MAR78/M//AMERING/GEORG"
+          ]
+        },
+        {
+          "type": "CTCM",
+          "status": "HK",
+          "companyId": "LH",
+          "quantity": "1",
+          "freeText": [
+            "6801112226/AT"
+          ]
+        },
+        {
+          "type": "CTCE",
+          "status": "HK",
+          "companyId": "LH",
+          "quantity": "1",
+          "freeText": [
+            "GEORG..AMERING//HOTMAIL.COM"
+          ]
+        },
+        {
+          "type": "OTHS",
+          "status": "",
+          "companyId": "1A",
+          "freeText": [
+            "PLS ADV TKT NBR BY 30MAY18/2256Z OR LH OPTG/MKTG FLTS WILL BE CANX / A",
+            "PPLIC FARE RULE APPLIES IF IT DEMANDS"
+          ]
+        },
+        {
+          "type": "OTHS",
+          "status": "",
+          "companyId": "1A",
+          "freeText": [
+            "/// EARLIER TKTG"
+          ]
+        }
+      ]
+    }
+  ],
+  "originDestinationDetails": {
+    "itineraryInfo": [
+      {
+        "elementManagementItinerary": {
+          "lineNumber": "2",
+          "segmentName": "AIR",
+          "reference": {
+            "qualifier": "ST",
+            "number": "1"
+          }
+        },
+        "travelProduct": {
+          "product": {
+            "arrDate": "171018",
+            "arrTime": "1155",
+            "depDate": "171018",
+            "depTime": "1045"
+          },
+          "boardpointDetail": {
+            "cityCode": "SZG"
+          },
+          "offpointDetail": {
+            "cityCode": "FRA"
+          },
+          "companyDetail": {
+            "identification": "LH"
+          },
+          "productDetails": {
+            "identification": "1593",
+            "classOfService": "K"
+          },
+          "typeDetail": {
+            "detail": "ET"
+          }
+        },
+        "itineraryMessageAction": [],
+        "itineraryReservationInfo": {
+          "reservation": {
+            "company_id": "LH",
+            "control_number": "R864UO"
+          }
+        },
+        "relatedProduct": {
+          "quantity": "1",
+          "status": "HK"
+        },
+        "flightDetail": {
+          "productDetails": {
+            "equipment": "E95",
+            "numOfStops": "0",
+            "weekDay": "3"
+          },
+          "arrivalStationInfo": {
+            "terminal": "1"
+          },
+          "facilities": {
+            "entertainement": "M",
+            "entertainementDescription": "R"
+          }
+        },
+        "selectionDetails": {
+          "selection": "P2"
+        }
+      },
+      {
+        "elementManagementItinerary": {
+          "lineNumber": "3",
+          "segmentName": "AIR",
+          "reference": {
+            "qualifier": "ST",
+            "number": "2"
+          }
+        },
+        "travelProduct": {
+          "product": {
+            "arrDate": "171018",
+            "arrTime": "1825",
+            "depDate": "171018",
+            "depTime": "1620"
+          },
+          "boardpointDetail": {
+            "cityCode": "FRA"
+          },
+          "offpointDetail": {
+            "cityCode": "BIO"
+          },
+          "companyDetail": {
+            "identification": "LH"
+          },
+          "productDetails": {
+            "identification": "1144",
+            "classOfService": "K"
+          },
+          "typeDetail": {
+            "detail": "ET"
+          }
+        },
+        "itineraryMessageAction": [],
+        "itineraryReservationInfo": {
+          "reservation": {
+            "company_id": "LH",
+            "control_number": "R864UO"
+          }
+        },
+        "relatedProduct": {
+          "quantity": "1",
+          "status": "HK"
+        },
+        "flightDetail": {
+          "productDetails": {
+            "equipment": "32A",
+            "numOfStops": "0",
+            "weekDay": "3"
+          },
+          "arrivalStationInfo": [],
+          "facilities": {
+            "entertainement": "M",
+            "entertainementDescription": "S"
+          }
+        },
+        "selectionDetails": {
+          "selection": "P2"
+        }
+      },
+      {
+        "elementManagementItinerary": {
+          "lineNumber": "4",
+          "segmentName": "AIR",
+          "reference": {
+            "qualifier": "ST",
+            "number": "3"
+          }
+        },
+        "travelProduct": {
+          "product": {
+            "arrDate": "211018",
+            "arrTime": "1630",
+            "depDate": "211018",
+            "depTime": "1425"
+          },
+          "boardpointDetail": {
+            "cityCode": "BIO"
+          },
+          "offpointDetail": {
+            "cityCode": "FRA"
+          },
+          "companyDetail": {
+            "identification": "LH"
+          },
+          "productDetails": {
+            "identification": "1143",
+            "classOfService": "V"
+          },
+          "typeDetail": {
+            "detail": "ET"
+          }
+        },
+        "itineraryMessageAction": [],
+        "itineraryReservationInfo": {
+          "reservation": {
+            "company_id": "LH",
+            "control_number": "R864UO"
+          }
+        },
+        "relatedProduct": {
+          "quantity": "1",
+          "status": "HK"
+        },
+        "flightDetail": {
+          "productDetails": {
+            "equipment": "32A",
+            "numOfStops": "0",
+            "weekDay": "7"
+          },
+          "arrivalStationInfo": {
+            "terminal": "1"
+          },
+          "facilities": {
+            "entertainement": "M",
+            "entertainementDescription": "S"
+          }
+        },
+        "selectionDetails": {
+          "selection": "P2"
+        }
+      },
+      {
+        "elementManagementItinerary": {
+          "lineNumber": "5",
+          "segmentName": "AIR",
+          "reference": {
+            "qualifier": "ST",
+            "number": "4"
+          }
+        },
+        "travelProduct": {
+          "product": {
+            "arrDate": "211018",
+            "arrTime": "2155",
+            "depDate": "211018",
+            "depTime": "2100"
+          },
+          "boardpointDetail": {
+            "cityCode": "FRA"
+          },
+          "offpointDetail": {
+            "cityCode": "SZG"
+          },
+          "companyDetail": {
+            "identification": "LH"
+          },
+          "productDetails": {
+            "identification": "1598",
+            "classOfService": "V"
+          },
+          "typeDetail": {
+            "detail": "ET"
+          }
+        },
+        "itineraryMessageAction": [],
+        "itineraryReservationInfo": {
+          "reservation": {
+            "company_id": "LH",
+            "control_number": "R864UO"
+          }
+        },
+        "relatedProduct": {
+          "quantity": "1",
+          "status": "HK"
+        },
+        "flightDetail": {
+          "productDetails": {
+            "equipment": "E95",
+            "numOfStops": "0",
+            "weekDay": "7"
+          },
+          "arrivalStationInfo": [],
+          "facilities": {
+            "entertainement": "M",
+            "entertainementDescription": "R"
+          }
+        },
+        "selectionDetails": {
+          "selection": "P2"
+        }
+      },
+      {
+        "elementManagementItinerary": {
+          "lineNumber": "6",
+          "segmentName": "RU",
+          "reference": {
+            "qualifier": "ST",
+            "number": "5"
+          }
+        },
+        "travelProduct": {
+          "product": {
+            "depDate": "240419"
+          },
+          "boardpointDetail": {
+            "cityCode": "BER"
+          },
+          "offpointDetail": [],
+          "companyDetail": {
+            "identification": "1A"
+          },
+          "productDetails": [],
+          "typeDetail": []
+        },
+        "itineraryMessageAction": [],
+        "itineraryReservationInfo": {
+          "reservation": []
+        },
+        "relatedProduct": {
+          "quantity": "1",
+          "status": "HK"
+        },
+        "flightDetail": {
+          "productDetails": [],
+          "arrivalStationInfo": [],
+          "facilities": []
+        },
+        "selectionDetails": []
+      }
+    ]
+  },
+  "segmentGroupingInfo": [
+    {
+      "groupingCode": "CNX",
+      "marriageDetail": [
+        {
+          "tatooNum": "1"
+        },
+        {
+          "tatooNum": "2"
+        }
+      ]
+    },
+    {
+      "groupingCode": "CNX",
+      "marriageDetail": [
+        {
+          "tatooNum": "3"
+        },
+        {
+          "tatooNum": "4"
+        }
+      ]
+    },
+    {
+      "groupingCode": "MIN",
+      "marriageDetail": [
+        {
+          "tatooNum": "1",
+          "marriageQualifier": "D"
+        },
+        {
+          "tatooNum": "2",
+          "marriageQualifier": "D"
+        }
+      ]
+    },
+    {
+      "groupingCode": "MIN",
+      "marriageDetail": [
+        {
+          "tatooNum": "3",
+          "marriageQualifier": "D"
+        },
+        {
+          "tatooNum": "4",
+          "marriageQualifier": "D"
+        }
+      ]
+    }
+  ],
+  "_links": {
+    "self": {
+      "href": "/itinerary"
+    }
   }
 }

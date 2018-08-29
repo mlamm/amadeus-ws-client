@@ -112,6 +112,7 @@ class TechnicalData extends AbstractModel
             $month = $date->{'month'} ?? date('m');
             $day   = $date->{'day'} ?? date('d');
             $this->purgeDateData->setDate($year, $month, $day);
+            $this->purgeDateData->setTime(0, 0);
         }
         if (isset($data->enveloppeNumberData)) {
             $this->enveloppeNumberData->populate($data->{'enveloppeNumberData'});

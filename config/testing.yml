@@ -1,5 +1,6 @@
 search:
     wsdl: 1ASIWUFITBD_PDT_20180206_095616.wsdl
+    overrideHost: 'http://amadeus-phiremock:18080'
 
     allowed_types:
         - round-trip
@@ -65,15 +66,19 @@ search:
 
 remarks:
     wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
+    overrideHost: 'http://amadeus-phiremock:18080'
 
 itinerary:
     wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
+    overrideHost: 'http://amadeus-phiremock:18080'
 
 session:
     wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
+    overrideHost: 'http://amadeus-phiremock:18080'
 
 price:
     wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
+    overrideHost: 'http://amadeus-phiremock:18080'
 
 response:
     json_encoding_options:
@@ -97,3 +102,6 @@ debug:
     throwup:
         enabled: true
 
+phiremock:
+    host: amadeus-phiremock
+    port: 18080
