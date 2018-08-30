@@ -17,3 +17,4 @@ info "Preparing directories..."
 mkdir -p var/logs
 mkdir -p var/cache
 mkdir -p var/docs
+chmod -R 777 var/
