@@ -2,6 +2,8 @@
 
 namespace Flight\Service\Amadeus\Price\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * PassengerPrice class.
  *
@@ -34,6 +36,11 @@ class PassengerPrice
      * @var string
      */
     private $baseFareCurrency;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $passengerRef;
 
     /**
      * @return float
@@ -127,6 +134,24 @@ class PassengerPrice
     public function setBaseFareCurrency(string $baseFareCurrency) : PassengerPrice
     {
         $this->baseFareCurrency = $baseFareCurrency;
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPassengerRef(): ArrayCollection
+    {
+        return $this->passengerRef;
+    }
+
+    /**
+     * @param ArrayCollection $passengerRef
+     * @return PassengerPrice
+     */
+    public function setPassengerRef(ArrayCollection $passengerRef): PassengerPrice
+    {
+        $this->passengerRef = $passengerRef;
         return $this;
     }
 }

@@ -8,7 +8,7 @@ use GuzzleHttp\Psr7\Request;
  * @author     Marcel Lamm <marcel.lamm@invia.de>
  * @copyright  Copyright (c) 2018 Invia Flights Germany GmbH
  */
-class GetPriceCest
+class GetPrice4PaxCest
 {
     /**
      * @var \Helper\PhireHelper
@@ -30,7 +30,7 @@ class GetPriceCest
     {
         $this->phiremockHelper->prep(
             $I,
-            codecept_data_dir('fixtures/15-Ticket-Display-Tst-Response.xml')
+            codecept_data_dir('fixtures/Ticket_DisplayTST-4PAX.xml')
         );
     }
 
@@ -58,9 +58,12 @@ class GetPriceCest
         /** @var \GuzzleHttp\Psr7\Stream $responseBody */
         $responseBody = $response->getBody();
         $responseBody = $responseBody->getContents();
+
         /** @var \stdClass $responseBody */
         $responseBody = \json_decode($responseBody);
+        $expectedBody = file_get_contents(codecept_data_dir('fixtures/response/price/get-response-4-pax.json'));
 
-        \PHPUnit_Framework_Assert::assertSame('UX', $responseBody->validating_carrier);
+        \PHPUnit_Framework_Assert::assertNotEmpty($expectedBody);
+        \PHPUnit_Framework_Assert::assertEquals(\json_decode($expectedBody), $responseBody);
     }
 }
