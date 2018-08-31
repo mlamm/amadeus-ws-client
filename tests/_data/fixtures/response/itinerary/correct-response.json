@@ -245,7 +245,7 @@
         {
           "type": "RM",
           "name": "IBEBNAME",
-          "value": "AMERING,GEORG"
+          "value": "max,mops"
         },
         {
           "type": "RM",
@@ -275,12 +275,12 @@
         {
           "type": "RM",
           "name": "IBEBEMAIL",
-          "value": "GEORG-CHR095-AMERING-AT-HOTMAIL.COM"
+          "value": "test@mail.com"
         },
         {
           "type": "RM",
           "name": "IBEPAXEMAIL",
-          "value": "GEORG==AMERING-AT-HOTMAIL.COM"
+          "value": "test@mail.com"
         },
         {
           "type": "RM",
@@ -345,7 +345,7 @@
         {
           "type": "RM",
           "name": "IBECCHOLDER",
-          "value": "GEORG AMERING"
+          "value": "max mops"
         },
         {
           "type": "RM",
