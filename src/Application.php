@@ -33,17 +33,7 @@ class Application extends \Silex\Application
                 env('CONFIG_CACHING', 'enabled') !== 'disabled',
                 __DIR__ . '/../var/cache/config',
                 function () {
-                    $configFile = 'app.yml';
-                    if (strpos($_SERVER['SCRIPT_FILENAME'], 'codecept')
-                        || (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] === 'Symfony BrowserKit')
-                    ) {
-                        $configFile = 'testing.yml';
-                    }
-
-                    return Yaml::parse(
-                        file_get_contents(__DIR__ . '/../config/' . $configFile),
-                        Yaml::PARSE_OBJECT_FOR_MAP
-                    );
+                    return Application::getConfig();
                 }
             );
         };
@@ -51,20 +41,37 @@ class Application extends \Silex\Application
         // set json encoding options from config
         $this->after(new JsonEncodingOptions($this['config']));
 
-        // switch to mock service responses for api tests
-        $useMockAmaResponses = env('MOCK_AMA_RESPONSE_IN_TEST', 'disabled') === 'enabled'
-                               && isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] === 'Symfony BrowserKit';
-
         // register provider
         $this->register(new ErrorProvider());
         $this->register(new TracingHeaderProvider());
         $this->register(new ServiceControllerServiceProvider());
         $this->register(new CacheProvider());
-        $this->register(new SearchServiceProvider($useMockAmaResponses));
-        $this->register(new Remarks\Provider\RemarksServiceProvider($useMockAmaResponses));
-        $this->register(new Session\Provider\SessionServiceProvider($useMockAmaResponses));
-        $this->register(new Itinerary\Provider\ItineraryServiceProvider($useMockAmaResponses));
-        $this->register(new Price\Provider\PriceServiceProvider($useMockAmaResponses));
+        $this->register(new SearchServiceProvider());
+        $this->register(new Remarks\Provider\RemarksServiceProvider());
+        $this->register(new Session\Provider\SessionServiceProvider());
+        $this->register(new Itinerary\Provider\ItineraryServiceProvider());
+        $this->register(new Price\Provider\PriceServiceProvider());
         $this->register(new MetricsProvider);
+    }
+
+    /**
+     * Build and return current config.
+     *
+     * @return mixed
+     */
+    public static function getConfig()
+    {
+        $configFile = 'app.yml';
+
+        if (strpos($_SERVER['SCRIPT_FILENAME'], 'codecept')
+            || (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] === 'Symfony BrowserKit')
+        ) {
+            $configFile = 'testing.yml';
+        }
+
+        return Yaml::parse(
+            file_get_contents(__DIR__ . '/../config/' . $configFile),
+            Yaml::PARSE_OBJECT_FOR_MAP
+        );
     }
 }

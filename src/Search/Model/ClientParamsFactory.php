@@ -29,20 +29,13 @@ class ClientParamsFactory
     private $sessionLogger;
 
     /**
-     * @var string|null
-     */
-    private $customSessionHandlerClass;
-
-    /**
      * @param \stdClass       $config
      * @param LoggerInterface $sessionLogger
-     * @param null|string     $customSessionHandlerClass
      */
-    public function __construct(\stdClass $config, LoggerInterface $sessionLogger, $customSessionHandlerClass = null)
+    public function __construct(\stdClass $config, LoggerInterface $sessionLogger)
     {
         $this->config = $config;
         $this->sessionLogger = $sessionLogger;
-        $this->customSessionHandlerClass = $customSessionHandlerClass;
     }
 
     /**
@@ -52,33 +45,37 @@ class ClientParamsFactory
     public function buildFromBusinessCase(BusinessCase $businessCase): Client\Params
     {
         $authentication = $businessCase->getAuthentication();
-
-        $params = new Client\Params(
-            [
-                'authParams' => [
-                    'officeId' => $authentication->getOfficeId(),
-                    'userId' => $authentication->getUserId(),
-                    'passwordData' => $authentication->getPasswordData(),
-                    'passwordLength' => $authentication->getPasswordLength(),
-                    'dutyCode' => $authentication->getDutyCode(),
-                    'organizationId' => $authentication->getOrganizationId()
-                ],
-                'sessionHandlerParams' => [
-                    'soapHeaderVersion' => Client::HEADER_V4,
-                    'stateful' => false,
-                    'wsdl' => "./wsdl/{$this->config->search->wsdl}",
-                    'logger' => $this->sessionLogger,
-                ],
-                'requestCreatorParams' => [
-                    'receivedFrom' => 'service.search'
-                ]
+        $wsdlPath = './wsdl/' . $this->config->search->wsdl;
+        $params = [
+            'authParams' => [
+                'officeId' => $authentication->getOfficeId(),
+                'userId' => $authentication->getUserId(),
+                'passwordData' => $authentication->getPasswordData(),
+                'passwordLength' => $authentication->getPasswordLength(),
+                'dutyCode' => $authentication->getDutyCode(),
+                'organizationId' => $authentication->getOrganizationId()
+            ],
+            'sessionHandlerParams' => [
+                'soapHeaderVersion' => Client::HEADER_V4,
+                'stateful'          => false,
+                'wsdl'              => $wsdlPath,
+                'logger'            => $this->sessionLogger,
+            ],
+            'requestCreatorParams' => [
+                'receivedFrom' => 'service.search'
             ]
-        );
+        ];
 
-        if ($this->customSessionHandlerClass) {
-            $params->sessionHandler = new $this->customSessionHandlerClass($params->sessionHandlerParams);
+        // override soap client for tests
+        if (!empty($this->config->search->overrideHost)) {
+            $soapClient = new \SoapClient($wsdlPath, ['trace' => 1]);
+            $soapClient->__setLocation($this->config->search->overrideHost);
+
+            $params['sessionHandlerParams']['overrideSoapClient']         = $soapClient;
+            // wsdl-hash that is internally used to match the right soap-client
+            $params['sessionHandlerParams']['overrideSoapClientWsdlName'] = '35a2ec45';
         }
 
-        return $params;
+        return new Client\Params($params);
     }
 }

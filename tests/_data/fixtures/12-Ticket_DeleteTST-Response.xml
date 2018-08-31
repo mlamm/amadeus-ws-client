@@ -7,5 +7,9 @@
             <SecurityToken>B5DQWG7MU6AS3Q9WGG81HELXJ</SecurityToken>
         </Session>
     </soap:Header>
-    <soap:Body />
+    <soap:Body>
+        <Ticket_DeleteTST>
+            <!-- bla bla -->
+        </Ticket_DeleteTST>
+    </soap:Body>
 </soap:Envelope>

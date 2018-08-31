@@ -52,7 +52,6 @@ class CommitSession extends BusinessCase
      */
     public function respond()
     {
-
         try {
             $authentication = $this->getRequest()->headers->get('authentication');
             $session        = $this->getRequest()->headers->get('session');
@@ -66,9 +65,13 @@ class CommitSession extends BusinessCase
                 $session
             );
 
-            $responses = ['result' => $commit && $signOut];
-            $response  = SessionCommitResponse::fromJsonString(json_encode($responses), Response::HTTP_NO_CONTENT);
-
+            // if both are true we return HTTP 204
+            if ('true' === $commit && 'true' === $signOut) {
+                $response  = SessionCommitResponse::create(null, Response::HTTP_NO_CONTENT);
+            } else {
+                $responses = ['result' => ['commit' => $commit, 'sign-out' => $signOut]];
+                $response  = SessionCommitResponse::fromJsonString(json_encode($responses), Response::HTTP_OK);
+            }
         } catch (InactiveSessionException $exception) {
             $this->logger->warning($exception);
             $exception->setResponseCode(Response::HTTP_BAD_REQUEST);
@@ -116,6 +119,8 @@ class CommitSession extends BusinessCase
 
             return $errorResponse;
         }
+
+        $this->addLinkToSelf($response);
 
         return $response;
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Flight\Service\Amadeus\Remarks\Provider;
 
 use Amadeus;
-use Flight\Service\Amadeus\Amadeus\Client\MockSessionHandler;
 use Flight\Service\Amadeus\Remarks;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -24,14 +23,6 @@ class RemarksServiceProvider implements ServiceProviderInterface
      * @var bool
      */
     private $useMockSearchResponse = false;
-
-    /**
-     * @param bool $useMockSearchResponse
-     */
-    public function __construct(bool $useMockSearchResponse)
-    {
-        $this->useMockSearchResponse = $useMockSearchResponse;
-    }
 
     /**
      * register all that important stuff for the app
@@ -59,10 +50,9 @@ class RemarksServiceProvider implements ServiceProviderInterface
         };
         $app['monolog.logfile'] = '/../var/logs/app.log';
         $app['amadeus.client.remarks'] = function () use ($app) {
-            $sessionHandlerClass = $this->useMockSearchResponse ? MockSessionHandler::class : null;
             return new Remarks\Model\RemarksAmadeusClient(
                 $app['config']->debug->remarks->log_ama_traffic ? $app['logger'] : new NullLogger(),
-                new Remarks\Model\AmadeusRequestTransformer($app['config'], $sessionHandlerClass),
+                new Remarks\Model\AmadeusRequestTransformer($app['config']),
                 new Remarks\Model\AmadeusResponseTransformer(),
                 function (Amadeus\Client\Params $clientParams) {
                     return new Amadeus\Client($clientParams);

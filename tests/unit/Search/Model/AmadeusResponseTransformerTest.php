@@ -103,7 +103,7 @@ class AmadeusResponseTransformerTest extends \Codeception\Test\Unit
             ],
 
             'free baggage' => [
-                'ama-response'            => 'fixtures/03-Fare_MasterPricerTravelBoardSearch_FBA-rt.xml',
+                'ama-response'            => 'fixtures/03-Fare_MasterPricerTravelBoardSearch_FBA-rt-no-header.xml',
                 'type'                    => 'round-trip',
                 'limit'                   => 1,
                 'expected-searchresponse' => 'fixtures/03-searchresponse-FBA-rt.json',

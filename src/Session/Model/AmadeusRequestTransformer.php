@@ -22,20 +22,13 @@ class AmadeusRequestTransformer
     protected $config;
 
     /**
-     * @var string
-     */
-    protected $customSessionHandlerClass;
-
-    /**
      * AmadeusRequestTransformer constructor.
      *
      * @param \stdClass   $config
-     * @param null|string $customSessionHandlerClass
      */
-    public function __construct(\stdClass $config, $customSessionHandlerClass = null)
+    public function __construct(\stdClass $config)
     {
-        $this->config                    = $config;
-        $this->customSessionHandlerClass = $customSessionHandlerClass;
+        $this->config = $config;
     }
 
     /**
@@ -48,32 +41,36 @@ class AmadeusRequestTransformer
      */
     public function buildClientParams(Authenticate $authentication, LoggerInterface $logger) : Client\Params
     {
-        $clientParams = new Client\Params(
-            [
-                'authParams'           => [
-                    'officeId'       => $authentication->getOfficeId(),
-                    'userId'         => $authentication->getUserId(),
-                    'passwordData'   => $authentication->getPasswordData(),
-                    'passwordLength' => $authentication->getPasswordLength(),
-                    'dutyCode'       => $authentication->getDutyCode(),
-                    'organizationId' => $authentication->getOrganizationId(),
-                ],
-                'sessionHandlerParams' => [
-                    'soapHeaderVersion' => Client::HEADER_V4,
-                    'stateful'          => true,
-                    'wsdl'              => './wsdl/' . $this->config->session->wsdl,
-                    'logger'            => $logger,
-                ],
-                'requestCreatorParams' => [
-                    'receivedFrom' => 'service.session',
-                ],
-            ]
-        );
+        $wsdlPath = './wsdl/' . $this->config->session->wsdl;
+        $params = [
+            'authParams'           => [
+                'officeId'       => $authentication->getOfficeId(),
+                'userId'         => $authentication->getUserId(),
+                'passwordData'   => $authentication->getPasswordData(),
+                'passwordLength' => $authentication->getPasswordLength(),
+                'dutyCode'       => $authentication->getDutyCode(),
+                'organizationId' => $authentication->getOrganizationId(),
+            ],
+            'sessionHandlerParams' => [
+                'soapHeaderVersion' => Client::HEADER_V4,
+                'stateful'          => true,
+                'wsdl'              => $wsdlPath,
+                'logger'            => $logger,
+            ],
+            'requestCreatorParams' => [
+                'receivedFrom' => 'service.session',
+            ],
+        ];
 
-        if ($this->customSessionHandlerClass) {
-            $clientParams->sessionHandler = new $this->customSessionHandlerClass($clientParams->sessionHandlerParams);
+        if (!empty($this->config->session->overrideHost)) {
+            $soapClient = new \SoapClient($wsdlPath, ['trace' => 1]);
+            $soapClient->__setLocation($this->config->session->overrideHost);
+
+            $params['sessionHandlerParams']['overrideSoapClient']         = $soapClient;
+            // wsdl-hash that is internally used to match the right soap-client
+            $params['sessionHandlerParams']['overrideSoapClientWsdlName'] = '16dbc24b';
         }
 
-        return $clientParams;
+        return new Client\Params($params);
     }
 }

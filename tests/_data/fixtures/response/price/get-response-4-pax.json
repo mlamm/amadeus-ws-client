@@ -1,0 +1,41 @@
+{
+  "last_ticketing_date": "2018-11-21",
+  "passenger_price": [
+    {
+      "total_tax": 297.06,
+      "base_fare": 40,
+      "base_fare_currency": "EUR",
+      "passenger_ref": [
+        {
+          "qualifier": "PA",
+          "id": "2"
+        },
+        {
+          "qualifier": "PA",
+          "id": "3"
+        }
+      ]
+    },
+    {
+      "total_tax": 297.06,
+      "base_fare": 30,
+      "base_fare_currency": "EUR",
+      "passenger_ref": [
+        {
+          "qualifier": "PA",
+          "id": "4"
+        },
+        {
+          "qualifier": "PA",
+          "id": "5"
+        }
+      ]
+    }
+  ],
+  "validating_carrier": "RJ",
+  "_links": {
+    "self": {
+      "href": "/price/"
+    }
+  }
+}

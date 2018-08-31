@@ -6,11 +6,11 @@
             <wsa:Address>https://nodeD1.test.webservices.amadeus.com/1ASIWADMTBD</wsa:Address>
         </wsa:From>
         <wsa:Action>http://webservices.amadeus.com/TTSTRQ_07_1_1A</wsa:Action>
-        <wsa:MessageID>urn:uuid:82e11a76-9e52-0f04-bd87-1abd6271632e</wsa:MessageID>
-        <wsa:RelatesTo RelationshipType="http://www.w3.org/2005/08/addressing/reply">536F32CA-2B3F-54D8-C37F-3E90F100DC64</wsa:RelatesTo>
+        <wsa:MessageID>urn:uuid:50681ee6-7504-0964-0d38-993fa72cd773</wsa:MessageID>
+        <wsa:RelatesTo RelationshipType="http://www.w3.org/2005/08/addressing/reply">9762D17A-3E0D-3C25-D26F-AD644C20BC45</wsa:RelatesTo>
         <awsse:Session TransactionStatusCode="InSeries">
             <awsse:SessionId>00IXHFPKXS</awsse:SessionId>
-            <awsse:SequenceNumber>6</awsse:SequenceNumber>
+            <awsse:SequenceNumber>8</awsse:SequenceNumber>
             <awsse:SecurityToken>3ZMNYJ1B3Q8I106RNNWCFOM8T</awsse:SecurityToken>
         </awsse:Session>
     </SOAP-ENV:Header>
@@ -21,21 +21,21 @@
                     <tstInformation>
                         <tstIndicator>I</tstIndicator>
                     </tstInformation>
-                    <fcmi>F</fcmi>
+                    <fcmi>0</fcmi>
                 </pricingInformation>
                 <fareReference>
                     <referenceType>TST</referenceType>
-                    <uniqueReference>1</uniqueReference>
+                    <uniqueReference>3</uniqueReference>
                     <iDDescription>
-                        <iDSequenceNumber>1</iDSequenceNumber>
+                        <iDSequenceNumber>3</iDSequenceNumber>
                     </iDDescription>
                 </fareReference>
                 <lastTktDate>
                     <businessSemantic>LT</businessSemantic>
                     <dateTime>
                         <year>2018</year>
-                        <month>8</month>
-                        <day>16</day>
+                        <month>11</month>
+                        <day>21</day>
                     </dateTime>
                 </lastTktDate>
                 <lastTktDate>
@@ -43,7 +43,7 @@
                     <dateTime>
                         <year>2018</year>
                         <month>8</month>
-                        <day>15</day>
+                        <day>21</day>
                     </dateTime>
                 </lastTktDate>
                 <lastTktDate>
@@ -51,12 +51,12 @@
                     <dateTime>
                         <year>2018</year>
                         <month>8</month>
-                        <day>15</day>
+                        <day>21</day>
                     </dateTime>
                 </lastTktDate>
                 <validatingCarrier>
                     <carrierInformation>
-                        <carrierCode>UX</carrierCode>
+                        <carrierCode>RJ</carrierCode>
                     </carrierInformation>
                 </validatingCarrier>
                 <paxSegReference>
@@ -75,17 +75,17 @@
                     </fareDataMainInformation>
                     <fareDataSupInformation>
                         <fareDataQualifier>B</fareDataQualifier>
-                        <fareAmount>25.00</fareAmount>
+                        <fareAmount>40.00</fareAmount>
                         <fareCurrency>EUR</fareCurrency>
                     </fareDataSupInformation>
                     <fareDataSupInformation>
                         <fareDataQualifier>712</fareDataQualifier>
-                        <fareAmount>87.38</fareAmount>
+                        <fareAmount>337.06</fareAmount>
                         <fareCurrency>EUR</fareCurrency>
                     </fareDataSupInformation>
                     <fareDataSupInformation>
                         <fareDataQualifier>TFT</fareDataQualifier>
-                        <fareAmount>87.38</fareAmount>
+                        <fareAmount>337.06</fareAmount>
                         <fareCurrency>EUR</fareCurrency>
                     </fareDataSupInformation>
                 </fareDataInformation>
@@ -96,14 +96,14 @@
                             <taxIdentifier>X</taxIdentifier>
                         </taxIdentification>
                         <taxType>
-                            <isoCountry>OY</isoCountry>
+                            <isoCountry>YQ</isoCountry>
                         </taxType>
-                        <taxNature>CB</taxNature>
+                        <taxNature>AC</taxNature>
                     </taxDetails>
                     <amountDetails>
                         <fareDataMainInformation>
                             <fareDataQualifier>TAX</fareDataQualifier>
-                            <fareAmount>7.46</fareAmount>
+                            <fareAmount>7.12</fareAmount>
                             <fareCurrency>EUR</fareCurrency>
                         </fareDataMainInformation>
                     </amountDetails>
@@ -115,14 +115,14 @@
                             <taxIdentifier>X</taxIdentifier>
                         </taxIdentification>
                         <taxType>
-                            <isoCountry>DE</isoCountry>
+                            <isoCountry>YQ</isoCountry>
                         </taxType>
-                        <taxNature>SE</taxNature>
+                        <taxNature>AD</taxNature>
                     </taxDetails>
                     <amountDetails>
                         <fareDataMainInformation>
                             <fareDataQualifier>TAX</fareDataQualifier>
-                            <fareAmount>9.00</fareAmount>
+                            <fareAmount>9.86</fareAmount>
                             <fareCurrency>EUR</fareCurrency>
                         </fareDataMainInformation>
                     </amountDetails>
@@ -134,14 +134,14 @@
                             <taxIdentifier>X</taxIdentifier>
                         </taxIdentification>
                         <taxType>
-                            <isoCountry>RA</isoCountry>
+                            <isoCountry>YR</isoCountry>
                         </taxType>
-                        <taxNature>EB</taxNature>
+                        <taxNature>VA</taxNature>
                     </taxDetails>
                     <amountDetails>
                         <fareDataMainInformation>
                             <fareDataQualifier>TAX</fareDataQualifier>
-                            <fareAmount>26.48</fareAmount>
+                            <fareAmount>212.00</fareAmount>
                             <fareCurrency>EUR</fareCurrency>
                         </fareDataMainInformation>
                     </amountDetails>
@@ -153,14 +153,14 @@
                             <taxIdentifier>X</taxIdentifier>
                         </taxIdentification>
                         <taxType>
-                            <isoCountry>JD</isoCountry>
+                            <isoCountry>ZY</isoCountry>
                         </taxType>
                         <taxNature>AE</taxNature>
                     </taxDetails>
                     <amountDetails>
                         <fareDataMainInformation>
                             <fareDataQualifier>TAX</fareDataQualifier>
-                            <fareAmount>15.33</fareAmount>
+                            <fareAmount>18.69</fareAmount>
                             <fareCurrency>EUR</fareCurrency>
                         </fareDataMainInformation>
                     </amountDetails>
@@ -172,28 +172,9 @@
                             <taxIdentifier>X</taxIdentifier>
                         </taxIdentification>
                         <taxType>
-                            <isoCountry>OG</isoCountry>
+                            <isoCountry>QD</isoCountry>
                         </taxType>
-                        <taxNature>CO</taxNature>
-                    </taxDetails>
-                    <amountDetails>
-                        <fareDataMainInformation>
-                            <fareDataQualifier>TAX</fareDataQualifier>
-                            <fareAmount>0.61</fareAmount>
-                            <fareCurrency>EUR</fareCurrency>
-                        </fareDataMainInformation>
-                    </amountDetails>
-                </taxInformation>
-                <taxInformation>
-                    <taxDetails>
-                        <taxQualifier>7</taxQualifier>
-                        <taxIdentification>
-                            <taxIdentifier>X</taxIdentifier>
-                        </taxIdentification>
-                        <taxType>
-                            <isoCountry>QV</isoCountry>
-                        </taxType>
-                        <taxNature>DP</taxNature>
+                        <taxNature>AP</taxNature>
                     </taxDetails>
                     <amountDetails>
                         <fareDataMainInformation>
@@ -203,9 +184,104 @@
                         </fareDataMainInformation>
                     </amountDetails>
                 </taxInformation>
+                <taxInformation>
+                    <taxDetails>
+                        <taxQualifier>7</taxQualifier>
+                        <taxIdentification>
+                            <taxIdentifier>X</taxIdentifier>
+                        </taxIdentification>
+                        <taxType>
+                            <isoCountry>AT</isoCountry>
+                        </taxType>
+                        <taxNature>SE</taxNature>
+                    </taxDetails>
+                    <amountDetails>
+                        <fareDataMainInformation>
+                            <fareDataQualifier>TAX</fareDataQualifier>
+                            <fareAmount>8.40</fareAmount>
+                            <fareCurrency>EUR</fareCurrency>
+                        </fareDataMainInformation>
+                    </amountDetails>
+                </taxInformation>
+                <taxInformation>
+                    <taxDetails>
+                        <taxQualifier>7</taxQualifier>
+                        <taxIdentification>
+                            <taxIdentifier>X</taxIdentifier>
+                        </taxIdentification>
+                        <taxType>
+                            <isoCountry>KJ</isoCountry>
+                        </taxType>
+                        <taxNature>AP</taxNature>
+                    </taxDetails>
+                    <amountDetails>
+                        <fareDataMainInformation>
+                            <fareDataQualifier>TAX</fareDataQualifier>
+                            <fareAmount>12.60</fareAmount>
+                            <fareCurrency>EUR</fareCurrency>
+                        </fareDataMainInformation>
+                    </amountDetails>
+                </taxInformation>
+                <taxInformation>
+                    <taxDetails>
+                        <taxQualifier>7</taxQualifier>
+                        <taxIdentification>
+                            <taxIdentifier>X</taxIdentifier>
+                        </taxIdentification>
+                        <taxType>
+                            <isoCountry>JK</isoCountry>
+                        </taxType>
+                        <taxNature>DC</taxNature>
+                    </taxDetails>
+                    <amountDetails>
+                        <fareDataMainInformation>
+                            <fareDataQualifier>TAX</fareDataQualifier>
+                            <fareAmount>2.42</fareAmount>
+                            <fareCurrency>EUR</fareCurrency>
+                        </fareDataMainInformation>
+                    </amountDetails>
+                </taxInformation>
+                <taxInformation>
+                    <taxDetails>
+                        <taxQualifier>7</taxQualifier>
+                        <taxIdentification>
+                            <taxIdentifier>X</taxIdentifier>
+                        </taxIdentification>
+                        <taxType>
+                            <isoCountry>QH</isoCountry>
+                        </taxType>
+                        <taxNature>EB</taxNature>
+                    </taxDetails>
+                    <amountDetails>
+                        <fareDataMainInformation>
+                            <fareDataQualifier>TAX</fareDataQualifier>
+                            <fareAmount>21.60</fareAmount>
+                            <fareCurrency>EUR</fareCurrency>
+                        </fareDataMainInformation>
+                    </amountDetails>
+                </taxInformation>
+                <taxInformation>
+                    <taxDetails>
+                        <taxQualifier>7</taxQualifier>
+                        <taxIdentification>
+                            <taxIdentifier>X</taxIdentifier>
+                        </taxIdentification>
+                        <taxType>
+                            <isoCountry>EQ</isoCountry>
+                        </taxType>
+                        <taxNature>GO</taxNature>
+                    </taxDetails>
+                    <amountDetails>
+                        <fareDataMainInformation>
+                            <fareDataQualifier>TAX</fareDataQualifier>
+                            <fareAmount>0.87</fareAmount>
+                            <fareCurrency>EUR</fareCurrency>
+                        </fareDataMainInformation>
+                    </amountDetails>
+                </taxInformation>
                 <originDestination>
-                    <cityCode>FRA</cityCode>
-                    <cityCode>FRA</cityCode>
+                    <cityCode>VIE</cityCode>
+                    <cityCode>VIE</cityCode>
                 </originDestination>
                 <segmentInformation>
                     <connexInformation>
@@ -216,35 +292,35 @@
                     <segDetails>
                         <segmentDetail>
                             <identification>AIR</identification>
-                            <classOfService>Z</classOfService>
+                            <classOfService>Q</classOfService>
                         </segmentDetail>
                         <ticketingStatus>OK</ticketingStatus>
                     </segDetails>
                     <fareQualifier>
                         <fareBasisDetails>
-                            <primaryCode>ZRT</primaryCode>
-                            <fareBasisCode>DE5L</fareBasisCode>
+                            <primaryCode>QLA</primaryCode>
+                            <fareBasisCode>NAT</fareBasisCode>
                         </fareBasisDetails>
                     </fareQualifier>
                     <validityInformation>
                         <businessSemantic>B</businessSemantic>
                         <dateTime>
                             <year>2018</year>
-                            <month>10</month>
-                            <day>22</day>
+                            <month>11</month>
+                            <day>21</day>
                         </dateTime>
                     </validityInformation>
                     <validityInformation>
                         <businessSemantic>A</businessSemantic>
                         <dateTime>
                             <year>2018</year>
-                            <month>10</month>
-                            <day>22</day>
+                            <month>11</month>
+                            <day>21</day>
                         </dateTime>
                     </validityInformation>
                     <bagAllowanceInformation>
                         <bagAllowanceDetails>
-                            <baggageQuantity>0</baggageQuantity>
+                            <baggageQuantity>2</baggageQuantity>
                             <baggageType>N</baggageType>
                         </bagAllowanceDetails>
                     </bagAllowanceInformation>
@@ -263,41 +339,41 @@
                 <segmentInformation>
                     <connexInformation>
                         <connecDetails>
-                            <connexType>O</connexType>
+                            <connexType>X</connexType>
                         </connecDetails>
                     </connexInformation>
                     <segDetails>
                         <segmentDetail>
                             <identification>AIR</identification>
-                            <classOfService>Z</classOfService>
+                            <classOfService>Q</classOfService>
                         </segmentDetail>
                         <ticketingStatus>OK</ticketingStatus>
                     </segDetails>
                     <fareQualifier>
                         <fareBasisDetails>
-                            <primaryCode>ZRT</primaryCode>
-                            <fareBasisCode>DE5L</fareBasisCode>
+                            <primaryCode>QLA</primaryCode>
+                            <fareBasisCode>NAT</fareBasisCode>
                         </fareBasisDetails>
                     </fareQualifier>
                     <validityInformation>
                         <businessSemantic>B</businessSemantic>
                         <dateTime>
                             <year>2018</year>
-                            <month>10</month>
-                            <day>28</day>
+                            <month>11</month>
+                            <day>21</day>
                         </dateTime>
                     </validityInformation>
                     <validityInformation>
                         <businessSemantic>A</businessSemantic>
                         <dateTime>
                             <year>2018</year>
-                            <month>10</month>
-                            <day>28</day>
+                            <month>11</month>
+                            <day>21</day>
                         </dateTime>
                     </validityInformation>
                     <bagAllowanceInformation>
                         <bagAllowanceDetails>
-                            <baggageQuantity>0</baggageQuantity>
+                            <baggageQuantity>2</baggageQuantity>
                             <baggageType>N</baggageType>
                         </bagAllowanceDetails>
                     </bagAllowanceInformation>
@@ -313,14 +389,116 @@
                         </sequenceSection>
                     </sequenceInformation>
                 </segmentInformation>
+                <segmentInformation>
+                    <connexInformation>
+                        <connecDetails>
+                            <connexType>O</connexType>
+                        </connecDetails>
+                    </connexInformation>
+                    <segDetails>
+                        <segmentDetail>
+                            <identification>AIR</identification>
+                            <classOfService>Q</classOfService>
+                        </segmentDetail>
+                        <ticketingStatus>OK</ticketingStatus>
+                    </segDetails>
+                    <fareQualifier>
+                        <fareBasisDetails>
+                            <primaryCode>QLA</primaryCode>
+                            <fareBasisCode>NAT</fareBasisCode>
+                        </fareBasisDetails>
+                    </fareQualifier>
+                    <validityInformation>
+                        <businessSemantic>B</businessSemantic>
+                        <dateTime>
+                            <year>2018</year>
+                            <month>11</month>
+                            <day>24</day>
+                        </dateTime>
+                    </validityInformation>
+                    <validityInformation>
+                        <businessSemantic>A</businessSemantic>
+                        <dateTime>
+                            <year>2018</year>
+                            <month>11</month>
+                            <day>24</day>
+                        </dateTime>
+                    </validityInformation>
+                    <bagAllowanceInformation>
+                        <bagAllowanceDetails>
+                            <baggageQuantity>2</baggageQuantity>
+                            <baggageType>N</baggageType>
+                        </bagAllowanceDetails>
+                    </bagAllowanceInformation>
+                    <segmentReference>
+                        <refDetails>
+                            <refQualifier>S</refQualifier>
+                            <refNumber>3</refNumber>
+                        </refDetails>
+                    </segmentReference>
+                    <sequenceInformation>
+                        <sequenceSection>
+                            <sequenceNumber>3</sequenceNumber>
+                        </sequenceSection>
+                    </sequenceInformation>
+                </segmentInformation>
+                <segmentInformation>
+                    <connexInformation>
+                        <connecDetails>
+                            <connexType>X</connexType>
+                        </connecDetails>
+                    </connexInformation>
+                    <segDetails>
+                        <segmentDetail>
+                            <identification>AIR</identification>
+                            <classOfService>Q</classOfService>
+                        </segmentDetail>
+                        <ticketingStatus>OK</ticketingStatus>
+                    </segDetails>
+                    <fareQualifier>
+                        <fareBasisDetails>
+                            <primaryCode>QLA</primaryCode>
+                            <fareBasisCode>NAT</fareBasisCode>
+                        </fareBasisDetails>
+                    </fareQualifier>
+                    <validityInformation>
+                        <businessSemantic>B</businessSemantic>
+                        <dateTime>
+                            <year>2018</year>
+                            <month>11</month>
+                            <day>25</day>
+                        </dateTime>
+                    </validityInformation>
+                    <validityInformation>
+                        <businessSemantic>A</businessSemantic>
+                        <dateTime>
+                            <year>2018</year>
+                            <month>11</month>
+                            <day>25</day>
+                        </dateTime>
+                    </validityInformation>
+                    <bagAllowanceInformation>
+                        <bagAllowanceDetails>
+                            <baggageQuantity>2</baggageQuantity>
+                            <baggageType>N</baggageType>
+                        </bagAllowanceDetails>
+                    </bagAllowanceInformation>
+                    <segmentReference>
+                        <refDetails>
+                            <refQualifier>S</refQualifier>
+                            <refNumber>4</refNumber>
+                        </refDetails>
+                    </segmentReference>
+                    <sequenceInformation>
+                        <sequenceSection>
+                            <sequenceNumber>4</sequenceNumber>
+                        </sequenceSection>
+                    </sequenceInformation>
+                </segmentInformation>
                 <otherPricingInfo>
                     <attributeDetails>
-                        <attributeType>PAY</attributeType>
-                        <attributeDescription>*UX *</attributeDescription>
-                    </attributeDetails>
-                    <attributeDetails>
                         <attributeType>FCA</attributeType>
-                        <attributeDescription>FRA UX MAD14.62UX FRA14.62NUC29.24END ROE0.854855</attributeDescription>
+                        <attributeDescription>VIE RJ X/AMM RJ CAI23.39RJ X/AMM RJ VIE23.39NUC46.78END ROE0.854855</attributeDescription>
                     </attributeDetails>
                 </otherPricingInfo>
                 <statusInformation>
@@ -334,7 +512,7 @@
                 <officeDetails>
                     <originIdentification>
                         <inHouseIdentification1>WS</inHouseIdentification1>
-                        <inHouseIdentification2>BERAE22FX</inHouseIdentification2>
+                        <inHouseIdentification2>LEJL1213T</inHouseIdentification2>
                     </originIdentification>
                 </officeDetails>
                 <contextualFop>
@@ -345,7 +523,7 @@
                 </contextualFop>
                 <contextualPointofSale>
                     <originIdentification>
-                        <inHouseIdentification2>BERAE22FX</inHouseIdentification2>
+                        <inHouseIdentification2>LEJL1213T</inHouseIdentification2>
                     </originIdentification>
                 </contextualPointofSale>
             </fareList>
@@ -354,21 +532,21 @@
                     <tstInformation>
                         <tstIndicator>I</tstIndicator>
                     </tstInformation>
-                    <fcmi>F</fcmi>
+                    <fcmi>0</fcmi>
                 </pricingInformation>
                 <fareReference>
                     <referenceType>TST</referenceType>
-                    <uniqueReference>2</uniqueReference>
+                    <uniqueReference>4</uniqueReference>
                     <iDDescription>
-                        <iDSequenceNumber>2</iDSequenceNumber>
+                        <iDSequenceNumber>4</iDSequenceNumber>
                     </iDDescription>
                 </fareReference>
                 <lastTktDate>
                     <businessSemantic>LT</businessSemantic>
                     <dateTime>
                         <year>2018</year>
-                        <month>8</month>
-                        <day>16</day>
+                        <month>11</month>
+                        <day>21</day>
                     </dateTime>
                 </lastTktDate>
                 <lastTktDate>
@@ -376,7 +554,7 @@
                     <dateTime>
                         <year>2018</year>
                         <month>8</month>
-                        <day>15</day>
+                        <day>21</day>
                     </dateTime>
                 </lastTktDate>
                 <lastTktDate>
@@ -384,12 +562,12 @@
                     <dateTime>
                         <year>2018</year>
                         <month>8</month>
-                        <day>15</day>
+                        <day>21</day>
                     </dateTime>
                 </lastTktDate>
                 <validatingCarrier>
                     <carrierInformation>
-                        <carrierCode>UX</carrierCode>
+                        <carrierCode>RJ</carrierCode>
                     </carrierInformation>
                 </validatingCarrier>
                 <paxSegReference>
@@ -408,17 +586,17 @@
                     </fareDataMainInformation>
                     <fareDataSupInformation>
                         <fareDataQualifier>B</fareDataQualifier>
-                        <fareAmount>25.00</fareAmount>
+                        <fareAmount>30.00</fareAmount>
                         <fareCurrency>EUR</fareCurrency>
                     </fareDataSupInformation>
                     <fareDataSupInformation>
                         <fareDataQualifier>712</fareDataQualifier>
-                        <fareAmount>87.38</fareAmount>
+                        <fareAmount>327.06</fareAmount>
                         <fareCurrency>EUR</fareCurrency>
                     </fareDataSupInformation>
                     <fareDataSupInformation>
                         <fareDataQualifier>TFT</fareDataQualifier>
-                        <fareAmount>87.38</fareAmount>
+                        <fareAmount>327.06</fareAmount>
                         <fareCurrency>EUR</fareCurrency>
                     </fareDataSupInformation>
                 </fareDataInformation>
@@ -429,14 +607,14 @@
                             <taxIdentifier>X</taxIdentifier>
                         </taxIdentification>
                         <taxType>
-                            <isoCountry>OY</isoCountry>
+                            <isoCountry>YQ</isoCountry>
                         </taxType>
-                        <taxNature>CB</taxNature>
+                        <taxNature>AC</taxNature>
                     </taxDetails>
                     <amountDetails>
                         <fareDataMainInformation>
                             <fareDataQualifier>TAX</fareDataQualifier>
-                            <fareAmount>7.46</fareAmount>
+                            <fareAmount>7.12</fareAmount>
                             <fareCurrency>EUR</fareCurrency>
                         </fareDataMainInformation>
                     </amountDetails>
@@ -448,14 +626,14 @@
                             <taxIdentifier>X</taxIdentifier>
                         </taxIdentification>
                         <taxType>
-                            <isoCountry>DE</isoCountry>
+                            <isoCountry>YQ</isoCountry>
                         </taxType>
-                        <taxNature>SE</taxNature>
+                        <taxNature>AD</taxNature>
                     </taxDetails>
                     <amountDetails>
                         <fareDataMainInformation>
                             <fareDataQualifier>TAX</fareDataQualifier>
-                            <fareAmount>9.00</fareAmount>
+                            <fareAmount>9.86</fareAmount>
                             <fareCurrency>EUR</fareCurrency>
                         </fareDataMainInformation>
                     </amountDetails>
@@ -467,14 +645,14 @@
                             <taxIdentifier>X</taxIdentifier>
                         </taxIdentification>
                         <taxType>
-                            <isoCountry>RA</isoCountry>
+                            <isoCountry>YR</isoCountry>
                         </taxType>
-                        <taxNature>EB</taxNature>
+                        <taxNature>VA</taxNature>
                     </taxDetails>
                     <amountDetails>
                         <fareDataMainInformation>
                             <fareDataQualifier>TAX</fareDataQualifier>
-                            <fareAmount>26.48</fareAmount>
+                            <fareAmount>212.00</fareAmount>
                             <fareCurrency>EUR</fareCurrency>
                         </fareDataMainInformation>
                     </amountDetails>
@@ -486,14 +664,14 @@
                             <taxIdentifier>X</taxIdentifier>
                         </taxIdentification>
                         <taxType>
-                            <isoCountry>JD</isoCountry>
+                            <isoCountry>ZY</isoCountry>
                         </taxType>
                         <taxNature>AE</taxNature>
                     </taxDetails>
                     <amountDetails>
                         <fareDataMainInformation>
                             <fareDataQualifier>TAX</fareDataQualifier>
-                            <fareAmount>15.33</fareAmount>
+                            <fareAmount>18.69</fareAmount>
                             <fareCurrency>EUR</fareCurrency>
                         </fareDataMainInformation>
                     </amountDetails>
@@ -505,28 +683,9 @@
                             <taxIdentifier>X</taxIdentifier>
                         </taxIdentification>
                         <taxType>
-                            <isoCountry>OG</isoCountry>
+                            <isoCountry>QD</isoCountry>
                         </taxType>
-                        <taxNature>CO</taxNature>
-                    </taxDetails>
-                    <amountDetails>
-                        <fareDataMainInformation>
-                            <fareDataQualifier>TAX</fareDataQualifier>
-                            <fareAmount>0.61</fareAmount>
-                            <fareCurrency>EUR</fareCurrency>
-                        </fareDataMainInformation>
-                    </amountDetails>
-                </taxInformation>
-                <taxInformation>
-                    <taxDetails>
-                        <taxQualifier>7</taxQualifier>
-                        <taxIdentification>
-                            <taxIdentifier>X</taxIdentifier>
-                        </taxIdentification>
-                        <taxType>
-                            <isoCountry>QV</isoCountry>
-                        </taxType>
-                        <taxNature>DP</taxNature>
+                        <taxNature>AP</taxNature>
                     </taxDetails>
                     <amountDetails>
                         <fareDataMainInformation>
@@ -536,9 +695,104 @@
                         </fareDataMainInformation>
                     </amountDetails>
                 </taxInformation>
+                <taxInformation>
+                    <taxDetails>
+                        <taxQualifier>7</taxQualifier>
+                        <taxIdentification>
+                            <taxIdentifier>X</taxIdentifier>
+                        </taxIdentification>
+                        <taxType>
+                            <isoCountry>AT</isoCountry>
+                        </taxType>
+                        <taxNature>SE</taxNature>
+                    </taxDetails>
+                    <amountDetails>
+                        <fareDataMainInformation>
+                            <fareDataQualifier>TAX</fareDataQualifier>
+                            <fareAmount>8.40</fareAmount>
+                            <fareCurrency>EUR</fareCurrency>
+                        </fareDataMainInformation>
+                    </amountDetails>
+                </taxInformation>
+                <taxInformation>
+                    <taxDetails>
+                        <taxQualifier>7</taxQualifier>
+                        <taxIdentification>
+                            <taxIdentifier>X</taxIdentifier>
+                        </taxIdentification>
+                        <taxType>
+                            <isoCountry>KJ</isoCountry>
+                        </taxType>
+                        <taxNature>AP</taxNature>
+                    </taxDetails>
+                    <amountDetails>
+                        <fareDataMainInformation>
+                            <fareDataQualifier>TAX</fareDataQualifier>
+                            <fareAmount>12.60</fareAmount>
+                            <fareCurrency>EUR</fareCurrency>
+                        </fareDataMainInformation>
+                    </amountDetails>
+                </taxInformation>
+                <taxInformation>
+                    <taxDetails>
+                        <taxQualifier>7</taxQualifier>
+                        <taxIdentification>
+                            <taxIdentifier>X</taxIdentifier>
+                        </taxIdentification>
+                        <taxType>
+                            <isoCountry>JK</isoCountry>
+                        </taxType>
+                        <taxNature>DC</taxNature>
+                    </taxDetails>
+                    <amountDetails>
+                        <fareDataMainInformation>
+                            <fareDataQualifier>TAX</fareDataQualifier>
+                            <fareAmount>2.42</fareAmount>
+                            <fareCurrency>EUR</fareCurrency>
+                        </fareDataMainInformation>
+                    </amountDetails>
+                </taxInformation>
+                <taxInformation>
+                    <taxDetails>
+                        <taxQualifier>7</taxQualifier>
+                        <taxIdentification>
+                            <taxIdentifier>X</taxIdentifier>
+                        </taxIdentification>
+                        <taxType>
+                            <isoCountry>QH</isoCountry>
+                        </taxType>
+                        <taxNature>EB</taxNature>
+                    </taxDetails>
+                    <amountDetails>
+                        <fareDataMainInformation>
+                            <fareDataQualifier>TAX</fareDataQualifier>
+                            <fareAmount>21.60</fareAmount>
+                            <fareCurrency>EUR</fareCurrency>
+                        </fareDataMainInformation>
+                    </amountDetails>
+                </taxInformation>
+                <taxInformation>
+                    <taxDetails>
+                        <taxQualifier>7</taxQualifier>
+                        <taxIdentification>
+                            <taxIdentifier>X</taxIdentifier>
+                        </taxIdentification>
+                        <taxType>
+                            <isoCountry>EQ</isoCountry>
+                        </taxType>
+                        <taxNature>GO</taxNature>
+                    </taxDetails>
+                    <amountDetails>
+                        <fareDataMainInformation>
+                            <fareDataQualifier>TAX</fareDataQualifier>
+                            <fareAmount>0.87</fareAmount>
+                            <fareCurrency>EUR</fareCurrency>
+                        </fareDataMainInformation>
+                    </amountDetails>
+                </taxInformation>
                 <originDestination>
-                    <cityCode>FRA</cityCode>
-                    <cityCode>FRA</cityCode>
+                    <cityCode>VIE</cityCode>
+                    <cityCode>VIE</cityCode>
                 </originDestination>
                 <segmentInformation>
                     <connexInformation>
@@ -549,36 +803,35 @@
                     <segDetails>
                         <segmentDetail>
                             <identification>AIR</identification>
-                            <classOfService>Z</classOfService>
+                            <classOfService>Q</classOfService>
                         </segmentDetail>
                         <ticketingStatus>OK</ticketingStatus>
                     </segDetails>
                     <fareQualifier>
                         <fareBasisDetails>
-                            <primaryCode>ZRT</primaryCode>
-                            <fareBasisCode>DE5L</fareBasisCode>
-                            <ticketDesignator>CH</ticketDesignator>
+                            <primaryCode>QLA</primaryCode>
+                            <fareBasisCode>NATCH</fareBasisCode>
                         </fareBasisDetails>
                     </fareQualifier>
                     <validityInformation>
                         <businessSemantic>B</businessSemantic>
                         <dateTime>
                             <year>2018</year>
-                            <month>10</month>
-                            <day>22</day>
+                            <month>11</month>
+                            <day>21</day>
                         </dateTime>
                     </validityInformation>
                     <validityInformation>
                         <businessSemantic>A</businessSemantic>
                         <dateTime>
                             <year>2018</year>
-                            <month>10</month>
-                            <day>22</day>
+                            <month>11</month>
+                            <day>21</day>
                         </dateTime>
                     </validityInformation>
                     <bagAllowanceInformation>
                         <bagAllowanceDetails>
-                            <baggageQuantity>0</baggageQuantity>
+                            <baggageQuantity>2</baggageQuantity>
                             <baggageType>N</baggageType>
                         </bagAllowanceDetails>
                     </bagAllowanceInformation>
@@ -597,42 +850,41 @@
                 <segmentInformation>
                     <connexInformation>
                         <connecDetails>
-                            <connexType>O</connexType>
+                            <connexType>X</connexType>
                         </connecDetails>
                     </connexInformation>
                     <segDetails>
                         <segmentDetail>
                             <identification>AIR</identification>
-                            <classOfService>Z</classOfService>
+                            <classOfService>Q</classOfService>
                         </segmentDetail>
                         <ticketingStatus>OK</ticketingStatus>
                     </segDetails>
                     <fareQualifier>
                         <fareBasisDetails>
-                            <primaryCode>ZRT</primaryCode>
-                            <fareBasisCode>DE5L</fareBasisCode>
-                            <ticketDesignator>CH</ticketDesignator>
+                            <primaryCode>QLA</primaryCode>
+                            <fareBasisCode>NATCH</fareBasisCode>
                         </fareBasisDetails>
                     </fareQualifier>
                     <validityInformation>
                         <businessSemantic>B</businessSemantic>
                         <dateTime>
                             <year>2018</year>
-                            <month>10</month>
-                            <day>28</day>
+                            <month>11</month>
+                            <day>21</day>
                         </dateTime>
                     </validityInformation>
                     <validityInformation>
                         <businessSemantic>A</businessSemantic>
                         <dateTime>
                             <year>2018</year>
-                            <month>10</month>
-                            <day>28</day>
+                            <month>11</month>
+                            <day>21</day>
                         </dateTime>
                     </validityInformation>
                     <bagAllowanceInformation>
                         <bagAllowanceDetails>
-                            <baggageQuantity>0</baggageQuantity>
+                            <baggageQuantity>2</baggageQuantity>
                             <baggageType>N</baggageType>
                         </bagAllowanceDetails>
                     </bagAllowanceInformation>
@@ -648,14 +900,116 @@
                         </sequenceSection>
                     </sequenceInformation>
                 </segmentInformation>
+                <segmentInformation>
+                    <connexInformation>
+                        <connecDetails>
+                            <connexType>O</connexType>
+                        </connecDetails>
+                    </connexInformation>
+                    <segDetails>
+                        <segmentDetail>
+                            <identification>AIR</identification>
+                            <classOfService>Q</classOfService>
+                        </segmentDetail>
+                        <ticketingStatus>OK</ticketingStatus>
+                    </segDetails>
+                    <fareQualifier>
+                        <fareBasisDetails>
+                            <primaryCode>QLA</primaryCode>
+                            <fareBasisCode>NATCH</fareBasisCode>
+                        </fareBasisDetails>
+                    </fareQualifier>
+                    <validityInformation>
+                        <businessSemantic>B</businessSemantic>
+                        <dateTime>
+                            <year>2018</year>
+                            <month>11</month>
+                            <day>24</day>
+                        </dateTime>
+                    </validityInformation>
+                    <validityInformation>
+                        <businessSemantic>A</businessSemantic>
+                        <dateTime>
+                            <year>2018</year>
+                            <month>11</month>
+                            <day>24</day>
+                        </dateTime>
+                    </validityInformation>
+                    <bagAllowanceInformation>
+                        <bagAllowanceDetails>
+                            <baggageQuantity>2</baggageQuantity>
+                            <baggageType>N</baggageType>
+                        </bagAllowanceDetails>
+                    </bagAllowanceInformation>
+                    <segmentReference>
+                        <refDetails>
+                            <refQualifier>S</refQualifier>
+                            <refNumber>3</refNumber>
+                        </refDetails>
+                    </segmentReference>
+                    <sequenceInformation>
+                        <sequenceSection>
+                            <sequenceNumber>3</sequenceNumber>
+                        </sequenceSection>
+                    </sequenceInformation>
+                </segmentInformation>
+                <segmentInformation>
+                    <connexInformation>
+                        <connecDetails>
+                            <connexType>X</connexType>
+                        </connecDetails>
+                    </connexInformation>
+                    <segDetails>
+                        <segmentDetail>
+                            <identification>AIR</identification>
+                            <classOfService>Q</classOfService>
+                        </segmentDetail>
+                        <ticketingStatus>OK</ticketingStatus>
+                    </segDetails>
+                    <fareQualifier>
+                        <fareBasisDetails>
+                            <primaryCode>QLA</primaryCode>
+                            <fareBasisCode>NATCH</fareBasisCode>
+                        </fareBasisDetails>
+                    </fareQualifier>
+                    <validityInformation>
+                        <businessSemantic>B</businessSemantic>
+                        <dateTime>
+                            <year>2018</year>
+                            <month>11</month>
+                            <day>25</day>
+                        </dateTime>
+                    </validityInformation>
+                    <validityInformation>
+                        <businessSemantic>A</businessSemantic>
+                        <dateTime>
+                            <year>2018</year>
+                            <month>11</month>
+                            <day>25</day>
+                        </dateTime>
+                    </validityInformation>
+                    <bagAllowanceInformation>
+                        <bagAllowanceDetails>
+                            <baggageQuantity>2</baggageQuantity>
+                            <baggageType>N</baggageType>
+                        </bagAllowanceDetails>
+                    </bagAllowanceInformation>
+                    <segmentReference>
+                        <refDetails>
+                            <refQualifier>S</refQualifier>
+                            <refNumber>4</refNumber>
+                        </refDetails>
+                    </segmentReference>
+                    <sequenceInformation>
+                        <sequenceSection>
+                            <sequenceNumber>4</sequenceNumber>
+                        </sequenceSection>
+                    </sequenceInformation>
+                </segmentInformation>
                 <otherPricingInfo>
                     <attributeDetails>
-                        <attributeType>PAY</attributeType>
-                        <attributeDescription>*UX *</attributeDescription>
-                    </attributeDetails>
-                    <attributeDetails>
                         <attributeType>FCA</attributeType>
-                        <attributeDescription>FRA UX MAD14.62UX FRA14.62NUC29.24END ROE0.854855</attributeDescription>
+                        <attributeDescription>VIE RJ X/AMM RJ CAI17.54RJ X/AMM RJ VIE17.54NUC35.08END ROE0.854855</attributeDescription>
                     </attributeDetails>
                 </otherPricingInfo>
                 <statusInformation>
@@ -669,7 +1023,7 @@
                 <officeDetails>
                     <originIdentification>
                         <inHouseIdentification1>WS</inHouseIdentification1>
-                        <inHouseIdentification2>BERAE22FX</inHouseIdentification2>
+                        <inHouseIdentification2>LEJL1213T</inHouseIdentification2>
                     </originIdentification>
                 </officeDetails>
                 <contextualFop>
@@ -680,7 +1034,7 @@
                 </contextualFop>
                 <contextualPointofSale>
                     <originIdentification>
-                        <inHouseIdentification2>BERAE22FX</inHouseIdentification2>
+                        <inHouseIdentification2>LEJL1213T</inHouseIdentification2>
                     </originIdentification>
                 </contextualPointofSale>
             </fareList>
