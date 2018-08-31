@@ -737,7 +737,7 @@
                     <miscellaneousRemarks>
                         <remarks>
                             <type>RM</type>
-                            <freetext>IBEBNAME-AMERING,GEORG</freetext>
+                            <freetext>IBEBNAME-max,mops</freetext>
                         </remarks>
                     </miscellaneousRemarks>
                 </dataElementsIndiv>
@@ -833,7 +833,7 @@
                     <miscellaneousRemarks>
                         <remarks>
                             <type>RM</type>
-                            <freetext>IBEBEMAIL-GEORG-CHR095-AMERING-AT-HOTMAIL.COM</freetext>
+                            <freetext>IBEBEMAIL-test@mail.com</freetext>
                         </remarks>
                     </miscellaneousRemarks>
                 </dataElementsIndiv>
@@ -849,7 +849,7 @@
                     <miscellaneousRemarks>
                         <remarks>
                             <type>RM</type>
-                            <freetext>IBEPAXEMAIL-GEORG==AMERING-AT-HOTMAIL.COM</freetext>
+                            <freetext>IBEPAXEMAIL-test@mail.com</freetext>
                         </remarks>
                     </miscellaneousRemarks>
                 </dataElementsIndiv>
@@ -1057,7 +1057,7 @@
                     <miscellaneousRemarks>
                         <remarks>
                             <type>RM</type>
-                            <freetext>IBECCHOLDER-GEORG AMERING</freetext>
+                            <freetext>IBECCHOLDER-max mops</freetext>
                         </remarks>
                     </miscellaneousRemarks>
                 </dataElementsIndiv>
