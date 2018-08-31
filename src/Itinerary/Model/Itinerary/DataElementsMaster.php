@@ -135,6 +135,28 @@ class DataElementsMaster extends AbstractModel
     }
 
     /**
+     * getter for remarks
+     *
+     * @return ArrayCollection
+     */
+    public function getRemarks(): ArrayCollection
+    {
+        return $this->remarks;
+    }
+
+    /**
+     * setter for remarks
+     * @param ArrayCollection $remarks
+     *
+     * @return $this
+     */
+    public function setRemarks(ArrayCollection $remarks): DataElementsMaster
+    {
+        $this->remarks = $remarks;
+        return $this;
+    }
+
+    /**
      * @param \stdClass $data
      */
     public function populate(\stdClass $data)
