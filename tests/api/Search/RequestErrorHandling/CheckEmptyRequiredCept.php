@@ -112,46 +112,6 @@ $I->canSeeResponseContainsJson(
 );
 
 $I->canSeeResponseContainsJson(
-    ['business-cases.0.0.options.is-one-way-combination' => [
-        [
-            'code'    => ValidationException::INTERNAL_ERROR_CODE,
-            'message' => 'INVALID OR MISSING REQUEST PARAM - options.is-one-way-combination must not be empty',
-            'status'  => 400
-        ]
-    ]]
-);
-
-$I->canSeeResponseContainsJson(
-    ['business-cases.0.0.options.is-overnight' => [
-        [
-            'code'    => ValidationException::INTERNAL_ERROR_CODE,
-            'message' => 'INVALID OR MISSING REQUEST PARAM - options.is-overnight must not be empty',
-            'status'  => 400
-        ]
-    ]]
-);
-
-$I->canSeeResponseContainsJson(
-    ['business-cases.0.0.options.is-area-search' => [
-        [
-            'code'    => ValidationException::INTERNAL_ERROR_CODE,
-            'message' => 'INVALID OR MISSING REQUEST PARAM - options.is-area-search must not be empty',
-            'status'  => 400
-        ]
-    ]]
-);
-
-$I->canSeeResponseContainsJson(
-    ['business-cases.0.0.options.is-benchmark' => [
-        [
-            'code'    => ValidationException::INTERNAL_ERROR_CODE,
-            'message' => 'INVALID OR MISSING REQUEST PARAM - options.is-benchmark must not be empty',
-            'status'  => 400
-        ]
-    ]]
-);
-
-$I->canSeeResponseContainsJson(
     ['business-cases.0.0.authentication.office-id' => [
         [
             'code'    => ValidationException::INTERNAL_ERROR_CODE,

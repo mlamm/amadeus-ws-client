@@ -63,10 +63,6 @@
         "type": "",
         "fare-types": [],
         "options": {
-          "is-one-way-combination": "",
-          "is-overnight": "",
-          "is-area-search": "",
-          "is-benchmark": "",
           "result-limit": ""
         },
         "authentication": {

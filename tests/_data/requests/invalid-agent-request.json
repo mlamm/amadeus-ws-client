@@ -63,10 +63,6 @@
         "type": "round-trip",
         "fare-types": ["low"],
         "options": {
-          "is-one-way-combination": true,
-          "is-overnight": false,
-          "is-area-search": true,
-          "is-benchmark": false,
           "result-limit": 2
         },
         "authentication": {

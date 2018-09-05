@@ -63,10 +63,7 @@
         "type": 123,
         "fare-type": 123,
         "options": {
-          "is-one-way-combination": 1,
-          "is-overnight": 0,
-          "is-area-search": "a",
-          "is-benchmark": "b",
+          "is-baggage-information-request": "b",
           "result-limit": "a"
         },
         "authentication": {

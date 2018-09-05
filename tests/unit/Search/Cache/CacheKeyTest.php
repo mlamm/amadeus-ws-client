@@ -79,10 +79,10 @@ class CacheKeyTest extends \Codeception\Test\Unit
         $businessCase->getAuthentication()->setOfficeId('user-id');
         $allDifferent[] = (string) new CacheKey($request, $businessCase, $config);
 
-        $businessCase->getOptions()->setIsAreaSearch(true);
+        $businessCase->getOptions()->setResultLimit(100);
         $allDifferent[] = (string) new CacheKey($request, $businessCase, $config);
 
-        $businessCase->getOptions()->setIsOvernight(true);
+        $businessCase->getOptions()->setIsBaggageInformationRequest(true);
         $allDifferent[] = (string) new CacheKey($request, $businessCase, $config);
 
         $config->excluded_airlines = ['AB', 'LH'];

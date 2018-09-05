@@ -54,10 +54,6 @@
       "fare-type": "net",
       "result-limit": 50,
       "options": {
-        "is-one-way-combination": true,
-        "is-overnight": false,
-        "is-area-search": false,
-        "is-benchmark": false
       },
       "authentication": {
         "office-id": "",

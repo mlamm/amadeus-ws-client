@@ -53,27 +53,29 @@ class CacheKey
         sort($filterCabinClass);
 
         $values = [
-            'filter-cabin-class' => $filterCabinClass,
-            'filter-airline'     => $request->getFilterAirline(),
-            'adults'             => $request->getAdults(),
-            'children'           => $request->getChildren(),
-            'infants'            => $request->getInfants(),
-            'is-area-search'     => $businessCase->getOptions()->isAreaSearch(),
-            'is-overnight'       => $businessCase->getOptions()->isOvernight(),
-            'legs'               => $request->getLegs()->map(function (Leg $leg) {
-                return [
-                    'departure'        => $leg->getDeparture(),
-                    'arrival'          => $leg->getArrival(),
-                    'depart-at'        => $leg->getDepartAt()->format('Y-m-d'),
-                    'is-flexible-date' => $leg->getIsFlexibleDate(),
-                ];
-            })->toArray(),
-            'additional-entropy' => [
+            'filter-cabin-class'             => $filterCabinClass,
+            'filter-airline'                 => $request->getFilterAirline(),
+            'adults'                         => $request->getAdults(),
+            'children'                       => $request->getChildren(),
+            'infants'                        => $request->getInfants(),
+            'result-limit'                   => $businessCase->getOptions()->getResultLimit(),
+            'is-baggage-information-request' => $businessCase->getOptions()->isBaggageInformationRequest(),
+            'legs'                           => $request->getLegs()->map(
+                function (Leg $leg) {
+                    return [
+                        'departure'        => $leg->getDeparture(),
+                        'arrival'          => $leg->getArrival(),
+                        'depart-at'        => $leg->getDepartAt()->format('Y-m-d'),
+                        'is-flexible-date' => $leg->getIsFlexibleDate(),
+                    ];
+                }
+            )->toArray(),
+            'additional-entropy'             => [
                 'office-id'         => $businessCase->getAuthentication()->getOfficeId(),
                 'user-id'           => $businessCase->getAuthentication()->getUserId(),
                 'excluded-airlines' => $config->excluded_airlines ?? null,
                 'request-options'   => $config->request_options ?? null,
-            ],
+            ]
         ];
 
         ksort($values);
