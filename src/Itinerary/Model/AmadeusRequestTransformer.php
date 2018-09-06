@@ -84,12 +84,12 @@ class AmadeusRequestTransformer
      *
      * @return Client\RequestOptions\PnrRetrieveOptions
      */
-    public function buildOptionsItineraryRead($recordLocator)
+    public function buildOptionsItineraryRead($recordLocator = null)
     {
-        return new Client\RequestOptions\PnrRetrieveOptions(
-            [
-                'recordLocator' => $recordLocator,
-            ]
-        );
+        $options = [];
+        if ($recordLocator) {
+            $options['recordLocator'] = $recordLocator;
+        }
+        return new Client\RequestOptions\PnrRetrieveOptions($options);
     }
 }
