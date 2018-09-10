@@ -64,13 +64,15 @@ class ItineraryService
         // validate
         $this->requestValidator->validateSession($session);
         $this->requestValidator->validateAuthentication($authHeader);
-        $this->requestValidator->validateRecordLocator($recordLocator);
 
         $authHeader = (new Request\Entity\Authenticate())->populate($authHeader);
         $session    = (new Request\Entity\Session())->populate($session);
-
+        $itinEntity = new Request\Entity\ItineraryRead();
+        if (isset($recordLocator)) {
+            $itinEntity->setRecordLocator($recordLocator);
+        }
         $response = $this->amadeusClient->itineraryRead(
-            (new Request\Entity\ItineraryRead())->setRecordLocator($recordLocator),
+            $itinEntity,
             $session,
             $authHeader
         );

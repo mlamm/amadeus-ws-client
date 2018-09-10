@@ -28,7 +28,7 @@ class ItineraryRead
     /**
      * @return string
      */
-    public function getRecordLocator() : string
+    public function getRecordLocator() : ?string
     {
         return $this->recordLocator;
     }
