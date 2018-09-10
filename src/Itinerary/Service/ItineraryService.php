@@ -64,7 +64,6 @@ class ItineraryService
         // validate
         $this->requestValidator->validateSession($session);
         $this->requestValidator->validateAuthentication($authHeader);
-        //$this->requestValidator->validateRecordLocator($recordLocator);
 
         $authHeader = (new Request\Entity\Authenticate())->populate($authHeader);
         $session    = (new Request\Entity\Session())->populate($session);
