@@ -136,55 +136,12 @@ class AmadeusClient
                 ->buildClientParams($authenticate, $this->logger)
         );
 
-        $tarifOptionsBuilder = new TarifOptionsBuilder($tariff);
-        $tarifOptions        = $tarifOptionsBuilder->getTarifOptions();
-        $clientResult        = null;
-
-        foreach ($tarifOptions as $tarifOption) {
-            try {
-                // create fare pricing in record locator
-                $client->setSessionData($session->toArray());
-                $clientResult = $client->farePricePnrWithBookingClass($tarifOption);
-                $this->checkResult($clientResult);
-
-                if (self::CHECK_RESULT_OK == $this->checkResult($clientResult)) {
-                    break;
-                }
-            } catch (AmadeusRequestException $requestException) {
-                $this->logger->error($requestException);
-            }
-        }
-
-        if ($clientResult !== null && self::CHECK_RESULT_OK != $this->checkResult($clientResult)) {
+        $clientResult = $this->createPrice($client, $session, $tariff);
+        if (false === $clientResult) {
             return false;
         }
 
-
-        $xmlObject = new \SimpleXMLElement($clientResult->responseXml);
-
-        $xmlNameSpace = array_values($xmlObject->getNamespaces())[0];
-        $xmlObject->registerXPathNamespace('ns', $xmlNameSpace);
-        $fareList = $xmlObject->xpath('//ns:fareList');
-
-        $pricingOptions = array();
-        foreach ($fareList as $fareElement) {
-            $fareElement->registerXPathNamespace('ns', $xmlNameSpace);
-            $tstNumber = (int)$fareElement->xpath('ns:fareReference/ns:uniqueReference')[0];
-            $pricingOptions[] = new Client\RequestOptions\Ticket\Pricing(
-                [
-                    'tstNumber' => $tstNumber,
-                ]
-            );
-        }
-
-        // create tst entry from prior pricing
-        $options      = new TicketCreateTstFromPricingOptions(
-            [
-                'pricings' => $pricingOptions,
-            ]
-        );
-        $clientResult = $client->ticketCreateTSTFromPricing($options);
-        $this->checkResult($clientResult);
+        $clientResult = $this->safePrice($client, $clientResult);
 
         return self::CHECK_RESULT_OK == $this->checkResult($clientResult);
     }
@@ -240,5 +197,85 @@ class AmadeusClient
         }
 
         throw new AmadeusRequestException($result->messages);
+    }
+
+    /**
+     * Create pricing in gds.
+     *
+     * @param Client $client amadeus client to be used
+     * @param Session $session amadeus session entity
+     * @param string $tariff tarif for pricing request
+     * @return Client\Result
+     * @throws AmadeusRequestException
+     * @throws Client\Exception
+     * @throws Client\InvalidMessageException
+     * @throws Client\RequestCreator\MessageVersionUnsupportedException
+     */
+    private function createPrice(Client $client, Session $session, string $tariff): Client\Result
+    {
+        $tarifOptionsBuilder = new TarifOptionsBuilder($tariff);
+        $tarifOptions        = $tarifOptionsBuilder->getTarifOptions();
+        $clientResult        = null;
+
+        foreach ($tarifOptions as $tarifOption) {
+            try {
+                // create fare pricing in record locator
+                $client->setSessionData($session->toArray());
+                $clientResult = $client->farePricePnrWithBookingClass($tarifOption);
+                $this->checkResult($clientResult);
+
+                if (self::CHECK_RESULT_OK == $this->checkResult($clientResult)) {
+                    break;
+                }
+            } catch (AmadeusRequestException $requestException) {
+                $this->logger->error($requestException);
+            }
+        }
+
+        if ($clientResult !== null && self::CHECK_RESULT_OK != $this->checkResult($clientResult)) {
+            return null;
+        }
+
+        return $clientResult;
+    }
+
+    /**
+     * Create TST entry from prior created pricings.
+     *
+     * @param Client $client client to be used
+     * @param Client\Result $priorClientResult result from prior request ot gds
+     * @return Client\Result
+     * @throws Client\Exception
+     * @throws Client\InvalidMessageException
+     * @throws Client\RequestCreator\MessageVersionUnsupportedException
+     */
+    private function safePrice(Client $client, Client\Result $priorClientResult): Client\Result
+    {
+
+        $xmlObject = new \SimpleXMLElement($priorClientResult->responseXml);
+
+        $xmlNameSpace = array_values($xmlObject->getNamespaces())[0];
+        $xmlObject->registerXPathNamespace('ns', $xmlNameSpace);
+        $fareList = $xmlObject->xpath('//ns:fareList');
+
+        $pricingOptions = array();
+        foreach ($fareList as $fareElement) {
+            $fareElement->registerXPathNamespace('ns', $xmlNameSpace);
+            $tstNumber = (int)$fareElement->xpath('ns:fareReference/ns:uniqueReference')[0];
+            $pricingOptions[] = new Client\RequestOptions\Ticket\Pricing(
+                [
+                    'tstNumber' => $tstNumber,
+                ]
+            );
+        }
+
+        // create tst entry from prior pricing
+        $options      = new TicketCreateTstFromPricingOptions(
+            [
+                'pricings' => $pricingOptions,
+            ]
+        );
+
+        return $client->ticketCreateTSTFromPricing($options);
     }
 }
