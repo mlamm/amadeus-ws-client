@@ -159,16 +159,28 @@ class AmadeusClient
             return false;
         }
 
+
+        $xmlObject = new \SimpleXMLElement($clientResult->responseXml);
+
+        $xmlNameSpace = array_values($xmlObject->getNamespaces())[0];
+        $xmlObject->registerXPathNamespace('ns', $xmlNameSpace);
+        $fareList = $xmlObject->xpath('//ns:fareList');
+
+        $pricingOptions = array();
+        foreach ($fareList as $fareElement) {
+            $fareElement->registerXPathNamespace('ns', $xmlNameSpace);
+            $tstNumber = (int)$fareElement->xpath('ns:fareReference/ns:uniqueReference')[0];
+            $pricingOptions[] = new Client\RequestOptions\Ticket\Pricing(
+                [
+                    'tstNumber' => $tstNumber,
+                ]
+            );
+        }
+
         // create tst entry from prior pricing
         $options      = new TicketCreateTstFromPricingOptions(
             [
-                'pricings' => [
-                    new Client\RequestOptions\Ticket\Pricing(
-                        [
-                            'tstNumber' => 1,
-                        ]
-                    ),
-                ],
+                'pricings' => $pricingOptions,
             ]
         );
         $clientResult = $client->ticketCreateTSTFromPricing($options);
