@@ -1,9 +1,10 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Flight\Service\Amadeus\Remarks\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Flight\Service\Amadeus\Remarks\Filter\RemarkEncoder;
 use Flight\Service\Amadeus\Remarks\Model\Itinerary;
 use Flight\Service\Amadeus\Remarks\Model\Remark;
 use Flight\Service\Amadeus\Remarks\Model\RemarksAmadeusClient;
@@ -45,9 +46,9 @@ class Remarks
 
     /**
      * @param Request\Validator\Remarks $requestValidator
-     * @param Serializer              $serializer
-     * @param RemarksAmadeusClient    $amadeusClient
-     * @param \stdClass               $config
+     * @param Serializer                $serializer
+     * @param RemarksAmadeusClient      $amadeusClient
+     * @param \stdClass                 $config
      */
     public function __construct(
         Request\Validator\Remarks $requestValidator,
@@ -118,11 +119,15 @@ class Remarks
         $remarks = new ArrayCollection();
         foreach ($body->remarks as $remarkString) {
             // first item has the remarkName so we explode it out of the array to let the remarkValue rest in pieces
-            $remark = explode('-', $remarkString);
+            $remark     = explode('-', $remarkString);
             $remarkName = $remark[0];
             unset($remark[0]);
             $remarkValue = implode('-', $remark);
-            $remarks->add((new Remark())->setName($remarkName)->setValue($remarkValue));
+            $remarks->add(
+                (new Remark())
+                    ->setName($remarkName)
+                    ->setValue((new RemarkEncoder($remarkName, $remarkValue))->get())
+            );
         }
 
         $authenticate = (new Request\Entity\Authenticate())
