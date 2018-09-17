@@ -29,25 +29,28 @@ class PriceResponseTransformer
             $passengerPrice = new ArrayCollection();
 
             if (array_key_exists('pricingInformation', $fareList)) {
-                $price->setValidatingCarrier(
-                    (string) $response->fareList->validatingCarrier
-                        ->carrierInformation
-                        ->carrierCode
-                );
-                $tktDate = '0000-00-00';
+                $tktDate = null;
                 foreach ($fareList['lastTktDate'] as $lastTktDate) {
                     if ($lastTktDate->businessSemantic == 'LT') {
                         $tktDate = $lastTktDate->dateTime->year
                             . '-' . $lastTktDate->dateTime->month
                             . '-' . $lastTktDate->dateTime->day;
                     }
-                };
-                $price->setLastTicketingDate(date('Y-m-d', strtotime($tktDate)));
-                $price->setValidatingCarrier(
-                    (string) $fareList['validatingCarrier']
-                        ->carrierInformation
-                        ->carrierCode
-                );
+                }
+
+                if ($tktDate === null) {
+                    $price->setLastTicketingDate('0000-00-00');
+                } else {
+                    $price->setLastTicketingDate(date('Y-m-d', strtotime($tktDate)));
+                }
+
+                if (isset($fareList['validatingCarrier'])) {
+                    $price->setValidatingCarrier(
+                        (string)$fareList['validatingCarrier']
+                            ->carrierInformation
+                            ->carrierCode
+                    );
+                }
                 $passengerPrice->add($this->mapPassengerPrice((object) $fareList));
             } else {
                 $passengerPrice = new ArrayCollection();
@@ -97,8 +100,10 @@ class PriceResponseTransformer
         $price    = new PassengerPrice();
         $totalTax = 0.00;
 
-        foreach ($fare->taxInformation as $taxData) {
-            $totalTax += (float) $taxData->amountDetails->fareDataMainInformation->fareAmount;
+        if (isset($fare->taxInformation)) {
+            foreach ($fare->taxInformation as $taxData) {
+                $totalTax += (float) $taxData->amountDetails->fareDataMainInformation->fareAmount;
+            }
         }
 
         $price->setTotalTax(round($totalTax, 2));
