@@ -59,6 +59,10 @@ class DeletePrice extends BusinessCase
             );
 
         } catch (AmadeusRequestException $exception) {
+            // its ok if no tst exist
+            if ($this->noTstExist($exception->getInternalErrorMessage())) {
+                return new PriceDeleteResponse(null, Response::HTTP_NO_CONTENT);
+            }
             $this->logger->critical($exception);
             $exception->setResponseCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 
@@ -76,7 +80,7 @@ class DeletePrice extends BusinessCase
             $this->addLinkToSelf($errorResponse);
 
             return $errorResponse;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             // general exception handling
             $this->logger->critical($exception);
             $errorException = new GeneralServerErrorException($exception->getMessage());
@@ -89,6 +93,20 @@ class DeletePrice extends BusinessCase
         }
 
         return $response;
+    }
+
+    /**
+     * check if no tst exist
+     *
+     * @param $message
+     * @return bool
+     */
+    protected function noTstExist($message)
+    {
+        if ('AMADEUS RESPONSE ERROR [2102,NEED TST]' == $message) {
+            return true;
+        }
+        return false;
     }
 
     /**
