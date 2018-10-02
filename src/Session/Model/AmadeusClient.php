@@ -133,7 +133,6 @@ class AmadeusClient
             [
                 'actionCode' => [
                     Client\RequestOptions\PnrAddMultiElementsOptions::ACTION_END_TRANSACT,
-                    Client\RequestOptions\PnrAddMultiElementsOptions::ACTION_WARNING_AT_EOT,
                 ],
             ]
         );
