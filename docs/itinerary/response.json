@@ -124,22 +124,24 @@
         "segmentName": "NM",
         "lineNumber": "1"
       },
-      "passengerData": {
-        "travellerInformation": {
-          "traveller": {
-            "surname": "AMERING",
-            "quantity": "1"
-          },
-          "passenger": {
-            "firstName": "GEORG MR",
-            "type": "ADT"
-          }
-        },
-        "dateOfBirth": {
-          "qualifier": "1",
-          "date": "07081987"
+      "passengerData":[
+          {
+            "travellerInformation": {
+              "traveller": {
+                "surname": "AMERING",
+                "quantity": "1"
+              },
+              "passenger": {
+                "firstName": "GEORG MR",
+                "type": "ADT"
+              }
+            },
+            "dateOfBirth": {
+              "qualifier": "1",
+              "date": "07081987"
+            }
         }
-      }
+      ]
     }
   ],
   "dataElementsMaster": [

@@ -108,19 +108,21 @@
         "segmentName": "NM",
         "lineNumber": "1"
       },
-      "passengerData": {
-        "travellerInformation": {
-          "traveller": {
-            "surname": "AMERING",
-            "quantity": "1"
+      "passengerData": [
+        {
+          "travellerInformation": {
+            "traveller": {
+              "surname": "AMERING",
+              "quantity": "1"
+            },
+            "passenger": {
+              "firstName": "GEORG MR",
+              "type": "ADT"
+            }
           },
-          "passenger": {
-            "firstName": "GEORG MR",
-            "type": "ADT"
-          }
-        },
-        "dateOfBirth": []
-      }
+          "dateOfBirth": []
+        }
+      ]
     }
   ],
   "dataElementsMaster": [
