@@ -23,7 +23,7 @@ class PassengerPrice
     private $equivFare;
 
     /**
-     * @var float
+     * @var string
      */
     private $equivFareCurrency;
 
@@ -81,19 +81,19 @@ class PassengerPrice
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function getEquivFareCurrency() : ?float
+    public function getEquivFareCurrency() : ?string
     {
         return $this->equivFareCurrency;
     }
 
     /**
-     * @param float $equivFareCurrency
+     * @param string $equivFareCurrency
      *
      * @return PassengerPrice
      */
-    public function setEquivFareCurrency(float $equivFareCurrency) : PassengerPrice
+    public function setEquivFareCurrency(string $equivFareCurrency) : PassengerPrice
     {
         $this->equivFareCurrency = $equivFareCurrency;
         return $this;
