@@ -435,56 +435,61 @@
               ]
             },
             "passengerData": {
-              "type": "object",
-              "properties": {
-                "travellerInformation": {
+              "type": "array",
+              "items": [
+                {
                   "type": "object",
                   "properties": {
-                    "traveller": {
+                    "travellerInformation": {
                       "type": "object",
                       "properties": {
-                        "surname": {
-                          "type": "string"
+                        "traveller": {
+                          "type": "object",
+                          "properties": {
+                            "surname": {
+                              "type": "string"
+                            },
+                            "quantity": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "surname",
+                            "quantity"
+                          ]
                         },
-                        "quantity": {
-                          "type": "string"
+                        "passenger": {
+                          "type": "object",
+                          "properties": {
+                            "firstName": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "firstName",
+                            "type"
+                          ]
                         }
                       },
                       "required": [
-                        "surname",
-                        "quantity"
+                        "traveller",
+                        "passenger"
                       ]
                     },
-                    "passenger": {
-                      "type": "object",
-                      "properties": {
-                        "firstName": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "firstName",
-                        "type"
-                      ]
+                    "dateOfBirth": {
+                      "type": "array",
+                      "items": {}
                     }
                   },
-                  "required": [
-                    "traveller",
-                    "passenger"
-                  ]
-                },
-                "dateOfBirth": {
-                  "type": "array",
-                  "items": {}
-                }
-              },
               "required": [
                 "travellerInformation",
                 "dateOfBirth"
               ]
+            }
+            ]
             }
           },
           "required": [
