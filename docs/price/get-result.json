@@ -1,18 +1,30 @@
 {
-  "last_ticketing_date": "2018-08-16",
+  "last_ticketing_date": "2018-11-30",
   "passenger_price": [
     {
-      "total_tax": 62.38,
-      "base_fare": 25,
-      "base_fare_currency": "EUR"
+      "total_tax": 400.08,
+      "base_fare": 90,
+      "base_fare_currency": "EUR",
+      "passenger_ref": [
+        {
+          "qualifier": "PA",
+          "id": "2"
+        }
+      ]
     },
     {
-      "total_tax": 62.38,
-      "base_fare": 25,
-      "base_fare_currency": "EUR"
+      "total_tax": 0,
+      "base_fare": 9,
+      "base_fare_currency": "EUR",
+      "passenger_ref": [
+        {
+          "qualifier": "PI",
+          "id": "2"
+        }
+      ]
     }
   ],
-  "validating_carrier": "UX",
+  "validating_carrier": "CA",
   "_links": {
     "self": {
       "href": "/price/"
