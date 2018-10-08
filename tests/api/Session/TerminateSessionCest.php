@@ -1,6 +1,5 @@
 <?php
 
-use Flight\Service\Amadeus\Amadeus\Client\MockSessionHandler;
 use GuzzleHttp\Psr7\Request;
 
 /**
