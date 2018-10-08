@@ -65,19 +65,19 @@ search:
         - "BL"
 
 remarks:
-    wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
+    wsdl: admin/1ASIWADMTBD_PDT_20181008_140253.wsdl
     overrideHost: 'http://amadeus-phiremock:18080'
 
 itinerary:
-    wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
+    wsdl: admin/1ASIWADMTBD_PDT_20181008_140253.wsdl
     overrideHost: 'http://amadeus-phiremock:18080'
 
 session:
-    wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
+    wsdl: admin/1ASIWADMTBD_PDT_20181008_140253.wsdl
     overrideHost: 'http://amadeus-phiremock:18080'
 
 price:
-    wsdl: admin/1ASIWADMTBD_PDT_20180606_051927.wsdl
+    wsdl: admin/1ASIWADMTBD_PDT_20181008_140253.wsdl
     overrideHost: 'http://amadeus-phiremock:18080'
 
 response:

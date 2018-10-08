@@ -73,7 +73,7 @@ class ClientParamsFactory
 
             $params['sessionHandlerParams']['overrideSoapClient']         = $soapClient;
             // wsdl-hash that is internally used to match the right soap-client
-            $params['sessionHandlerParams']['overrideSoapClientWsdlName'] = '35a2ec45';
+            $params['sessionHandlerParams']['overrideSoapClientWsdlName'] = sprintf('%x', crc32($wsdlPath));
         }
 
         return new Client\Params($params);

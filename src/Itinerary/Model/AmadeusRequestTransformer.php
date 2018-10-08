@@ -71,7 +71,7 @@ class AmadeusRequestTransformer
 
             $params['sessionHandlerParams']['overrideSoapClient']         = $soapClient;
             // wsdl-hash that is internally used to match the right soap-client
-            $params['sessionHandlerParams']['overrideSoapClientWsdlName'] = '16dbc24b';
+            $params['sessionHandlerParams']['overrideSoapClientWsdlName'] = sprintf('%x', crc32($wsdlPath));
         }
 
         return new Client\Params($params);

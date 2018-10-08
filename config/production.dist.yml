@@ -61,16 +61,16 @@ search:
         - "BL"
 
 remarks:
-    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+    wsdl: admin/1ASIWADMTBD_PRD_20181008_134843.wsdl
 
 itinerary:
-    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+    wsdl: admin/1ASIWADMTBD_PRD_20181008_134843.wsdl
 
 session:
-    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+    wsdl: admin/1ASIWADMTBD_PRD_20181008_134843.wsdl
 
 price:
-    wsdl: admin/1ASIWADMTBD_PRD_20180606_052028.wsdl
+    wsdl: admin/1ASIWADMTBD_PRD_20181008_134843.wsdl
 
 response:
     json_encoding_options:
