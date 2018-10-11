@@ -153,7 +153,7 @@ class Ssr extends AbstractModel
         $this->companyId= $data->companyId ?? null;
         $this->quantity = $data->quantity ?? null;
 
-        if (!empty((array) $data->{'status'})) {
+        if (isset($data->{'status'}) && !empty((array) $data->{'status'})) {
             $this->status= $data->status ?? null;
         }
 
