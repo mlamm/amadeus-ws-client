@@ -14,6 +14,8 @@ class TarifOptionsBuilder
 {
     const COORP_CODE = '000867';
 
+    const COORP_CODE_NETALLU513058 = '513058';
+
     /**
      * Tarif to build options for.
      *
@@ -72,6 +74,15 @@ class TarifOptionsBuilder
                         FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
                     ],
                     'corporateUniFares' => [self::COORP_CODE]
+                ]
+            );
+        } elseif ($this->tarif === 'NETALLU513058') {
+            $options[] = new FarePricePnrWithBookingClassOptions([
+                    'overrideOptions' => [
+                        FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,
+                        FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
+                    ],
+                    'corporateUniFares' => [self::COORP_CODE_NETALLU513058]
                 ]
             );
         } else {
