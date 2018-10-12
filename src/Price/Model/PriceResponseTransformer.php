@@ -101,8 +101,14 @@ class PriceResponseTransformer
         $totalTax = 0.00;
 
         if (isset($fare->taxInformation)) {
-            foreach ($fare->taxInformation as $taxData) {
-                $totalTax += (float) $taxData->amountDetails->fareDataMainInformation->fareAmount;
+            // if taxInformation is an array, we need to loop all elements,
+            // if it's already the element itself we just process it
+            if (\is_array($fare->taxInformation)) {
+                foreach ($fare->taxInformation as $taxData) {
+                    $totalTax += (float) $taxData->amountDetails->fareDataMainInformation->fareAmount;
+                }
+            } else {
+                $totalTax += (float) $fare->taxInformation->amountDetails->fareDataMainInformation->fareAmount;
             }
         }
 
@@ -110,7 +116,7 @@ class PriceResponseTransformer
         $price->setPassengerRef($this->getPassengerRef($fare));
 
         foreach ($fare->fareDataInformation as $baseFare) {
-            if (is_array($baseFare)) {
+            if (\is_array($baseFare)) {
                 foreach ($baseFare as $base) {
                     if ($base->fareDataQualifier == 'B') {
                         $price->setBaseFare((float) $base->fareAmount);
