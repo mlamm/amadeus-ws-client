@@ -86,6 +86,7 @@ class Price
             'IATA',
             'NEGO',
             'NETALLU000867',
+            'NETALLU513058',
             'CALCPUB',
         ]);
 
