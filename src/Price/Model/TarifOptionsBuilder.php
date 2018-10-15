@@ -5,16 +5,22 @@ namespace Flight\Service\Amadeus\Price\Model;
 use Amadeus\Client\RequestOptions\FarePricePnrWithBookingClassOptions;
 
 /**
- * Builder class to build and return fare options for a given tarif.
+ * Builder class to build and return fare options for a given tariff.
  *
  * @author     Marcel Lamm <marcel.lamm@invia.de>
  * @copyright  Copyright (c) 2018 Invia Flights Germany GmbH
  */
 class TarifOptionsBuilder
 {
-    const COORP_CODE = '000867';
+    public const COORP_CODE = '000867';
 
-    const COORP_CODE_NETALLU513058 = '513058';
+    public const COORP_CODE_NETALLU513058 = '513058';
+
+    public const COORP_CODE_NETALLU176212 = '176212';
+
+    public const COORP_CODE_NETALLU374186 = '374186';
+
+    public const COORP_CODE_NETALLU020481 = '020481';
 
     /**
      * Tarif to build options for.
@@ -83,6 +89,33 @@ class TarifOptionsBuilder
                         FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
                     ],
                     'corporateUniFares' => [self::COORP_CODE_NETALLU513058]
+                ]
+            );
+        } elseif ($this->tarif === 'NETALLU176212') {
+            $options[] = new FarePricePnrWithBookingClassOptions([
+                    'overrideOptions' => [
+                        FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,
+                        FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
+                    ],
+                    'corporateUniFares' => [self::COORP_CODE_NETALLU176212]
+                ]
+            );
+        } elseif ($this->tarif === 'NETALLU374186') {
+            $options[] = new FarePricePnrWithBookingClassOptions([
+                    'overrideOptions' => [
+                        FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,
+                        FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
+                    ],
+                    'corporateUniFares' => [self::COORP_CODE_NETALLU374186]
+                ]
+            );
+        } elseif ($this->tarif === 'NETALLU020481') {
+            $options[] = new FarePricePnrWithBookingClassOptions([
+                    'overrideOptions' => [
+                        FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,
+                        FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
+                    ],
+                    'corporateUniFares' => [self::COORP_CODE_NETALLU020481]
                 ]
             );
         } else {

@@ -87,6 +87,9 @@ class Price
             'NEGO',
             'NETALLU000867',
             'NETALLU513058',
+            'NETALLU176212',
+            'NETALLU374186',
+            'NETALLU020481',
             'CALCPUB',
         ]);
 
