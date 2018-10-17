@@ -57,6 +57,7 @@ class RemarkEncoder
     private function encodeRemarkValue(string $remarkName, string $remarkValue) : string
     {
         switch ($remarkName) {
+            case 'IBENAME':
             case 'IBEBNAME':
                 return (new EncodingFilterName())->encode($remarkValue);
             case 'IBEBEMAIL':
