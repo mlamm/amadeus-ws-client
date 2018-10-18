@@ -60,6 +60,7 @@ class RemarkEncoder
             case 'IBENAME':
             case 'IBEBNAME':
                 return (new EncodingFilterName())->encode($remarkValue);
+            case 'IBEEMAIL':
             case 'IBEBEMAIL':
             case 'IBEPAXEMAIL':
                 return (new EncodingFilterMail())->encode($remarkValue);
@@ -68,6 +69,11 @@ class RemarkEncoder
             case 'IBEBZIP':
             case 'IBEBCITY':
             case 'IBEBCOUNTRY':
+            case 'IBECOMPANY':
+            case 'IBESTREET':
+            case 'IBEZIP':
+            case 'IBECITY':
+            case 'IBECOUNTRY':
                 return (new EncodingFilterCommon())->encode($remarkValue);
 
             // unfiltered
