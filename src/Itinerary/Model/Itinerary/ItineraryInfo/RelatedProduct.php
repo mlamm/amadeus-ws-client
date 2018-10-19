@@ -65,7 +65,17 @@ class RelatedProduct extends AbstractModel
      */
     public function populate(\stdClass $data)
     {
-        $this->quantity= $data->quantity ?? null;
-        $this->status  = $data->status ?? null;
+        $this->quantity = $data->quantity ?? null;
+
+        // $data->status can be an array
+        if ($data->status) {
+            if (is_array($data->status)) {
+                $this->status = reset($data->status);
+            } else {
+                $this->status = $data->status;
+            }
+        } else {
+            $this->status = null;
+        }
     }
 }

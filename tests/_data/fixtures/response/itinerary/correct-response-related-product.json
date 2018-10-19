@@ -1,0 +1,449 @@
+{
+  "pnrHeader": {
+    "reservation_info": {
+      "company_id": "1A",
+      "control_number": "WZKZAY",
+      "date": "181018",
+      "time": "1916"
+    }
+  },
+  "securityInformation": {
+    "responsibilityInformation": {
+      "typeOfPnrElement": "RP",
+      "agentId": "WSSU",
+      "officeId": "LEJL1213T"
+    },
+    "queueingInformation": {
+      "queueingOfficeId": "ATHA308AA"
+    },
+    "secondRpInformation": {
+      "creationOfficeId": "BERAE22FX",
+      "agentSignature": "9996WS",
+      "creationDate": "060618",
+      "creatorIataCode": "23273401",
+      "creationTime": "1852"
+    },
+    "cityCode": "LEJ"
+  },
+  "freetextData": {
+    "freetextDetail": {
+      "subject_qualifier": "3",
+      "type": "P12"
+    },
+    "longFreetext": "--- TST AXR ---"
+  },
+  "sbrPOSDetails": {
+    "sbrUserIdentificationOwn": {
+      "originIdentification": {
+        "inHouseIdentification1": "LEJL1213T"
+      },
+      "originatorTypeCode": "N"
+    }
+  },
+  "sbrCreationPosDetails": {
+    "sbrSystemDetails": {
+      "deliveringSystem": [],
+      "sbrUserIdentificationOwn": {
+        "originIdentification": []
+      },
+      "sbrPreferences": {
+        "user_preferences": []
+      }
+    },
+    "sbrUserIdentificationOwn": {
+      "originIdentification": {
+        "inHouseIdentification1": "BERAE22FX",
+        "originatorId": "23273401"
+      },
+      "originatorTypeCode": "N"
+    },
+    "sbrPreferences": {
+      "user_preferences": {
+        "coded_country": "DE"
+      }
+    }
+  },
+  "sbrUpdatorPosDetails": {
+    "sbrUserIdentificationOwn": {
+      "originIdentification": {
+        "inHouseIdentification1": "LEJL1213T"
+      },
+      "originatorTypeCode": "N"
+    },
+    "sbrSystemDetails": {
+      "deliveringSystem": [],
+      "sbrUserIdentificationOwn": {
+        "originIdentification": []
+      },
+      "sbrPreferences": {
+        "user_preferences": []
+      }
+    },
+    "sbrPreferences": {
+      "user_preferences": {
+        "coded_country": "DE"
+      }
+    }
+  },
+  "technicalData": {
+    "enveloppeNumberData": {
+      "sequenceDetails": {
+        "number": "36"
+      }
+    },
+    "lastTransmittedEnvelopeNumber": {
+      "currentRecord": "35"
+    },
+    "purgeDateData": "06.05.2019"
+  },
+  "travellerInfo": [
+    {
+      "elementManagementPassenger": {
+        "reference": {
+          "qualifier": "PT",
+          "number": "2"
+        },
+        "segmentName": "NM",
+        "lineNumber": "1"
+      },
+      "passengerData": [
+        {
+          "travellerInformation": {
+            "traveller": {
+              "surname": "MOPS",
+              "quantity": "1"
+            },
+            "passenger": {
+              "firstName": "MAXI MRS",
+              "type": "ADT"
+            }
+          },
+          "dateOfBirth": []
+        }
+      ]
+    }
+  ],
+  "dataElementsMaster": [
+    {
+      "elementManagementData": [
+        {
+          "reference": {
+            "qualifier": "OT",
+            "number": "48"
+          },
+          "segmentName": "SSR",
+          "lineNumber": "6"
+        }
+      ],
+      "otherDataFreetext": {
+        "long_freetext": "PAX A3"
+      },
+      "ticketElement": {
+        "indicator": "OK",
+        "date": "070618",
+        "officeId": "BERAE2234"
+      },
+      "serviceRequest": [
+        {
+          "type": "OTHS",
+          "status": "",
+          "companyId": "1A",
+          "freeText": [
+            "A3\/OA AUTO XX IF ELECTRONIC TKT NR NOT RCVD BY 21JUN18 2052 LEJ LT"
+          ]
+        }
+      ],
+      "remarks": [
+        {
+          "type": "RM",
+          "name": "IBEAGT",
+          "value": "499189"
+        },
+        {
+          "type": "RM",
+          "name": "IBEREFERENCE",
+          "value": "13035153"
+        },
+        {
+          "type": "RM",
+          "name": "IBEEKNR",
+          "value": "13035153"
+        },
+        {
+          "type": "RM",
+          "name": "IBETARIFF",
+          "value": "IATA"
+        },
+        {
+          "type": "RM",
+          "name": "IBEBNAME",
+          "value": "MOPS,MAX"
+        },
+        {
+          "type": "RM",
+          "name": "IBEBCOMPANY",
+          "value": ""
+        },
+        {
+          "type": "RM",
+          "name": "IBEBSTREET",
+          "value": "TEST 1"
+        },
+        {
+          "type": "RM",
+          "name": "IBEBZIP",
+          "value": "00000"
+        },
+        {
+          "type": "RM",
+          "name": "IBEBCITY",
+          "value": "BERLIN"
+        },
+        {
+          "type": "RM",
+          "name": "IBEBCOUNTRY",
+          "value": "DE"
+        },
+        {
+          "type": "RM",
+          "name": "IBEBEMAIL",
+          "value": "MAXMOPS-AT-WEB.DE"
+        },
+        {
+          "type": "RM",
+          "name": "IBEPAXEMAIL",
+          "value": "MAXMOPS-AT-WEB.DE"
+        },
+        {
+          "type": "RM",
+          "name": "IBEBPHONEHOME",
+          "value": "00000000"
+        },
+        {
+          "type": "RM",
+          "name": "OS YY AQ ACKN"
+        },
+        {
+          "type": "RM",
+          "name": "IBEPAXELIG",
+          "value": "ADT\/P1"
+        },
+        {
+          "type": "RM",
+          "name": "IBEPAXDOB",
+          "value": "01.JAN.1990\/P1"
+        },
+        {
+          "type": "RM",
+          "name": "IBEPAXELIG",
+          "value": "ADT\/P2"
+        },
+        {
+          "type": "RM",
+          "name": "IBEPAXDOB",
+          "value": "01.JAN.1900\/P2"
+        },
+        {
+          "type": "RM",
+          "name": "IBEPAYMENT",
+          "value": "ALIASCC"
+        },
+        {
+          "type": "RM",
+          "name": "OGOAL",
+          "value": "000000"
+        },
+        {
+          "type": "RM",
+          "name": "IBECCHOLDER",
+          "value": "MAX MOPS"
+        },
+        {
+          "type": "RM",
+          "name": "IBEORDERTOTAL",
+          "value": "EUR349.36"
+        },
+        {
+          "type": "RM",
+          "name": "IBENETCC",
+          "value": "EUR349.36"
+        },
+        {
+          "type": "RM",
+          "name": "IBENET",
+          "value": "EUR129.00\/P1"
+        },
+        {
+          "type": "RM",
+          "name": "IBENET",
+          "value": "EUR129.00\/P2"
+        },
+        {
+          "type": "RM",
+          "name": "IBECUSTSELL",
+          "value": "EUR129.00\/P1"
+        },
+        {
+          "type": "RM",
+          "name": "IBECUSTSELL",
+          "value": "EUR129.00\/P2"
+        },
+        {
+          "type": "RM",
+          "name": "IBETAX",
+          "value": "EUR32.69\/P1"
+        },
+        {
+          "type": "RM",
+          "name": "IBETAX",
+          "value": "EUR32.69\/P2"
+        },
+        {
+          "type": "RM",
+          "name": "IBEPORTALID",
+          "value": "0000000"
+        },
+        {
+          "type": "RM",
+          "name": "MATRIX",
+          "value": "000000"
+        },
+        {
+          "type": "RM",
+          "name": "IBESEPAMST",
+          "value": "RCUR"
+        },
+        {
+          "type": "RM",
+          "name": "3DSECURE AUTHENTICATION PERFORMED"
+        },
+        {
+          "type": "RM",
+          "name": "PNR MODIFIED BY THE END USER (WEDNESDAY",
+          "value": "1-AUGUST-2018)"
+        },
+        {
+          "type": "RM",
+          "name": "IBEBOOKINGFEE",
+          "value": "25.98"
+        },
+        {
+          "type": "RM",
+          "name": "IBEPAYMENTFEE",
+          "value": "0.00"
+        },
+        {
+          "type": "RM",
+          "name": "OGOPSPID",
+          "value": "AERUNINEUSIX"
+        },
+        {
+          "type": "RM",
+          "name": "IBECANCELFEE",
+          "value": "29.69"
+        }
+      ]
+    }
+  ],
+  "originDestinationDetails": {
+    "itineraryInfo": [
+      {
+        "elementManagementItinerary": {
+          "lineNumber": "2",
+          "segmentName": "AIR",
+          "reference": {
+            "qualifier": "ST",
+            "number": "1"
+          }
+        },
+        "travelProduct": {
+          "product": {
+            "arrDate": "010918",
+            "arrTime": "1630",
+            "depDate": "010918",
+            "depTime": "1415"
+          },
+          "boardpointDetail": {
+            "cityCode": "ATH"
+          },
+          "offpointDetail": {
+            "cityCode": "HAJ"
+          },
+          "companyDetail": {
+            "identification": "A3"
+          },
+          "productDetails": {
+            "identification": "812",
+            "classOfService": "L"
+          },
+          "typeDetail": {
+            "detail": "ET"
+          }
+        },
+        "itineraryMessageAction": [],
+        "itineraryReservationInfo": {
+          "reservation": []
+        },
+        "relatedProduct": {
+          "quantity": "1",
+          "status": "HK"
+        },
+        "flightDetail": {
+          "productDetails": {
+            "equipment": "320",
+            "numOfStops": "0",
+            "weekDay": "6"
+          },
+          "arrivalStationInfo": [],
+          "facilities": []
+        },
+        "selectionDetails": {
+          "selection": "P2"
+        }
+      },
+      {
+        "elementManagementItinerary": {
+          "lineNumber": "3",
+          "segmentName": "RU",
+          "reference": {
+            "qualifier": "ST",
+            "number": "2"
+          }
+        },
+        "travelProduct": {
+          "product": {
+            "depDate": "020519"
+          },
+          "boardpointDetail": {
+            "cityCode": "BER"
+          },
+          "offpointDetail": [],
+          "companyDetail": {
+            "identification": "1A"
+          },
+          "productDetails": [],
+          "typeDetail": []
+        },
+        "itineraryMessageAction": [],
+        "itineraryReservationInfo": {
+          "reservation": []
+        },
+        "relatedProduct": {
+          "quantity": "1",
+          "status": "HK"
+        },
+        "flightDetail": {
+          "productDetails": [],
+          "arrivalStationInfo": [],
+          "facilities": []
+        },
+        "selectionDetails": []
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "\/itinerary"
+    }
+  }
+}
