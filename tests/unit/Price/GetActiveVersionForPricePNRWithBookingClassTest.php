@@ -2,11 +2,8 @@
 
 namespace Flight\Service\Amadeus\Remarks\Service;
 
-use Amadeus\Client\RequestOptions\FarePricePnrWithBookingClassOptions;
 use Amadeus\Client\Session\Handler\WsdlAnalyser;
 use Codeception\Test\Unit;
-use Flight\Service\Amadeus\Price\Model\TarifOptionsBuilder;
-use Silex\Application;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -28,7 +25,10 @@ class GetActiveVersionForPricePNRWithBookingClassTest extends Unit
     protected $tester;
 
     /**
+     * Test version of used *Fare_PricePNRWithBookingClass* webservice.
+
      * @dataProvider configFileProvider
+     * @param string $configFile config file path
      */
     public function testPriceVersion($configFile)
     {
@@ -51,6 +51,11 @@ class GetActiveVersionForPricePNRWithBookingClassTest extends Unit
         ));
     }
 
+    /**
+     * Providing all the config files matching *.yml in config/ directory.
+     *
+     * @return array
+     */
     public function configFileProvider(): array
     {
         $configFiles = glob(__DIR__ . '/../../../config/*.yml');
