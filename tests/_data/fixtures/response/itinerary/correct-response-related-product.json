@@ -1,11 +1,14 @@
 {
   "pnrHeader": {
-    "reservation_info": {
-      "company_id": "1A",
-      "control_number": "WZKZAY",
-      "date": "181018",
-      "time": "1916"
-    }
+    "reservation_info":
+    [
+      {
+        "company_id": "1A",
+        "control_number": "WZKZAY",
+        "date": "181018",
+        "time": "1916"
+      }
+    ]
   },
   "securityInformation": {
     "responsibilityInformation": {

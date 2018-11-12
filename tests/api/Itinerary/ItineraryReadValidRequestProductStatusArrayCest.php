@@ -62,9 +62,12 @@ class ItineraryReadValidRequestProductStatusArrayCest
         /** @var \stdClass $responseBody */
         $responseBody = \json_decode($responseBody);
 
-        \PHPUnit_Framework_Assert::assertEquals(json_decode(file_get_contents(
-            codecept_data_dir('fixtures/response/itinerary/correct-response-related-product.json')
-        )),
+        \PHPUnit_Framework_Assert::assertEquals(
+            json_decode(
+                file_get_contents(
+                    codecept_data_dir('fixtures/response/itinerary/correct-response-related-product.json')
+                )
+            ),
             $responseBody
         );
     }

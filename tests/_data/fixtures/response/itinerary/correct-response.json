@@ -1,11 +1,11 @@
 {
   "pnrHeader": {
-    "reservation_info": {
+    "reservation_info": [{
       "company_id": "1A",
       "control_number": "R864UO",
       "date": "290518",
       "time": "2327"
-    }
+    }]
   },
   "securityInformation": {
     "responsibilityInformation": {
