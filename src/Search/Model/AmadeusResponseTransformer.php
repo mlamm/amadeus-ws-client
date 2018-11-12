@@ -396,8 +396,9 @@ class AmadeusResponseTransformer
             $legSegment->getGdsInformation()
                 ->setResBookDesigCode(CabinClass::rbd($segmentFare));
 
-            // add remaining seats
-            $legSegment->setRemainingSeats($segmentFare->productInformation->cabinProduct->avlStatus);
+            if (isset($segmentFare->productInformation->cabinProduct->avlStatus)) {
+                $legSegment->setRemainingSeats($segmentFare->productInformation->cabinProduct->avlStatus);
+            }
         }
 
         return $itineraryLeg;
