@@ -2,6 +2,7 @@
 
 namespace Flight\Service\Amadeus\Itinerary\Model\Itinerary;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Flight\Service\Amadeus\Itinerary\Model\Itinerary\ReservationInfo\Reservation;
 
 /**
@@ -13,7 +14,7 @@ use Flight\Service\Amadeus\Itinerary\Model\Itinerary\ReservationInfo\Reservation
 class PnrHeader
 {
     /**
-     * @var Reservation
+     * @var ArrayCollection
      */
     private $reservationInfo;
 
@@ -24,26 +25,26 @@ class PnrHeader
      */
     public function __construct($data = null)
     {
-        $this->reservationInfo = new Reservation();
+        $this->reservationInfo = new ArrayCollection();
         if (null != $data) {
             $this->populate($data);
         }
     }
 
     /**
-     * @return Reservation
+     * @return ArrayCollection
      */
-    public function getReservationInfo() : ?Reservation
+    public function getReservationInfo() : ?ArrayCollection
     {
         return $this->reservationInfo;
     }
 
     /**
-     * @param Reservation $reservationInfo
+     * @param ArrayCollection $reservationInfo
      *
      * @return PnrHeader
      */
-    public function setReservationInfo(Reservation $reservationInfo) : PnrHeader
+    public function setReservationInfo(ArrayCollection $reservationInfo) : PnrHeader
     {
         $this->reservationInfo = $reservationInfo;
         return $this;
@@ -52,12 +53,20 @@ class PnrHeader
     /**
      * Populate from stdClass
      *
-     * @param \stdClass $data
+     * @param array|\stdClass $data
      */
-    public function populate(\stdClass $data)
+    public function populate($data)
     {
         if (isset($data->reservationInfo)) {
-            $this->reservationInfo->populate($data->{'reservationInfo'}->{'reservation'});
+            if (is_array($data)) {
+                foreach ($data as $reservation) {
+                    $this->reservationInfo->add(
+                        (new Reservation())->populate($reservation->{'reservationInfo'}->{'reservation'})
+                    );
+                }
+            } else {
+                $this->reservationInfo->add((new Reservation())->populate($data->{'reservationInfo'}->{'reservation'}));
+            }
         }
     }
 }
