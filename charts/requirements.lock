@@ -2,5 +2,8 @@ dependencies:
 - name: php
   repository: file://../scripts/common/charts/php
   version: 0.8.0
-digest: sha256:677006e5622a5e192702d72192068cc3a9e0f9d5b29566d992984345fab1c62c
-generated: 2018-11-12T13:20:03.77959658+01:00
+- name: redis
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 0.10.2
+digest: sha256:f529943509f415e540da69034919997e54222e6534e5830675554e38e27b34c9
+generated: 2018-11-12T13:33:52.700425484+01:00

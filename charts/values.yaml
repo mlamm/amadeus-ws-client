@@ -31,3 +31,8 @@ php:
     readinessProbe:
       httpGet:
         path: /health
+
+## Redis
+redis:
+  enabled: false
+  usePassword: false
