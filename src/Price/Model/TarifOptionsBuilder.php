@@ -2,6 +2,8 @@
 
 namespace Flight\Service\Amadeus\Price\Model;
 
+use Amadeus\Client\RequestOptions\Fare\PricePnr\FareBasis;
+use Amadeus\Client\RequestOptions\Fare\PricePnr\PaxSegRef;
 use Amadeus\Client\RequestOptions\FarePricePnrWithBookingClassOptions;
 
 /**
@@ -53,10 +55,27 @@ class TarifOptionsBuilder
         $options = [];
 
         if ($this->tarif === 'IATA') {
-            $options[] = new FarePricePnrWithBookingClassOptions([
-                    'overrideOptions' => [FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST],
+            $bleh = new FarePricePnrWithBookingClassOptions([
+                    'overrideOptions' => [
+                        FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
+                        'PFF',
+                    ],
+                    'pricingsFareBasis' => [
+                        new FareBasis([
+                            'fareBasisCode' => 'FF',
+                        ])
+                    ]
                 ]
             );
+            $bleh->optionDetail = 'bleeh';
+//            $options[] = new FarePricePnrWithBookingClassOptions([
+//                    'overrideOptions' => [
+//                        FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
+//                        'PFF',
+//                    ],
+//                ]
+//            );
+            $options[] = $bleh;
         } elseif ($this->tarif === 'NEGO') {
             $options[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
@@ -120,6 +139,12 @@ class TarifOptionsBuilder
             );
         } else {
             throw new \RuntimeException(sprintf("Invalid tarif '%s' provided!", $this->tarif));
+        }
+
+        if (\count($options) > 1) {
+            throw new \RuntimeException(
+                'Options-Validation failed, any more than 1 options will lead to a separate pricing-request!'
+            );
         }
 
         return $options;
