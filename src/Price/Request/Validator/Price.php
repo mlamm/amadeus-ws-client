@@ -92,7 +92,11 @@ class Price
             'NETALLU020481',
             'CALCPUB',
         ]);
-        $validator->optional('fare-family')->string();
+
+        // 64 is freely chosen, it's just to prevent bad things and really long strings
+        $validator->optional('fare-family')
+            ->string()
+            ->lengthBetween(1, 64);
 
         $validationResult = $validator->validate((array) $body);
 

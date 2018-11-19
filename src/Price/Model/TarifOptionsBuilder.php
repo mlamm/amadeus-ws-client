@@ -2,8 +2,6 @@
 
 namespace Flight\Service\Amadeus\Price\Model;
 
-use Amadeus\Client\RequestOptions\Fare\PricePnr\FareBasis;
-use Amadeus\Client\RequestOptions\Fare\PricePnr\PaxSegRef;
 use Amadeus\Client\RequestOptions\FarePricePnrWithBookingClassOptions;
 
 /**
@@ -129,7 +127,7 @@ class TarifOptionsBuilder
 
         if ($this->fareFamily !== null) {
             foreach ($priceOptions as $priceOption) {
-                $priceOption->fareFamily = 'FLEX';
+                $priceOption->fareFamily = $this->fareFamily;
             }
         }
 

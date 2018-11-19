@@ -239,3 +239,16 @@ $ curl \
   -X 'POST' \
   http://amadeus-nginx/session/terminate?XDEBUG_SESSION_START=service-amadeus
 ```
+
+### CRS-Logging to disc
+
+Make sure var/logs/ is writable (chmod -R 777 var/logs/)
+
+Add in \Amadeus\Client\Session\Handler\Base::logRequestAndResponse():
+
+```
+  file_put_contents('var/logs/REQ_' . $messageName . '-' . time() . '.xml', $this->getSoapClient($messageName)->__getLastRequest());
+  file_put_contents('var/logs/RES_' . $messageName . '-' . time() . '.xml', $this->getSoapClient($messageName)->__getLastResponse());
+```
+
+Pro-tip, run as root: `watch -n1 "chmod 777 var/logs/*.xml"` this will set the permissions every second, so you can reformat the REQ/RES-files using PHPStorm.
