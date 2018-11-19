@@ -92,6 +92,7 @@ class Price
             'NETALLU020481',
             'CALCPUB',
         ]);
+        $validator->optional('fare-family')->string();
 
         $validationResult = $validator->validate((array) $body);
 

@@ -116,19 +116,16 @@ class AmadeusClient
      * Create pricing quote in CRS and safe it into TST.
      *
      * @param Authenticate $authenticate
-     * @param Session      $session
-     *
-     * @param Authenticate $authenticate
-     * @param Session      $session
-     * @param              $tariff
-     *
+     * @param Session $session
+     * @param string $tariff tariff for pricing
+     * @param string $fareFamily optional fareFamily for pricing
      * @return bool
      * @throws AmadeusRequestException
      * @throws Client\Exception
      * @throws Client\InvalidMessageException
      * @throws Client\RequestCreator\MessageVersionUnsupportedException
      */
-    public function createAndSafePrice(Authenticate $authenticate, Session $session, $tariff) : bool
+    public function createAndSafePrice(Authenticate $authenticate, Session $session, $tariff, $fareFamily = null) : bool
     {
         /** @var Client $client */
         $client = ($this->clientBuilder)(
@@ -204,16 +201,17 @@ class AmadeusClient
      *
      * @param Client $client amadeus client to be used
      * @param Session $session amadeus session entity
-     * @param string $tariff tarif for pricing request
+     * @param string $tariff tariff for pricing request
+     * @param string $fareFamily optional fare-family for price
      * @return Client\Result
      * @throws AmadeusRequestException
      * @throws Client\Exception
      * @throws Client\InvalidMessageException
      * @throws Client\RequestCreator\MessageVersionUnsupportedException
      */
-    private function createPrice(Client $client, Session $session, string $tariff): Client\Result
+    private function createPrice(Client $client, Session $session, string $tariff, $fareFamily = null): Client\Result
     {
-        $tarifOptionsBuilder = new TarifOptionsBuilder($tariff);
+        $tarifOptionsBuilder = new TarifOptionsBuilder($tariff, $fareFamily);
         $tarifOptions        = $tarifOptionsBuilder->getTarifOptions();
         $clientResult        = null;
 

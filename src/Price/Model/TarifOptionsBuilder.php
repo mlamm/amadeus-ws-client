@@ -32,13 +32,22 @@ class TarifOptionsBuilder
     private $tarif;
 
     /**
+     * FareFamily to be used on pricing (AFF).
+     *
+     * @var string
+     */
+    private $fareFamily;
+
+    /**
      * TarifOptionsBuilder constructor.
      *
      * @param string $tarif tarif to build options for
+     * @param string $fareFamily optional fare-family
      */
-    public function __construct($tarif)
+    public function __construct($tarif, $fareFamily = null)
     {
         $this->tarif = $tarif;
+        $this->fareFamily = $fareFamily;
     }
 
     /**
@@ -52,39 +61,25 @@ class TarifOptionsBuilder
             throw new \InvalidArgumentException('Tarif is not set!');
         }
 
+        $priceOptions = [];
         $options = [];
 
-        if ($this->tarif === 'IATA') {
-            $bleh = new FarePricePnrWithBookingClassOptions([
+        if ($this->tarif === 'IATA' && false) { // %TODO
+            $priceOptions[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
                         FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
-                        'PFF',
                     ],
-                    'pricingsFareBasis' => [
-                        new FareBasis([
-                            'fareBasisCode' => 'FF',
-                        ])
-                    ]
                 ]
             );
-            $bleh->optionDetail = 'bleeh';
-//            $options[] = new FarePricePnrWithBookingClassOptions([
-//                    'overrideOptions' => [
-//                        FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
-//                        'PFF',
-//                    ],
-//                ]
-//            );
-            $options[] = $bleh;
-        } elseif ($this->tarif === 'NEGO') {
-            $options[] = new FarePricePnrWithBookingClassOptions([
+        } elseif ($this->tarif === 'NEGO' || true) { // %TODO
+            $priceOptions[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_UNI,
                         FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
                     ],
                 ]
             );
-            $options[] = new FarePricePnrWithBookingClassOptions([
+            $priceOptions[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_UNI,
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_PUB,
@@ -93,7 +88,7 @@ class TarifOptionsBuilder
                 ]
             );
         } elseif (\in_array($this->tarif, ['NETALLU000867', 'CALCPUB'], true)) {
-            $options[] = new FarePricePnrWithBookingClassOptions([
+            $priceOptions[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,
                         FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
@@ -102,7 +97,7 @@ class TarifOptionsBuilder
                 ]
             );
         } elseif ($this->tarif === 'NETALLU513058') {
-            $options[] = new FarePricePnrWithBookingClassOptions([
+            $priceOptions[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,
                         FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
@@ -111,7 +106,7 @@ class TarifOptionsBuilder
                 ]
             );
         } elseif ($this->tarif === 'NETALLU176212') {
-            $options[] = new FarePricePnrWithBookingClassOptions([
+            $priceOptions[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,
                         FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
@@ -120,7 +115,7 @@ class TarifOptionsBuilder
                 ]
             );
         } elseif ($this->tarif === 'NETALLU374186') {
-            $options[] = new FarePricePnrWithBookingClassOptions([
+            $priceOptions[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,
                         FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
@@ -129,7 +124,7 @@ class TarifOptionsBuilder
                 ]
             );
         } elseif ($this->tarif === 'NETALLU020481') {
-            $options[] = new FarePricePnrWithBookingClassOptions([
+            $priceOptions[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_CORPUNI,
                         FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
@@ -141,11 +136,19 @@ class TarifOptionsBuilder
             throw new \RuntimeException(sprintf("Invalid tarif '%s' provided!", $this->tarif));
         }
 
-        if (\count($options) > 1) {
-            throw new \RuntimeException(
-                'Options-Validation failed, any more than 1 options will lead to a separate pricing-request!'
-            );
+        if ($this->fareFamily !== null) {
+            foreach ($priceOptions as $priceOption) {
+                $priceOption->fareFamily = 'FLEX';
+            }
         }
+
+        $options = array_merge($options, $priceOptions);
+
+//        if (\count($options) > 1) {
+//            throw new \RuntimeException(
+//                'Options-Validation failed, any more than 1 options will lead to a separate pricing-request!'
+//            );
+//        }
 
         return $options;
     }
