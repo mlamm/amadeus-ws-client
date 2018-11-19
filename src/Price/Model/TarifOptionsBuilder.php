@@ -61,6 +61,13 @@ class TarifOptionsBuilder
             $options[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_UNI,
+                        FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
+                    ],
+                ]
+            );
+            $options[] = new FarePricePnrWithBookingClassOptions([
+                    'overrideOptions' => [
+                        FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_UNI,
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_PUB,
                         FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
                     ],
