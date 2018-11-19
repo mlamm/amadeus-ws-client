@@ -75,7 +75,7 @@ class TarifOptionsBuilder
                     ],
                 ]
             );
-            $options[] = new FarePricePnrWithBookingClassOptions([
+            $priceOptions[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_UNI,
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_PUB,

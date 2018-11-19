@@ -109,4 +109,24 @@ class TarifOptionsBuilderTest extends Unit
         $tarifOptionsBuilder = new TarifOptionsBuilder('LOLOLOTRLOTLR');
         $tarifOptionsBuilder->getTarifOptions();
     }
+
+    /**
+     * Test fare-options when a family-fare is given.
+     *
+     * @covers \Flight\Service\Amadeus\Price\Model\TarifOptionsBuilder::getTarifOptions
+     */
+    public function testGetTarifOptionsFamilyFare()
+    {
+        // CALCPUB = FXP/LO/R,U000867 (cryptic)
+        $tarifOptionsBuilder = new TarifOptionsBuilder('CALCPUB', 'FLEX');
+        $tarifOptions = $tarifOptionsBuilder->getTarifOptions();
+
+        $this->assertCount(1, $tarifOptions);
+        $this->assertInstanceOf(FarePricePnrWithBookingClassOptions::class, $tarifOptions[0]);
+        $this->assertCount(2, $tarifOptions[0]->overrideOptions);
+        $this->assertNotFalse(array_search('RLO', $tarifOptions[0]->overrideOptions));
+        $this->assertNotFalse(array_search('RW', $tarifOptions[0]->overrideOptions));
+        $this->assertSame(['000867'], $tarifOptions[0]->corporateUniFares);
+        $this->assertSame('FLEX', $tarifOptions[0]->fareFamily);
+    }
 }
