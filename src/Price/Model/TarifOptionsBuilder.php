@@ -64,6 +64,13 @@ class TarifOptionsBuilder
         $priceOptions = [];
         $options = [];
 
+        if ($this->tarif === 'IATA') {
+            $options[] = new FarePricePnrWithBookingClassOptions([
+                    'overrideOptions' => [FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST],
+                ]
+            );
+        } elseif ($this->tarif === 'NEGO') {
+            $options[] = new FarePricePnrWithBookingClassOptions([
         if ($this->tarif === 'IATA' && false) { // %TODO
             $priceOptions[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
