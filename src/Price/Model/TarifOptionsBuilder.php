@@ -65,27 +65,11 @@ class TarifOptionsBuilder
         $options = [];
 
         if ($this->tarif === 'IATA') {
-            $options[] = new FarePricePnrWithBookingClassOptions([
+            $priceOptions[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST],
                 ]
             );
         } elseif ($this->tarif === 'NEGO') {
-            $options[] = new FarePricePnrWithBookingClassOptions([
-        if ($this->tarif === 'IATA' && false) { // %TODO
-            $priceOptions[] = new FarePricePnrWithBookingClassOptions([
-                    'overrideOptions' => [
-                        FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
-                    ],
-                ]
-            );
-        } elseif ($this->tarif === 'NEGO' || true) { // %TODO
-            $priceOptions[] = new FarePricePnrWithBookingClassOptions([
-                    'overrideOptions' => [
-                        FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_UNI,
-                        FarePricePnrWithBookingClassOptions::OVERRIDE_RETURN_LOWEST,
-                    ],
-                ]
-            );
             $priceOptions[] = new FarePricePnrWithBookingClassOptions([
                     'overrideOptions' => [
                         FarePricePnrWithBookingClassOptions::OVERRIDE_FARETYPE_UNI,
@@ -150,12 +134,6 @@ class TarifOptionsBuilder
         }
 
         $options = array_merge($options, $priceOptions);
-
-//        if (\count($options) > 1) {
-//            throw new \RuntimeException(
-//                'Options-Validation failed, any more than 1 options will lead to a separate pricing-request!'
-//            );
-//        }
 
         return $options;
     }

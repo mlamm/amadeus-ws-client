@@ -133,7 +133,7 @@ class AmadeusClient
                 ->buildClientParams($authenticate, $this->logger)
         );
 
-        $clientResult = $this->createPrice($client, $session, $tariff);
+        $clientResult = $this->createPrice($client, $session, $tariff, $fareFamily);
         if (false === $clientResult) {
             return false;
         }

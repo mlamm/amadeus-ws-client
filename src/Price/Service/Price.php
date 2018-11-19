@@ -122,7 +122,11 @@ class Price
             ->setSequenceNumber($sessionHeader->{'sequence-number'})
             ->setSecurityToken($sessionHeader->{'security-token'});
 
-        $response = $this->amadeusClient->createAndSafePrice($authenticate, $session, $jsonBody->tariff);
+        if (!empty($jsonBody->{'fare-family'})) {
+            $response = $this->amadeusClient->createAndSafePrice($authenticate, $session, $jsonBody->tariff, $jsonBody->{'fare-family'});
+        } else {
+            $response = $this->amadeusClient->createAndSafePrice($authenticate, $session, $jsonBody->tariff);
+        }
 
         return $this->serializer->serialize($response, 'json');
     }
