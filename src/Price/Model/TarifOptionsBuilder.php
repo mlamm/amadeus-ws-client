@@ -60,7 +60,6 @@ class TarifOptionsBuilder
         }
 
         $priceOptions = [];
-        $options = [];
 
         if ($this->tarif === 'IATA') {
             $priceOptions[] = new FarePricePnrWithBookingClassOptions([
@@ -138,8 +137,6 @@ class TarifOptionsBuilder
             }
         }
 
-        $options = array_merge($options, $priceOptions);
-
-        return $options;
+        return $priceOptions;
     }
 }
