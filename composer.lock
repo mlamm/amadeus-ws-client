@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53828e0ebde4b1b68dc998e0be803796",
+    "content-hash": "5386fef4c34de723e3b4addd8dfc49b4",
     "packages": [
         {
             "name": "amabnl/amadeus-ws-client",
-            "version": "dev-fare-families",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mlamm/amadeus-ws-client.git",
-                "reference": "48f648811513bcca309e3137128f796e14bd0ee9"
+                "url": "https://github.com/amabnl/amadeus-ws-client.git",
+                "reference": "c5dc474790ec4fe350fe195f8bf59f97d0f70317"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mlamm/amadeus-ws-client/zipball/48f648811513bcca309e3137128f796e14bd0ee9",
-                "reference": "48f648811513bcca309e3137128f796e14bd0ee9",
+                "url": "https://api.github.com/repos/amabnl/amadeus-ws-client/zipball/c5dc474790ec4fe350fe195f8bf59f97d0f70317",
+                "reference": "c5dc474790ec4fe350fe195f8bf59f97d0f70317",
                 "shasum": ""
             },
             "require": {
@@ -36,11 +36,7 @@
                     "Amadeus\\": "src/Amadeus"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Test\\Amadeus\\": "tests/Amadeus"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -72,10 +68,7 @@
                 "wsdl",
                 "xml"
             ],
-            "support": {
-                "source": "https://github.com/mlamm/amadeus-ws-client/tree/fare-families"
-            },
-            "time": "2018-11-16T16:59:29+00:00"
+            "time": "2018-11-25T15:03:50+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1401,16 +1394,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
+                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
-                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
                 "shasum": ""
             },
             "require": {
@@ -1444,7 +1437,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10T12:19:37+00:00"
+            "time": "2018-11-20T15:27:04+00:00"
         },
         {
             "name": "silex/silex",

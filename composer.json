@@ -30,7 +30,7 @@
         "ext-json": "*",
         "ext-simplexml": "*",
         "silex/silex": "~2.0",
-        "amabnl/amadeus-ws-client": "dev-fare-families#48f648811513bcca309e3137128f796e14bd0ee9",
+        "amabnl/amadeus-ws-client": "dev-master#c5dc474790ec4fe350fe195f8bf59f97d0f70317",
         "monolog/monolog": "~1.23",
         "flight/search-request-mapping": "^5.2.0",
         "doctrine/cache": "~1.7",
@@ -66,10 +66,6 @@
                     "verify_peer": false
                 }
             }
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/mlamm/amadeus-ws-client.git"
         }
     ]
 }
